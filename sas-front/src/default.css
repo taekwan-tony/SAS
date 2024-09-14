@@ -1,0 +1,53 @@
+:root {
+  /* 메인 */
+  --main1: #399918;
+  /* 로고 글씨색 */
+  --main2: #5e9960;
+  /* 글씨색 */
+  --font1: #544f4f;
+  --font2: #767a82;
+  --font3: #b9b9bd;
+}
+/* 이서윤체 */
+@font-face {
+  font-family: "LeeSeoyun";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+/* 프리텐다드체 */
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+/* noto-sans */
+@font-face {
+  font-family: ns-l;
+  src: url(/public/font/NotoSansKR-Light.ttf);
+}
+@font-face {
+  font-family: ns-r;
+  src: url(/public/font/NotoSansKR-Regular.ttf);
+}
+@font-face {
+  font-family: ns-b;
+  src: url(/public/font/NotoSansKR-Bold.ttf);
+}
+@font-face {
+  font-family: ns-black;
+  src: url(/public/font/NotoSansKR-Black.ttf);
+}
+
+@font-face {
+  font-family: ns-eb;
+  src: url(/public/font/NotoSansKR-ExtraBold.ttf);
+}
+/* gloria hallelujah */
+@font-face {
+  font-family: gloria;
+  src: url(/public/font/GloriaHallelujah-Regular.ttf);
+}

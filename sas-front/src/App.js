@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import "./default.css"; //기본 색, 폰트 변수
 
 function App() {
   return (
