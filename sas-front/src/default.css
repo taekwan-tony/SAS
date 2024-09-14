@@ -51,3 +51,7 @@
   font-family: gloria;
   src: url(/public/font/GloriaHallelujah-Regular.ttf);
 }
+* {
+  font-family: Pretendard-Regular;
+  color: var(--font2);
+}

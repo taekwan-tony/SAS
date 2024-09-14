@@ -1,0 +1,43 @@
+/* 기본 설정 */
+.round {
+  border-radius: 10px;
+}
+
+button {
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+.btn-main {
+  border: 1px solid var(--main1);
+  background-color: var(--main1);
+  color: white;
+}
+.btn-main:hover {
+  background-color: #fff;
+  color: var(--main1);
+}
+
+.btn-sub {
+  border: 1px solid var(--main1);
+  background-color: #fff;
+  color: var(--main1);
+}
+.btn-sub:hover {
+  background-color: var(--main1);
+  color: white;
+}
+/* 아이디, 비밀번호 찾기 */
+div.find-main-zone {
+  width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.find-main-zone > button {
+  text-align: left;
+  padding: 10px;
+  height: 50px;
+}

@@ -1,24 +1,13 @@
-import logo from "./logo.svg";
-import "./App.css";
 import "./default.css"; //기본 색, 폰트 변수
-
+import { Route, Routes } from "react-router-dom";
+import LoginMain from "./components/user/LoginMain";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header className="App-header"></header>
+      <Routes>
+        <Route path="/login/*" element={<LoginMain />} />
+      </Routes>
     </div>
   );
 }
