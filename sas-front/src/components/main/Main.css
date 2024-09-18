@@ -1,0 +1,247 @@
+/* 메인 콘텐츠 설정 */
+
+.main-content,
+.main-content2,
+.main-content3,
+.main-content4 {
+  margin: 0; /* 각 섹션의 상하 간격을 제거 */
+  padding: 0; /* 패딩도 제거하여 공백 줄임 */
+}
+.main-content {
+  width: 100%;
+  height: 700vh; /* 스크롤을 위한 충분한 높이로 설정 */
+  position: relative;
+  overflow: hidden;
+}
+
+/* 타이틀 컨테이너 설정 */
+.title-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 첫 번째 타이틀 스타일 (title1) */
+.title1 {
+  display: inline-block;
+  color: #fff;
+  font-weight: bold;
+  font-size: 50rem;
+  position: absolute;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+/* 두 번째, 세 번째, 네 번째 타이틀 스타일링 (title2, title3, title4) */
+.title2,
+.title3,
+.title4 {
+  display: inline-block;
+  color: #fff;
+  font-weight: bold;
+  font-size: 7rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+/* 메인 콘텐츠2 설정 */
+.main-content2 {
+  width: 100%;
+  height: 115vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  opacity: 1;
+  z-index: 15;
+}
+
+/* main-content2 안의 텍스트 스타일 */
+.main-content2 .logo1 {
+  font-size: 5rem;
+  color: #fff;
+}
+
+/* main-content3 스타일 */
+.main-content3 {
+  width: 100%;
+  height: 100vh; /* 화면 전체 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-content3 .title5 {
+  font-size: 7rem; /* 기본 글씨 크기 */
+  color: #fff; /* 글씨 색은 흰색 */
+  opacity: 0; /* 애니메이션 시작 전까지 투명하게 설정 */
+}
+
+/* 메인 콘텐츠4 설정 */
+.main-content4 {
+  width: 100%;
+  height: 400vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  opacity: 1; /* 애니메이션 전까지 투명하게 */
+}
+
+.main-content4 .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.main-content4 .title6 {
+  font-size: 2rem;
+  color: #fff;
+  opacity: 0; /* 애니메이션 시작 전까지 투명하게 설정 */
+  margin-bottom: 40px;
+}
+.main-content4 .title7 {
+  font-size: 2rem;
+  color: #fff;
+  opacity: 0; /* 애니메이션 시작 전까지 투명하게 설정 */
+  margin-bottom: 40px;
+}
+
+.main-content4 .buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content4 .button1 {
+  background-color: rgba(55, 204, 72, 0.3);
+  color: #544f4f; /* 텍스트 색상 흰색 */
+  border: 3px solid #fff; /* 흰색 테두리 */
+  width: 500px;
+  border-radius: 20px; /* 둥근 모서리 */
+  padding: 10px 20px;
+  margin: 10px 0; /* 버튼들 간의 간격 */
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex; /* 플렉스 박스로 정렬 */
+  justify-content: space-between; /* 텍스트와 화살표 사이 간격을 자동으로 분배 */
+  align-items: center; /* 수직 중앙 정렬 */
+  position: relative;
+}
+.main-content4 .button2 {
+  background-color: transparent; /* 배경 투명 */
+  color: #fff; /* 텍스트 색상 흰색 */
+  border: 3px solid #fff; /* 흰색 테두리 */
+  width: 500px;
+  border-radius: 20px; /* 둥근 모서리 */
+  padding: 10px 20px;
+  margin: 10px 0; /* 버튼들 간의 간격 */
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex; /* 플렉스 박스로 정렬 */
+  justify-content: space-between; /* 텍스트와 화살표 사이 간격을 자동으로 분배 */
+  align-items: center; /* 수직 중앙 정렬 */
+  position: relative;
+}
+
+.main-content4 .button1:hover {
+  background-color: transparent;
+  color: #fff;
+}
+.main-content4 .button2:hover {
+  background-color: #399918; /* 호버 시 배경 흰색 */
+  color: #544f4f; /* 호버 시 텍스트 색상 변경 */
+}
+.main-content4 .arrow-icon {
+  position: absolute;
+  right: 20px; /* 오른쪽 끝에서 20px 떨어진 위치 */
+  top: 50%; /* 수직 중앙 정렬 */
+  transform: translateY(-50%); /* 정확한 중앙 배치를 위해 translate 사용 */
+  font-size: 1.5rem;
+  color: #fff; /* 화살표 색상 흰색 */
+}
+
+.arrow-down {
+  position: fixed;
+  bottom: 4rem; /* 화면 하단에서 20px 위 */
+  left: 59rem; /* 화면의 가로 중앙에 위치 */
+  transform: translateX(-50%); /* 정확한 가로 중앙 정렬 */
+  z-index: 100; /* 다른 요소 위에 위치 */
+}
+/* 하단 고정 버튼 스타일 */
+.arrow-down span {
+  display: block;
+  width: 1.5em;
+  height: 1.5em;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: animate-arrows 2s infinite;
+}
+@keyframes animate-arrows {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-1.5em, -1.5em);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(1.5em, 1.5em);
+  }
+}
+.arrow-down span:nth-child(1) {
+  animation-delay: -0.2s;
+}
+.arrow-down span:nth-child(2) {
+  animation-delay: -0.4s;
+}
+.arrow-down span:nth-child(3) {
+  animation-delay: -0.6s;
+}
+
+/* 배경 비디오 스타일 */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.video-background video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 어두운 반투명 오버레이 */
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* 검은색 투명도 50% */
+  z-index: -1; /* 콘텐츠보다 뒤에 위치 */
+}

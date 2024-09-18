@@ -4,3 +4,6 @@ npm install react-router-dom
 npm install axios
 npm install recoil
 npm install sweetalert2
+
+양창모 2024-09-15 10:52
+npm install gsap
