@@ -246,11 +246,11 @@ const Main = () => {
       .querySelector(".arrow-down a")
       .addEventListener("click", handleArrowClick);
 
-    return () => {
-      document
-        .querySelector(".arrow-down a")
-        .removeEventListener("click", handleArrowClick);
-    };
+    // return () => {
+    //   document
+    //     .querySelector(".arrow-down a")
+    //     .removeEventListener("click", handleArrowClick);
+    // };
   }, []);
 
   return (
@@ -316,6 +316,12 @@ const Main = () => {
             <Link to="/usermain">
               <button className="button2">
                 일반인 로그인
+                <span className="material-icons arrow">arrow_forward</span>
+              </button>
+            </Link>
+            <Link to="/admin">
+              <button className="button2">
+                admin Test
                 <span className="material-icons arrow">arrow_forward</span>
               </button>
             </Link>
