@@ -111,19 +111,7 @@ public class QuestionController {
 		}
 		//q.setFileList(fileList);
 		//List<QuestionFile> delFileList = questionService.updateQuestion(q,delFileNo);
-//		if(delFileList == null) {
-//			model.addAttribute("title","수정 실패");
-//			model.addAttribute("msg","처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요");
-//			model.addAttribute("icon","error");
-//			model.addAttribute("loc","/Question/questionList?type=1&reqPage=1");
-//			return "common/msg";
-//		}else {
-//			for(QuestionFile questionFile : delFileList) {
-//				File delFile = new File(savepath+questionFile.getFilepath());
-//				delFile.delete();
-//			}
-//			return "redirect:/Question/questionList?type=1&reqPage=1";
-//		}
+
 		return null;
 	}
 	
