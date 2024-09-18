@@ -256,12 +256,12 @@ const Main = () => {
   return (
     <div>
       <div className="video-background">
-        {/* <video autoPlay muted playsInline id="background-video">
+        <video autoPlay muted playsInline id="background-video">
           <source
-            //src={`${process.env.PUBLIC_URL}/video/Fvideo1.mp4`}
+            src={`${process.env.PUBLIC_URL}/video/Fvideo1.mp4`}
             type="video/mp4"
           />
-        </video> */}
+        </video>
       </div>
 
       <div className="video-overlay"></div>
