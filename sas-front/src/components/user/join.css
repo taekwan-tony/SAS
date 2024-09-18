@@ -1,23 +1,141 @@
+/* 기본 설정 */
+.round {
+  border-radius: 10px;
+}
+
+button {
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+.btn-main {
+  border: 1px solid var(--main1);
+  background-color: var(--main1);
+  color: white;
+}
+.btn-main:hover {
+  background-color: #fff;
+  color: var(--main1);
+}
+
+.btn-sub {
+  border: 1px solid var(--main1);
+  background-color: #fff;
+  color: var(--main1);
+}
+.btn-sub:hover {
+  background-color: var(--main1);
+  color: white;
+}
+/* 회원가입  */
 .join-main {
   width: 100%;
   height: 100%;
   padding: 50px 0;
   background-color: #efefef;
 }
-.join-main > * {
+.join-main * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 .join-wrap {
-  width: 60%;
+  width: 55%;
   min-width: 600px;
   background-color: white;
   border-radius: 10px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 50px;
 }
 
 .join-wrap > .title > h1 {
   color: var(--main1);
   text-align: center;
+  margin-bottom: 50px;
+}
+
+.join-content {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.input-title {
+  margin: 10px 0;
+}
+.input-title > label {
+  color: var(--font1);
+  font-size: 18px;
+}
+.input-item > input[type="text"] {
+  font-size: 16px;
+  padding: 5px;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--font2);
+  margin-bottom: 10px;
+}
+
+.input-item > input[type="text"]:focus {
+  border-bottom: 3px solid var(--main1);
+}
+
+input#userEmail {
+  width: calc(100% - 90px);
+}
+
+input#userEmail + button {
+  width: 90px;
+  padding: 3px;
+}
+
+div.input-content {
+  display: flex;
+  gap: 30px;
+}
+.radio-box > * {
+  margin: 0px 3px;
+}
+.radio-box > label {
+  cursor: pointer;
+}
+
+/* 이용약관 */
+.agree-wrap {
+  width: 55%;
+  min-width: 600px;
+  background-color: white;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-top: 50px;
+  padding: 50px;
+}
+.agree-wrap > h2 {
+  margin: 0;
+  padding: 0;
+}
+.agree-wrap > h2 > label {
+  font-size: 20px;
+}
+.agree-content {
+  padding: 7px 20px;
+}
+input[type="checkbox"] + label {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* 회원가입 버튼 */
+.btn-zone {
+  width: 55%;
+  min-width: 600px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+.btn-zone > button {
+  width: 100%;
+  height: 60px;
+  font-size: 25px;
+  font-weight: 600;
 }
