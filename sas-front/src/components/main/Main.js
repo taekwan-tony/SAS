@@ -313,7 +313,7 @@ const Main = () => {
                 <span className="material-icons arrow">arrow_forward</span>
               </button>
             </Link>
-            <Link to="/user">
+            <Link to="/usermain">
               <button className="button2">
                 일반인 로그인
                 <span className="material-icons arrow">arrow_forward</span>
