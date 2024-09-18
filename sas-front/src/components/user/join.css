@@ -88,6 +88,7 @@ input#userEmail {
 input#userEmail + button {
   width: 90px;
   padding: 3px;
+  font-size: 13px;
 }
 
 div.input-content {
@@ -124,6 +125,27 @@ div.input-content {
 input[type="checkbox"] + label {
   margin-left: 10px;
   cursor: pointer;
+}
+
+.agree-content {
+  display: flex;
+  justify-content: space-between;
+}
+.agree-content > label {
+  flex: 1;
+}
+
+.agree-content > button {
+  background-color: transparent;
+  border: none;
+  position: relative;
+}
+.agree-content > button:hover {
+  text-decoration: underline;
+}
+.agree-content > button > span {
+  position: absolute;
+  left: 30px;
 }
 
 /* 회원가입 버튼 */

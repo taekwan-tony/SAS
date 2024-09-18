@@ -6,7 +6,6 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import "swiper/css/mousewheel";
 import { Navigation, Pagination, Autoplay, Mousewheel } from "swiper";
-import "./";
 
 const UserMain = () => {
   const [isScrolled, setIsScrolled] = useState(false);
