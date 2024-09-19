@@ -126,7 +126,9 @@
   display: flex;
   flex-direction: column;
 }
-
+.main-content4 .buttons a {
+  text-decoration: none;
+}
 .main-content4 .button1 {
   background-color: rgba(55, 204, 72, 0.3);
   color: #544f4f; /* 텍스트 색상 흰색 */
