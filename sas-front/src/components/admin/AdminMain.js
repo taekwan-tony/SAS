@@ -5,7 +5,7 @@ import "./adminMain.css";
 
 const AdminMain = () => {
   return (
-    <div className="container">
+    <div className="admin-container">
       <AdminSideTab />
       <div className="admin-content-wrap">
         <Routes>

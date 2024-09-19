@@ -8,12 +8,43 @@
   height: 100px;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
+  line-height: 40px;
 }
 
 .notice-title-wrap > * {
   font-size: 32px;
+  font-weight: 800;
 }
 
 .notice-content-wrap {
-  margin: 50px;
+  width: 100%;
+}
+
+.notice-list-wrap {
+  width: 100%;
+}
+
+.notice-list-menu {
+  display: flex;
+  margin: 30px;
+  align-items: center;
+}
+.notice-menu {
+  border: 1px solid var(--font3);
+  width: 120px;
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  cursor: pointer;
+}
+
+.notice-menu-check {
+  background-color: var(--main2);
+}
+.notice-menu-check > span {
+  color: white;
 }
