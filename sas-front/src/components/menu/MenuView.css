@@ -1,0 +1,107 @@
+.link {
+  display: none;
+}
+
+.menuview-bigwrap {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid;
+}
+
+.menuview-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-menu {
+  margin-bottom: 20px;
+}
+
+.menu-image {
+  text-align: center;
+}
+
+.menu-image img {
+  width: 400px;
+  height: 232px;
+}
+
+.menuview-info {
+  float: left;
+}
+
+.menu-nav {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  padding: 0;
+}
+
+.menu-nav li {
+  cursor: pointer;
+}
+
+.main-menu {
+  margin-top: 20px;
+}
+
+/* 여기까지 메인뷰*/
+
+.reservation-info {
+  text-align: center;
+  margin-bottom: 20px;
+  box-sizing: content-box;
+  border: 1.5px solid;
+  height: 300px;
+  position: relative;
+}
+.res-time > div {
+  border: 1px solid;
+}
+
+.find-date {
+  width: 300px;
+  border: 1.5px solid;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--main1);
+}
+
+.facilities {
+  text-align: center;
+  height: 300px;
+  text-align: center;
+  margin-bottom: 20px;
+  box-sizing: content-box;
+  border: 1.5px solid;
+}
+
+.reservation-button {
+  position: fixed;
+  width: 500px;
+  bottom: 0px;
+  margin-top: 20px;
+  align-items: center;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  left: calc((100% - 500px) / 2);
+  padding: 15px 5px;
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+.reservation-button > span {
+  cursor: pointer;
+}
+
+.reservation-btn {
+  width: 350px;
+  height: 40px;
+  border-radius: 30px;
+  background-color: var(--main2);
+}
