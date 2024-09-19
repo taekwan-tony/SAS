@@ -5,7 +5,23 @@
 	<select id="totalCount" resultType="int">
 		select count(*) from notice
 		<if test="noticeType != 0">
-		 where notice_type = {noticeType}
+		 where notice_type = #{noticeType}
 		 </if>
+	</select>
+	
+	<select id="selectNoticeList" resultType="notice">
+		select * from
+			(select rownum as rnum, b.* from(
+			    select
+			        notice_no,
+			        notice_title,
+			        notice_enroll_date,
+			        notice_type
+			    from notice 
+				<if test="noticeType != 0">
+		 		where notice_type = #{noticeType}
+		 		</if>	    
+			     order by notice_no desc)b)
+			where rnum between #{pi.start} and #{pi.end}
 	</select>
 </mapper>
