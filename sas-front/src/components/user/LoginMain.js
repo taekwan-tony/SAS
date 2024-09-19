@@ -5,6 +5,7 @@ import "./login.css";
 import axios from "axios";
 import { RecoilState, useRecoilState } from "recoil";
 import { loginUserIdState, userTypeState } from "../utils/RecoilData";
+import FindId from "./FindId";
 
 const LoginMain = () => {
   return (
@@ -16,6 +17,7 @@ const LoginMain = () => {
         <Routes>
           <Route path="" element={<Login />}></Route>
           <Route path="find" element={<FindMain />}></Route>
+          <Route path="findId" element={<FindId />}></Route>
         </Routes>
       </div>
     </div>
@@ -35,6 +37,8 @@ const Login = () => {
   const idRef = useRef(null);
   const pwRef = useRef(null);
   const login = () => {
+    idRef.current.innerText = "";
+    pwRef.current.innerText = "";
     axios
       .post(`${backServer}/user/login`, user)
       .then((res) => {
