@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./storeRegist.css";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const StoreRegist = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [bnMsg, setBnMsg] = useState("");
+  const [emailMsg, setEmailMsg] = useState("");
   const [store, setStore] = useState({
-    soName: "aaaaaaaaaaaaaaaaaaaa",
+    soName: "",
     businessNumber: "",
-    soPhone: "aa",
-    soEmail: "aa",
+    soPhone: "",
+    soEmail: "",
   });
 
   const changeStore = (e) => {
@@ -30,6 +33,7 @@ const StoreRegist = () => {
       Swal.fire({
         title: "사업자등록번호를 입력해주세요.",
         icon: "warning",
+        confirmButtonColor: "#5e9960",
       });
       //alert("사업자등록번호를 입력해주세요.");
       return false;
@@ -61,7 +65,8 @@ const StoreRegist = () => {
           Swal.fire({
             title: "사업자등록번호 조회 성공",
             icon: "success",
-          });
+            confirmButtonColor: "#5e9960",
+          }).then(setBnMsg("조회에 성공하였습니다."));
         } else {
           // 실패 처리
           console.log("fail");
@@ -69,13 +74,42 @@ const StoreRegist = () => {
             title: "사업자등록번호 조회 실패",
             icon: "warning",
             text: "국세청에 등록되지 않은 사업자등록번호입니다.",
+            confirmButtonColor: "#5e9960",
           });
-          //alert(result.data[0]["tax_type"]);
+          setBnMsg("");
         }
       })
       .catch((error) => {
         // 에러 처리
         console.error("error", error);
+        setBnMsg("");
+      });
+  };
+
+  const storeRegistEmailCheck = () => {
+    const soEmailElement = document.getElementById("soEmail");
+
+    const emailCheck = soEmailElement.value;
+    if (!emailCheck) {
+      Swal.fire({
+        title: "이메일을 입력해주세요.",
+        icon: "warning",
+        confirmButtonColor: "#5e9960",
+      });
+      return false;
+    }
+    axios
+      .get(`${backServer}/store/soEmail/${store.soEmail}/checkEmail`)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          setEmailMsg("사용 가능한 이메일입니다.");
+        } else {
+          setEmailMsg("이미 가입한 이메일입니다.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -94,6 +128,7 @@ const StoreRegist = () => {
                 <div className="storeRegist-div">
                   <input
                     className="storeRegist-inputBox"
+                    placeholder="번호만 입력해주세요."
                     type="text"
                     id="businessNumber"
                     name="businessNumber"
@@ -107,6 +142,20 @@ const StoreRegist = () => {
                     조회
                   </button>
                 </div>
+                <p
+                  className="storeRegist-msg"
+                  style={{
+                    backgroundImage: bnMsg
+                      ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)`
+                      : "none", // 이미지가 없을 때는 none
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "left center",
+                    marginLeft: "10px",
+                    paddingLeft: bnMsg ? "10px" : "0px", // 메시지가 있을 때만 padding
+                  }}
+                >
+                  {bnMsg}
+                </p>
               </td>
             </tr>
             <tr className="storeRegist-tr">
@@ -138,6 +187,7 @@ const StoreRegist = () => {
                 <div className="storeRegist-div">
                   <input
                     className="storeRegist-inputBox"
+                    placeholder="010-0000-0000 형태로 입력해주세요."
                     type="text"
                     id="sophone"
                     name="soPhone"
@@ -163,8 +213,27 @@ const StoreRegist = () => {
                     value={store.soEmail}
                     onChange={changeStore}
                   ></input>
-                  <button className="storeRegist-btn">인증</button>
+                  <button
+                    className="storeRegist-btn"
+                    onClick={storeRegistEmailCheck}
+                  >
+                    중복 체크
+                  </button>
                 </div>
+                <p
+                  className="storeRegist-msg"
+                  style={{
+                    backgroundImage: emailMsg
+                      ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)`
+                      : "none", // 이미지가 없을 때는 none
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "left center",
+                    marginLeft: "10px",
+                    paddingLeft: emailMsg ? "10px" : "0px", // 메시지가 있을 때만 padding
+                  }}
+                >
+                  {emailMsg}
+                </p>
               </td>
             </tr>
           </tbody>
