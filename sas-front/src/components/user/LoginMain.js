@@ -4,7 +4,7 @@ import FindMain from "./FindMain";
 import "./login.css";
 const LoginMain = () => {
   return (
-    <div>
+    <div className="user-login-main">
       <div className="logo"></div>
       <Routes>
         <Route path="" element={<Login />}></Route>

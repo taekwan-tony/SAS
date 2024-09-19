@@ -29,14 +29,14 @@ a {
   color: white;
 }
 /* 아이디, 비밀번호 찾기 */
-div.find-main-zone {
+.user-login-main div.find-main-zone {
   width: 300px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-.find-main-zone > button {
+.user-login-main .find-main-zone > button {
   text-align: left;
   padding: 10px;
   height: 50px;
