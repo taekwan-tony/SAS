@@ -4,9 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.sas.store.model.dao.StoreDao;
+import kr.co.sas.store.model.dto.StoreDTO;
 
 @Service
 public class StoreService {
 	@Autowired
 	private StoreDao storeDao;
+
+	
+	public boolean checkEmail(String soEmail) {
+		StoreDTO store = storeDao.checkEmail(soEmail);
+		return (store==null);
+	}//checkEmail
 }

@@ -8,7 +8,6 @@ import UserMain from "./components/user/UserMain";
 
 import AdminMain from "./components/admin/AdminMain";
 import MenuView from "./components/menu/MenuView";
-import Seller from "./components/store/StoreMain";
 import StoreRegist from "./components/store/StoreRegist";
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
         <Route path="/usermain" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/menuview/*" element={<MenuView />} />
-        <Route path="/store/*" element={<Seller />} />
         <Route path="/storeRegist" element={<StoreRegist />} />
       </Routes>
     </div>

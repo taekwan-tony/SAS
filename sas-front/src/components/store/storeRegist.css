@@ -7,14 +7,12 @@
   color: #544f4f;
 }
 
-* > body {
-  background-color: #ccc;
-}
+/* 상단 */
 
 .storeRegist-wrap {
   width: 50%;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 20px;
   margin: 0 auto;
   padding: 50px;
   margin-top: 80px;
@@ -24,7 +22,6 @@
 .storeRegist-inputBox {
   box-sizing: border-box;
   width: 70%;
-  padding: 10px;
   border: none;
   border-radius: 0%;
   background: none;
@@ -34,6 +31,12 @@
   transition: none;
   transform: none;
   border-bottom: 1px solid #b9b9bd;
+}
+
+.storeRegist-inputBox::placeholder {
+  color: #b9b9bd;
+  font-weight: 100;
+  font-size: 16px;
 }
 
 .storeRegist-table {
@@ -59,7 +62,7 @@
 }
 
 .storeRegist-btn {
-  width: 80px;
+  width: 90px;
   height: 40px;
   border: none;
   background-color: #5e9960;
@@ -72,5 +75,44 @@
   font-weight: 590;
 }
 
-.storeRegist-btn:hover {
+.storeRegist-msg {
+  color: #5e9960;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.storeRegist-msg::before {
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+  /*background: url("/image/icon_info_success.svg") no-repeat center / contain;*/
+}
+
+/* 하단 */
+
+.storeRegist-imgDiv {
+  width: 50%;
+  background-color: white;
+  border-radius: 20px;
+  margin: 0 auto;
+}
+
+.storeRegist-img {
+  width: 400px;
+  height: 400px;
+}
+
+.storeRegist-storeImg-btn {
+  width: 120px;
+  height: 40px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 19px;
+  font-weight: 590;
 }
