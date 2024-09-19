@@ -1,180 +1,176 @@
-import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/autoplay";
-import "swiper/css/mousewheel";
-import { Navigation, Pagination, Autoplay, Mousewheel } from "swiper";
-import "./";
+import React, { useState } from "react";
+import "./usermain.css"; // CSS 파일을 임포트합니다.
+import { Swiper, SwiperSlide } from "swiper/react"; // Swiper 컴포넌트
+import { Navigation, Pagination } from "swiper/modules"; // 네비게이션 및 페이지네이션 모듈
+import "swiper/css"; // 기본 CSS
+import "swiper/css/navigation"; // 네비게이션 CSS
+import "swiper/css/pagination"; // 페이지네이션 CSS
 
-const UserMain = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+function UserMain() {
+  const [submenuOpen, setSubmenuOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false); // 검색창 확장 여부 상태
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const swiperSection = document.querySelector(".swiper");
-      if (!swiperSection) return;
-      const swiperEnd = swiperSection.offsetTop + swiperSection.offsetHeight;
-      if (window.scrollY > swiperEnd) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+  // 서브메뉴를 열고 닫는 함수
+  const toggleSubmenu = () => {
+    setSubmenuOpen(!submenuOpen);
+  };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    const tabs = document.querySelectorAll(".tab");
-    const sections = document.querySelectorAll(".best-list");
-
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", function () {
-        tabs.forEach((t) => t.classList.remove("active"));
-        this.classList.add("active");
-
-        sections.forEach((section) => (section.style.display = "none"));
-
-        const target = this.getAttribute("data-target");
-        document.getElementById(target).style.display = "block";
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    const submenuToggles = document.querySelectorAll(".toggle-submenu");
-
-    submenuToggles.forEach(function (toggle) {
-      toggle.addEventListener("click", function (event) {
-        event.preventDefault();
-        const parentLi = this.parentElement;
-        parentLi.classList.toggle("open");
-      });
-    });
-  }, []);
-
-  const expand = () => {
-    document.getElementById("search-btn").classList.toggle("close");
-    document.getElementById("search-input").classList.toggle("square");
+  // 검색 버튼 클릭 시 input과 button의 클래스를 토글하는 함수
+  const expandSearch = () => {
+    setIsExpanded(!isExpanded); // 상태 변경으로 클래스 토글
   };
 
   return (
-    <div>
-      <div className={`page-header ${isScrolled ? "header-change-color" : ""}`}>
-        <h1 className={`logo-text ${isScrolled ? "logo-change-color" : ""}`}>
-          Spoon & Smiles
-        </h1>
-        <form id="content">
-          <input
-            type="text"
-            name="input"
-            className={`input ${isScrolled ? "search-change-color" : ""}`}
-            id="search-input"
-          />
-          <button
-            type="reset"
-            className={`search ${isScrolled ? "search-change-color" : ""}`}
-            id="search-btn"
-            onClick={expand}
-          ></button>
-        </form>
-        <div className="box">
+    /* 페이지헤더 */
+    <div className="all-page-wrap">
+      <div className="page-header">
+        <h1 className="logo-text">Spoon & Smiles</h1>
+        <div className="header-search-form">
+          <form className="search-form">
+            {/* content 대신 search-form 사용 */}
+            <input
+              type="text"
+              name="page-header-input"
+              className={`page-header-input ${isExpanded ? "square" : ""}`} // 확장 여부에 따라 클래스 적용
+            />
+            <button
+              type="button"
+              className={`page-header-search ${isExpanded ? "close" : ""}`} // 확장 여부에 따라 클래스 적용
+              onClick={expandSearch} // 버튼 클릭 시 검색창 확장/축소
+            />
+          </form>
+        </div>
+        <div className="user-page-box">
           <div className="bellWrapper">
             <i className="fas fa-bell my-bell"></i>
           </div>
+
           <div className="circle first"></div>
           <div className="circle second"></div>
           <div className="circle third"></div>
         </div>
       </div>
 
-      <input type="checkbox" id="check" />
-      <label htmlFor="check">
-        <i className="fa fa-bars" id="btn"></i>
-        <i className="fa fa-times" id="cancle"></i>
-      </label>
+      {/* 메인배너 */}
 
-      <div className="sidebar">
-        <header>
-          <img src="/img/IMG_3238.jpg" alt="User" />
-          <p>user-id</p>
-        </header>
-        <ul>
-          <li className="has-submenu">
-            <a href="#" className="toggle-submenu">
-              <i className="fa-solid fa-image-portrait"></i> 마이페이지
-            </a>
-            <ul className="submenu">
+      <div className="swiper-container">
+        <Swiper
+          navigation={true} // 네비게이션 활성화
+          pagination={{ clickable: true }} // 페이지네이션 활성화
+          spaceBetween={30}
+          slidesPerView={1}
+          className="mySwiper"
+        >
+          <SwiperSlide>
+            <img src="/img/bg-mobile-dark.jpg" alt="Slide 1" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src="/img/bg-mobile-dark.jpg" alt="Slide 2" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src="/img/bg-mobile-dark.jpg" alt="Slide 3" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src="/img/bg-mobile-light.jpg" alt="Slide 4" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              src="/img/bg-mobile-dark.jpg"
+              className="kenburns-top"
+              alt="Slide 5"
+            />
+          </SwiperSlide>
+        </Swiper>
+      </div>
+
+      {/* 사이드바 */}
+      <div className="navigation-wrap">
+        <div className="naviwrap">
+          <input type="checkbox" id="check-navi" />
+          <label htmlFor="check-navi">
+            <i className="fa fa-bars" id="btn-navi"></i>
+            <i className="fa fa-times" id="cancle-navi"></i>
+          </label>
+          <div className="user-sidebar">
+            <header className="header-user">
+              <img src="/image/IMG_3238.jpg" alt="User" />
+              <p>user-id</p>
+            </header>
+            <ul>
+              <li className={`has-submenu ${submenuOpen ? "open" : ""}`}>
+                <a href="#" className="toggle-submenu" onClick={toggleSubmenu}>
+                  <i className="fa-solid fa-image-portrait"></i>마이페이지
+                </a>
+                <ul class="user-navi-submenu">
+                  <li>
+                    <a href="#">
+                      <i class="fa-solid fa-user-pen"></i>내 정보 수정
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa-solid fa-comment"></i>나의 리뷰
+                    </a>
+                  </li>
+                </ul>
+              </li>
               <li>
                 <a href="#">
-                  <i className="fa-solid fa-user-pen"></i> 내 정보 수정
+                  <i class="fa-solid fa-magnifying-glass"></i>검색하기
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <i className="fa-solid fa-comment"></i> 나의 리뷰
+                  <i class="fa-solid fa-calendar-week"></i>예약보기
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa-solid fa-bookmark"></i>즐겨찾기
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fa fa-question-circle"></i>About
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fa fa-sliders"></i>Service
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fa fa-id-card"></i>Contact
                 </a>
               </li>
             </ul>
-          </li>
-          {/* 나머지 메뉴 아이템 */}
-        </ul>
-
-        <div className="social-links">
-          <a href="#" className="twitter">
-            <i className="fa-brands fa-twitter"></i>
-          </a>
-          <a href="#" className="facebook">
-            <i className="fa-brands fa-facebook"></i>
-          </a>
-          <a href="#" className="instagram">
-            <i className="fa-brands fa-instagram"></i>
-          </a>
-          <a href="#" className="google-plus">
-            <i className="fa-brands fa-youtube"></i>
-          </a>
-        </div>
-
-        <div className="logout-button">
-          <a href="#">
-            <i className="fa fa-sign-out"></i> Logout
-          </a>
+            <div className="user-social-links">
+              <a href="#" class="twitter">
+                <i class="fa-brands fa-twitter"></i>
+              </a>
+              <a href="#" class="facebook">
+                <i class="fa-brands fa-facebook"></i>
+              </a>
+              <a href="#" class="instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="#" class="google-plus">
+                <i class="fa-brands fa-youtube"></i>
+              </a>
+            </div>
+            {/* 로그아웃 버튼 */}
+            <div className="user-navi-logout-button">
+              <a href="#">
+                <i className="fa fa-sign-out"></i>Logout
+              </a>
+            </div>
+          </div>
+          <section></section>
         </div>
       </div>
-
-      <Swiper
-        className="mySwiper"
-        slidesPerView={1}
-        spaceBetween={20}
-        loop={true}
-        navigation
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
-        mousewheel
-        centeredSlides
-      >
-        <SwiperSlide>
-          <img src="/img/bg-mobile-dark.jpg" alt="Slide 1" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="/img/bg-mobile-dark.jpg" alt="Slide 2" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="/img/bg-mobile-dark.jpg" alt="Slide 3" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="/img/bg-mobile-light.jpg" alt="Slide 4" />
-        </SwiperSlide>
-      </Swiper>
-
-      {/* 나머지 섹션들 */}
     </div>
   );
-};
+}
 
 export default UserMain;
