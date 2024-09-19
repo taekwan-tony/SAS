@@ -1,21 +1,27 @@
-.container {
+.admin-container {
   display: flex;
-  box-sizing: border-box;
   width: 100%;
   margin: 0;
+  box-sizing: border-box;
   padding: 0;
 }
 
 .admin-sidebar {
-  width: 250px;
+  min-width: 200px;
+  width: 15%;
+  box-sizing: border-box;
   background-color: #2c3e50;
   color: white;
-  padding: 20px;
+  padding-top: 20px;
   min-height: 100vh;
 }
-
-.admin-sidebar > h2 {
-  margin-bottom: 20px;
+.admin-content-wrap {
+  width: 100%;
+}
+.admin-logo-div {
+  box-sizing: border-box;
+  padding: 0px 30px;
+  margin: 0 auto;
 }
 
 .admin-sidebar > ul {
@@ -23,7 +29,7 @@
 }
 
 .admin-sidebar > ul > li {
-  margin: 10px 0;
+  margin: 20px;
 }
 .admin-sidebar > ul > li:hover a {
   padding-left: 0px;
@@ -32,6 +38,7 @@
 .admin-sidebar > ul > li > a {
   color: white;
   text-decoration: none;
+  font-size: 20px;
 }
 
 .admin-sidebar > ul > li > a:hover {
@@ -42,16 +49,22 @@
 .admin-side-sub-tab {
   display: none;
   margin: 5px 10px;
+  list-style-type: none;
 }
 .admin-side-sub-tab > li {
   margin-top: 3px;
 }
 .admin-side-sub-tab > li > a {
-  color: white;
+  color: var(--font3);
   text-decoration: none;
+  font-size: 20px;
 }
 
 .admin-sidebar > ul > li:hover > a + .admin-side-sub-tab {
   padding-left: 0px;
   display: block;
+}
+.admin-side-sub-tab > li:hover > a {
+  text-decoration: underline;
+  color: var(--main2);
 }

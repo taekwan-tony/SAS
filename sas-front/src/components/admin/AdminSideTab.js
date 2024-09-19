@@ -2,51 +2,49 @@ import { Link } from "react-router-dom";
 
 const AdminSideTab = () => {
   return (
-    <>
-      <aside className="admin-sidebar">
-        <h2>
-          <img src="/image/s&slogo.png" style={{ width: "120px" }} />
-        </h2>
-        <ul>
-          <li>
-            <Link href="#">현황관리</Link>
-            <ul className="admin-side-sub-tab">
-              <li>
-                <Link href="#">매출관리</Link>
-              </li>
-              <li>
-                <Link href="#">제휴현황</Link>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <Link href="#">회원관리</Link>
-            <ul className="admin-side-sub-tab">
-              <li>
-                <Link href="#">매출관리</Link>
-              </li>
-              <li>
-                <Link href="#">제휴현황</Link>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <Link href="#">매장관리</Link>
-            <ul className="admin-side-sub-tab">
-              <li>
-                <Link href="#">매출관리</Link>
-              </li>
-              <li>
-                <Link href="#">제휴현황</Link>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <Link href="/admin/notice/list">공지사항</Link>
-          </li>
-        </ul>
-      </aside>
-    </>
+    <div className="admin-sidebar">
+      <div className="admin-logo-div">
+        <img src="/image/translogo.png" style={{ width: "150px" }} />
+      </div>
+      <ul>
+        <li>
+          <Link to="#">현황관리</Link>
+          <ul className="admin-side-sub-tab">
+            <li>
+              <Link to="#">매출관리</Link>
+            </li>
+            <li>
+              <Link to="#">제휴현황</Link>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <Link to="#">회원관리</Link>
+          <ul className="admin-side-sub-tab">
+            <li>
+              <Link to="#">매출관리</Link>
+            </li>
+            <li>
+              <Link to="#">제휴현황</Link>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <Link to="#">매장관리</Link>
+          <ul className="admin-side-sub-tab">
+            <li>
+              <Link to="#">매출관리</Link>
+            </li>
+            <li>
+              <Link to="#">제휴현황</Link>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <Link to="/admin/notice/list">공지사항</Link>
+        </li>
+      </ul>
+    </div>
   );
 };
 
