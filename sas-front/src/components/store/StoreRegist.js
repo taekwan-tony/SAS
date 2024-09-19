@@ -277,9 +277,31 @@ const StoreRegist = () => {
           <table className="storeRegist-table">
             <tbody>
               <tr className="storeRegist-tr">
-                <th className="storeRegist-th" colSpan={2}></th>
                 <td>
-                  <div className="storeRegist-div"></div>
+                  <div className="storeRegist-div">
+                    <div className="storeRegist-imgDiv">
+                      {storeImage ? (
+                        <img
+                          className="storeRegist-img"
+                          src={storeImage}
+                          onClick={() => {
+                            storeImgRef.current.click();
+                          }}
+                        />
+                      ) : (
+                        <img
+                          className="storeRegist-img"
+                          src="/image/s&s로고.png"
+                          onClick={() => {
+                            storeImgRef.current.click();
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <button className="storeRegist-storeImg-btn">
+                    매장 사진 등록
+                  </button>
                 </td>
               </tr>
               <tr className="storeRegist-tr">

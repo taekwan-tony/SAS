@@ -7,7 +7,6 @@ import Join from "./components/user/Join";
 import UserMain from "./components/user/UserMain";
 
 import AdminMain from "./components/admin/AdminMain";
-import Seller from "./components/store/StoreMain";
 import StoreRegist from "./components/store/StoreRegist";
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
         <Route path="/login/*" element={<LoginMain />} />
         <Route path="/usermain" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
-        <Route path="/store/*" element={<Seller />} />
         <Route path="/storeRegist" element={<StoreRegist />} />
       </Routes>
     </div>
