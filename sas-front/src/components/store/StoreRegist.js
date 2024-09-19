@@ -149,7 +149,7 @@ const StoreRegist = () => {
     <div>
       <div className="storeRegist-wrap">
         <table className="storeRegist-table">
-          <tbody>
+          <tbody className="storeRegist-tbody">
             <tr className="storeRegist-tr">
               <th className="storeRegist-th">
                 <label htmlFor="businessNumber" className="storeRegist-label">
@@ -272,13 +272,15 @@ const StoreRegist = () => {
         </table>
       </div>
 
-      <div className="storeRegist-main2">
-        <div className="storeRegist-wrap">
-          <table className="storeRegist-table">
-            <tbody>
-              <tr className="storeRegist-tr">
+      {/* 하단 */}
+
+      <div className="storeRegist-bottom-main">
+        <div className="storeRegist-bottom-wrap">
+          <table className="storeRegist-bottom-table">
+            <tbody className="storeRegist-bottom-tbody">
+              <tr className="storeRegist-bottom-tr">
                 <td>
-                  <div className="storeRegist-div">
+                  <div className="storeRegist-bottom-div">
                     <div className="storeRegist-imgDiv">
                       {storeImage ? (
                         <img
@@ -304,14 +306,14 @@ const StoreRegist = () => {
                   </button>
                 </td>
               </tr>
-              <tr className="storeRegist-tr">
-                <th className="storeRegist-th">
+              <tr className="storeRegist-bottom-tr">
+                <th className="storeRegist-bottom-th">
                   <label htmlFor="storeName">매장 상호명</label>
                 </th>
                 <td>
-                  <div className="storeRegist-div">
+                  <div className="storeRegist-bottom-div">
                     <input
-                      className="storeRegist-inputBox"
+                      className="storeRegist-bottom-inputBox"
                       type="text"
                       id="storeName"
                       name="storeName"
@@ -321,14 +323,14 @@ const StoreRegist = () => {
                   </div>
                 </td>
               </tr>
-              <tr className="storeRegist-tr">
-                <th className="storeRegist-th">
+              <tr className="storeRegist-bottom-tr">
+                <th className="storeRegist-bottom-th">
                   <label htmlFor="storePhone">매장 전화번호</label>
                 </th>
                 <td>
-                  <div className="storeRegist-div">
+                  <div className="storeRegist-bottom-div">
                     <input
-                      className="storeRegist-inputBox"
+                      className="storeRegist-bottom-inputBox"
                       type="text"
                       id="storePhone"
                       name="storePhone"
@@ -338,14 +340,14 @@ const StoreRegist = () => {
                   </div>
                 </td>
               </tr>
-              <tr className="storeRegist-tr">
-                <th className="storeRegist-th">
+              <tr className="storeRegist-bottom-tr">
+                <th className="storeRegist-bottom-th">
                   <label htmlFor="storeAddr">매장 위치</label>
                 </th>
                 <td>
-                  <div className="storeRegist-div">
+                  <div className="storeRegist-bottom-div">
                     <input
-                      className="storeRegist-inputBox"
+                      className="storeRegist-bottom-inputBox"
                       type="text"
                       id="storeAddr"
                       name="storeAddr"
@@ -355,14 +357,14 @@ const StoreRegist = () => {
                   </div>
                 </td>
               </tr>
-              <tr className="storeRegist-tr">
-                <th className="storeRegist-th">
+              <tr className="storeRegist-bottom-tr">
+                <th className="storeRegist-bottom-th">
                   <label htmlFor="storeTime">영업 시간</label>
                 </th>
                 <td>
-                  <div className="storeRegist-div">
+                  <div className="storeRegist-bottom-div">
                     <input
-                      className="storeRegist-inputBox"
+                      className="storeRegist-bottom-inputBox"
                       type="text"
                       id="storeTime"
                       name="storeTime"
@@ -372,14 +374,14 @@ const StoreRegist = () => {
                   </div>
                 </td>
               </tr>
-              <tr className="storeRegist-tr">
-                <th className="storeRegist-th">
+              <tr className="storeRegist-bottom-tr">
+                <th className="storeRegist-bottom-th">
                   <label htmlFor="storeClass">매장 유형</label>
                 </th>
                 <td>
-                  <div className="storeRegist-div">
+                  <div className="storeRegist-bottom-div">
                     <input
-                      className="storeRegist-inputBox"
+                      className="storeRegist-bottom-inputBox"
                       type="text"
                       id="storeClass"
                       name="storeClass"
