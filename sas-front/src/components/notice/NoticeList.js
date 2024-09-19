@@ -1,6 +1,6 @@
 const NoticeList = () => {
   return (
-    <div>
+    <div className="notice-content-wrap">
       <div></div>
     </div>
   );

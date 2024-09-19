@@ -1,24 +1,29 @@
 .container {
   display: flex;
-  box-sizing: border-box;
-  width: 100%;
+  width: 1200px;
   margin: 0;
+  box-sizing: border-box;
   padding: 0;
 }
 
 .admin-sidebar {
-  width: 250px;
+  width: 30%;
+  max-width: 250px;
   background-color: #2c3e50;
   color: white;
-  padding: 20px;
+  padding-top: 20px;
   min-height: 100vh;
 }
-
-.admin-sidebar > h2 {
-  margin-bottom: 20px;
+.admin-content-wrap {
+  width: 70%;
+}
+.admin-logo-div {
+  display: block;
+  margin: 0 auto;
 }
 
 .admin-sidebar > ul {
+  margin-left: 30px;
   list-style-type: none;
 }
 
@@ -32,6 +37,7 @@
 .admin-sidebar > ul > li > a {
   color: white;
   text-decoration: none;
+  font-size: 20px;
 }
 
 .admin-sidebar > ul > li > a:hover {
@@ -47,11 +53,16 @@
   margin-top: 3px;
 }
 .admin-side-sub-tab > li > a {
-  color: white;
+  color: var(--font3);
   text-decoration: none;
+  font-size: 20px;
 }
 
 .admin-sidebar > ul > li:hover > a + .admin-side-sub-tab {
   padding-left: 0px;
   display: block;
+}
+.admin-side-sub-tab > li:hover > a {
+  text-decoration: underline;
+  color: var(--main2);
 }
