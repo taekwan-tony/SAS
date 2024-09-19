@@ -28,15 +28,83 @@ a {
   background-color: var(--main1);
   color: white;
 }
+/* 로그인 메인 */
+.user-login-main {
+  width: 100%;
+}
+.user-login-main .logo {
+  text-align: center;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-login-main .logo > img {
+  width: 400px;
+}
+.user-login-main .login-content {
+  width: 50%;
+  min-width: 400px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+/* 로그인 */
+.user-login-main form {
+  margin: 0 auto;
+}
+
+.user-login-main .login-title {
+  text-align: left;
+  font-size: 20px;
+  color: var(--font1);
+  font-weight: 800;
+}
+
+.user-login-main .input-item {
+  margin: 15px 0;
+}
+.user-login-main .input-item > input {
+  width: 100%;
+  height: 50px;
+  outline: none;
+  border-radius: 10px;
+  border: 1px solid var(--main1);
+  padding: 3px 10px;
+  font-size: 17px;
+}
+.user-login-main .input-item > p.msg {
+  color: red;
+}
+.user-login-main .login-btn > button {
+  width: 100%;
+  height: 50px;
+  outline: none;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.user-login-main div.link {
+  display: flex;
+  justify-content: end;
+  gap: 40px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.user-login-main div.link a {
+  color: var(--font2);
+}
+.user-login-main div.link a:hover {
+  color: var(--main1);
+}
 /* 아이디, 비밀번호 찾기 */
-div.find-main-zone {
+.user-login-main div.find-main-zone {
   width: 300px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-.find-main-zone > button {
+.user-login-main .find-main-zone > button {
   text-align: left;
   padding: 10px;
   height: 50px;
