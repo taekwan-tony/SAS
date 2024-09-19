@@ -12,7 +12,39 @@ const StoreRegist = () => {
     businessNumber: "",
     soPhone: "",
     soEmail: "",
+    storeName: "",
+    storePhone: "",
+    storeAddr: "",
+    storeTime: "",
+    storeClass: "",
   });
+
+  const [storeThumb, setStoreThumb] = useState("");
+
+  const storeImgRef = useRef(null);
+
+  //미리보기
+  const [storeImage, setStoreImage] = useState(null);
+
+  //이미지 첨부파일 변경 시 동작 함수
+  const changeStoreThumbnail = (e) => {
+    const files = e.currentTarget.files;
+
+    if (files.length !== 0 && files[0] !== 0) {
+      //파일 객체 값 저장
+      setStoreThumb(files[0]);
+
+      //화면에서 미리보기
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onloadend = () => {
+        setStoreImage(reader.result);
+      };
+    } else {
+      setStoreThumb(null);
+      setStoreImage(null);
+    }
+  };
 
   const changeStore = (e) => {
     const name = e.target.name;
@@ -238,6 +270,106 @@ const StoreRegist = () => {
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div className="storeRegist-main2">
+        <div className="storeRegist-wrap">
+          <table className="storeRegist-table">
+            <tbody>
+              <tr className="storeRegist-tr">
+                <th className="storeRegist-th" colSpan={2}></th>
+                <td>
+                  <div className="storeRegist-div"></div>
+                </td>
+              </tr>
+              <tr className="storeRegist-tr">
+                <th className="storeRegist-th">
+                  <label htmlFor="storeName">매장 상호명</label>
+                </th>
+                <td>
+                  <div className="storeRegist-div">
+                    <input
+                      className="storeRegist-inputBox"
+                      type="text"
+                      id="storeName"
+                      name="storeName"
+                      value={store.storeName}
+                      onChange={changeStore}
+                    ></input>
+                  </div>
+                </td>
+              </tr>
+              <tr className="storeRegist-tr">
+                <th className="storeRegist-th">
+                  <label htmlFor="storePhone">매장 전화번호</label>
+                </th>
+                <td>
+                  <div className="storeRegist-div">
+                    <input
+                      className="storeRegist-inputBox"
+                      type="text"
+                      id="storePhone"
+                      name="storePhone"
+                      value={store.storePhone}
+                      onChange={changeStore}
+                    ></input>
+                  </div>
+                </td>
+              </tr>
+              <tr className="storeRegist-tr">
+                <th className="storeRegist-th">
+                  <label htmlFor="storeAddr">매장 위치</label>
+                </th>
+                <td>
+                  <div className="storeRegist-div">
+                    <input
+                      className="storeRegist-inputBox"
+                      type="text"
+                      id="storeAddr"
+                      name="storeAddr"
+                      value={store.storeAddr}
+                      onChange={changeStore}
+                    ></input>
+                  </div>
+                </td>
+              </tr>
+              <tr className="storeRegist-tr">
+                <th className="storeRegist-th">
+                  <label htmlFor="storeTime">영업 시간</label>
+                </th>
+                <td>
+                  <div className="storeRegist-div">
+                    <input
+                      className="storeRegist-inputBox"
+                      type="text"
+                      id="storeTime"
+                      name="storeTime"
+                      value={store.storeTime}
+                      onChange={changeStore}
+                    ></input>
+                  </div>
+                </td>
+              </tr>
+              <tr className="storeRegist-tr">
+                <th className="storeRegist-th">
+                  <label htmlFor="storeClass">매장 유형</label>
+                </th>
+                <td>
+                  <div className="storeRegist-div">
+                    <input
+                      className="storeRegist-inputBox"
+                      type="text"
+                      id="storeClass"
+                      name="storeClass"
+                      value={store.storeClass}
+                      onChange={changeStore}
+                    ></input>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
