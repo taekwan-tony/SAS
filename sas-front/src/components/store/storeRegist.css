@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  font-family: Pretendard-Regular;
+  box-sizing: border-box;
+  color: #544f4f;
+}
+
+* > body {
+  background-color: #ccc;
+}
+
+.storeRegist-wrap {
+  width: 50%;
+  background-color: white;
+  border-radius: 10px;
+  margin: 0 auto;
+  padding: 50px;
+  margin-top: 80px;
+  box-shadow: 5px 6px 1px rgba(0, 0, 0, 0.3);
+}
+
+.storeRegist-inputBox {
+  box-sizing: border-box;
+  width: 70%;
+  padding: 10px;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #544f4f;
+  font-size: 18px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #b9b9bd;
+}
+
+.storeRegist-table {
+  width: 100%;
+}
+
+.storeRegist-tr {
+  height: 60px;
+}
+
+.storeRegist-th {
+  padding: 5px;
+  line-height: 60px;
+}
+
+.storeRegist-label {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.storeRegist-div {
+  margin-left: 10px;
+}
+
+.storeRegist-btn {
+  width: 80px;
+  height: 40px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  margin-top: 10px;
+  margin-left: 50px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 19px;
+  font-weight: 590;
+}
+
+.storeRegist-btn:hover {
+}

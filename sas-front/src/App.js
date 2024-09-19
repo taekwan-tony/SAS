@@ -8,11 +8,12 @@ import UserMain from "./components/user/UserMain";
 
 import AdminMain from "./components/admin/AdminMain";
 import MenuView from "./components/menu/MenuView";
+import Seller from "./components/store/StoreMain";
+import StoreRegist from "./components/store/StoreRegist";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header"></header>
       <Routes>
         <Route path="/" element={<Main />} />
         {/* 확인용-수진;user 메인 생기면 옮기겠슴다 */}
@@ -21,6 +22,8 @@ function App() {
         <Route path="/usermain" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/menuview" element={<MenuView />} />
+        <Route path="/store/*" element={<Seller />} />
+        <Route path="/storeRegist" element={<StoreRegist />} />
       </Routes>
     </div>
   );

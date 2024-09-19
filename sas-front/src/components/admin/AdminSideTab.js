@@ -1,24 +1,50 @@
+import { Link } from "react-router-dom";
+
 const AdminSideTab = () => {
   return (
-    <>
-      <aside className="admin-sidebar">
-        <h2>메뉴</h2>
-        <ul>
-          <li>
-            <a href="#">홈</a>
-          </li>
-          <li>
-            <a href="#">서비스</a>
-          </li>
-          <li>
-            <a href="#">포트폴리오</a>
-          </li>
-          <li>
-            <a href="#">연락처</a>
-          </li>
-        </ul>
-      </aside>
-    </>
+    <div className="admin-sidebar">
+      <div className="admin-logo-div">
+        <img src="/image/translogo.png" style={{ width: "150px" }} />
+      </div>
+      <ul>
+        <li>
+          <Link to="#">현황관리</Link>
+          <ul className="admin-side-sub-tab">
+            <li>
+              <Link to="#">매출관리</Link>
+            </li>
+            <li>
+              <Link to="#">제휴현황</Link>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <Link to="#">회원관리</Link>
+          <ul className="admin-side-sub-tab">
+            <li>
+              <Link to="#">매출관리</Link>
+            </li>
+            <li>
+              <Link to="#">제휴현황</Link>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <Link to="#">매장관리</Link>
+          <ul className="admin-side-sub-tab">
+            <li>
+              <Link to="#">매출관리</Link>
+            </li>
+            <li>
+              <Link to="#">제휴현황</Link>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <Link to="/admin/notice/list">공지사항</Link>
+        </li>
+      </ul>
+    </div>
   );
 };
 
