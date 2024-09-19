@@ -10,6 +10,3 @@ npm install gsap
 
 양창모 2024-09-19 13:54
 npm install swiper
-
-양창모 2024-09-18 15:34
-npm install swiper@latest
