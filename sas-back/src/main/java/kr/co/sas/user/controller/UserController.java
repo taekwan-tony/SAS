@@ -1,5 +1,7 @@
 package kr.co.sas.user.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,4 +38,13 @@ public class UserController {
 		boolean result = userService.checkId(userId);
 		return ResponseEntity.ok(result);
 	}
+	
+	@Operation(summary="일반회원 로그인", description = "아이디, 비밀번호를 유저 객체로 가져와 로그인 진행한 후 그 결과값을 숫자인 result로 가져옴, 로그인완료시 map으로 추가 정보 제공")
+	@PostMapping(value="/login")
+	public ResponseEntity<Map> login(@RequestBody UserDTO user){
+		System.out.println(user);
+		Map map = userService.login(user);
+		return ResponseEntity.ok(map);
+	}
+	
 }

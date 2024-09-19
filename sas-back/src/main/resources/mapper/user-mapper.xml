@@ -29,6 +29,6 @@
 								#{userNickname}||user_seq.currval,
 								#{userName},
 								null,
-								0 )
+								1 )
 </insert>
 </mapper>

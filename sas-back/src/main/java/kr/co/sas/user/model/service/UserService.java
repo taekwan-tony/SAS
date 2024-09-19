@@ -1,5 +1,8 @@
 package kr.co.sas.user.model.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.user.model.dao.UserDao;
 import kr.co.sas.user.model.dto.UserDTO;
+import kr.co.sas.util.JwtUtils;
 
 @Service
 public class UserService {
@@ -14,7 +18,10 @@ public class UserService {
 	private UserDao userDao;
 	@Autowired
 	private BCryptPasswordEncoder encoder;
-
+	@Autowired
+	private JwtUtils jwtUtils;
+	
+	
 	@Transactional
 	public int insertUser(UserDTO user) {
 		System.out.println(user.getUserPw());
@@ -27,6 +34,26 @@ public class UserService {
 	public boolean checkId(String userId) {
 		UserDTO user = userDao.searchUser(userId);
 		return (user==null);
+	}
+
+	public Map login(UserDTO user) {
+		int result = 2;
+		Map map = new HashMap<String, Object>();
+		UserDTO loginUser = userDao.searchUser(user.getUserId());
+		if(loginUser !=null) {
+			if(encoder.matches(user.getUserPw(), loginUser.getUserPw())) {
+				result=1;
+				loginUser.setUserPw(null);
+				map.put("loginId", loginUser.getUserId());
+				map.put("userType", loginUser.getLoginType());
+				map.put("accessToken", jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType()));
+				map.put("refreshToken", jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType()));
+			}else {
+				result=3;
+			}
+		}
+		map.put("result", result);
+		return map;
 	}
 	
 }
