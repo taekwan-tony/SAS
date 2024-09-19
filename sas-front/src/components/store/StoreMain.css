@@ -120,6 +120,7 @@ select,
 textarea,
 label {
   font-weight: 400;
+  outline: none;
 }
 
 .btn {
