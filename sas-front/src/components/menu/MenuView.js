@@ -7,7 +7,7 @@ const MenuView = () => {
       <div className="menuview-wrap">
         <section className="section-menu">
           <div className="menu-image">
-            <img src="./image/s&s로고.png" alt="가게 로고" />
+            <img src="/image/s&s로고.png" alt="가게 로고" />
           </div>
           <div className="menuview-info">
             <p>가게 이름</p>
@@ -96,6 +96,36 @@ const Menu = () => {
   return (
     <div className="menu">
       <h2>메뉴</h2>
+      <img
+        src="/image/youtube.png"
+        alt="메뉴"
+        style={{ width: "200px", height: "auto" }}
+      />
+      <p>크림 파스타</p>
+      <p>가격: 12,000원</p>
+      <p>풍부한 크림 소스와 신선한 채소가 어우러진 고소한 파스타입니다.</p>
+      <img
+        src="/image/youtube.png"
+        alt="메뉴"
+        style={{ width: "200px", height: "auto" }}
+      />
+      <p>불고기 비빔밥 </p>
+      <p> 가격: 10,500원 </p>
+      <p>
+        달콤한 불고기와 신선한 야채, 고소한 참기름이 조화를 이루는 인기
+        메뉴입니다.
+      </p>
+      <img
+        src="/image/youtube.png"
+        alt="메뉴"
+        style={{ width: "200px", height: "auto" }}
+      />
+      <p>치킨너겟</p>
+      <p>가격: 8,000원 </p>
+      <p>
+        바삭하게 튀긴 치킨너겟과 함께 제공되는 다양한 소스가 매력적인
+        메뉴입니다.
+      </p>
     </div>
   );
 };
@@ -104,6 +134,13 @@ const MenuPhoto = () => {
   return (
     <div className="menu-photo">
       <h2>사진</h2>
+      <div className="menu-image">
+        <img src="/image/youtube.png" alt="가게 로고" />
+        <img src="/image/youtube.png" alt="가게 로고" />
+        <img src="/image/youtube.png" alt="가게 로고" />
+        <img src="/image/youtube.png" alt="가게 로고" />
+        <img src="/image/youtube.png" alt="가게 로고" />
+      </div>
     </div>
   );
 };
