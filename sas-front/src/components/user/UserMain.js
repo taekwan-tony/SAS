@@ -69,14 +69,16 @@ function UserMain() {
             />
           </form>
         </div>
-        <div className="user-page-box">
-          <div className="bellWrapper">
-            <i className="fas fa-bell my-bell"></i>
-          </div>
+        <div className="user-box-bell">
+          <div className="user-page-box">
+            <div className="bellWrapper">
+              <i className="fas fa-bell my-bell"></i>
+            </div>
 
-          <div className="circle first"></div>
-          <div className="circle second"></div>
-          <div className="circle third"></div>
+            <div className="circle first"></div>
+            <div className="circle second"></div>
+            <div className="circle third"></div>
+          </div>
         </div>
       </div>
 
@@ -99,55 +101,61 @@ function UserMain() {
               <img src="/image/IMG_3238.jpg" alt="User" />
               <p>user-id</p>
             </header>
-            <ul>
-              <li className={`has-submenu ${submenuOpen ? "open" : ""}`}>
-                <a href="#" className="toggle-submenu" onClick={toggleSubmenu}>
-                  <i className="fa-solid fa-image-portrait"></i>마이페이지
-                </a>
-                <ul class="user-navi-submenu">
-                  <li>
-                    <a href="#">
-                      <i class="fa-solid fa-user-pen"></i>내 정보 수정
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa-solid fa-comment"></i>나의 리뷰
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="fa-solid fa-magnifying-glass"></i>검색하기
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="fa-solid fa-calendar-week"></i>예약보기
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="fa-solid fa-bookmark"></i>즐겨찾기
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i className="fa fa-question-circle"></i>About
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i className="fa fa-sliders"></i>Service
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i className="fa fa-id-card"></i>Contact
-                </a>
-              </li>
-            </ul>
+            <div className="sidebar-user-page">
+              <ul>
+                <li className={`has-submenu ${submenuOpen ? "open" : ""}`}>
+                  <a
+                    href="#"
+                    className="toggle-submenu"
+                    onClick={toggleSubmenu}
+                  >
+                    <i className="fa-solid fa-image-portrait"></i>마이페이지
+                  </a>
+                  <ul class="user-navi-submenu">
+                    <li>
+                      <a href="#">
+                        <i class="fa-solid fa-user-pen"></i>내 정보 수정
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="fa-solid fa-comment"></i>나의 리뷰
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa-solid fa-magnifying-glass"></i>검색하기
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa-solid fa-calendar-week"></i>예약보기
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa-solid fa-bookmark"></i>즐겨찾기
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i className="fa fa-question-circle"></i>About
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i className="fa fa-sliders"></i>Service
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i className="fa fa-id-card"></i>Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
             <div className="user-social-links">
               <a href="#" class="twitter">
                 <i class="fa-brands fa-twitter"></i>
