@@ -7,7 +7,7 @@
   padding: 30px;
   height: 100px;
   box-sizing: border-box;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid black;
   line-height: 40px;
 }
 
@@ -21,16 +21,19 @@
 }
 
 .notice-list-wrap {
-  width: 100%;
+  min-width: 900px;
+  width: 70%;
+  margin: 0 auto;
 }
 
 .notice-list-menu {
   display: flex;
-  margin: 30px;
+  margin: 30px 30px 0 30px;
   align-items: center;
 }
 .notice-menu {
   border: 1px solid var(--font3);
+  border-bottom: none;
   width: 120px;
   text-align: center;
   height: 50px;
@@ -47,4 +50,10 @@
 }
 .notice-menu-check > span {
   color: white;
+}
+
+.notice-list-main {
+  margin-left: 30px;
+  border: 1px solid var(--font3);
+  height: 70vh;
 }
