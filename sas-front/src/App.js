@@ -11,7 +11,6 @@ import AdminMain from "./components/admin/AdminMain";
 function App() {
   return (
     <div className="App">
-      <header className="App-header"></header>
       <Routes>
         <Route path="/" element={<Main />} />
         {/* 확인용-수진;user 메인 생기면 옮기겠슴다 */}
