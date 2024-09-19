@@ -1,5 +1,4 @@
 import React from "react";
-import "./StoreMain.css";
 
 const Seller = () => {
   return (
