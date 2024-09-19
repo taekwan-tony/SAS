@@ -22,26 +22,30 @@ const MenuView = () => {
           <Link to="/menuview">
             <li>홈</li>
           </Link>
-          <Link to="/Menunews">
+          <Link to="menunews">
             <li>소식</li>
           </Link>
-          <Link to="/menu">
+          <Link to="menu">
             <li>메뉴</li>
           </Link>
-          <Link to="/photo">
+          <Link to="photo">
             <li>사진</li>
           </Link>
-          <Link to="/review">
+          <Link to="review">
             <li>리뷰</li>
           </Link>
-          <Link to="/info">
+          <Link to="info">
             <li>매장정보</li>
           </Link>
         </ul>
       </section>
       <Routes>
         <Route path="" element={<MenuMain />}></Route>
-        <Route path="" element={<Menunews />}></Route>
+        <Route path="menunews" element={<Menunews />}></Route>
+        <Route path="menu" element={<Menu />}></Route>
+        <Route path="photo" element={<MenuPhoto />}></Route>
+        <Route path="review" element={<MenuReview />}></Route>
+        <Route path="info" element={<Menuinfo />}></Route>
       </Routes>
       <div className="reservation-button">
         <span className="material-icons page-item">bookmark_border</span>
@@ -78,7 +82,44 @@ const MenuMain = () => {
 const Menunews = () => {
   return (
     <div className="news">
-      <h2>가게소식</h2>
+      <p>
+        신메뉴 출시: "새로운 맛의 경험! 이번 주부터 신메뉴가 출시됩니다. 많은
+        관심 부탁드려요!" 이벤트 안내: "🎉 특별 이벤트 소식! 이번 주말,
+        방문하시는 모든 분께 할인 혜택을 드립니다!" 운영 시간 변경: "📅 운영
+        시간이 변경되었습니다. 새로운 시간표를 확인해 주세요!"
+      </p>
+    </div>
+  );
+};
+
+const Menu = () => {
+  return (
+    <div className="menu">
+      <h2>메뉴</h2>
+    </div>
+  );
+};
+
+const MenuPhoto = () => {
+  return (
+    <div className="menu-photo">
+      <h2>사진</h2>
+    </div>
+  );
+};
+
+const MenuReview = () => {
+  return (
+    <div className="menu-review">
+      <h2>리뷰</h2>
+    </div>
+  );
+};
+
+const Menuinfo = () => {
+  return (
+    <div className="menu-info">
+      <h2>매장정보</h2>
     </div>
   );
 };

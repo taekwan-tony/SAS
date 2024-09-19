@@ -21,7 +21,7 @@ function App() {
         <Route path="/login/*" element={<LoginMain />} />
         <Route path="/usermain" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
-        <Route path="/menuview" element={<MenuView />} />
+        <Route path="/menuview/*" element={<MenuView />} />
         <Route path="/store/*" element={<Seller />} />
         <Route path="/storeRegist" element={<StoreRegist />} />
       </Routes>
