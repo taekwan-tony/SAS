@@ -109,7 +109,7 @@ label #cancle-navi {
   color: #fff;
 }
 /* hover effect */
-ul li:hover a {
+.sidebar-user-page ul li:hover a {
   padding-left: 50px;
 }
 /* Social Links */
@@ -810,14 +810,6 @@ footer {
 .footer-legal p {
   margin: 5px 0;
   line-height: 1.5;
-}
-
-.footer-legal a {
-  color: #ccc;
-  text-decoration: none;
-}
-
-.footer-legal a:hover {
   color: #fff;
 }
 
@@ -850,25 +842,101 @@ footer {
   transition: all 0.3s ease;
 }
 
-.scrolled-bars,
-.scrolled-times {
+.scrolled-bars:before,
+.scrolled-times:before {
   color: #399918;
   transition: all 0.3s ease;
 }
 
 .scrolled-input {
   border-color: #399918;
+  transition: all 0.3s ease;
 }
 .scrolled-button:before {
   transition: all 0.3s ease;
   background: #399918;
 }
-
+.scrolled-button:after {
+  transition: all 0.3s ease;
+  background: #399918;
+}
 .scrolled.page-header-search:before {
   background-color: #399918; /* 스크롤 후의 색상 */
   transition: all 0.3s ease;
 }
+/* 벨 */
+.user-box-bell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-page-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 150px;
+}
+.bellWrapper {
+  font-size: 25px;
+  color: #ff686b;
+}
 
-.scrolled.page-header-search.close {
-  background-color: #399918;
+.my-bell {
+  transform-origin: top;
+  animation: bell 2s infinite linear;
+  color: #ff686b;
+}
+
+@keyframes bell {
+  0%,
+  50% {
+    transform: rotate(0deg);
+  }
+  5%,
+  15%,
+  25%,
+  35%,
+  45% {
+    transform: rotate(13deg);
+  }
+  10%,
+  20%,
+  30%,
+  40% {
+    transform: rotate(-13deg);
+  }
+}
+.circle {
+  width: 5px;
+  height: 4px;
+  position: absolute;
+  border: 2px solid white;
+  border-radius: 70%;
+  border-color: transparent #ff686b;
+  animation: ring 2s infinite linear both;
+}
+.second {
+  animation-delay: 0.3s;
+}
+
+.third {
+  animation-delay: 0.7s;
+}
+
+@keyframes ring {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  50% {
+    width: 250px;
+    height: 250px;
+    opacity: 0;
+  }
 }
