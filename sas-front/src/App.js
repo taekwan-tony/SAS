@@ -21,16 +21,14 @@ function App() {
         <Route path="/" element={<Main />} />
         {/* 확인용-수진;user 메인 생기면 옮기겠슴다 */}
         {/* 답변: ㅇㅋ */}
-        <Route path="/join" element={<Join />} />
-        <Route path="/login/*" element={<LoginMain />} />
         <Route path="/storemain" element={<StoreMain />} />
+        <Route path="/usermain/*" element={<UserMain />} />
         <Route
           path="/storemain/ownerstatistics"
           element={<OwnerStatistics />}
         />
         <Route path="/storemain/managereview" element={<ManageReview />} />
         <Route path="/storemain/managereserved" element={<ManageReserved />} />
-        <Route path="/usermain" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/menuview" element={<MenuView />} />
         <Route path="/store/*" element={<StorePartnership />} />

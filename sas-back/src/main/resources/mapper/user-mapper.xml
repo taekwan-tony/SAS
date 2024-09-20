@@ -31,4 +31,14 @@
 								null,
 								1 )
 </insert>
+<select id="findId" resultType="String">
+	select user_id from user_tbl where user_name = #{userName}
+	<if test="!userPhone.equals('')">
+		and user_phone=#{userPhone}
+	</if>
+	<if test="!userEmail.equals('')">
+		and user_email =#{userEmail}
+	</if>
+	
+</select>
 </mapper>

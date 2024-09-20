@@ -10,6 +10,10 @@ import "swiper/css/mousewheel";
 import { loginUserIdState, userTypeState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import axios from "axios";
+import { Route, Routes } from "react-router-dom";
+import Join from "./Join";
+import LoginMain from "./LoginMain";
+import Mypage from "./Mypage";
 
 function UserMain() {
   // 일반회원 로그인 지속 구현-수진(문제 생기면 말씀해주세요..)
@@ -48,7 +52,7 @@ function UserMain() {
           setLoginUserId("");
           setUserType(0);
           delete axios.defaults.headers.common["Authorization"];
-          window.localStorage.removeItem("usreRefreshToken");
+          window.localStorage.removeItem("userRefreshToken");
         });
     }
   };
@@ -68,10 +72,7 @@ function UserMain() {
   const expandSearch = () => {
     setIsExpanded(!isExpanded); // 상태 변경으로 클래스 토글
   };
-  // 탭 클릭 시 해당 탭을 활성화하는 함수
-  const handleTabClick = (bestSectionTab) => {
-    setActiveTab(bestSectionTab);
-  };
+
   // 스크롤 이벤트 핸들러
   useEffect(() => {
     const handleScroll = () => {
@@ -226,7 +227,30 @@ function UserMain() {
           <section></section>
         </div>
       </div>
+      <Routes>
+        <Route path="join" element={<Join />} />
+        <Route path="login/*" element={<LoginMain />} />
+        <Route path="mypage/*" element={<Mypage />}></Route>
+        <Route
+          path=""
+          element={
+            <UserMainView activeTab={activeTab} setActiveTab={setActiveTab} />
+          }
+        ></Route>
+      </Routes>
+    </div>
+  );
+}
 
+const UserMainView = (props) => {
+  const activeTab = props.activeTab;
+  const setActiveTab = props.setActiveTab;
+  // 탭 클릭 시 해당 탭을 활성화하는 함수
+  const handleTabClick = (bestSectionTab) => {
+    setActiveTab(bestSectionTab);
+  };
+  return (
+    <>
       {/* 메인배너 스와이프 */}
       <div className="swiper-container">
         <Swiper
@@ -758,8 +782,7 @@ function UserMain() {
           </div>
         </footer>
       </div>
-    </div>
+    </>
   );
-}
-
+};
 export default UserMain;

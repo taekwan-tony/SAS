@@ -11,4 +11,6 @@ public interface UserDao {
 
 	int insertUser(UserDTO user);
 
+	String findId(UserDTO user);
+
 }

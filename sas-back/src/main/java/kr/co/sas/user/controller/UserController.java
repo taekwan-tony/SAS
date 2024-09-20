@@ -2,6 +2,7 @@ package kr.co.sas.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.sas.user.model.dto.LoginUserDTO;
 import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.user.model.service.UserService;
+import kr.co.sas.util.EmailSender;
 
 @CrossOrigin("*")
 @RestController
@@ -27,6 +30,9 @@ import kr.co.sas.user.model.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private EmailSender email;
 	
 	@Operation(summary = "일반회원 회원가입", description = "아이디, 비밀번호, 전화번호, 이메일, 성별, 생년월일, 이름, 랜덤생성된 닉네임을 유저 객체로 가져와 회원가입")
 	@PostMapping
@@ -61,6 +67,51 @@ public class UserController {
 			return ResponseEntity.ok(map);
 		}
 		return ResponseEntity.status(404).build();
+	}
+	
+	@Operation(summary="일반회원 아이디 찾기", description = "회원 이름과 전화번호 또는 이메일을 유저 객체로 받아 해당하는 아이디를 찾아 반환>>회원 이름,전화번호/ 회원이름, 이메일이 유니크하다고 가정")
+	@PostMapping(value="/findId")
+	public ResponseEntity<String> findId(@RequestBody UserDTO user){
+		System.out.println(user);
+		String userId = userService.findId(user);
+		System.out.println(userId);
+		return ResponseEntity.ok(userId);
+	}
+	
+	@Operation(summary="인증메일 보내기", description = "받은 이메일을 이용해서 인증번호를 보내기")
+	@PostMapping(value="/sendCode")
+	public ResponseEntity<String> sendCode(@RequestBody UserDTO user) {
+		System.out.println(user);
+		String receiver = user.getUserEmail();
+		//인증메일 제목 생성
+		String emailTitle = "Spoon & Smiles 인증메일입니다.";
+		//인증메일 인증코드 생성
+		Random r = new Random();
+		StringBuffer sb = new StringBuffer();
+		for(int i=0; i<6; i++) {
+			//0~9 : r.nextInt(10);
+			//A~Z : r.nextInt(26)+65;
+			//a~z : r.nextInt(26)+97;
+			
+			int flag = r.nextInt(3); //0,1,2=>숫자쓸지, 대문자 쓸지, 소문자쓸지 결정
+			
+			if(flag==0) {
+				int randomCode = r.nextInt(10);
+				sb.append(randomCode);
+			}else if(flag==1) {
+				char randomCode = (char)(r.nextInt(26)+65);
+				sb.append(randomCode);
+			}else if(flag==2) {
+				char randomCode = (char)(r.nextInt(26)+97);
+				sb.append(randomCode);
+			}
+		}
+		String emailContent = "<h1>안녕하세요. Spoon & Smiles 입니다 </h1>"
+								+"<h3>인증번호는 [<span style='color:red;'>"
+								+sb.toString()
+								+"</span>]입니다. </h3>";
+		email.sendMail(emailTitle, receiver, emailContent);
+		return ResponseEntity.ok(sb.toString());
 	}
 	
 }
