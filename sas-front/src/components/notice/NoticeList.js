@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PageNavi from "../utils/PagiNavi";
 
-const NoticeList = () => {
+const NoticeList = (props) => {
+  const setNoticeDetailTitle = props.setNoticeDetailTitle;
+  const navigate = useNavigate();
+  setNoticeDetailTitle("목록");
   const [noticeList, setNoticeList] = useState([]);
   const [noticeType, setNoticeType] = useState(0);
   const [reqPage, setReqPage] = useState(1);
@@ -67,7 +70,14 @@ const NoticeList = () => {
         <PageNavi pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
       </div>
       <div className="notice-write-btn">
-        <button className="btn-main round">글쓰기</button>
+        <button
+          className="btn-main round"
+          onClick={() => {
+            navigate("/admin/board/write");
+          }}
+        >
+          글쓰기
+        </button>
       </div>
     </div>
   );

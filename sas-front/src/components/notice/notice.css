@@ -100,8 +100,12 @@
 .notice-write-btn {
   float: right;
 }
+.notice-write {
+  width: 120px;
+  height: 50px;
+}
 
-.notice-write-btn > button {
+.notice-write-btn button {
   width: 120px;
   height: 50px;
 }
