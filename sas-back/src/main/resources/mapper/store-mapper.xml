@@ -6,4 +6,31 @@
 	<select id="checkEmail" resultType="store">
 		select * from store where so_email=#{soEmail}
 	</select>
+	
+	
+	<insert id="insertStoreOwner">
+		insert into store values(store_seq.nextval, 
+							    #{soEmail}, 
+							    null, 
+							    #{businessNumber},
+							    null, 
+							    null, 
+							    null, 
+							    null, 
+							    null, 
+							    null, 
+							    null, 
+							    null, 
+							    null, 
+							    #{soName}, 
+							    #{soPhone}, 
+							    0, 
+							    null, 
+							    null, 
+							    null, 
+							    null, 
+							    null, 
+							    1, 
+							    null)
+	</insert>
 </mapper>
