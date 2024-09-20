@@ -13,6 +13,7 @@ import StoreMain from "./components/store/StoreMain";
 import ManageReserved from "./components/store/ManageReserved";
 import ManageReview from "./components/store/ManageReview";
 import StorePartnership from "./components/store/StorePartnership";
+import StoreCheckMain from "./components/store/StoreCheckMain";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/menuview" element={<MenuView />} />
         <Route path="/store/*" element={<StorePartnership />} />
+        <Route path="/storecheck/*" element={<StoreCheckMain />} />
       </Routes>
     </div>
   );
