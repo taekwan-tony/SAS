@@ -10,6 +10,7 @@ import AdminMain from "./components/admin/AdminMain";
 import MenuView from "./components/menu/MenuView";
 import StoreRegist from "./components/store/StoreRegist";
 import StoreMain from "./components/store/StoreMain";
+import StorePartnership from "./components/store/StorePartnership";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
         <Route path="/usermain" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/menuview" element={<MenuView />} />
-        <Route path="/storeRegist" element={<StoreRegist />} />
+        <Route path="/store/*" element={<StorePartnership />} />
       </Routes>
     </div>
   );
