@@ -10,4 +10,8 @@ public interface StoreDao {
 	
 	StoreDTO checkEmail(String soEmail);
 
+	int insertStoreOwner(StoreDTO store);
+
+	int insertStore(StoreDTO store);
+
 }

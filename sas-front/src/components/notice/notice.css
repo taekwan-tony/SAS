@@ -28,7 +28,8 @@
 
 .notice-list-menu {
   display: flex;
-  margin: 30px 30px 0 30px;
+  margin: 30px 0 0 30px;
+  border-bottom: 1px solid var(--font3);
   align-items: center;
 }
 .notice-menu {
@@ -54,6 +55,63 @@
 
 .notice-list-main {
   margin-left: 30px;
-  border: 1px solid var(--font3);
-  height: 70vh;
+}
+
+.notice-posting-wrap {
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.notice-posting-wrap > tr > td {
+  border-bottom: 1px solid #ccc;
+  height: 50px;
+}
+
+.notice-paging-wrap {
+  min-width: 900px;
+  width: 70%;
+  margin: 20px auto;
+}
+.notice-paging-wrap > .pagination {
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.pagination li {
+  display: flex;
+}
+
+.pagination li > span {
+  font-size: 24px;
+  cursor: pointer;
+  width: 20px;
+  text-align: center;
+}
+
+.active-page {
+  background-color: var(--main2);
+  opacity: 0.3;
+  color: white;
+}
+
+.notice-write-btn {
+  float: right;
+}
+.notice-write {
+  width: 120px;
+  height: 50px;
+}
+
+.notice-write-btn button {
+  width: 120px;
+  height: 50px;
+}
+
+.notice-write-wrap {
+  min-width: 900px;
+  width: 70%;
+  margin: 0 auto;
 }

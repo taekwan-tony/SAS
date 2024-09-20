@@ -12,6 +12,7 @@ import StoreRegist from "./components/store/StoreRegist";
 import StoreMain from "./components/store/StoreMain";
 import ManageReserved from "./components/store/ManageReserved";
 import ManageReview from "./components/store/ManageReview";
+import StorePartnership from "./components/store/StorePartnership";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
         <Route path="/usermain" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/menuview" element={<MenuView />} />
-        <Route path="/storeRegist" element={<StoreRegist />} />
+        <Route path="/store/*" element={<StorePartnership />} />
       </Routes>
     </div>
   );
