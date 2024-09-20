@@ -2,8 +2,10 @@ import { useRef, useState } from "react";
 import "./storePartnership.css";
 import Swal from "sweetalert2";
 import axios from "axios";
+import PostCodeApi from "../utils/PostCodeApi";
+import "./modal.css";
 
-const StorePartnership = () => {
+const StorePartnership = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [bnMsg, setBnMsg] = useState("");
   const [emailMsg, setEmailMsg] = useState("");
@@ -51,6 +53,18 @@ const StorePartnership = () => {
     setStore({ ...store, [name]: e.target.value });
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleHandler = () => {
+    setIsModalOpen((prevOpenState) => !prevOpenState);
+  };
+
+  const [detailAddress, setDetailedAddress] = useState("");
+
+  const inputChangeHandler = (event) => {
+    setDetailedAddress(event.target.value);
+  };
+
   return (
     <div className="storePartnership-main">
       <div className="storePartnership-wrap">
@@ -58,7 +72,7 @@ const StorePartnership = () => {
           <tbody className="storePartnership-tbody">
             <tr className="storePartnership-tr">
               <th className="storePartnership-th" colSpan={2}>
-                <div className="storePartnership-div">
+                <div className="storePartnership-imgdiv-zone">
                   <div className="storePartnership-imgDiv">
                     {storeImage ? (
                       <img className="storePartnership-img" src={storeImage} />
@@ -123,8 +137,24 @@ const StorePartnership = () => {
                     id="storeAddr"
                     name="storeAddr"
                     value={store.storeAddr}
-                    onChange={changeStore}
                   ></input>
+                </div>
+                <div className="storePartnership-div">
+                  <input
+                    className="storePartnership-inputBox"
+                    type="text"
+                    id="storeAddrDetail"
+                    name="storeAddrDetail"
+                    value={detailAddress}
+                    onChange={inputChangeHandler}
+                  ></input>
+                  <button
+                    className="storePartnership-btn"
+                    type="button"
+                    onClick={toggleHandler}
+                  >
+                    우편번호 찾기
+                  </button>
                 </div>
               </td>
             </tr>
@@ -164,6 +194,17 @@ const StorePartnership = () => {
             </tr>
           </tbody>
         </table>
+        {/* PostCodeApi 모달을 상태에 따라 열고 닫기 */}
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button className="modal-close" onClick={toggleHandler}>
+                닫기
+              </button>
+              <PostCodeApi setStore={setStore} setIsOpen={setIsModalOpen} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
