@@ -66,6 +66,9 @@ const NoticeList = () => {
       <div className="notice-paging-wrap">
         <PageNavi pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
       </div>
+      <div className="notice-write-btn">
+        <button className="btn-main round">글쓰기</button>
+      </div>
     </div>
   );
 };
