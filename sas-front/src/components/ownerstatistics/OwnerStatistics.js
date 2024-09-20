@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ownerstatistics.css";
+import "./ownerStatistics.css";
 
 function OwnerStatistics() {
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
