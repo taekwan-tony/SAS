@@ -6,6 +6,7 @@ import axios from "axios";
 import { RecoilState, useRecoilState } from "recoil";
 import { loginUserIdState, userTypeState } from "../utils/RecoilData";
 import FindId from "./FindId";
+import FindPw from "./FintPw";
 
 const LoginMain = () => {
   return (
@@ -18,6 +19,7 @@ const LoginMain = () => {
           <Route path="" element={<Login />}></Route>
           <Route path="find" element={<FindMain />}></Route>
           <Route path="findId" element={<FindId />}></Route>
+          <Route path="findPw" element={<FindPw />}></Route>
         </Routes>
       </div>
     </div>
