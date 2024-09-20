@@ -17,3 +17,6 @@ npm install react-quill
 
 김태관 2024-09-20 11:46
 npm install @mui/material @emotion/react @emotion/styled
+
+김태관 2024-09-20 15:53
+npm install @looop/quill-image-resize-module-react
