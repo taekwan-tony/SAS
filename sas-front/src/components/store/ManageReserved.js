@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./ownerstatistics.css";
+import "./managereserved.css";
 
-function OwnerStatistics() {
+function ManageReserved() {
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
 
   const handleClick = (index) => {
@@ -25,17 +25,17 @@ function OwnerStatistics() {
     <>
       <div className="dashboard-body">
         <header className="dashboard-head">
-          <h1>관리자 통계</h1>
+          <h1>예약관리</h1>
         </header>
       </div>
       <div className="dashboard">
         <div className="owner-background">
-          <img src="/image/238.jpg" alt="back" />
+          <img src="/image/239.jpg" alt="back" />
         </div>
         {/* 상단 섹션 */}
         <div className="top-section">
           <div className="info-card">
-            <h3>Today's Money</h3>
+            <h3>입금 대기</h3>
             <h2>
               $53,000 <span className="positive">+55%</span>
             </h2>
@@ -67,52 +67,6 @@ function OwnerStatistics() {
             <h1>Store Owner</h1>
             <p>Glad to see you again! Ask me anything.</p>
             <button className="record-btn">Tap to record →</button>
-          </div>
-
-          <div className="satisfaction">
-            <h3>Satisfaction Rate</h3>
-            <p>From all projects</p>
-            <div className="satisfaction-rate">
-              <span>95%</span>
-              <p>Based on likes</p>
-            </div>
-          </div>
-
-          <div className="referral-tracking">
-            <h3>Referral Tracking</h3>
-            <p>Invited: 145 people</p>
-            <p>Bonus: 1,465</p>
-            <div className="safety-score">
-              <span>9.3</span>
-              <p>Total Score</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 하단 섹션 */}
-        <div className="bottom-section">
-          <div className="projects">
-            <h3>Projects</h3>
-            <ul>
-              <li>
-                <span className="project-name">Chakra Vision UI Version</span>
-                <span className="project-progress">60%</span>
-              </li>
-              <li>
-                <span className="project-name">Add Progress Track</span>
-                <span className="project-progress">10%</span>
-              </li>
-              {/* 다른 프로젝트 아이템 추가 */}
-            </ul>
-          </div>
-
-          <div className="orders-overview">
-            <h3>Orders Overview</h3>
-            <ul>
-              <li>$2400, Design changes - 22 DEC 7:20 PM</li>
-              <li>New order #1832412 - 21 DEC 11 PM</li>
-              {/* 다른 주문 아이템 추가 */}
-            </ul>
           </div>
         </div>
 
@@ -195,4 +149,4 @@ function OwnerStatistics() {
   );
 }
 
-export default OwnerStatistics;
+export default ManageReserved;

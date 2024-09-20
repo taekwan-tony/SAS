@@ -19,7 +19,7 @@ public class NoticeService {
 	private PageUtil pageUtil;
 	
 	public Map selectNoticeList(int reqPage, int noticeType) {
-		int numPerPage = 10;
+		int numPerPage = 12;
 		int pageNaviSize = 5;
 		int totalCount = noticeDao.totalCount(noticeType);
 		PageInfo pi = pageUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);

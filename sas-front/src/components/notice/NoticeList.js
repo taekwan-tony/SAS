@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PageNavi from "../utils/PagiNavi";
 
-const NoticeList = () => {
+const NoticeList = (props) => {
+  const setNoticeDetailTitle = props.setNoticeDetailTitle;
+  const navigate = useNavigate();
+  setNoticeDetailTitle("목록");
   const [noticeList, setNoticeList] = useState([]);
   const [noticeType, setNoticeType] = useState(0);
   const [reqPage, setReqPage] = useState(1);
@@ -13,7 +16,6 @@ const NoticeList = () => {
     axios
       .get(`${backServer}/notice/list/${reqPage}/${noticeType}`)
       .then((res) => {
-        console.log(res);
         setNoticeList(res.data.list);
         setPi(res.data.pi);
       })
@@ -66,6 +68,16 @@ const NoticeList = () => {
       <div className="notice-paging-wrap">
         <PageNavi pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
       </div>
+      <div className="notice-write-btn">
+        <button
+          className="btn-main round"
+          onClick={() => {
+            navigate("/admin/notice/write");
+          }}
+        >
+          글쓰기
+        </button>
+      </div>
     </div>
   );
 };
@@ -79,7 +91,9 @@ const NoticeItem = (props) => {
       <td style={{ width: "15%" }}>{notice.noticeNo}</td>
       <td style={{ width: "50%" }}>{notice.noticeTitle}</td>
       <td style={{ width: "20%" }}>{notice.noticeEnrollDate}</td>
-      <td style={{ width: "15%" }}>{notice.noticeType}</td>
+      <td style={{ width: "15%" }}>
+        {notice.noticeType == 1 ? "소비자" : "매장"}
+      </td>
     </tr>
   );
 };
