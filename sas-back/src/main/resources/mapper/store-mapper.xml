@@ -33,4 +33,15 @@
 							    1, 
 							    null)
 	</insert>
+	
+	
+	<update id="insertStore">
+		update store set 
+			store_name=#{storeName}, 
+			store_time=#{storeTime}, 
+			store_phone=#{storePhone}, 
+			store_addr=#{storeAddr}, 
+			store_class=#{storeClass} 
+		where business_number=#{businessNumber}
+	</update>
 </mapper>

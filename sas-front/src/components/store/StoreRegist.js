@@ -14,11 +14,6 @@ const StoreRegist = () => {
     businessNumber: "",
     soPhone: "",
     soEmail: "",
-    storeName: "",
-    storePhone: "",
-    storeAddr: "",
-    storeTime: "",
-    storeClass: "",
   });
 
   const changeStore = (e) => {

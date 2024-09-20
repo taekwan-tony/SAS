@@ -12,4 +12,6 @@ public interface StoreDao {
 
 	int insertStoreOwner(StoreDTO store);
 
+	int insertStore(StoreDTO store);
+
 }

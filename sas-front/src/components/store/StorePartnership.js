@@ -4,16 +4,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import PostCodeApi from "../utils/PostCodeApi";
 import "./modal.css";
+import SelectMUI from "../utils/selectMUI";
+import { useNavigate } from "react-router-dom";
 
 const StorePartnership = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [bnMsg, setBnMsg] = useState("");
-  const [emailMsg, setEmailMsg] = useState("");
+  const navigate = useNavigate();
   const [store, setStore] = useState({
-    soName: "",
-    businessNumber: "",
-    soPhone: "",
-    soEmail: "",
     storeName: "",
     storePhone: "",
     storeAddr: "",
@@ -65,6 +62,43 @@ const StorePartnership = (props) => {
     setDetailedAddress(event.target.value);
   };
 
+  // 매장 유형 변경 핸들러
+  const handleChange = (event) => {
+    setStore({ ...store, storeClass: event.target.value });
+  };
+
+  const storeRegist = () => {
+    axios
+      .get(`${backServer}/store`, store)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            title: "등록 완료",
+            icon: "success",
+            text: "매장이 등록되었습니다.",
+            confirmButtonColor: "#5e9960",
+          }).then(() => {
+            navigate("/storeMain");
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const storeThumbnail = () => {
+    axios
+      .post(`${backServer}/store`, storeThumb)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="storePartnership-main">
       <div className="storePartnership-wrap">
@@ -85,11 +119,31 @@ const StorePartnership = (props) => {
                   </div>
                 </div>
                 <div className="storePartnership-btn-zone">
-                  <button className="storePartnership-storeImg-btn">
+                  <button
+                    className="storePartnership-storeImg-btn"
+                    onClick={storeThumbnail}
+                  >
                     매장 사진 등록
                   </button>
                 </div>
               </th>
+            </tr>
+            <tr className="storePartnership-tr">
+              <th className="storePartnership-th">
+                <label htmlFor="businessNumber">사업자등록번호</label>
+              </th>
+              <td>
+                <div className="storePartnership-div">
+                  <input
+                    className="storePartnership-inputBox"
+                    type="text"
+                    id="businessNumber"
+                    name="businessNumber"
+                    value={store.businessNumber}
+                    onChange={changeStore}
+                  ></input>
+                </div>
+              </td>
             </tr>
             <tr className="storePartnership-tr">
               <th className="storePartnership-th">
@@ -184,14 +238,7 @@ const StorePartnership = (props) => {
               </th>
               <td>
                 <div className="storePartnership-div">
-                  <input
-                    className="storePartnership-inputBox"
-                    type="text"
-                    id="storeClass"
-                    name="storeClass"
-                    value={store.storeClass}
-                    onChange={changeStore}
-                  ></input>
+                  <SelectMUI value={store.storeClass} onChange={handleChange} />
                 </div>
               </td>
             </tr>
@@ -211,6 +258,15 @@ const StorePartnership = (props) => {
             </div>
           </div>
         )}
+      </div>
+      <div className="storePartnership-btn-zone">
+        <button
+          type="submit"
+          className="store-regist-btn"
+          onClick={storeRegist}
+        >
+          등록
+        </button>
       </div>
     </div>
   );

@@ -1,0 +1,58 @@
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
+const selectMUI = ({ value, onChange }) => {
+  return (
+    <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel
+          id="demo-simple-select-label"
+          sx={{
+            color: "#544f4f", // 기본 상태에서의 색상
+            fontFamily: "ns-r",
+            "&.Mui-focused": {
+              color: "#544f4f", // 선택(포커스) 상태에서의 색상
+              fontSize: "18px",
+            },
+          }}
+        >
+          유형
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={value}
+          label="매장 유형"
+          onChange={onChange}
+          sx={{
+            fontFamily: "ns-r",
+            fontSize: "16px",
+            color: "#544f4f",
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#544f4f", // 보더 색상
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#5e9960", // 선택된 상태일 때의 보더 색상
+            },
+            borderRadius: "8px",
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#5e9960", // Hover 상태에서 보더 색상
+            },
+          }}
+        >
+          <MenuItem value={1}>한식</MenuItem>
+          <MenuItem value={2}>중식</MenuItem>
+          <MenuItem value={3}>양식</MenuItem>
+          <MenuItem value={4}>일식</MenuItem>
+          <MenuItem value={5}>분식</MenuItem>
+          <MenuItem value={0}>기타</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
+  );
+};
+
+export default selectMUI;
