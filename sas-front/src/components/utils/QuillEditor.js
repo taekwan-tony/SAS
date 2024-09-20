@@ -24,7 +24,8 @@ const formats = [
 ];
 
 const QuillEditor = (props) => {
-  const [values, setValues] = useState();
+  const noticeContent = props.noticeContent;
+  const setNoticeContent = props.setNoticeContent;
   const quillRef = useRef(null);
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const imageHandler = () => {
@@ -57,8 +58,8 @@ const QuillEditor = (props) => {
     });
   };
 
-  const modules = useMemo(() => {
-    return {
+  const modules = useMemo(
+    () => ({
       toolbar: {
         container: [
           [{ size: ["small", false, "large", "huge"] }],
@@ -78,8 +79,9 @@ const QuillEditor = (props) => {
       ImageResize: {
         parchment: Quill.import("parchment"),
       },
-    };
-  }, []);
+    }),
+    []
+  );
 
   return (
     <ReactQuill
@@ -87,7 +89,9 @@ const QuillEditor = (props) => {
       ref={quillRef}
       modules={modules}
       formats={formats}
-      style={{ height: "600px", width: "100%" }}
+      style={{ height: "500px", width: "100%" }}
+      value={noticeContent || ""}
+      onChange={setNoticeContent}
     />
   );
 };
