@@ -49,56 +49,6 @@
   object-fit: cover; /* 이미지를 비율에 맞게 덮도록 설정 */
   z-index: -1; /* 이미지가 콘텐츠 뒤에 있도록 설정 */
 }
-.top-section,
-.middle-section,
-.bottom-section {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.info-card {
-  background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
-  padding: 20px;
-  border-radius: 12px;
-  flex: 1;
-  text-align: center;
-}
-
-.info-card h3 {
-  font-size: 1.2rem;
-  color: #bfbfbf;
-}
-
-.info-card h2 {
-  font-size: 2rem;
-  color: #fff;
-}
-
-.positive {
-  color: #4caf50;
-}
-
-.negative {
-  color: #f44336;
-}
-
-.middle-section .main-info,
-.middle-section .satisfaction,
-.middle-section .referral-tracking {
-  flex: 1;
-  background: linear-gradient(120deg, #1d201e 70%, #29482a47 99%);
-  padding: 20px;
-  border-radius: 12px;
-}
-
-.bottom-section .projects,
-.bottom-section .orders-overview {
-  flex: 1;
-  background: linear-gradient(50deg, #222623 50%, #29482a47 99%);
-  padding: 20px;
-  border-radius: 12px;
-}
 
 /* 하단테이블 */
 .styled-table {

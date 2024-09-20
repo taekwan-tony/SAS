@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./managereserved.css";
+import { Link } from "react-router-dom";
 
 function ManageReserved() {
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
@@ -12,62 +13,37 @@ function ManageReserved() {
   };
 
   const menuItems = [
-    { text: "매장페이지", icon: "fa-solid fa-store" },
-    { text: "매장등록", icon: "fas fa-id-card" },
-    { text: "메뉴등록", icon: "fas fa-utensils" },
-    { text: "제휴결제", icon: "fas fa-money-check-alt" },
-    { text: "리뷰관리", icon: "fa-regular fa-comment-dots" },
-    { text: "통계관리", icon: "fas fa-chart-line" },
-    { text: "예약관리", icon: "far fa-calendar-alt" },
+    { text: "매장페이지", icon: "fa-solid fa-store", to: "/storepage" },
+    { text: "매장등록", icon: "fas fa-id-card", to: "/storeRegist" },
+    { text: "메뉴등록", icon: "fas fa-utensils", to: "/menuRegist" },
+    { text: "제휴결제", icon: "fas fa-money-check-alt", to: "/payment" },
+    {
+      text: "리뷰관리",
+      icon: "fa-regular fa-comment-dots",
+      to: "/storemain/managereview",
+    },
+    {
+      text: "통계관리",
+      icon: "fas fa-chart-line",
+      to: "/storemain/ownerstatistics",
+    },
+    {
+      text: "예약관리",
+      icon: "far fa-calendar-alt",
+      to: "/storemain/managereserved",
+    },
   ];
 
   return (
     <>
       <div className="dashboard-body">
         <header className="dashboard-head">
-          <h1>예약관리</h1>
+          <h1>리뷰관리</h1>
         </header>
       </div>
       <div className="dashboard">
         <div className="owner-background">
           <img src="/image/238.jpg" alt="back" />
-        </div>
-        {/* 상단 섹션 */}
-        <div className="top-section">
-          <div className="info-card">
-            <h3>입금 대기</h3>
-            <h2>
-              $53,000 <span className="positive">+55%</span>
-            </h2>
-          </div>
-          <div className="info-card">
-            <h3>Today's Users</h3>
-            <h2>
-              2,300 <span className="positive">+3%</span>
-            </h2>
-          </div>
-          <div className="info-card">
-            <h3>New Clients</h3>
-            <h2>
-              +3,462 <span className="negative">-2%</span>
-            </h2>
-          </div>
-          <div className="info-card">
-            <h3>Total Sales</h3>
-            <h2>
-              $103,430 <span className="positive">+5%</span>
-            </h2>
-          </div>
-        </div>
-
-        {/* 중단 섹션 */}
-        <div className="middle-section">
-          <div className="main-info">
-            <h2>Welcome back</h2>
-            <h1>Store Owner</h1>
-            <p>Glad to see you again! Ask me anything.</p>
-            <button className="record-btn">Tap to record →</button>
-          </div>
         </div>
 
         {/* 하단테이블 */}
@@ -129,13 +105,13 @@ function ManageReserved() {
                 className={`list ${activeIndex === index ? "active" : ""}`}
                 onClick={() => handleClick(index)}
               >
-                <a href="#">
+                <Link to={item.to}>
                   <span className="icon">
                     <i className={item.icon}></i>
                   </span>
                   <span className="text">{item.text}</span>
                   <span className="circle"></span>
-                </a>
+                </Link>
               </li>
             ))}
             <div

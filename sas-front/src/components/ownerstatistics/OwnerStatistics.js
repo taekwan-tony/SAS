@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ownerstatistics.css";
+import { Link } from "react-router-dom";
 
 function OwnerStatistics() {
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
@@ -12,13 +13,25 @@ function OwnerStatistics() {
   };
 
   const menuItems = [
-    { text: "매장페이지", icon: "fa-solid fa-store" },
-    { text: "매장등록", icon: "fas fa-id-card" },
-    { text: "메뉴등록", icon: "fas fa-utensils" },
-    { text: "제휴결제", icon: "fas fa-money-check-alt" },
-    { text: "리뷰관리", icon: "fa-regular fa-comment-dots" },
-    { text: "통계관리", icon: "fas fa-chart-line" },
-    { text: "예약관리", icon: "far fa-calendar-alt" },
+    { text: "매장페이지", icon: "fa-solid fa-store", to: "/storepage" },
+    { text: "매장등록", icon: "fas fa-id-card", to: "/storeRegist" },
+    { text: "메뉴등록", icon: "fas fa-utensils", to: "/menuRegist" },
+    { text: "제휴결제", icon: "fas fa-money-check-alt", to: "/payment" },
+    {
+      text: "리뷰관리",
+      icon: "fa-regular fa-comment-dots",
+      to: "/storemain/managereview",
+    },
+    {
+      text: "통계관리",
+      icon: "fas fa-chart-line",
+      to: "/storemain/ownerstatistics",
+    },
+    {
+      text: "예약관리",
+      icon: "far fa-calendar-alt",
+      to: "/storemain/managereserved",
+    },
   ];
 
   return (
@@ -175,13 +188,13 @@ function OwnerStatistics() {
                 className={`list ${activeIndex === index ? "active" : ""}`}
                 onClick={() => handleClick(index)}
               >
-                <a href="#">
+                <Link to={item.to}>
                   <span className="icon">
                     <i className={item.icon}></i>
                   </span>
                   <span className="text">{item.text}</span>
                   <span className="circle"></span>
-                </a>
+                </Link>
               </li>
             ))}
             <div
