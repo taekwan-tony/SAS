@@ -15,7 +15,7 @@ const PostCodeApi = ({ setStore, setIsModalOpen }) => {
     textColor: "", // 기본 글자색
     queryTextColor: "", // 검색창 글자색
     postcodeTextColor: "", // 우편번호 글자색
-    emphTextColor: "", // 강조 글자색
+    emphTextColor: "#5e9960", // 강조 글자색
     outlineColor: "", // 테두리
   };
 

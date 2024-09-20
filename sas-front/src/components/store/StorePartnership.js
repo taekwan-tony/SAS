@@ -137,6 +137,7 @@ const StorePartnership = (props) => {
                     id="storeAddr"
                     name="storeAddr"
                     value={store.storeAddr}
+                    readOnly
                   ></input>
                 </div>
                 <div className="storePartnership-div">
@@ -147,6 +148,7 @@ const StorePartnership = (props) => {
                     name="storeAddrDetail"
                     value={detailAddress}
                     onChange={inputChangeHandler}
+                    placeholder="상세 주소를 입력해주세요."
                   ></input>
                   <button
                     className="storePartnership-btn"
@@ -171,6 +173,7 @@ const StorePartnership = (props) => {
                     name="storeTime"
                     value={store.storeTime}
                     onChange={changeStore}
+                    placeholder="ex) 09:00 - 22:00"
                   ></input>
                 </div>
               </td>
@@ -198,10 +201,13 @@ const StorePartnership = (props) => {
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
+              <PostCodeApi
+                setStore={setStore}
+                setIsModalOpen={setIsModalOpen}
+              />
               <button className="modal-close" onClick={toggleHandler}>
                 닫기
               </button>
-              <PostCodeApi setStore={setStore} setIsOpen={setIsModalOpen} />
             </div>
           </div>
         )}
