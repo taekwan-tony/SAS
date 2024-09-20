@@ -21,7 +21,7 @@ function App() {
         <Route path="/join" element={<Join />} />
         <Route path="/login/*" element={<LoginMain />} />
         <Route path="/storemain" element={<StoreMain />} />
-        <Route path="/usermain" element={<UserMain />} />
+        <Route path="/usermain/*" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/menuview" element={<MenuView />} />
         <Route path="/storeRegist" element={<StoreRegist />} />
