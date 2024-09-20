@@ -1,5 +1,6 @@
 package kr.co.sas.user.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.co.sas.user.model.dto.LoginUserDTO;
 import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.user.model.service.UserService;
 
@@ -49,8 +51,16 @@ public class UserController {
 	@Operation(summary = "일반회원 로그인 갱신", description = "리프레시 토큰을 가져와서 옳은 토큰이면 로그인 갱신하고 map으로 토큰값과 함께 보냄")
 	@PostMapping(value="/refresh")
 	public ResponseEntity<Map> refresh(@RequestHeader("Authorization") String token){
-		Map map = userService.refresh(token);
-		return ResponseEntity.ok(map);
+		LoginUserDTO loginUser = userService.refresh(token);
+		if(loginUser!=null) {
+			Map map = new HashMap<String, Object>();
+			map.put("loginId", loginUser.getUserId());
+			map.put("userType", loginUser.getLoginType());
+			map.put("accessToken", loginUser.getAccessToken());
+			map.put("refreshToken", loginUser.getRefreshToken());
+			return ResponseEntity.ok(map);
+		}
+		return ResponseEntity.status(404).build();
 	}
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.user.model.dao.UserDao;
+import kr.co.sas.user.model.dto.LoginUserDTO;
 import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.util.JwtUtils;
 
@@ -56,8 +57,17 @@ public class UserService {
 		return map;
 	}
 
-	public Map refresh(String token) {
-		// TODO Auto-generated method stub
+	public LoginUserDTO refresh(String token) {
+		try {
+			LoginUserDTO loginUser = jwtUtils.checkToken(token);
+			String accessToken = jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType());
+			String refreshToken = jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType());
+			loginUser.setAccessToken(accessToken);
+			loginUser.setRefreshToken(refreshToken);;
+			return loginUser;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return null;
 	}
 	
