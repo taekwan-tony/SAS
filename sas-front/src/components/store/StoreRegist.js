@@ -153,7 +153,7 @@ const StoreRegist = () => {
   */
 
   return (
-    <div className="storeRegist-backColor">
+    <div className="storeRegist-main">
       <div className="storeRegist-wrap">
         <table className="storeRegist-table">
           <tbody className="storeRegist-tbody">

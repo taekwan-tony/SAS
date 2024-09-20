@@ -52,46 +52,39 @@ const StorePartnership = () => {
   };
 
   return (
-    <div className="storeRegist-bottom-main">
-      <div className="storeRegist-bottom-wrap">
-        <table className="storeRegist-bottom-table">
-          <tbody className="storeRegist-bottom-tbody">
-            <tr className="storeRegist-bottom-tr">
-              <th className="storeRegist-bottom-th" colSpan={2}>
-                <div className="storeRegist-bottom-div">
-                  <div className="storeRegist-imgDiv">
+    <div className="storePartnership-main">
+      <div className="storePartnership-wrap">
+        <table className="storePartnership-table">
+          <tbody className="storePartnership-tbody">
+            <tr className="storePartnership-tr">
+              <th className="storePartnership-th" colSpan={2}>
+                <div className="storePartnership-div">
+                  <div className="storePartnership-imgDiv">
                     {storeImage ? (
-                      <img
-                        className="storeRegist-img"
-                        src={storeImage}
-                        onClick={() => {
-                          storeImgRef.current.click();
-                        }}
-                      />
+                      <img className="storePartnership-img" src={storeImage} />
                     ) : (
                       <img
-                        className="storeRegist-img"
+                        className="storePartnership-img"
                         src="/image/s&s로고.png"
-                        onClick={() => {
-                          storeImgRef.current.click();
-                        }}
                       />
                     )}
                   </div>
                 </div>
-                <button className="storeRegist-storeImg-btn">
-                  매장 사진 등록
-                </button>
+                <div className="storePartnership-btn-zone">
+                  <button className="storePartnership-storeImg-btn">
+                    매장 사진 등록
+                  </button>
+                </div>
               </th>
             </tr>
-            <tr className="storeRegist-bottom-tr">
-              <th className="storeRegist-bottom-th">
+            <tr className="storePartnership-tr">
+              <th className="storePartnership-th">
                 <label htmlFor="storeName">매장 상호명</label>
               </th>
               <td>
-                <div className="storeRegist-bottom-div">
+                <div className="storePartnership-div">
                   <input
-                    className="storeRegist-bottom-inputBox"
+                    className="storePartnership-inputBox"
                     type="text"
                     id="storeName"
                     name="storeName"
@@ -101,14 +94,14 @@ const StorePartnership = () => {
                 </div>
               </td>
             </tr>
-            <tr className="storeRegist-bottom-tr">
-              <th className="storeRegist-bottom-th">
+            <tr className="storePartnership-tr">
+              <th className="storePartnership-th">
                 <label htmlFor="storePhone">매장 전화번호</label>
               </th>
               <td>
-                <div className="storeRegist-bottom-div">
+                <div className="storePartnership-div">
                   <input
-                    className="storeRegist-bottom-inputBox"
+                    className="storePartnership-inputBox"
                     type="text"
                     id="storePhone"
                     name="storePhone"
@@ -118,14 +111,14 @@ const StorePartnership = () => {
                 </div>
               </td>
             </tr>
-            <tr className="storeRegist-bottom-tr">
-              <th className="storeRegist-bottom-th">
+            <tr className="storePartnership-tr">
+              <th className="storePartnership-th">
                 <label htmlFor="storeAddr">매장 위치</label>
               </th>
               <td>
-                <div className="storeRegist-bottom-div">
+                <div className="storePartnership-div">
                   <input
-                    className="storeRegist-bottom-inputBox"
+                    className="storePartnership-inputBox"
                     type="text"
                     id="storeAddr"
                     name="storeAddr"
@@ -135,14 +128,14 @@ const StorePartnership = () => {
                 </div>
               </td>
             </tr>
-            <tr className="storeRegist-bottom-tr">
-              <th className="storeRegist-bottom-th">
+            <tr className="storePartnership-tr">
+              <th className="storePartnership-th">
                 <label htmlFor="storeTime">영업 시간</label>
               </th>
               <td>
-                <div className="storeRegist-bottom-div">
+                <div className="storePartnership-div">
                   <input
-                    className="storeRegist-bottom-inputBox"
+                    className="storePartnership-inputBox"
                     type="text"
                     id="storeTime"
                     name="storeTime"
@@ -152,14 +145,14 @@ const StorePartnership = () => {
                 </div>
               </td>
             </tr>
-            <tr className="storeRegist-bottom-tr">
-              <th className="storeRegist-bottom-th">
+            <tr className="storePartnership-tr">
+              <th className="storePartnership-th">
                 <label htmlFor="storeClass">매장 유형</label>
               </th>
               <td>
-                <div className="storeRegist-bottom-div">
+                <div className="storePartnership-div">
                   <input
-                    className="storeRegist-bottom-inputBox"
+                    className="storePartnership-inputBox"
                     type="text"
                     id="storeClass"
                     name="storeClass"

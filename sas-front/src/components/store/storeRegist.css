@@ -1,6 +1,7 @@
-.storeRegist-backColor {
+.storeRegist-main {
   height: 1400px;
   background-color: #ccc;
+  padding-top: 80px;
 }
 
 .storeRegist-wrap {
@@ -66,6 +67,12 @@
   cursor: pointer;
   font-size: 19px;
   font-weight: 590;
+}
+
+.storeRegist-btn:hover {
+  border: 2px solid #5e9960;
+  color: #5e9960;
+  background-color: #fff;
 }
 
 .storeRegist-msg {
