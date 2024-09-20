@@ -62,7 +62,8 @@ const MenuMain = () => {
       <h2>예약</h2>
       <section className="reservation-info">
         <span className="material-icons page-item">
-          <span class="material-icons">calendar_today</span>날짜 - 인원 - 시간
+          <span className="material-icons">calendar_today</span>날짜 - 인원 -
+          시간
         </span>
         <div className="res-time">
           <div>오후 12:00</div>
@@ -148,7 +149,8 @@ const MenuPhoto = () => {
 const MenuReview = () => {
   return (
     <div className="menu-review">
-      <h2>리뷰</h2>
+      <span className="material-icons">star_border</span>
+      <div>사용자이름</div>
     </div>
   );
 };
