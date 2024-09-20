@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const FindId = () => {
+const FindPw = () => {
   const nameboxRef = useRef(null);
   const emailboxRef = useRef(null);
   const selectNameRef = () => {
@@ -48,7 +48,7 @@ const FindId = () => {
         </div>
         <div className="findByEmail round">
           <h3 onClick={selectEmailRef}>
-            회원정보로 등록된 이름, 이메일로 찾기
+            회원정보로 등록된 이름, 이메일로 본인인증
           </h3>
           <div className="find-content" ref={emailboxRef}>
             <div className="input-item">
@@ -72,6 +72,19 @@ const FindId = () => {
                 name="userEmail"
                 placeholder="회원 이메일"
               />
+              <button className="btn-main round">인증번호 받기</button>
+            </div>
+            <div className="input-item">
+              <span className="input-title">
+                <label htmlFor="number">인증번호</label>
+              </span>
+              <input
+                type="text"
+                id="number"
+                name="number"
+                placeholder="인증번호 입력"
+              />
+              <button className="btn-sub round">인증번호 받기</button>
             </div>
             <div className="find-btn">
               <button className="btn-main round">아이디 찾기</button>
@@ -82,4 +95,4 @@ const FindId = () => {
     </>
   );
 };
-export default FindId;
+export default FindPw;

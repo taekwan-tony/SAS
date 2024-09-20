@@ -1,13 +1,19 @@
-* {
+/* * {
   margin: 0;
   padding: 0;
   outline: 0;
   font-family: Pretendard-Regular;
   box-sizing: border-box;
   color: #544f4f;
+   background-color: #ccc;
 }
+   */
 
 /* 상단 */
+
+.storeRegist-tbody {
+  background-color: white;
+}
 
 .storeRegist-wrap {
   width: 50%;
@@ -92,17 +98,66 @@
 }
 
 /* 하단 */
-
-.storeRegist-imgDiv {
+.storeRegist-bottom-wrap {
   width: 50%;
   background-color: white;
   border-radius: 20px;
   margin: 0 auto;
+  padding: 50px;
+  margin-top: 80px;
+  box-shadow: 5px 6px 1px rgba(0, 0, 0, 0.3);
+}
+
+.storeRegist-bottom-inputBox {
+  box-sizing: border-box;
+  width: 50%;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #544f4f;
+  font-size: 18px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #b9b9bd;
+}
+
+.storeRegist-bottom-table {
+  width: 100%;
+}
+
+.storeRegist-bottom-tr {
+  height: 60px;
+}
+
+.storeRegist-bottom-th {
+  padding: 5px;
+  line-height: 60px;
+}
+
+.storeRegist-bottom-label {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.storeRegist-bottom-div {
+  margin-left: 10px;
+}
+
+.storeRegist-imgDiv {
+  width: 70%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .storeRegist-img {
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .storeRegist-storeImg-btn {
@@ -111,8 +166,11 @@
   border: none;
   background-color: #5e9960;
   color: #fff;
+  margin-top: 10px;
+  margin-left: 50px;
   border-radius: 3px;
   cursor: pointer;
   font-size: 19px;
   font-weight: 590;
+  padding: 5px;
 }
