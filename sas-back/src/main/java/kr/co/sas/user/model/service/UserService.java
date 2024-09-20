@@ -55,5 +55,10 @@ public class UserService {
 		map.put("result", result);
 		return map;
 	}
+
+	public Map refresh(String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
