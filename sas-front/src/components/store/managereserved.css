@@ -225,11 +225,11 @@
   transition: transform 0.5s ease-in-out; /* 부드럽게 커지도록 */
 }
 /* 
-.navigation ul li.active a .circle {
-  transform: translateY(-27px) scale(1);
-  transition: none;
-}
-*/
+  .navigation ul li.active a .circle {
+    transform: translateY(-27px) scale(1);
+    transition: none;
+  }
+  */
 .indicator {
   position: absolute;
   top: -59%;

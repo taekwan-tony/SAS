@@ -5,11 +5,13 @@ import Main from "./components/main/Main";
 import Join from "./components/user/Join";
 
 import UserMain from "./components/user/UserMain";
-
+import OwnerStatistics from "./components/ownerstatistics/OwnerStatistics";
 import AdminMain from "./components/admin/AdminMain";
 import MenuView from "./components/menu/MenuView";
 import StoreRegist from "./components/store/StoreRegist";
 import StoreMain from "./components/store/StoreMain";
+import ManageReserved from "./components/store/ManageReserved";
+import ManageReview from "./components/store/ManageReview";
 
 function App() {
   return (
@@ -21,6 +23,12 @@ function App() {
         <Route path="/join" element={<Join />} />
         <Route path="/login/*" element={<LoginMain />} />
         <Route path="/storemain" element={<StoreMain />} />
+        <Route
+          path="/storemain/ownerstatistics"
+          element={<OwnerStatistics />}
+        />
+        <Route path="/storemain/managereview" element={<ManageReview />} />
+        <Route path="/storemain/managereserved" element={<ManageReserved />} />
         <Route path="/usermain" element={<UserMain />} />
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/menuview" element={<MenuView />} />
