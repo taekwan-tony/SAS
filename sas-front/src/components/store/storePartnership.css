@@ -1,0 +1,148 @@
+.storePartnership-main {
+  background-color: #ccc;
+  height: 2000px;
+  padding-top: 80px;
+}
+
+.storePartnership-wrap {
+  width: 50%;
+  background-color: white;
+  border-radius: 20px;
+  margin: 0 auto;
+  padding: 50px;
+  box-shadow: 5px 6px 1px rgba(0, 0, 0, 0.3);
+}
+
+.storePartnership-inputBox {
+  box-sizing: border-box;
+  width: 70%;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #544f4f;
+  font-size: 18px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #b9b9bd;
+}
+
+.storePartnership-table {
+  width: 100%;
+}
+
+.storePartnership-tr {
+  height: 100px;
+}
+
+.storePartnership-th {
+  font-size: 22px;
+  text-align: center;
+}
+
+.storePartnership-imgdiv-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storePartnership-div {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-left: 50px;
+}
+
+.storePartnership-imgDiv {
+  width: 50%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #b9b9bd;
+  border-radius: 12px;
+  margin-bottom: 50px;
+}
+
+.storePartnership-img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storePartnership-btn-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.storePartnership-storeImg-btn {
+  width: 140px;
+  height: 50px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 19px;
+  font-weight: 590;
+  padding: 5px;
+}
+
+.storePartnership-storeImg-btn:hover {
+  border: 2px solid #5e9960;
+  color: #5e9960;
+  background-color: #fff;
+  font-weight: 500;
+}
+
+.storePartnership-addr {
+  width: 100%;
+  margin-left: 45px;
+}
+
+.storePartnership-btn {
+  width: 130px;
+  height: 40px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 19px;
+  font-weight: 590;
+  margin-left: 50px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storePartnership-btn:hover {
+  border: 2px solid #5e9960;
+  color: #5e9960;
+  background-color: #fff;
+  font-weight: 500;
+}
+
+.store-regist-btn {
+  width: 200px;
+  height: 80px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 30px;
+}
+
+.store-regist-btn:hover {
+  border: 2px solid #5e9960;
+  background-color: #fff;
+  color: #5e9960;
+}
