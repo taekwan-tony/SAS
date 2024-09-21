@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.sas.notice.model.dto.NoticeDTO;
 import kr.co.sas.notice.model.service.NoticeService;
 import kr.co.sas.util.FileUtils;
 
@@ -42,6 +44,18 @@ public class NoticeController {
 		String filepath = fileUtil.upload(savepath, image);
 		System.out.println(filepath);
 		return ResponseEntity.ok("/editor/"+filepath);
+	}
+	
+	@PostMapping(value="/write")
+	public ResponseEntity<Integer> insertNotice(@ModelAttribute NoticeDTO notice){
+		int result = noticeService.insertNotice(notice);
+		return ResponseEntity.ok(result);
+	}
+	
+	@GetMapping(value="/detail/{noticeNo}")
+	public ResponseEntity<NoticeDTO> view(@PathVariable int noticeNo){
+		NoticeDTO notice = noticeService.selectOneNotice(noticeNo);
+		return ResponseEntity.ok(notice);
 	}
 
 }

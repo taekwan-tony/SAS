@@ -63,9 +63,14 @@
   text-align: center;
 }
 
+.notice-posting-wrap > tr {
+  cursor: pointer;
+}
+
 .notice-posting-wrap > tr > td {
   border-bottom: 1px solid #ccc;
   height: 50px;
+  font-size: 20px;
 }
 
 .notice-paging-wrap {
@@ -109,9 +114,84 @@
   width: 120px;
   height: 50px;
 }
-
+.notice-write-form {
+  width: 100%;
+}
 .notice-write-wrap {
   min-width: 900px;
   width: 70%;
   margin: 0 auto;
+}
+
+.notice-editor-wrap {
+  min-height: 500px;
+}
+
+.notice-write-title-wrap {
+  width: 100%;
+  margin-top: 50px;
+}
+.notice-write-title-wrap > div {
+  margin-bottom: 30px;
+}
+.notice-title {
+  width: 100%;
+  text-align: left;
+  line-height: 50px;
+}
+.notice-title > label {
+  font-size: 24px;
+  height: 50px;
+}
+.notice-title > input {
+  border: none;
+  padding-left: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  border-bottom: 1px solid var(--font3);
+}
+
+.notice-type {
+  width: 100%;
+  display: flex;
+}
+.notice-type > div:first-child {
+  width: 20%;
+  text-align: left;
+  line-height: 50px;
+  font-size: 24px;
+}
+
+.notice-mui-wrap {
+  width: 80%;
+}
+.notice-mui-wrap > * {
+  width: 100%;
+}
+
+.notice-write-button-zone {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.notice-write-button-zone > button {
+  width: 180px;
+  height: 50px;
+  font-size: 24px;
+}
+
+.notice-detail-wrap {
+  min-width: 900px;
+  width: 70%;
+  border-right: ;
+  margin: 50px auto;
+}
+
+.notice-detail-table {
+  width: 100%;
+}
+.notice-detail-table tr {
+  height: 60px;
 }

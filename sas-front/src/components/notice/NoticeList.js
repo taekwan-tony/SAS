@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PageNavi from "../utils/PagiNavi";
 
 const NoticeList = (props) => {
@@ -32,7 +32,7 @@ const NoticeList = (props) => {
       <div className="notice-list-menu">
         <div
           className={
-            noticeType == 0 ? "notice-menu notice-menu-check" : "notice-menu"
+            noticeType === 0 ? "notice-menu notice-menu-check" : "notice-menu"
           }
           onClick={changeNoticeType}
           id="0"
@@ -41,21 +41,21 @@ const NoticeList = (props) => {
         </div>
         <div
           className={
-            noticeType == 1 ? "notice-menu notice-menu-check" : "notice-menu"
+            noticeType === 1 ? "notice-menu notice-menu-check" : "notice-menu"
           }
           onClick={changeNoticeType}
           id="1"
         >
-          <span id="1">매장</span>
+          <span id="1">소비자</span>
         </div>
         <div
           className={
-            noticeType == 2 ? "notice-menu notice-menu-check" : "notice-menu"
+            noticeType === 2 ? "notice-menu notice-menu-check" : "notice-menu"
           }
           onClick={changeNoticeType}
           id="2"
         >
-          <span id="2">소비자</span>
+          <span id="2">매장</span>
         </div>
       </div>
       <div className="notice-list-main">
@@ -84,10 +84,13 @@ const NoticeList = (props) => {
 
 const NoticeItem = (props) => {
   const notice = props.notice;
-  const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
   return (
-    <tr>
+    <tr
+      onClick={() => {
+        navigate(`/admin/notice/detail/${notice.noticeNo}`);
+      }}
+    >
       <td style={{ width: "15%" }}>{notice.noticeNo}</td>
       <td style={{ width: "50%" }}>{notice.noticeTitle}</td>
       <td style={{ width: "20%" }}>{notice.noticeEnrollDate}</td>

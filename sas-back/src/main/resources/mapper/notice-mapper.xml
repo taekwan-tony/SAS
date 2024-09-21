@@ -24,4 +24,10 @@
 			     order by notice_no desc)b)
 			where rnum between #{pi.start} and #{pi.end}
 	</select>
+	<insert id="insertNotice">
+		insert into notice values(notice_seq.nextval,#{noticeTitle},to_char(sysdate,'yyyy-mm-dd'),#{noticeContent},#{noticeType})
+	</insert>
+	<select id="selectOneNotice" resultType="notice">
+		select * from notice where notice_no = #{noticeNo}
+	</select>
 </mapper>
