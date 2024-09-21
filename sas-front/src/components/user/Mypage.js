@@ -1,13 +1,41 @@
 import { Route, Routes } from "react-router-dom";
 import "../menu/menuview.css";
+import "./mypage.css";
 const Mypage = () => {
   return (
-    <Routes>
-      <Route path="resview" element={<ReservationView />}></Route>
-    </Routes>
+    <div className="mypage-main">
+      <Routes>
+        <Route path="" element={<MypageMain />}></Route>
+        <Route path="resview" element={<ReservationView />}></Route>
+      </Routes>
+    </div>
   );
 };
-
+const MypageMain = () => {
+  return (
+    <>
+      <Profile />
+    </>
+  );
+};
+const Profile = () => {
+  return (
+    <div className="profile-wrap">
+      <div className="img">{/* 버튼 이안에 */}</div>
+      <div className="user-info">
+        <h2 className="user-nickName">회원 닉네임</h2>
+        <h3 className="user-Id">회원아이디</h3>
+        <div className="user-info-other">
+          <span>여</span>
+          <span>1997.05.17</span>
+          <span>010-0000-0000</span>
+          <span>user01@gmail.com</span>
+        </div>
+      </div>
+      <div className="user-page-info"></div>
+    </div>
+  );
+};
 const ReservationView = () => {
   return (
     <div className="res-view">
