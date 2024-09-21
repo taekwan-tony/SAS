@@ -1,5 +1,5 @@
 import { Link, Route, Routes, useParams } from "react-router-dom";
-import "./MenuView.css";
+import "./menuview.css";
 import { Map } from "react-kakao-maps-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
@@ -33,7 +33,7 @@ const MenuView = () => {
       <hr></hr>
       <section className="section-menu">
         <ul className="menu-nav">
-          <Link to="/menuview">
+          <Link to="menuview">
             <li>홈</li>
           </Link>
           <Link to="menunews">
@@ -54,14 +54,16 @@ const MenuView = () => {
         </ul>
         <hr></hr>
       </section>
-      <Routes>
-        <Route path="" element={<MenuMain />}></Route>
-        <Route path="menunews" element={<Menunews />}></Route>
-        <Route path="menu" element={<Menu />}></Route>
-        <Route path="photo" element={<MenuPhoto />}></Route>
-        <Route path="review" element={<MenuReview />}></Route>
-        <Route path="info" element={<Menuinfo />}></Route>
-      </Routes>
+      {
+        <Routes>
+          <Route path="menuview" element={<MenuMain />}></Route>
+          <Route path="menunews" element={<Menunews />}></Route>
+          <Route path="menu" element={<Menu />}></Route>
+          <Route path="photo" element={<MenuPhoto />}></Route>
+          <Route path="review" element={<MenuReview />}></Route>
+          <Route path="info" element={<Menuinfo />}></Route>
+        </Routes>
+      }
       <div className="reservation-button">
         <span className="material-icons page-item">bookmark_border</span>
         <span className="material-icons page-item">share</span>

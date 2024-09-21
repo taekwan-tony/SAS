@@ -10,10 +10,12 @@ import "swiper/css/mousewheel";
 import { loginUserIdState, userTypeState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import axios from "axios";
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import Join from "./Join";
 import LoginMain from "./LoginMain";
 import Mypage from "./Mypage";
+import MenuView from "../menu/MenuView";
+import "../menu/menuview.css";
 
 function UserMain() {
   // 일반회원 로그인 지속 구현-수진(문제 생기면 말씀해주세요..)
@@ -177,9 +179,9 @@ function UserMain() {
                   </a>
                 </li>
                 <li>
-                  <a href="#">
+                  <Link to="mypage/resview">
                     <i class="fa-solid fa-calendar-week"></i>예약보기
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#">
@@ -231,6 +233,7 @@ function UserMain() {
         <Route path="join" element={<Join />} />
         <Route path="login/*" element={<LoginMain />} />
         <Route path="mypage/*" element={<Mypage />}></Route>
+        <Route path="menuview/*" element={<MenuView />} />
         <Route
           path=""
           element={
