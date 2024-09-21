@@ -32,6 +32,9 @@ a {
 .colorGreen {
   color: var(--main1);
 }
+.colorRed {
+  color: red;
+}
 .borderBottomRed {
   border-bottom: 1px solid red;
 }
@@ -223,4 +226,21 @@ a {
 /* 비밀번호 찾기 */
 .user-login-main .find-main-zone .find-content > .input-item.flex-start {
   justify-content: flex-start;
+}
+
+/* 비밀번호 인증번호 */
+.find-main-zone > .findByEmail.findPw .findPw-number {
+  position: relative;
+  margin-bottom: 0;
+}
+.find-main-zone > .findByEmail.findPw div.findPw-number > span.auth-time {
+  position: absolute;
+  top: 8px;
+  right: 100px;
+}
+.find-main-zone > .findByEmail.findPw p.msg.email-msg {
+  padding: 0;
+  margin-bottom: 10px;
+  padding-left: 25%;
+  font-size: 15px;
 }

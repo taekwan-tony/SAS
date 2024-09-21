@@ -38,7 +38,9 @@
 	</if>
 	<if test="!userEmail.equals('')">
 		and user_email =#{userEmail}
-	</if>
-	
+	</if>	
+</select>
+<select id="findUserNo" resultType="user">
+	select user_no from user_tbl where user_id=#{userId} and user_email=#{userEmail}
 </select>
 </mapper>
