@@ -10,3 +10,12 @@ npm install gsap
 
 양창모 2024-09-19 13:54
 npm install swiper
+
+임민규 2024-09-20 11:02
+npm install react-kakao-maps-sdk
+
+임민규 2024-09-20 14:02
+npm install react-quill
+
+임민규 2024-09-20 14:44
+npm install react-icons --save
