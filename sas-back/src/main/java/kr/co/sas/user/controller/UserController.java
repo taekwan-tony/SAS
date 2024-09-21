@@ -72,16 +72,30 @@ public class UserController {
 	@Operation(summary="일반회원 아이디 찾기", description = "회원 이름과 전화번호 또는 이메일을 유저 객체로 받아 해당하는 아이디를 찾아 반환>>회원 이름,전화번호/ 회원이름, 이메일이 유니크하다고 가정")
 	@PostMapping(value="/findId")
 	public ResponseEntity<String> findId(@RequestBody UserDTO user){
-		System.out.println(user);
+//		System.out.println(user);
 		String userId = userService.findId(user);
 		System.out.println(userId);
 		return ResponseEntity.ok(userId);
 	}
 	
+	@Operation(summary="일반회원 비밀번호 찾기 회원조회", description = "회원 아이디와 이메일을 유저 객체로 받아 해당 회원이 있는지 조회, userNo를 반환")
+	@PostMapping(value="/findPw")
+	public ResponseEntity<Integer> findPw(@RequestBody UserDTO user){
+		int result = userService.checkUser(user);
+		return ResponseEntity.ok(result);
+	}
+	
+	@Operation(summary = "일반회원 비밀번호 재생성", description = "새비밀번호와 유저 번호(+ 기존 비밀번호)를 객체로 받아서 새비밀번호로 변경, 결과를 boolean으로 반환")
+	@PostMapping(value="/updatePw")
+	public ResponseEntity<Boolean> updatePw(@RequestBody UserDTO user){
+		int result = userService.updatePw(user);
+		return ResponseEntity.ok(result>0);
+	}
+	
 	@Operation(summary="인증메일 보내기", description = "받은 이메일을 이용해서 인증번호를 보내기")
 	@PostMapping(value="/sendCode")
 	public ResponseEntity<String> sendCode(@RequestBody UserDTO user) {
-		System.out.println(user);
+//		System.out.println(user);
 		String receiver = user.getUserEmail();
 		//인증메일 제목 생성
 		String emailTitle = "Spoon & Smiles 인증메일입니다.";
