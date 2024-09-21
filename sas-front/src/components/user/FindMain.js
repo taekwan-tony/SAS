@@ -8,7 +8,7 @@ const FindMain = () => {
         <button
           className="find-id btn-sub round"
           onClick={() => {
-            navigate("/login/findId");
+            navigate("/userMain/login/findId");
           }}
         >
           아이디 찾기
@@ -16,7 +16,7 @@ const FindMain = () => {
         <button
           className="find-pw btn-sub round"
           onClick={() => {
-            navigate("/login/findPw");
+            navigate("/userMain/login/findPw");
           }}
         >
           비밀번호 재설정

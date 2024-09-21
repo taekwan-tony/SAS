@@ -13,4 +13,8 @@ public interface UserDao {
 
 	String findId(UserDTO user);
 
+	UserDTO findUserNo(UserDTO user);
+
+	int updatePw(UserDTO user);
+
 }

@@ -73,8 +73,22 @@ public class UserService {
 
 	public String findId(UserDTO user) {
 		String userId = userDao.findId(user);
-		System.out.println(userId);
+//		System.out.println(userId);
 		return userId;
+	}
+
+	public int checkUser(UserDTO user) {
+		UserDTO findUser = userDao.findUserNo(user);
+		if(findUser != null) {
+			return findUser.getUserNo();
+		}
+		return 0;
+	}
+	@Transactional
+	public int updatePw(UserDTO user) {
+		user.setUserPw(encoder.encode(user.getUserPw()));
+		int result = userDao.updatePw(user);
+		return result;
 	}
 	
 }

@@ -3,8 +3,10 @@
 }
 
 .menuview-bigwrap {
-  max-width: 500px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
+  margin-bottom: 20px;
   padding: 20px;
   border: 1px solid;
 }
@@ -13,26 +15,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.section-menu {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .menu-image {
   text-align: center;
 }
+.menu img {
+  margin-right: 20px;
+}
+.menu p {
+  clear: both;
+}
 
 .menu-image img {
-  width: 400px;
+  width: 1200px;
+  height: 232px;
+}
+.menu-image2 img {
+  width: 200px;
   height: 232px;
 }
 
 .menuview-info {
-  float: left;
+  text-align: center;
 }
 
+.schedule {
+  display: flex;
+  justify-content: center;
+}
+.schedule2 {
+  display: flex;
+}
+.schedule > span {
+  margin-right: 10px;
+}
 .menu-nav {
   display: flex;
   justify-content: space-around;
@@ -73,27 +91,24 @@
 }
 
 .facilities {
-  text-align: center;
   height: 300px;
-  text-align: center;
   margin-bottom: 20px;
-  box-sizing: content-box;
-  border: 1.5px solid;
 }
 
 .reservation-button {
   position: fixed;
-  width: 500px;
+  width: 1200px;
   bottom: 0px;
   margin-top: 20px;
   align-items: center;
   background-color: #eee;
   border: 1px solid #ccc;
-  left: calc((100% - 500px) / 2);
+  left: calc((100% - 1200px) / 2);
   padding: 15px 5px;
   display: flex;
   justify-content: space-around;
   gap: 10px;
+  z-index: 99;
 }
 .reservation-button > span {
   cursor: pointer;
@@ -104,4 +119,93 @@
   height: 40px;
   border-radius: 30px;
   background-color: var(--main2);
+}
+/* 여기부터는 소식*/
+
+/* 여기서부터는 메뉴*/
+.menu-review {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  position: relative;
+}
+
+.toggle-button {
+  background-color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.menu-board {
+  display: flex;
+}
+
+/*여기서부터는 매장정보*/
+
+/*여기는 마이페이지내부예약내역*/
+.res-view {
+  max-width: 1200px; /* 최대 너비 설정 */
+  margin: 270px auto; /* 상단 여백과 중앙 정렬 */
+  display: flex;
+  flex-direction: column; /* 세로 방향 정렬 */
+  align-items: flex-start; /* 가운데 정렬 */
+  border: 1px solid #ddd; /* 경계선 색상 */
+  padding: 20px; /* 전체 패딩 */
+}
+
+.res-history {
+  width: 100%; /* 전체 너비 사용 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.res-btn,
+.res-btn2 {
+  margin: 15px 0; /* 위 아래 여백 */
+  display: flex;
+  justify-content: center; /* 버튼 가운데 정렬 */
+  gap: 10px; /* 버튼 간격 */
+}
+
+.res-content {
+  display: flex; /* 수평 배치 */
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center; /* 전체 콘텐츠 가운데 정렬 */
+  margin: 20px 0; /* 위 아래 여백 */
+}
+
+.profile-image {
+  width: 100px; /* 이미지 크기 조정 */
+  height: 100px; /* 이미지 높이 */
+  border-radius: 50%; /* 원형 이미지 */
+  margin-right: 20px; /* 이미지와 메뉴 사이 여백 */
+}
+
+.res-menu {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+}
+
+.res-menu h2,
+.res-menu p {
+  margin: 5px 0; /* 제목과 내용 간격 조정 */
+}
+
+.res-history img {
+  width: 200px; /* 이미지 크기 조정 */
+  height: 200px; /* 이미지 높이 */
+  border-radius: 50%; /* 원형 이미지 */
+}
+
+.res-history button {
+  height: 50px;
+  background-color: var(--main1);
+  border: none;
+  padding: 10px 30px;
+  border-radius: 5px; /* 버튼 둥글게 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
+  transition: background-color 0.3s; /* 호버 효과 */
 }
