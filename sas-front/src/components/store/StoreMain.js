@@ -1,5 +1,6 @@
 import React from "react";
 import "./storemain.css";
+import { Link } from "react-router-dom";
 
 function StoreMain() {
   return (
@@ -27,36 +28,43 @@ function StoreMain() {
                     icon="fas fa-store"
                     title="매장페이지"
                     className="color"
+                    to="/storepage"
                   />
                   <HexagonItem
                     icon="fas fa-id-card"
                     title="매장등록"
                     className="color"
+                    to="/storeRegist"
                   />
                   <HexagonItem
                     icon="fas fa-utensils"
                     title="메뉴등록"
                     className="color"
+                    to="/menuRegist"
                   />
                   <HexagonItem
                     icon="fas fa-money-check-alt"
                     title="제휴결제"
                     className="color"
+                    to="/payment"
                   />
                   <HexagonItem
                     icon="far fa-comment-dots"
                     title="리뷰관리"
                     className="color"
+                    to="/storemain/managereview"
                   />
                   <HexagonItem
                     icon="fas fa-chart-line"
                     title="통계관리"
                     className="color"
+                    to="/storemain/ownerstatistics"
                   />
                   <HexagonItem
                     icon="far fa-calendar-alt"
                     title="예약관리"
                     className="color"
+                    to="/storemain/managereserved"
                   />
                 </div>
               </div>
@@ -69,7 +77,7 @@ function StoreMain() {
 }
 
 // HexagonItem 컴포넌트를 만들어 반복되는 구조를 재사용 가능하게 함
-function HexagonItem({ icon, title }) {
+function HexagonItem({ icon, title, to }) {
   return (
     <div className="hexagon-item">
       <div className="hex-item">
@@ -82,7 +90,7 @@ function HexagonItem({ icon, title }) {
         <div></div>
         <div></div>
       </div>
-      <a className="hex-content">
+      <Link to={to} className="hex-content">
         <span className="hex-content-inner">
           <span className="icon">
             <i className={icon}></i>
@@ -101,7 +109,7 @@ function HexagonItem({ icon, title }) {
             fill="#1e2530"
           ></path>
         </svg>
-      </a>
+      </Link>
     </div>
   );
 }

@@ -70,5 +70,11 @@ public class UserService {
 		}
 		return null;
 	}
+
+	public String findId(UserDTO user) {
+		String userId = userDao.findId(user);
+		System.out.println(userId);
+		return userId;
+	}
 	
 }

@@ -14,8 +14,21 @@ npm install swiper
 임민규 2024-09-20 11:02
 npm install react-kakao-maps-sdk
 
-임민규 2024-09-20 14:02
-npm install react-quill
 
 임민규 2024-09-20 14:44
 npm install react-icons --save
+
+양창모 2024-09-20 00:00
+npm install react-chartjs-2 chart.js
+김태관 2024-09-20 10:21
+npm install react-quill
+
+김태관 2024-09-20 11:46
+npm install @mui/material @emotion/react @emotion/styled
+
+김태관 2024-09-20 15:53
+npm install @looop/quill-image-resize-module-react
+
+김새봄 2024-09-20 15:53
+npm install react-daum-postcode
+npm install @mui/material @emotion/react @emotion/styled

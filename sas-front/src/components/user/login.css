@@ -5,6 +5,7 @@
 
 button {
   cursor: pointer;
+  outline: none;
 }
 a {
   text-decoration: none;
@@ -27,6 +28,12 @@ a {
 .btn-sub:hover {
   background-color: var(--main1);
   color: white;
+}
+.colorGreen {
+  color: var(--main1);
+}
+.borderBottomRed {
+  border-bottom: 1px solid red;
 }
 /* 로그인 메인 */
 .user-login-main {
@@ -108,6 +115,7 @@ a {
   text-align: left;
   padding: 10px;
   height: 50px;
+  outline: none;
 }
 .user-login-main .find-main-zone > button.find-id {
   margin-top: 75px;
@@ -119,6 +127,16 @@ a {
   text-align: left;
   padding-left: 10px;
   cursor: pointer;
+  position: relative;
+}
+.user-login-main
+  .find-main-zone
+  > div[class^="findBy"]
+  > h3
+  > span.material-icons {
+  position: absolute;
+  left: -15px;
+  top: 1px;
 }
 .user-login-main .find-main-zone > div[class^="findBy"] {
   border: 1px solid var(--main1);
@@ -143,6 +161,7 @@ a {
   width: 80%;
   height: 40px;
   border: none;
+  flex: 1;
 }
 .user-login-main .find-main-zone .find-content .input-title {
   width: 20%;
@@ -157,8 +176,9 @@ a {
 .user-login-main .find-main-zone .find-content .input-item > button {
   font-size: 10px;
   padding: 0;
-  width: 85px;
-  height: 30px;
+  width: 75px;
+  height: 25px;
+  outline: none;
 }
 .user-login-main .find-main-zone .find-content .find-btn {
   text-align: center;
@@ -166,4 +186,41 @@ a {
 .user-login-main .find-main-zone .find-content .find-btn > button {
   width: 70%;
   height: 40px;
+  outline: none;
+}
+
+/* 찾기 결과 */
+.user-login-main .find-main-zone > div.find-result {
+  border: 1px solid var(--main1);
+  padding: 10px;
+  padding-left: 20px;
+}
+.user-login-main .find-main-zone > div.find-result > h3 {
+  text-align: center;
+  margin: 70px auto;
+  font-size: 20px;
+}
+
+.user-login-main .find-main-zone > div.find-result > h3 > span {
+  font-size: 21px;
+  color: var(--font1);
+  font-weight: bold;
+}
+.user-login-main .find-main-zone > div.find-result > div.button {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+.user-login-main .find-main-zone > div.find-result > div.button > a {
+  display: block;
+  width: 40%;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  text-decoration: none;
+}
+
+/* 비밀번호 찾기 */
+.user-login-main .find-main-zone .find-content > .input-item.flex-start {
+  justify-content: flex-start;
 }
