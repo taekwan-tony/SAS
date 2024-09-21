@@ -3,7 +3,8 @@
 }
 
 .menuview-bigwrap {
-  max-width: 500px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid;
@@ -13,26 +14,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.section-menu {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .menu-image {
   text-align: center;
 }
+.menu img {
+  margin-right: 20px;
+}
+.menu p {
+  clear: both;
+}
 
 .menu-image img {
-  width: 400px;
+  width: 1200px;
+  height: 232px;
+}
+.menu-image2 img {
+  width: 200px;
   height: 232px;
 }
 
 .menuview-info {
-  float: left;
+  text-align: center;
 }
 
+.schedule {
+  display: flex;
+  justify-content: center;
+}
+.schedule2 {
+  display: flex;
+}
+.schedule > span {
+  margin-right: 10px;
+}
 .menu-nav {
   display: flex;
   justify-content: space-around;
@@ -73,27 +90,24 @@
 }
 
 .facilities {
-  text-align: center;
   height: 300px;
-  text-align: center;
   margin-bottom: 20px;
-  box-sizing: content-box;
-  border: 1.5px solid;
 }
 
 .reservation-button {
   position: fixed;
-  width: 500px;
+  width: 1200px;
   bottom: 0px;
   margin-top: 20px;
   align-items: center;
   background-color: #eee;
   border: 1px solid #ccc;
-  left: calc((100% - 500px) / 2);
+  left: calc((100% - 1200px) / 2);
   padding: 15px 5px;
   display: flex;
   justify-content: space-around;
   gap: 10px;
+  z-index: 99;
 }
 .reservation-button > span {
   cursor: pointer;
@@ -105,3 +119,27 @@
   border-radius: 30px;
   background-color: var(--main2);
 }
+/* 여기부터는 소식*/
+
+/* 여기서부터는 메뉴*/
+.menu-review {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  position: relative;
+}
+
+.toggle-button {
+  background-color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.menu-board {
+  display: flex;
+}
+
+/*여기서부터는 매장정보*/
