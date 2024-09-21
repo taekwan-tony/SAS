@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.sas.user.model.dao.UserDao">
-
-<select id="searchUser" resultType="user">
-	select 
-		user_no, 
-		user_id, 
-		user_pw,
-		user_phone, 
-		user_email, 
-		user_gender, 
-		user_birth, 
-		user_nickname, 
-		user_name, 
-		user_photo, 
-		login_type 
-	from user_tbl 
-	where user_id=#{userId}
-</select>
-<insert id="insertUser">
-	insert into user_tbl values(user_seq.nextval, 
-								#{userId}, 
-								#{userPw}, 
-								#{userPhone}, 
-								#{userEmail}, 
-								#{userGender},
-								#{userBirth}, 
-								#{userNickname}||user_seq.currval,
-								#{userName},
-								null,
-								1 )
-</insert>
-<select id="findId" resultType="String">
-	select user_id from user_tbl where user_name = #{userName}
-	<if test="!userPhone.equals('')">
-		and user_phone=#{userPhone}
-	</if>
-	<if test="!userEmail.equals('')">
-		and user_email =#{userEmail}
-	</if>	
-</select>
-<select id="findUserNo" resultType="user">
-	select user_no from user_tbl where user_id=#{userId} and user_email=#{userEmail}
-</select>
+	<select id="searchUser" resultType="user">
+		select 
+			user_no, 
+			user_id, 
+			user_pw,
+			user_phone, 
+			user_email, 
+			user_gender, 
+			user_birth, 
+			user_nickname, 
+			user_name, 
+			user_photo, 
+			login_type 
+		from user_tbl 
+		where user_id=#{userId}
+	</select>
+	<insert id="insertUser">
+		insert into user_tbl values(user_seq.nextval, 
+									#{userId}, 
+									#{userPw}, 
+									#{userPhone}, 
+									#{userEmail}, 
+									#{userGender},
+									#{userBirth}, 
+									#{userNickname}||user_seq.currval,
+									#{userName},
+									null,
+									1 )
+	</insert>
+	<select id="findId" resultType="String">
+		select user_id from user_tbl where user_name = #{userName}
+		<if test="!userPhone.equals('')">
+			and user_phone=#{userPhone}
+		</if>
+		<if test="!userEmail.equals('')">
+			and user_email =#{userEmail}
+		</if>	
+	</select>
+	<select id="findUserNo" resultType="user">
+		select user_no from user_tbl where user_id=#{userId} and user_email=#{userEmail}
+	</select>
+	<update id="updatePw">
+		update user_tbl set user_pw = #{userPw} where user_no = #{userNo}
+	</update>
 </mapper>

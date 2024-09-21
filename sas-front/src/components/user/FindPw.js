@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const FindPw = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ userId: "", userEmail: "", userNo: 0 });
   const changeInputVal = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -121,6 +123,12 @@ const FindPw = () => {
       }
     }
   };
+
+  const changePw = () => {
+    if (user.userNo !== 0 && checkCode) {
+      navigate(`/userMain/login/updatePw/${user.userNo}`);
+    }
+  };
   return (
     <>
       <div className="find-main-zone">
@@ -191,7 +199,9 @@ const FindPw = () => {
               {code === "" ? "" : emailMsg}
             </p>
             <div className="find-btn">
-              <button className="btn-main round">비밀번호 재설정</button>
+              <button className="btn-main round" onClick={changePw}>
+                비밀번호 재설정
+              </button>
             </div>
           </div>
         </div>

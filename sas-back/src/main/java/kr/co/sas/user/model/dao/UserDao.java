@@ -15,4 +15,6 @@ public interface UserDao {
 
 	UserDTO findUserNo(UserDTO user);
 
+	int updatePw(UserDTO user);
+
 }

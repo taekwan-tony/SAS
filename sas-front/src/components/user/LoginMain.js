@@ -8,6 +8,7 @@ import { loginUserIdState, userTypeState } from "../utils/RecoilData";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import FindResult from "./FindResult";
+import UpdatePw from "./UpdatePw";
 
 const LoginMain = () => {
   return (
@@ -22,6 +23,7 @@ const LoginMain = () => {
           <Route path="findId" element={<FindId />}></Route>
           <Route path="findPw" element={<FindPw />}></Route>
           <Route path="findResult/:userId" element={<FindResult />}></Route>
+          <Route path="updatePw/:userNo" element={<UpdatePw />}></Route>
         </Routes>
       </div>
     </div>

@@ -84,5 +84,11 @@ public class UserService {
 		}
 		return 0;
 	}
+	@Transactional
+	public int updatePw(UserDTO user) {
+		user.setUserPw(encoder.encode(user.getUserPw()));
+		int result = userDao.updatePw(user);
+		return result;
+	}
 	
 }
