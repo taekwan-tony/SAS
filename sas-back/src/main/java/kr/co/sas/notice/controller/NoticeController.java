@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,10 +54,29 @@ public class NoticeController {
 		return ResponseEntity.ok(result);
 	}
 	
-	@GetMapping(value="/detail/{noticeNo}")
-	public ResponseEntity<NoticeDTO> view(@PathVariable int noticeNo){
+	@GetMapping(value="/detail/{noticeNo}/{noticeType}")
+	public ResponseEntity<Map> view(@PathVariable int noticeNo,@PathVariable int noticeType){
+		Map map = noticeService.selectOneNotice(noticeNo,noticeType);
+		return ResponseEntity.ok(map);
+	}
+	
+	@DeleteMapping(value="/delete/{noticeNo}")
+	public ResponseEntity<Integer> delete(@PathVariable int noticeNo){
+		int result = noticeService.deleteNotice(noticeNo);
+		return ResponseEntity.ok(result);
+	}
+	
+	@GetMapping(value="/selectOne/{noticeNo}")
+	public ResponseEntity<NoticeDTO> selectOneNotice(@PathVariable int noticeNo){
 		NoticeDTO notice = noticeService.selectOneNotice(noticeNo);
 		return ResponseEntity.ok(notice);
 	}
 
+	@PatchMapping(value="/modify")
+	public ResponseEntity<Integer> modify(@ModelAttribute NoticeDTO notice){
+		System.out.println(notice);
+		int result = noticeService.updateNotice(notice);
+		System.out.println(result);
+		return ResponseEntity.ok(result);
+	}
 }

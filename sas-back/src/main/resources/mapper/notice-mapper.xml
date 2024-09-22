@@ -30,4 +30,22 @@
 	<select id="selectOneNotice" resultType="notice">
 		select * from notice where notice_no = #{noticeNo}
 	</select>
+	<select id="selectBothNotice" resultType="noticeBoth">
+		select * from(select notice_no,lag(notice_no, 1, 0) over(order by notice_no desc) prev_no,lag(notice_title, 1, '이전글이 없습니다.')
+				 over (order by notice_no desc) prev_title,lead(notice_no,1,0) over (order by notice_no desc) next_no,lead(notice_title,1,'다음글이 없습니다.')
+				over (order by notice_no desc) next_title 
+				from (select * from notice 
+				<if test="noticeType != 0">
+		 		where notice_type = #{noticeType}
+		 		</if>
+				) order by notice_no desc) where  notice_no= #{noticeNo}
+	</select>
+	<delete id="deleteNotice">
+		delete from notice where notice_no=#{noticeNo}
+	</delete>
+	
+	<update id="updateNotice">
+		update notice set notice_title=#{noticeTitle},notice_content=#{noticeContent} where notice_no = #{noticeNo}
+	</update>
+	
 </mapper>

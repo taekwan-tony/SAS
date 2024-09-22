@@ -67,6 +67,11 @@
   cursor: pointer;
 }
 
+.notice-posting-wrap > tr:hover * {
+  background-color: var(--main2);
+  color: white;
+}
+
 .notice-posting-wrap > tr > td {
   border-bottom: 1px solid #ccc;
   height: 50px;
@@ -185,7 +190,6 @@
 .notice-detail-wrap {
   min-width: 900px;
   width: 70%;
-  border-right: ;
   margin: 50px auto;
 }
 
@@ -194,4 +198,34 @@
 }
 .notice-detail-table tr {
   height: 60px;
+  border: 0.5px solid var(--font3);
+}
+
+.notice-detail-table tr th {
+  text-align: center;
+  border-right: 0.5px solid var(--font3);
+  border-left: 0.5px solid var(--font3);
+}
+
+.notice-detail-table tr td {
+  padding-left: 10px;
+}
+.notice-detail-table-td {
+  height: 500px;
+  padding-top: 10px;
+  vertical-align: top;
+}
+
+.notice-both-wrap {
+  cursor: pointer;
+}
+
+.notice-both-wrap:hover * {
+  background-color: var(--main2);
+  color: white;
+}
+.notice-write-button-zone > .notice-back {
+  width: 360px;
+  height: 50px;
+  font-size: 24px;
 }

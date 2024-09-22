@@ -4,7 +4,7 @@ import "./notice.css";
 import NoticeWrite from "./NoticeWrite";
 import { useState } from "react";
 import NoticeDetail from "./NoticeDetail";
-
+import NoticeModify from "./NoticeModify";
 const NoticeMain = () => {
   const [noticeDetailTitle, setNoticeDetailTitle] = useState("");
   return (
@@ -27,9 +27,15 @@ const NoticeMain = () => {
             }
           />
           <Route
-            path="detail/:noticeNo"
+            path="detail/:noticeNo/:noticeType"
             element={
               <NoticeDetail setNoticeDetailTitle={setNoticeDetailTitle} />
+            }
+          />
+          <Route
+            path="modify/:noticeNo/:noticeType"
+            element={
+              <NoticeModify setNoticeDetailTitle={setNoticeDetailTitle} />
             }
           />
         </Routes>

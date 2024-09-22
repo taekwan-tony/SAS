@@ -32,7 +32,7 @@ const NoticeList = (props) => {
       <div className="notice-list-menu">
         <div
           className={
-            noticeType === 0 ? "notice-menu notice-menu-check" : "notice-menu"
+            noticeType == 0 ? "notice-menu notice-menu-check" : "notice-menu"
           }
           onClick={changeNoticeType}
           id="0"
@@ -41,7 +41,7 @@ const NoticeList = (props) => {
         </div>
         <div
           className={
-            noticeType === 1 ? "notice-menu notice-menu-check" : "notice-menu"
+            noticeType == 1 ? "notice-menu notice-menu-check" : "notice-menu"
           }
           onClick={changeNoticeType}
           id="1"
@@ -50,7 +50,7 @@ const NoticeList = (props) => {
         </div>
         <div
           className={
-            noticeType === 2 ? "notice-menu notice-menu-check" : "notice-menu"
+            noticeType == 2 ? "notice-menu notice-menu-check" : "notice-menu"
           }
           onClick={changeNoticeType}
           id="2"
@@ -61,7 +61,13 @@ const NoticeList = (props) => {
       <div className="notice-list-main">
         <table className="notice-posting-wrap">
           {noticeList.map((notice, i) => {
-            return <NoticeItem key={"notice-" + i} notice={notice} />;
+            return (
+              <NoticeItem
+                key={"notice-" + i}
+                notice={notice}
+                noticeType={noticeType}
+              />
+            );
           })}
         </table>
       </div>
@@ -84,11 +90,12 @@ const NoticeList = (props) => {
 
 const NoticeItem = (props) => {
   const notice = props.notice;
+  const noticeType = props.noticeType;
   const navigate = useNavigate();
   return (
     <tr
       onClick={() => {
-        navigate(`/admin/notice/detail/${notice.noticeNo}`);
+        navigate(`/admin/notice/detail/${notice.noticeNo}/${noticeType}`);
       }}
     >
       <td style={{ width: "15%" }}>{notice.noticeNo}</td>
