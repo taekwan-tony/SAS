@@ -52,19 +52,19 @@ function StoreMain() {
                     icon="far fa-comment-dots"
                     title="리뷰관리"
                     className="color"
-                    to="/storemain/managereview"
+                    to="/storecheck/managereview"
                   />
                   <HexagonItem
                     icon="fas fa-chart-line"
                     title="통계관리"
                     className="color"
-                    to="/storemain/ownerstatistics"
+                    to="/storecheck/ownerstatistics"
                   />
                   <HexagonItem
                     icon="far fa-calendar-alt"
                     title="예약관리"
                     className="color"
-                    to="/storemain/managereserved"
+                    to="/storecheck/managereserved"
                   />
                 </div>
               </div>

@@ -13,12 +13,13 @@
   display: flex;
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
-  width: 100vw; /* 화면 전체 너비 */
+  width: 100%; /* 화면 전체 너비 */
   height: 100px; /* 헤더 높이 */
   position: absolute;
   top: 0;
   left: 0;
   padding-bottom: 20px;
+  max-width: 100%;
 }
 
 .dashboard-head h1 {
@@ -36,7 +37,7 @@
   position: fixed; /* 배경이 스크롤에 따라 움직이지 않도록 */
   top: 0;
   left: 0;
-  width: 100vw; /* 화면 너비 */
+  width: 100%; /* 화면 너비 */
   height: 100vh; /* 화면 높이 */
   z-index: -1; /* 배경이 콘텐츠 뒤에 있도록 설정 */
 }
@@ -46,6 +47,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  max-width: 100%;
   object-fit: cover; /* 이미지를 비율에 맞게 덮도록 설정 */
   z-index: -1; /* 이미지가 콘텐츠 뒤에 있도록 설정 */
 }
@@ -56,15 +58,38 @@
   justify-content: space-between;
   gap: 20px;
 }
-
+/* 상단 섹션 */
 .info-card {
   background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
-  padding: 20px;
   border-radius: 12px;
   flex: 1;
-  text-align: center;
+  text-align: left;
+  display: flex;
+  justify-content: space-between; /* 텍스트와 아이콘을 양 끝으로 배치 */
+  align-items: center; /* 수직 가운데 정렬 */
+  padding: 20px;
+}
+.info-text {
+  display: flex;
+  flex-direction: column; /* 텍스트가 수직으로 배치되도록 설정 */
+}
+.info-card-icon-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #518142;
+  width: 50px; /* 배경 크기 */
+  height: 50px; /* 배경 크기 */
+  border-radius: 12px; /* 모서리 둥글게 */
+  color: white; /* 아이콘 색상 */
 }
 
+.info-card-icon-bg svg {
+  font-size: 24px; /* 아이콘 크기 */
+}
+.info-card-icon-bg path {
+  color: #fff;
+}
 .info-card h3 {
   font-size: 1.2rem;
   color: #bfbfbf;
@@ -82,12 +107,167 @@
 .negative {
   color: #f44336;
 }
-
+/* 중단 섹션 */
 .middle-section .main-info {
   flex: 1;
   background: linear-gradient(120deg, #1d201e 70%, #29482a47 99%);
   padding: 20px;
   border-radius: 12px;
+}
+
+.middle-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.calendar-placeholder {
+  flex: 1;
+  margin-right: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  height: 500px; /* 임시 높이 설정 */
+}
+
+.reservation-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  padding: 20px;
+  border-radius: 15px;
+  justify-content: space-between;
+  background: linear-gradient(120deg, #1d201e 70%, #29482a47 99%);
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.gauge-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.progress-ring {
+  transform: rotate(180deg); /* 원을 시계 방향으로 회전 */
+}
+
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(90deg);
+  transform-origin: 50% 50%;
+}
+
+.gauge-text {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-field {
+  padding: 5px;
+  padding-left: 20px;
+  margin-top: 10px;
+  width: 100px;
+  text-align: center;
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+  background: linear-gradient(30deg, #1d201e 10%, #333f37 50%, #29482a47 90%);
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.add-reservation-btn,
+.remove-reservation-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 120px; /* 버튼의 고정 너비 설정 */
+  height: 50px; /* 버튼의 고정 높이 설정 */
+  text-align: center;
+  margin-top: 30px;
+}
+
+.add-reservation-btn {
+  background: linear-gradient(290deg, #3b5f47 10%, #29482a47 80%);
+  color: white;
+}
+
+.add-reservation-btn:disabled {
+  background-color: #999; /* 비활성화 상태 시 버튼 색상 변경 */
+  cursor: not-allowed;
+}
+
+.remove-reservation-btn {
+  background: linear-gradient(290deg, #291a1a 10%, #f7080847 80%);
+  color: white;
+}
+
+.remove-reservation-btn:disabled {
+  background-color: #999; /* 비활성화 상태 시 버튼 색상 변경 */
+  cursor: not-allowed;
+}
+
+.warning-message {
+  color: red;
+  font-size: 14px;
+  display: none; /* 기본적으로 경고 메시지 숨김 */
+}
+
+.warning-message.active {
+  display: block; /* 경고 메시지가 활성화되면 보이게 설정 */
+}
+
+/* 하단테이블 */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(35deg, #222623 20%, #1f2822 50%, #95c29647 99%);
+  color: white;
+  text-align: left;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+}
+
+.styled-table thead tr {
+  border-bottom: 1px solid #749581;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #749581;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: none;
 }
 
 /* 하단테이블 */
@@ -147,7 +327,7 @@
   bottom: 0;
   width: 550px;
   height: 60px;
-  background: linear-gradient(45deg, #1d2420, #183e29, #487144);
+  background: linear-gradient(45deg, #1d2420, #183e29, #203120);
   display: flex;
   justify-content: center;
   align-items: center;
