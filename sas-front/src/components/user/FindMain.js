@@ -13,7 +13,14 @@ const FindMain = () => {
         >
           아이디 찾기
         </button>
-        <button className="find-pw btn-sub round">비밀번호 찾기</button>
+        <button
+          className="find-pw btn-sub round"
+          onClick={() => {
+            navigate("/login/findPw");
+          }}
+        >
+          비밀번호 재설정
+        </button>
       </div>
     </>
   );

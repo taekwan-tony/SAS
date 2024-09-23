@@ -1,11 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./join.css";
 import NicknameData from "./NicknameData.json";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-//닉네임 어케할지 고민중
-//1. 여기에 넣는다 / 2. 임의로 지정하고 바꾸게 한다
 const Join = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
@@ -48,8 +46,9 @@ const Join = () => {
       setAgreeAllChecked(false);
     }
   };
-  // 아이디 체크
+  // 아이디 체크 //아직 정규식 안씀
   const idRef = useRef(null);
+  const [checkIdResult, setCheckIdResult] = useState(false);
   const checkId = () => {
     idRef.current.classList.remove("valid");
     idRef.current.classList.remove("invalid");
@@ -60,6 +59,7 @@ const Join = () => {
         if (res.data) {
           idRef.current.innerText = "사용가능한 아이디 입니다.";
           idRef.current.classList.add("valid");
+          setCheckIdResult(true);
         } else {
           idRef.current.innerText = "이미 사용중인 아이디 입니다.";
           idRef.current.classList.add("invalid");
@@ -69,22 +69,113 @@ const Join = () => {
         console.log(err);
       });
   };
-  // 비밀번호 체크
+  // 비밀번호 체크 //아직 정규식 안씀
   const pwReMsgRef = useRef(null);
-
+  const [checkPwResult, setCheckPwResult] = useState(false);
   const checkPw = () => {
     pwReMsgRef.current.classList.remove("valid");
     pwReMsgRef.current.classList.remove("invalid");
     if (pwRe === user.userPw) {
       pwReMsgRef.current.innerText = "비밀번호와 일치합니다.";
       pwReMsgRef.current.classList.add("valid");
+      setCheckPwResult(true);
     } else {
       pwReMsgRef.current.innerText = "비밀번호와 일치하지 않습니다.";
       pwReMsgRef.current.classList.add("invalid");
     }
   };
+  //인증번호 만료 시간
+  let intervalId = null;
+  const [min, setMin] = useState(3);
+  const [sec, setSec] = useState("00");
+  const [timer, setTimer] = useState(180);
+  useEffect(() => {
+    console.log(timer);
+    if (!checkCode) {
+      intervalId = setInterval(function () {
+        setTimer(timer - 1);
+        if (sec == "00") {
+          //0초 다음은 분을 내려야 하므로
+          if (min === 0) {
+            //0분0초=>멈춰야함
+            clearInterval(intervalId);
+            setCode(null);
+            setEmailMsg("인증시간이 만료되었습니다.");
+            codeCheckRef.current.classList.add("invalid");
+          } else {
+            setMin(min - 1);
+            setSec("59");
+          }
+        } else {
+          //0초가 아니면 초를 내리면 되므로
+          const newSec = Number(sec) - 1;
+          if (newSec < 10) {
+            setSec("0" + newSec);
+          } else {
+            setSec(newSec);
+          }
+        }
+      }, 1000);
+    } else {
+      clearInterval(intervalId);
+    }
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [sec, timer]);
+
+  // 인증번호
+  const [emailMsg, setEmailMsg] = useState("");
+  const codeCheckRef = useRef(null);
+  const [codeNumber, setCodeNumber] = useState("");
+  const changeCode = (e) => {
+    setCodeNumber(e.target.value);
+  };
+  const [code, setCode] = useState("");
+  const [checkCode, setCheckCode] = useState(false);
+  const sendCode = () => {
+    if (user.userEmail != null && user.userEmail !== "") {
+      axios
+        .post(`${backServer}/user/sendCode`, { userEmail: user.userEmail })
+        .then((res) => {
+          setCode(res.data);
+          console.log(res.data);
+          setMin(3);
+          setSec("00");
+          setTimer(180);
+          setEmailMsg("");
+          setCheckCode(false);
+          codeCheckRef.current.classList.remove("valid");
+          codeCheckRef.current.classList.remove("invalid");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  const checkCodeRight = () => {
+    setCheckCode(false);
+    codeCheckRef.current.classList.remove("valid");
+    codeCheckRef.current.classList.remove("invalid");
+    if (
+      user.userEmail != null &&
+      user.userEmail !== "" &&
+      code != "" &&
+      codeNumber != ""
+    ) {
+      if (code === codeNumber) {
+        setCheckCode(true);
+        setEmailMsg("인증이 완료되었습니다.");
+        codeCheckRef.current.classList.add("valid");
+      } else {
+        setEmailMsg("인증번호가 옳지 않습니다.");
+        codeCheckRef.current.classList.add("invalid");
+      }
+    }
+  };
   // 회원가입
   const join = () => {
+    let joinReady = true;
     user.userNickname =
       NicknameData.determiners[
         Math.floor(Math.random() * NicknameData.determiners.length)
@@ -94,16 +185,33 @@ const Join = () => {
         Math.floor(Math.random() * NicknameData.animals.length)
       ];
     setUser({ ...user });
-    axios.post(`${backServer}/user`, user).then((res) => {
-      if (res.data) {
-        Swal.fire({
-          title: "회원가입 완료",
-          icon: "success",
-        }).then(() => {
-          navigate("/login");
-        });
+    for (var key in user) {
+      if (user[key] === null || user[key] === "") {
+        joinReady = false;
+        break;
       }
-    });
+    }
+    if (joinReady) {
+      for (var key in agreeChecked) {
+        if (!agreeChecked[key]) {
+          joinReady = false;
+          break;
+        }
+      }
+    }
+
+    if (joinReady && checkIdResult && checkPwResult && checkCode) {
+      axios.post(`${backServer}/user`, user).then((res) => {
+        if (res.data) {
+          Swal.fire({
+            title: "회원가입 완료",
+            icon: "success",
+          }).then(() => {
+            navigate("/usermain/login");
+          });
+        }
+      });
+    }
   };
   return (
     <div className="userJoin-main">
@@ -194,9 +302,11 @@ const Join = () => {
               value={user.userEmail}
               onChange={changeInputVal}
             />
-            <button className="btn-sub round">인증번호 전송</button>
+            <button className="btn-sub round" onClick={sendCode}>
+              인증번호 전송
+            </button>
           </div>
-          <div className="input-item">
+          <div className="input-item join-number">
             <div className="input-title">
               <label htmlFor="number">인증번호</label>
             </div>
@@ -205,8 +315,18 @@ const Join = () => {
               name="number"
               id="number"
               placeholder="인증번호 입력"
+              value={codeNumber}
+              onChange={changeCode}
+              onBlur={checkCodeRight}
             />
-            <p className="msg email-msg"></p>
+            <span
+              className={"auth-time msg" + (checkCode ? " valid" : " invalid")}
+            >
+              {code !== "" ? min + ":" + sec : ""}
+            </span>
+            <p className="msg email-msg" ref={codeCheckRef}>
+              {code === "" ? "" : emailMsg}
+            </p>
           </div>
           <div className="input-item">
             <div className="input-title">

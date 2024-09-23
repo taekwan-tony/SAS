@@ -16,7 +16,6 @@ const NoticeList = (props) => {
     axios
       .get(`${backServer}/notice/list/${reqPage}/${noticeType}`)
       .then((res) => {
-        console.log(res);
         setNoticeList(res.data.list);
         setPi(res.data.pi);
       })
@@ -73,7 +72,7 @@ const NoticeList = (props) => {
         <button
           className="btn-main round"
           onClick={() => {
-            navigate("/admin/board/write");
+            navigate("/admin/notice/write");
           }}
         >
           글쓰기
@@ -92,7 +91,9 @@ const NoticeItem = (props) => {
       <td style={{ width: "15%" }}>{notice.noticeNo}</td>
       <td style={{ width: "50%" }}>{notice.noticeTitle}</td>
       <td style={{ width: "20%" }}>{notice.noticeEnrollDate}</td>
-      <td style={{ width: "15%" }}>{notice.noticeType}</td>
+      <td style={{ width: "15%" }}>
+        {notice.noticeType == 1 ? "소비자" : "매장"}
+      </td>
     </tr>
   );
 };
