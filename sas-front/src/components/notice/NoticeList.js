@@ -60,6 +60,14 @@ const NoticeList = (props) => {
       </div>
       <div className="notice-list-main">
         <table className="notice-posting-wrap">
+          <thead>
+            <tr className="notice-posting-title">
+              <th style={{ width: "15%" }}>번호</th>
+              <th style={{ width: "50%" }}>제목</th>
+              <th style={{ width: "20%" }}>등록일</th>
+              <th style={{ width: "15%" }}>구분</th>
+            </tr>
+          </thead>
           {noticeList.map((notice, i) => {
             return (
               <NoticeItem
