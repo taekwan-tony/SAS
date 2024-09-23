@@ -14,6 +14,7 @@ import ManageReview from "./components/store/ManageReview";
 import StorePartnership from "./components/store/StorePartnership";
 import StoreCheckMain from "./components/store/StoreCheckMain";
 import Ownerstatistics from "./components/ownerstatistics/OwnerStatistics";
+import StoreLogin from "./components/store/StoreLogin";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<Main />} />
         {/* 확인용-수진;user 메인 생기면 옮기겠슴다 */}
         {/* 답변: ㅇㅋ */}
+        <Route path="/storeLogin" element={<StoreLogin />} />
         <Route path="/storemain" element={<StoreMain />} />
         <Route path="/usermain/*" element={<UserMain />} />
         <Route
