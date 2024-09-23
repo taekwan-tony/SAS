@@ -148,7 +148,7 @@
 /*여기는 마이페이지내부예약내역*/
 .res-view {
   max-width: 1200px; /* 최대 너비 설정 */
-  margin: 270px auto; /* 상단 여백과 중앙 정렬 */
+  margin: 300px auto; /* 상단 여백과 중앙 정렬 */
   display: flex;
   flex-direction: column; /* 세로 방향 정렬 */
   align-items: flex-start; /* 가운데 정렬 */
@@ -157,44 +157,39 @@
 }
 
 .res-history {
+  display: flex;
+  flex-direction: column;
   width: 100%; /* 전체 너비 사용 */
-  text-align: center; /* 텍스트 가운데 정렬 */
+  text-align: left;
+}
+.res-history h1 {
+  color: var(--main1);
 }
 
 .res-btn,
 .res-btn2 {
-  margin: 15px 0; /* 위 아래 여백 */
+  margin-top: 10px; /* 위 아래 여백 */
   display: flex;
-  justify-content: center; /* 버튼 가운데 정렬 */
-  gap: 10px; /* 버튼 간격 */
+  gap: 15px; /* 버튼 간격 */
 }
 
 .res-content {
   display: flex; /* 수평 배치 */
-  align-items: center; /* 수직 가운데 정렬 */
-  justify-content: center; /* 전체 콘텐츠 가운데 정렬 */
+  align-items: flex-start; /* 수직 가운데 정렬 */
   margin: 20px 0; /* 위 아래 여백 */
 }
-
-.profile-image {
-  width: 100px; /* 이미지 크기 조정 */
-  height: 100px; /* 이미지 높이 */
-  border-radius: 50%; /* 원형 이미지 */
-  margin-right: 20px; /* 이미지와 메뉴 사이 여백 */
-}
-
 .res-menu {
+  flex-grow: 1;
   display: flex;
-  flex-direction: column; /* 세로 정렬 */
-  align-items: flex-start; /* 왼쪽 정렬 */
+  flex-direction: column;
 }
 
 .res-menu h2,
 .res-menu p {
-  margin: 5px 0; /* 제목과 내용 간격 조정 */
+  margin-left: 60px; /* 제목과 내용 간격 조정 */
 }
 
-.res-history img {
+.res-content img {
   width: 200px; /* 이미지 크기 조정 */
   height: 200px; /* 이미지 높이 */
   border-radius: 50%; /* 원형 이미지 */
@@ -203,9 +198,72 @@
 .res-history button {
   height: 50px;
   background-color: var(--main1);
-  border: none;
   padding: 10px 30px;
   border-radius: 5px; /* 버튼 둥글게 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
   transition: background-color 0.3s; /* 호버 효과 */
+}
+.review-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.review-title {
+  margin-bottom: 10px;
+}
+
+.review-input {
+  margin-bottom: 20px;
+}
+.label-container {
+  white-space: nowrap; /* 줄 바꿈을 방지합니다 */
+}
+
+div.review-container span.MuiRating-iconFilled path {
+  color: gold;
+}
+.review-submit {
+  background-color: var(--main1);
+  width: 450px;
+  border-radius: 10%;
+}
+/* 검색결과 하는곳~*/
+.searchList {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 세로 방향으로 중앙 정렬 */
+}
+
+.section-search {
+  display: flex;
+  align-items: center; /* 수평 방향으로 중앙 정렬 */
+  margin-top: 20px; /* 여백 추가 */
+}
+
+.searchView {
+  flex: 1; /* 유연한 너비 */
+  display: flex;
+  justify-content: center; /* 이미지 중앙 정렬 */
+}
+
+.searchview-info {
+  flex: 2; /* 유연한 너비 */
+  margin-left: 20px; /* 여백 추가 */
+}
+
+button {
+  background-color: #007bff; /* 버튼 색상 */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* 여백 추가 */
+}
+
+button:hover {
+  background-color: #0056b3; /* hover 효과 */
 }

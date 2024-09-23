@@ -1,47 +1,28 @@
 import { Route, Routes } from "react-router-dom";
 import "../menu/menuview.css";
-import "./mypage.css";
+import ReactQuill from "react-quill";
+import { useState } from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import StarIcon from "@mui/icons-material/Star";
+import { styled } from "@mui/material/styles";
 const Mypage = () => {
   return (
-    <div className="mypage-main">
-      <Routes>
-        <Route path="" element={<MypageMain />}></Route>
-        <Route path="resview" element={<ReservationView />}></Route>
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="resview" element={<ReservationView />}></Route>
+      {/* <Route path="myreview" element={<MyReview />} /> */}
+      <Route path="myreview" element={<ReviewWrite />} />
+    </Routes>
   );
 };
-const MypageMain = () => {
-  return (
-    <>
-      <Profile />
-    </>
-  );
-};
-const Profile = () => {
-  return (
-    <div className="profile-wrap">
-      <div className="img">{/* 버튼 이안에 */}</div>
-      <div className="user-info">
-        <h2 className="user-nickName">회원 닉네임</h2>
-        <h3 className="user-Id">회원아이디</h3>
-        <div className="user-info-other">
-          <span>여</span>
-          <span>1997.05.17</span>
-          <span>010-0000-0000</span>
-          <span>user01@gmail.com</span>
-        </div>
-      </div>
-      <div className="user-page-info"></div>
-    </div>
-  );
-};
+
 const ReservationView = () => {
   return (
     <div className="res-view">
       <section>
         <div className="res-history">
-          <h2>예약내역</h2>
+          <h1>예약내역</h1>
           <div className="res-btn">
             <button
               className="btn-main
@@ -55,11 +36,12 @@ const ReservationView = () => {
             >
               방문완료
             </button>
+            <button className="btn-main">리뷰쓰기</button>
           </div>
           <div className="res-content">
             <img
               src="/image/IMG_3238.jpg"
-              alt="프사"
+              alt="가게사진"
               className="profile-image"
             />
             <div className="res-menu">
@@ -78,5 +60,102 @@ const ReservationView = () => {
     </div>
   );
 };
+const labels = {
+  1: "최악이에요.",
 
+  2: "별로 추천하고 싶지 않아요.",
+
+  3: "무난해요.",
+
+  4: "맛있었어요, 다시 올 것 같아요.",
+
+  5: "완벽해요, 강력 추천합니다!",
+};
+
+function getLabelText(value) {
+  return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
+}
+const StyledRating = styled(Rating)({
+  "& .MuiRating-iconFilled": {
+    color: "gold",
+  },
+  "& .MuiRating-iconHover": {
+    color: "gold",
+  },
+});
+const YellowStar = styled(StarIcon)({
+  color: "gold", // 노란색
+});
+
+const HoverRating = ({ value, setValue, hover, setHover }) => {
+  return (
+    <Box
+      sx={{
+        width: 200,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Rating
+        name="hover-feedback"
+        value={value}
+        precision={1}
+        getLabelText={getLabelText}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+        onChangeActive={(event, newHover) => {
+          setHover(newHover);
+        }}
+        emptyIcon={<StarIcon style={{ opacity: 0.33 }} fontSize="inherit" />}
+      />
+      {value !== null && (
+        <Box sx={{ mt: 1, whiteSpace: "nowrap" }}>
+          {labels[hover !== -1 ? hover : value]}
+        </Box>
+      )}
+    </Box>
+  );
+};
+const ReviewWrite = () => {
+  const [content, setContent] = useState("");
+  console.log(content);
+  const [title, setTitle] = useState("");
+  const handleTitleChange = (e) => {
+    setTitle(e.currentTarget.value);
+  };
+  const [ratingValue, setRatingValue] = useState(2);
+  const [hover, setHover] = useState(-1);
+  const handleSubmit = async () => {
+    const date = new Date();
+  };
+
+  return (
+    <div className="review-container">
+      <label htmlFor="message" className="block mb-2 font-medium text-gray-900">
+        이용하신 매장은 어떠셨나요? 평점을 남겨주세요
+      </label>
+      <HoverRating
+        value={ratingValue}
+        setValue={setRatingValue}
+        hover={hover}
+        setHover={setHover}
+      />
+      <ReactQuill
+        style={{ width: "450px", height: "232px", marginTop: "20px" }}
+        modules={{ toolbar: false }}
+        onChange={setContent}
+        placeholder="레스토랑과 유저들에게 도움이 되는 따뜻한 리뷰를 작성해주세요."
+      />
+      <button
+        className="review-submit"
+        style={{ marginTop: "20px" }}
+        onClick={handleSubmit}
+      >
+        등록
+      </button>
+    </div>
+  );
+};
 export default Mypage;

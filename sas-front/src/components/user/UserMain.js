@@ -10,12 +10,13 @@ import "swiper/css/mousewheel";
 import { loginUserIdState, userTypeState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import axios from "axios";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Join from "./Join";
 import LoginMain from "./LoginMain";
 import Mypage from "./Mypage";
 import MenuView from "../menu/MenuView";
 import "../menu/menuview.css";
+import SearchList from "../menu/SearchList";
 
 function UserMain() {
   // 일반회원 로그인 지속 구현-수진(문제 생기면 말씀해주세요..)
@@ -93,24 +94,44 @@ function UserMain() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // 검색창 구현중..
+  const [searchInput, setSearchInput] = useState("");
+  const navigate = useNavigate();
+  const changeInputVal = (e) => {
+    setSearchInput(e.target.value);
+  };
+  const search = () => {
+    navigate(`searchlist/${searchInput}`);
+    setSearchInput("");
+  };
   return (
     /* 페이지헤더 */
     <div className="all-page-wrap">
       <div className={`page-header ${isScrolled ? "scrolled-header" : ""}`}>
-        <a href="./usermain">
+        <a href="/usermain">
           <h1 className={`logo-text ${isScrolled ? "scrolled-logo-text" : ""}`}>
             Spoon & Smiles
           </h1>
         </a>
         <div className="header-search-form">
-          <form className={`search-form ${isScrolled ? "scrolled-form" : ""}`}>
+          <form
+            className={`search-form ${isScrolled ? "scrolled-form" : ""}`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              search();
+            }}
+          >
             <input
               type="text"
               name="page-header-input"
               className={`page-header-input ${isExpanded ? "square" : ""} ${
                 isScrolled ? "scrolled-input" : ""
               }`}
+              value={searchInput}
+              onChange={changeInputVal}
             />
+
             <button
               type="button"
               className={`page-header-search ${isExpanded ? "close" : ""} ${
@@ -169,9 +190,9 @@ function UserMain() {
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to="mypage/myreview">
                         <i class="fa-solid fa-comment"></i>나의 리뷰
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -221,6 +242,7 @@ function UserMain() {
         <Route path="login/*" element={<LoginMain />} />
         <Route path="mypage/*" element={<Mypage />}></Route>
         <Route path="menuview/*" element={<MenuView />} />
+        <Route path="searchlist/:searchItem" element={<SearchList />} />
         <Route
           path=""
           element={
