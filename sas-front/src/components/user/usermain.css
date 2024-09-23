@@ -224,6 +224,7 @@ label #cancle-navi {
   margin-left: 200px;
   margin-top: -10px;
   font-family: "Gloria Hallelujah", cursive; /* 구글 폰트 적용 */
+  color: #399918;
 }
 
 .page-header .search-bar {
