@@ -1,6 +1,12 @@
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import "../menu/menuview.css";
 import "./mypage.css";
+import {
+  MypageFavorite,
+  Profile,
+  ReserveContent,
+  ReviewContent,
+} from "./MypageContent";
 const Mypage = () => {
   return (
     <div className="mypage-main">
@@ -15,27 +21,37 @@ const MypageMain = () => {
   return (
     <>
       <Profile />
+      <section className="reserve-list mypage-list-wrap">
+        <Link to="#">더보기</Link>
+        <h3 className="title">
+          나의 예약 <span className="count">4</span>
+        </h3>
+        <div className="reserve-content-wrap list-content">
+          <ReserveContent />
+          <ReserveContent />
+          <ReserveContent />
+        </div>
+      </section>
+      <section className="mypage-list-wrap favorite-list">
+        <Link to="#">더보기</Link>
+        <h3 className="title">
+          즐겨찾기 <span className="count">4</span>
+        </h3>
+        <MypageFavorite />
+      </section>
+      <section className="mypage-list-wrap review-list">
+        <Link to="#">더보기</Link>
+        <h3 className="title">
+          나의 리뷰 <span className="count">4</span>
+        </h3>
+        <div className="list-content review-content-wrap">
+          <ReviewContent />
+        </div>
+      </section>
     </>
   );
 };
-const Profile = () => {
-  return (
-    <div className="profile-wrap">
-      <div className="img">{/* 버튼 이안에 */}</div>
-      <div className="user-info">
-        <h2 className="user-nickName">회원 닉네임</h2>
-        <h3 className="user-Id">회원아이디</h3>
-        <div className="user-info-other">
-          <span>여</span>
-          <span>1997.05.17</span>
-          <span>010-0000-0000</span>
-          <span>user01@gmail.com</span>
-        </div>
-      </div>
-      <div className="user-page-info"></div>
-    </div>
-  );
-};
+
 const ReservationView = () => {
   return (
     <div className="res-view">

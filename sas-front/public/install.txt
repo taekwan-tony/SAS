@@ -34,3 +34,7 @@ npm install @mui/material @emotion/react @emotion/styled
 
 양창모 2024-09-22 09:18
 npm install react-icons
+
+조수진 2024-09-23 12:00
+npm install react-slick --save
+npm install slick-carousel --save
