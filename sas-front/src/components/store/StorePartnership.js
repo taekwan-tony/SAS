@@ -101,164 +101,215 @@ const StorePartnership = (props) => {
 
   return (
     <div className="storePartnership-main">
-      <div className="storePartnership-wrap">
-        <table className="storePartnership-table">
-          <tbody className="storePartnership-tbody">
-            <tr className="storePartnership-tr">
-              <th className="storePartnership-th" colSpan={2}>
-                <div className="storePartnership-imgdiv-zone">
-                  <div className="storePartnership-imgDiv">
-                    {storeImage ? (
-                      <img className="storePartnership-img" src={storeImage} />
-                    ) : (
-                      <img
-                        className="storePartnership-img"
-                        src="/image/s&s로고.png"
-                      />
-                    )}
-                  </div>
-                </div>
-                <div className="storePartnership-btn-zone">
-                  <button
-                    className="storePartnership-storeImg-btn"
-                    onClick={storeThumbnail}
-                  >
-                    매장 사진 등록
-                  </button>
-                </div>
-              </th>
-            </tr>
-            <tr className="storePartnership-tr">
-              <th className="storePartnership-th">
-                <label htmlFor="businessNumber">사업자등록번호</label>
-              </th>
-              <td>
-                <div className="storePartnership-div">
-                  <input
-                    className="storePartnership-inputBox"
-                    type="text"
-                    id="businessNumber"
-                    name="businessNumber"
-                    value={store.businessNumber}
-                    onChange={changeStore}
-                  ></input>
-                </div>
-              </td>
-            </tr>
-            <tr className="storePartnership-tr">
-              <th className="storePartnership-th">
-                <label htmlFor="storeName">매장 상호명</label>
-              </th>
-              <td>
-                <div className="storePartnership-div">
-                  <input
-                    className="storePartnership-inputBox"
-                    type="text"
-                    id="storeName"
-                    name="storeName"
-                    value={store.storeName}
-                    onChange={changeStore}
-                  ></input>
-                </div>
-              </td>
-            </tr>
-            <tr className="storePartnership-tr">
-              <th className="storePartnership-th">
-                <label htmlFor="storePhone">매장 전화번호</label>
-              </th>
-              <td>
-                <div className="storePartnership-div">
-                  <input
-                    className="storePartnership-inputBox"
-                    type="text"
-                    id="storePhone"
-                    name="storePhone"
-                    value={store.storePhone}
-                    onChange={changeStore}
-                  ></input>
-                </div>
-              </td>
-            </tr>
-            <tr className="storePartnership-tr">
-              <th className="storePartnership-th">
-                <label htmlFor="storeAddr">매장 위치</label>
-              </th>
-              <td>
-                <div className="storePartnership-div">
-                  <input
-                    className="storePartnership-inputBox"
-                    type="text"
-                    id="storeAddr"
-                    name="storeAddr"
-                    value={store.storeAddr}
-                    readOnly
-                  ></input>
-                </div>
-                <div className="storePartnership-div">
-                  <input
-                    className="storePartnership-inputBox"
-                    type="text"
-                    id="storeAddrDetail"
-                    name="storeAddrDetail"
-                    value={detailAddress}
-                    onChange={inputChangeHandler}
-                    placeholder="상세 주소를 입력해주세요."
-                  ></input>
-                  <button
-                    className="storePartnership-btn"
-                    type="button"
-                    onClick={toggleHandler}
-                  >
-                    우편번호 찾기
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr className="storePartnership-tr">
-              <th className="storePartnership-th">
-                <label htmlFor="storeTime">영업 시간</label>
-              </th>
-              <td>
-                <div className="storePartnership-div">
-                  <input
-                    className="storePartnership-inputBox"
-                    type="text"
-                    id="storeTime"
-                    name="storeTime"
-                    value={store.storeTime}
-                    onChange={changeStore}
-                    placeholder="ex) 09:00 - 22:00"
-                  ></input>
-                </div>
-              </td>
-            </tr>
-            <tr className="storePartnership-tr">
-              <th className="storePartnership-th">
-                <label htmlFor="storeClass">매장 유형</label>
-              </th>
-              <td>
-                <div className="storePartnership-div">
-                  <SelectMUI value={store.storeClass} onChange={handleChange} />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        {/* PostCodeApi 모달을 상태에 따라 열고 닫기 */}
-        {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <PostCodeApi
-                setStore={setStore}
-                setIsModalOpen={setIsModalOpen}
-              />
-              <button className="modal-close" onClick={toggleHandler}>
-                닫기
-              </button>
-            </div>
-          </div>
-        )}
+      <div className="dashboard-body">
+        <header className="dashboard-head">
+          <h1>매장 등록</h1>
+        </header>
       </div>
+      <div className="dashboard">
+        <div className="owner-background">
+          <img src="/image/238.jpg" alt="back" />
+        </div>
+
+        <div className="top-section">
+          <div className="info-card">
+            <div className="info-header">
+              <h3 className="info-header-h3"></h3>
+            </div>
+
+            <table className="storePartnership-table">
+              <tbody className="storePartnership-tbody">
+                <tr className="storePartnership-tr">
+                  <th className="storePartnership-th" colSpan={2}>
+                    <div className="storePartnership-imgdiv-zone">
+                      <div className="storePartnership-imgDiv">
+                        {storeImage ? (
+                          <img
+                            className="storePartnership-img"
+                            src={storeImage}
+                          />
+                        ) : (
+                          <img
+                            className="storePartnership-img"
+                            src="/image/s&s로고.png"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="storePartnership-btn-zone">
+                      <button
+                        className="storePartnership-storeImg-btn"
+                        onClick={storeThumbnail}
+                      >
+                        매장 사진 등록
+                      </button>
+                    </div>
+                  </th>
+                </tr>
+                <tr className="storePartnership-tr">
+                  <th className="storePartnership-th">
+                    <label
+                      htmlFor="businessNumber"
+                      className="storePartnership-label"
+                    >
+                      사업자등록번호
+                    </label>
+                  </th>
+                  <td>
+                    <div className="storePartnership-div">
+                      <input
+                        className="storePartnership-inputBox"
+                        type="text"
+                        id="businessNumber"
+                        name="businessNumber"
+                        value={store.businessNumber}
+                        onChange={changeStore}
+                      ></input>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="storePartnership-tr">
+                  <th className="storePartnership-th">
+                    <label
+                      htmlFor="storeName"
+                      className="storePartnership-label"
+                    >
+                      매장 상호명
+                    </label>
+                  </th>
+                  <td>
+                    <div className="storePartnership-div">
+                      <input
+                        className="storePartnership-inputBox"
+                        type="text"
+                        id="storeName"
+                        name="storeName"
+                        value={store.storeName}
+                        onChange={changeStore}
+                      ></input>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="storePartnership-tr">
+                  <th className="storePartnership-th">
+                    <label
+                      htmlFor="storePhone"
+                      className="storePartnership-label"
+                    >
+                      매장 전화번호
+                    </label>
+                  </th>
+                  <td>
+                    <div className="storePartnership-div">
+                      <input
+                        className="storePartnership-inputBox"
+                        type="text"
+                        id="storePhone"
+                        name="storePhone"
+                        value={store.storePhone}
+                        onChange={changeStore}
+                      ></input>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="storePartnership-tr">
+                  <th className="storePartnership-th">
+                    <label
+                      htmlFor="storeAddr"
+                      className="storePartnership-label"
+                    >
+                      매장 위치
+                    </label>
+                  </th>
+                  <td>
+                    <div className="storePartnership-div">
+                      <input
+                        className="storePartnership-inputBox"
+                        type="text"
+                        id="storeAddr"
+                        name="storeAddr"
+                        value={store.storeAddr}
+                        readOnly
+                      ></input>
+                    </div>
+                    <div className="storePartnership-div">
+                      <input
+                        className="storePartnership-inputBox"
+                        type="text"
+                        id="storeAddrDetail"
+                        name="storeAddrDetail"
+                        value={detailAddress}
+                        onChange={inputChangeHandler}
+                        placeholder="상세 주소를 입력해주세요."
+                      ></input>
+                      <button
+                        className="storePartnership-btn"
+                        type="button"
+                        onClick={toggleHandler}
+                      >
+                        우편번호 찾기
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="storePartnership-tr">
+                  <th className="storePartnership-th">
+                    <label
+                      htmlFor="storeTime"
+                      className="storePartnership-label"
+                    >
+                      영업 시간
+                    </label>
+                  </th>
+                  <td>
+                    <div className="storePartnership-div">
+                      <input
+                        className="storePartnership-inputBox"
+                        type="text"
+                        id="storeTime"
+                        name="storeTime"
+                        value={store.storeTime}
+                        onChange={changeStore}
+                        placeholder="ex) 09:00 - 22:00"
+                      ></input>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="storePartnership-tr">
+                  <th className="storePartnership-th">
+                    <label
+                      htmlFor="storeClass"
+                      className="storePartnership-label"
+                    >
+                      매장 유형
+                    </label>
+                  </th>
+                  <td>
+                    <div className="storePartnership-div">
+                      <SelectMUI
+                        value={store.storeClass}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* PostCodeApi 모달을 상태에 따라 열고 닫기 */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <PostCodeApi setStore={setStore} setIsModalOpen={setIsModalOpen} />
+            <button className="modal-close" onClick={toggleHandler}>
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
       <div className="storePartnership-btn-zone">
         <button
           type="submit"

@@ -26,11 +26,13 @@
 							    #{soPhone}, 
 							    0, 
 							    null, 
-							    null, 
+							    0, 
 							    null, 
 							    null, 
 							    null, 
 							    1, 
+							    null,
+							    to_char(systdate,'yyyy-mm-dd'),
 							    null)
 	</insert>
 	
@@ -44,4 +46,23 @@
 			store_class=#{storeClass} 
 		where business_number=#{businessNumber}
 	</update>
+	<select id="totalCount" resultType="int">
+		select count(*) from store 
+		 		where regist_type = #{storeType}
+	</select>
+	<select id="selectApprovalStore" resultType="store">
+		select * from
+			(select rownum as rnum, s.* from(
+			    select
+			        store_no,
+			        business_number,
+			        store_request_date,
+			        so_email,
+			        store_phone,
+			        so_name
+			    from store 
+		 		where regist_type = #{storeType}
+			     order by store_no desc)s)
+			where rnum between #{pi.start} and #{pi.end}
+	</select>
 </mapper>

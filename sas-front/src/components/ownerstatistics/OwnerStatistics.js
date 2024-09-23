@@ -28,7 +28,7 @@ ChartJS.register(
   Legend
 );
 
-function OwnerStatistics() {
+function Ownerstatistics() {
   // Line chart data
   const lineData = {
     labels: [
@@ -144,7 +144,7 @@ function OwnerStatistics() {
       </div>
       <div className="dashboard">
         <div className="owner-background">
-          <img src="/image/238.jpg" alt="back" />
+          <img src="/image/200.jpg" alt="back" />
         </div>
         {/* 상단 섹션 */}
         <div className="top-section">
@@ -283,4 +283,4 @@ function OwnerStatistics() {
   );
 }
 
-export default OwnerStatistics;
+export default Ownerstatistics;

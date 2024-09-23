@@ -61,6 +61,7 @@ const MenuView = () => {
           <Route path="menu" element={<Menu />}></Route>
           <Route path="photo" element={<MenuPhoto />}></Route>
           <Route path="review" element={<MenuReview />}></Route>
+
           <Route path="info" element={<Menuinfo />}></Route>
         </Routes>
       }

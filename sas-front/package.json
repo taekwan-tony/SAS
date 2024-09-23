@@ -6,7 +6,9 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@looop/quill-image-resize-module-react": "^3.1.5",
+    "@mui/icons-material": "^6.1.1",
     "@mui/material": "^6.1.1",
+    "@mui/styled-engine-sc": "^6.1.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -26,6 +28,7 @@
     "react-slick": "^0.30.2",
     "recoil": "^0.7.7",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.13",
     "sweetalert2": "^11.14.0",
     "swiper": "^11.1.14",
     "web-vitals": "^2.1.4"
