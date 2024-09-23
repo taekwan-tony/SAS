@@ -25,7 +25,7 @@ function App() {
         <Route path="/storemain" element={<StoreMain />} />
         <Route path="/usermain/*" element={<UserMain />} />
         <Route
-          path="/storemain/owneratatistics"
+          path="/storemain/ownerstatistics"
           element={<Ownerstatistics />}
         />
         <Route path="/storemain/managereview" element={<ManageReview />} />
