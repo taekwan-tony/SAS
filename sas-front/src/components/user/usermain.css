@@ -108,11 +108,22 @@ label #cancle-navi {
   margin-right: 16px;
   color: #fff;
 }
+h1 {
+  text-decoration: none;
+}
 /* hover effect */
 .sidebar-user-page ul li:hover a {
   padding-left: 50px;
 }
 /* Social Links */
+.user-social-links {
+  position: absolute;
+  bottom: 50px; /* 로그아웃 버튼 위에 약간의 여유 공간 */
+  width: 100%; /* 너비를 100%로 설정하여 좌우 끝까지 적용 */
+  text-align: center; /* 가운데 정렬 */
+  padding: 10px 0;
+}
+
 .user-social-links i {
   padding: 10px;
   margin-left: 16px;
@@ -131,9 +142,11 @@ label #cancle-navi {
 }
 /* 로그아웃 버튼 스타일 */
 .user-navi-logout-button {
-  margin-top: auto; /* 사이드바 하단에 고정 */
-  text-align: center; /* 가운데 정렬 */
-  padding: 20px;
+  position: absolute;
+  bottom: 0; /* 사이드바의 하단에 위치 */
+  width: 100%; /* 너비를 100%로 설정 */
+  text-align: center; /* 버튼 가운데 정렬 */
+  padding: 10px 0;
 }
 
 .user-navi-logout-button a {
@@ -224,6 +237,7 @@ label #cancle-navi {
   margin-left: 200px;
   margin-top: -10px;
   font-family: "Gloria Hallelujah", cursive; /* 구글 폰트 적용 */
+  color: #399918;
 }
 
 .page-header .search-bar {
