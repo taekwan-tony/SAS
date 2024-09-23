@@ -48,7 +48,7 @@ const StoreMenuView = () => {
           <img src="/image/200.jpg" alt="back" />
         </div>
 
-        <div className="top-section">
+        <div className="storeMenuView-top-section">
           {/* infoCardVisible이 true일 때만 info-card 렌더링 */}
           {addMenu.map((menu, index) => (
             <div className="info-card">

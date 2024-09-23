@@ -220,7 +220,7 @@
   object-fit: cover; /* 이미지를 비율에 맞게 덮도록 설정 */
   z-index: -1; /* 이미지가 콘텐츠 뒤에 있도록 설정 */
 }
-.top-section {
+.storeMenuView-top-section {
   display: flex;
   flex-direction: column;
   gap: 20px;
