@@ -74,6 +74,15 @@ const FavoriteBox = () => {
     </div>
   );
 };
+const FavoriteBoxEmpty = () => {
+  return (
+    <div>
+      <div className="favorite-list-content round empty">
+        <span class="material-icons">add_circle_outline</span>
+      </div>
+    </div>
+  );
+};
 
 const MypageFavorite = () => {
   const settings = {
@@ -82,6 +91,7 @@ const MypageFavorite = () => {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
+    className: "slider-content",
   };
   return (
     <div className="slider-container favorite-list-content-wrap">
@@ -94,11 +104,7 @@ const MypageFavorite = () => {
         <FavoriteBox />
         <FavoriteBox />
         <FavoriteBox />
-        <div>
-          <div className="favorite-list-content round empty">
-            <span class="material-icons">add_circle_outline</span>
-          </div>
-        </div>
+        <FavoriteBoxEmpty />
       </Slider>
     </div>
   );

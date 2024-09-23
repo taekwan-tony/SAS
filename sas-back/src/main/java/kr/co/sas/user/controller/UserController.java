@@ -23,6 +23,7 @@ import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.user.model.service.UserService;
 import kr.co.sas.util.EmailSender;
 
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/user")
@@ -31,7 +32,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	//@Autowired
+	@Autowired
 	private EmailSender email;
 	
 	@Operation(summary = "일반회원 회원가입", description = "아이디, 비밀번호, 전화번호, 이메일, 성별, 생년월일, 이름, 랜덤생성된 닉네임을 유저 객체로 가져와 회원가입")
@@ -95,7 +96,7 @@ public class UserController {
 	@Operation(summary="인증메일 보내기", description = "받은 이메일을 이용해서 인증번호를 보내기")
 	@PostMapping(value="/sendCode")
 	public ResponseEntity<String> sendCode(@RequestBody UserDTO user) {
-//		System.out.println(user);
+		System.out.println(user);
 		String receiver = user.getUserEmail();
 		//인증메일 제목 생성
 		String emailTitle = "Spoon & Smiles 인증메일입니다.";
