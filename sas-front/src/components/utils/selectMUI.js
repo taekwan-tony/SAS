@@ -14,7 +14,7 @@ const selectMUI = ({ value, onChange }) => {
             color: "#544f4f", // 기본 상태에서의 색상
             fontFamily: "ns-r",
             "&.Mui-focused": {
-              color: "#544f4f", // 선택(포커스) 상태에서의 색상
+              color: "#fff", // 선택(포커스) 상태에서의 색상
               fontSize: "18px",
             },
           }}
@@ -32,14 +32,17 @@ const selectMUI = ({ value, onChange }) => {
             fontSize: "16px",
             color: "#544f4f",
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#544f4f", // 보더 색상
+              borderColor: "#fff", // 보더 색상
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#5e9960", // 선택된 상태일 때의 보더 색상
+              borderColor: "#fff", // 선택된 상태일 때의 보더 색상
             },
             borderRadius: "8px",
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#5e9960", // Hover 상태에서 보더 색상
+              borderColor: "#fff", // Hover 상태에서 보더 색상
+            },
+            "&.Mui-focused": {
+              color: "#fff", // 선택(포커스) 상태에서의 색상
             },
           }}
         >

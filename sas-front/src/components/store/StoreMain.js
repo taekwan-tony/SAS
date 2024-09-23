@@ -34,13 +34,13 @@ function StoreMain() {
                     icon="fas fa-id-card"
                     title="매장등록"
                     className="color"
-                    to="/storeRegist"
+                    to="/storecheck/StoreRegist"
                   />
                   <HexagonItem
                     icon="fas fa-utensils"
                     title="메뉴등록"
                     className="color"
-                    to="/menuRegist"
+                    to="/storecheck/StoreMenuView"
                   />
                   <HexagonItem
                     icon="fas fa-money-check-alt"
