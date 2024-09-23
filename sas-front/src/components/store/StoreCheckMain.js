@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
-import OwnerStatistics from "../ownerstatistics/OwnerStatistics";
 import ManageReserved from "./ManageReserved";
 import ManageReview from "./ManageReview";
+import Ownerstatistics from "../ownerstatistics/OwnerStatistics";
 
 const StoreCheckMain = () => {
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
@@ -39,7 +39,7 @@ const StoreCheckMain = () => {
     <>
       <Routes>
         <Route path="managereserved" element={<ManageReserved />} />
-        <Route path="ownerstatistics" element={<OwnerStatistics />} />
+        <Route path="ownerstatistics" element={<Ownerstatistics />} />
         <Route path="managereview" element={<ManageReview />} />
       </Routes>
       <div className="owner-navi">
