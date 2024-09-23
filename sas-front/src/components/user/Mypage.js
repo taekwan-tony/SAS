@@ -5,7 +5,8 @@ import { useState } from "react";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
-
+import StarIcon from "@mui/icons-material/Star";
+import { styled } from "@mui/material/styles";
 const Mypage = () => {
   return (
     <Routes>
@@ -60,29 +61,46 @@ const ReservationView = () => {
   );
 };
 const labels = {
-  0.5: "Useless",
-  1: "Useless+",
-  1.5: "Poor",
-  2: "Poor+",
-  2.5: "Ok",
-  3: "Ok+",
-  3.5: "Good",
-  4: "Good+",
-  4.5: "Excellent",
-  5: "Excellent+",
+  1: "최악이에요.",
+
+  2: "별로 추천하고 싶지 않아요.",
+
+  3: "무난해요.",
+
+  4: "맛있었어요, 다시 올 것 같아요.",
+
+  5: "완벽해요, 강력 추천합니다!",
 };
 
 function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
+const StyledRating = styled(Rating)({
+  "& .MuiRating-iconFilled": {
+    color: "gold",
+  },
+  "& .MuiRating-iconHover": {
+    color: "gold",
+  },
+});
+const YellowStar = styled(StarIcon)({
+  color: "gold", // 노란색
+});
 
 const HoverRating = ({ value, setValue, hover, setHover }) => {
   return (
-    <Box sx={{ width: 200, display: "flex", alignItems: "center" }}>
+    <Box
+      sx={{
+        width: 200,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <Rating
         name="hover-feedback"
         value={value}
-        precision={0.5}
+        precision={1}
         getLabelText={getLabelText}
         onChange={(event, newValue) => {
           setValue(newValue);
@@ -90,10 +108,12 @@ const HoverRating = ({ value, setValue, hover, setHover }) => {
         onChangeActive={(event, newHover) => {
           setHover(newHover);
         }}
-        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+        emptyIcon={<StarIcon style={{ opacity: 0.33 }} fontSize="inherit" />}
       />
       {value !== null && (
-        <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+        <Box sx={{ mt: 1, whiteSpace: "nowrap" }}>
+          {labels[hover !== -1 ? hover : value]}
+        </Box>
       )}
     </Box>
   );
@@ -128,7 +148,11 @@ const ReviewWrite = () => {
         onChange={setContent}
         placeholder="레스토랑과 유저들에게 도움이 되는 따뜻한 리뷰를 작성해주세요."
       />
-      <button className="" style={{ marginTop: "20px" }} onClick={handleSubmit}>
+      <button
+        className="review-submit"
+        style={{ marginTop: "20px" }}
+        onClick={handleSubmit}
+      >
         등록
       </button>
     </div>
