@@ -1,36 +1,54 @@
-import QuillEditor from "../utils/QuillEditor";
-import { useEffect, useState } from "react";
-import NoticeFrm from "./NoticeFrm";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import NoticeFrm from "./NoticeFrm";
+import QuillEditor from "../utils/QuillEditor";
 
-const NoticeWrite = (props) => {
+const NoticeModify = (props) => {
   const setNoticeDetailTitle = props.setNoticeDetailTitle;
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  useEffect(() => {
-    setNoticeDetailTitle("작성");
-  }, []);
+  const params = useParams();
+  const noticeNo = params.noticeNo;
+  const subNoticeType = params.noticeType;
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
   const [noticeType, setNoticeType] = useState(0);
   const navigate = useNavigate();
-  const insertNotice = () => {
+
+  useEffect(() => {
+    setNoticeDetailTitle("게시글 수정");
+    axios
+      .get(`${backServer}/notice/selectOne/${noticeNo}`)
+      .then((res) => {
+        console.log(res);
+        setNoticeTitle(res.data.noticeTitle);
+        setNoticeType(res.data.noticeType);
+        setNoticeContent(res.data.noticeContent);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  const updateNotice = () => {
     const form = new FormData();
     form.append("noticeContent", noticeContent);
     form.append("noticeType", noticeType);
     form.append("noticeTitle", noticeTitle);
+    form.append("noticeNo", noticeNo);
+    console.log(form);
+    console.log(1);
     axios
-      .post(`${backServer}/notice/write`, form)
+      .patch(`${backServer}/notice/modify`, form)
       .then((res) => {
         console.log(res);
         if (res.data > 0) {
           Swal.fire({
-            title: "공지사항 작성 완료",
-            text: "공지사항을 등록했습니다.",
+            title: "공지사항 수정 완료",
+            text: "공지사항을 수정했습니다.",
             icon: "success",
           }).then(() => {
-            navigate("/admin/notice/list");
+            navigate(`/admin/notice/detail/${noticeNo}/${subNoticeType}`);
           });
         }
       })
@@ -64,15 +82,15 @@ const NoticeWrite = (props) => {
           <button
             type="button"
             className="btn-main round"
-            onClick={insertNotice}
+            onClick={updateNotice}
           >
-            등록하기
+            수정하기
           </button>
           <button
             type="button"
             className="btn-sub round"
             onClick={() => {
-              navigate("/admin/notice/list");
+              navigate(`/admin/notice/detail/${noticeNo}/${subNoticeType}`);
             }}
           >
             돌아가기
@@ -84,4 +102,4 @@ const NoticeWrite = (props) => {
   );
 };
 
-export default NoticeWrite;
+export default NoticeModify;

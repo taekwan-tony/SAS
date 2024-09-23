@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PageNavi from "../utils/PagiNavi";
 
 const NoticeList = (props) => {
@@ -46,7 +46,7 @@ const NoticeList = (props) => {
           onClick={changeNoticeType}
           id="1"
         >
-          <span id="1">매장</span>
+          <span id="1">소비자</span>
         </div>
         <div
           className={
@@ -55,13 +55,27 @@ const NoticeList = (props) => {
           onClick={changeNoticeType}
           id="2"
         >
-          <span id="2">소비자</span>
+          <span id="2">매장</span>
         </div>
       </div>
       <div className="notice-list-main">
         <table className="notice-posting-wrap">
+          <thead>
+            <tr className="notice-posting-title">
+              <th style={{ width: "15%" }}>번호</th>
+              <th style={{ width: "50%" }}>제목</th>
+              <th style={{ width: "20%" }}>등록일</th>
+              <th style={{ width: "15%" }}>구분</th>
+            </tr>
+          </thead>
           {noticeList.map((notice, i) => {
-            return <NoticeItem key={"notice-" + i} notice={notice} />;
+            return (
+              <NoticeItem
+                key={"notice-" + i}
+                notice={notice}
+                noticeType={noticeType}
+              />
+            );
           })}
         </table>
       </div>
@@ -84,10 +98,14 @@ const NoticeList = (props) => {
 
 const NoticeItem = (props) => {
   const notice = props.notice;
-  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const noticeType = props.noticeType;
   const navigate = useNavigate();
   return (
-    <tr>
+    <tr
+      onClick={() => {
+        navigate(`/admin/notice/detail/${notice.noticeNo}/${noticeType}`);
+      }}
+    >
       <td style={{ width: "15%" }}>{notice.noticeNo}</td>
       <td style={{ width: "50%" }}>{notice.noticeTitle}</td>
       <td style={{ width: "20%" }}>{notice.noticeEnrollDate}</td>

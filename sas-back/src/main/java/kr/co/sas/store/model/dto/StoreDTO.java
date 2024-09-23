@@ -1,6 +1,7 @@
 package kr.co.sas.store.model.dto;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
@@ -36,4 +37,6 @@ public class StoreDTO {
 	private int mapY;
 	private int type;
 	private int servicePrice;
+	private String storerequestDate;
+	private Date storeEnrollDate;
 }

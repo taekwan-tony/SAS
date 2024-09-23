@@ -13,12 +13,13 @@
   display: flex;
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
-  width: 100vw; /* 화면 전체 너비 */
+  width: 100%; /* 화면 전체 너비 */
   height: 100px; /* 헤더 높이 */
   position: absolute;
   top: 0;
   left: 0;
   padding-bottom: 20px;
+  max-width: 100%;
 }
 
 .dashboard-head h1 {
@@ -36,7 +37,7 @@
   position: fixed; /* 배경이 스크롤에 따라 움직이지 않도록 */
   top: 0;
   left: 0;
-  width: 100vw; /* 화면 너비 */
+  width: 100%; /* 화면 너비 */
   height: 100vh; /* 화면 높이 */
   z-index: -1; /* 배경이 콘텐츠 뒤에 있도록 설정 */
 }
@@ -46,6 +47,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  max-width: 100%;
   object-fit: cover; /* 이미지를 비율에 맞게 덮도록 설정 */
   z-index: -1; /* 이미지가 콘텐츠 뒤에 있도록 설정 */
 }
@@ -56,18 +58,13 @@
   justify-content: space-between;
   gap: 20px;
 }
-
 .info-card {
-  background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
-  padding: 20px;
-  border-radius: 12px;
-  flex: 1;
-  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
-
 .info-card h3 {
   font-size: 1.2rem;
   color: #bfbfbf;
+  padding: 10px;
 }
 
 .info-card h2 {
@@ -90,53 +87,109 @@
   background: linear-gradient(120deg, #1d201e 70%, #29482a47 99%);
   padding: 20px;
   border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+.main-info {
+  position: relative;
+  width: 100%;
+  height: 225px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  padding: 40px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
+.main-info-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.main-info-image img {
+  width: 85%;
+  height: 100%;
+  object-fit: cover; /* 이미지가 비율을 유지하면서 잘 맞도록 */
+  opacity: 0.3; /* 이미지가 흐릿하게 보이도록 설정 */
+  margin-left: 200px;
+}
+
+.main-info-text {
+  position: relative;
+  z-index: 1; /* 텍스트가 이미지 위에 나오도록 설정 */
+}
+
+.main-info-text h1 {
+  font-size: 2.7rem;
+  color: #fff;
+}
+.main-info-text h3 {
+  font-size: 1.5rem;
+}
+.main-info-text p {
+  padding-top: 20px;
+  font-size: 1rem;
+}
 .bottom-section .projects,
 .bottom-section .orders-overview {
   flex: 1;
   background: linear-gradient(50deg, #222623 50%, #29482a47 99%);
   padding: 20px;
   border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* 하단테이블 */
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(35deg, #222623 20%, #1f2822 50%, #95c29647 99%);
-  color: white;
-  text-align: left;
+/* 하단 차트 테이블 */
+.charts-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.chart-container {
+  flex: 1;
+  background: linear-gradient(50deg, #222623 20%, #0e110e, #13241747 80%);
+  padding: 20px;
   border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
 }
-
-.styled-table th,
-.styled-table td {
-  padding: 12px 15px;
-}
-
-.styled-table thead tr {
-  border-bottom: 1px solid #749581;
-}
-
-.styled-table tbody tr {
-  border-bottom: 1px solid #749581;
-}
-
-.styled-table tbody tr:last-of-type {
-  border-bottom: none;
-}
-
-.badge {
-  padding: 5px 10px;
+.chart-empl-container {
+  flex: 1;
+  background: linear-gradient(50deg, #222623 20%, #0e110e, #13241747 80%);
+  padding: 50px;
   border-radius: 12px;
-  font-size: 0.8em;
-  color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  width: 100%; /* 부모의 100% 크기로 설정 */
+  height: 300px; /* 차트 높이를 적절히 설정 */
+  overflow: visible; /* 잘리지 않도록 설정 */
+}
+.orders-overview ul {
+  list-style: none; /* 기본 리스트 스타일 제거 */
+  padding: 0;
 }
 
+.orders-overview li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* 리스트 항목 간 간격 */
+}
+
+.order-image {
+  width: 6.1rem; /* 이미지 너비 */
+  height: 6.1rem; /* 이미지 높이 */
+  object-fit: cover; /* 이미지 비율 유지하며 자르기 */
+  margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
+  border-radius: 5px; /* 이미지의 모서리 둥글게 */
+}
 /* 하단 네비 */
 .owner-navi {
   position: fixed; /* 화면에 고정 */
@@ -157,7 +210,7 @@
   bottom: 0;
   width: 550px;
   height: 60px;
-  background: linear-gradient(45deg, #1d2420, #183e29, #487144);
+  background: linear-gradient(45deg, #1d2420, #183e29 50%, #1a2b19 99%);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,0 +1,44 @@
+div.mypage-main {
+  width: 100%;
+  height: 100%;
+  padding: 50px;
+  background-color: #efefef;
+}
+/* 마이페이지 메인화면 */
+div.mypage-main > .profile-wrap {
+  background-color: #fff;
+  display: flex;
+  padding: 20px;
+}
+div.mypage-main > .profile-wrap > div.img {
+  border-radius: 50%;
+  height: 163px;
+  width: 163px;
+  border: 1px solid black;
+}
+div.mypage-main > .profile-wrap > .user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 30px;
+}
+
+div.mypage-main > .profile-wrap > .user-info > h2 {
+  font-size: 25px;
+  color: var(--font1);
+  font-weight: bold;
+}
+div.mypage-main > .profile-wrap > .user-info > h3 {
+  font-size: 17px;
+  color: var(--main1);
+  font-weight: 700;
+  margin: 7px 0;
+}
+div.mypage-main > .profile-wrap > .user-info > .user-info-other {
+  display: flex;
+  flex-direction: column;
+}
+div.mypage-main > .profile-wrap > .user-info > .user-info-other > span {
+  font-size: 15px;
+}

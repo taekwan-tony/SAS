@@ -97,9 +97,11 @@ function UserMain() {
     /* 페이지헤더 */
     <div className="all-page-wrap">
       <div className={`page-header ${isScrolled ? "scrolled-header" : ""}`}>
-        <h1 className={`logo-text ${isScrolled ? "scrolled-logo-text" : ""}`}>
-          Spoon & Smiles
-        </h1>
+        <a href="./usermain">
+          <h1 className={`logo-text ${isScrolled ? "scrolled-logo-text" : ""}`}>
+            Spoon & Smiles
+          </h1>
+        </a>
         <div className="header-search-form">
           <form className={`search-form ${isScrolled ? "scrolled-form" : ""}`}>
             <input
@@ -153,13 +155,13 @@ function UserMain() {
             <div className="sidebar-user-page">
               <ul>
                 <li className={`has-submenu ${submenuOpen ? "open" : ""}`}>
-                  <a
-                    href="#"
+                  <Link
+                    to="mypage"
                     className="toggle-submenu"
                     onClick={toggleSubmenu}
                   >
                     <i className="fa-solid fa-image-portrait"></i>마이페이지
-                  </a>
+                  </Link>
                   <ul class="user-navi-submenu">
                     <li>
                       <a href="#">
@@ -186,21 +188,6 @@ function UserMain() {
                 <li>
                   <a href="#">
                     <i class="fa-solid fa-bookmark"></i>즐겨찾기
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="fa fa-question-circle"></i>About
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="fa fa-sliders"></i>Service
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="fa fa-id-card"></i>Contact
                   </a>
                 </li>
               </ul>

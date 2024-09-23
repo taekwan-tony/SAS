@@ -31,7 +31,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
+	//@Autowired
 	private EmailSender email;
 	
 	@Operation(summary = "일반회원 회원가입", description = "아이디, 비밀번호, 전화번호, 이메일, 성별, 생년월일, 이름, 랜덤생성된 닉네임을 유저 객체로 가져와 회원가입")
