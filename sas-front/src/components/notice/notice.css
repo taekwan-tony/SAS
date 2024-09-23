@@ -58,11 +58,23 @@
 }
 
 .notice-posting-wrap {
-  margin-top: 20px;
   width: 100%;
   text-align: center;
 }
-
+.notice-posting-wrap .notice-posting-title {
+  cursor: none;
+  color: white;
+}
+.notice-posting-wrap .notice-posting-title th {
+  color: white;
+  background-color: var(--main2);
+  font-size: 24px;
+  font-family: LeeSeoyun;
+  font-weight: 300;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  height: 50px;
+}
 .notice-posting-wrap > tr {
   cursor: pointer;
 }

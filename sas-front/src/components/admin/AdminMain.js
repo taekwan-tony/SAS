@@ -3,6 +3,7 @@ import AdminSideTab from "./AdminSideTab";
 import NoticeMain from "../notice/NoticeMain";
 import "./adminMain.css";
 import AdminStore from "./AdminStore";
+import "./adminStore.css";
 
 const AdminMain = () => {
   return (
