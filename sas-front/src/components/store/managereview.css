@@ -13,12 +13,13 @@
   display: flex;
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
-  width: 100vw; /* 화면 전체 너비 */
+  width: 100%; /* 화면 전체 너비 */
   height: 100px; /* 헤더 높이 */
   position: absolute;
   top: 0;
   left: 0;
   padding-bottom: 20px;
+  max-width: 100%;
 }
 
 .dashboard-head h1 {
@@ -36,7 +37,7 @@
   position: fixed; /* 배경이 스크롤에 따라 움직이지 않도록 */
   top: 0;
   left: 0;
-  width: 100vw; /* 화면 너비 */
+  width: 100%; /* 화면 너비 */
   height: 100vh; /* 화면 높이 */
   z-index: -1; /* 배경이 콘텐츠 뒤에 있도록 설정 */
 }
@@ -46,18 +47,20 @@
   left: 0;
   width: 100%;
   height: 100%;
+  max-width: 100%;
   object-fit: cover; /* 이미지를 비율에 맞게 덮도록 설정 */
   z-index: -1; /* 이미지가 콘텐츠 뒤에 있도록 설정 */
 }
 
 /* 하단테이블 */
+
 .styled-table {
   width: 100%;
   border-collapse: collapse;
   margin: 25px 0;
   font-size: 0.9em;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(35deg, #222623 20%, #1f2822 50%, #95c29647 99%);
+  background: linear-gradient(180deg, #222623 10%, #0e1510 70%, #0f170f47 99%);
   color: white;
   text-align: left;
   border-radius: 12px;
@@ -69,22 +72,15 @@
 }
 
 .styled-table thead tr {
-  border-bottom: 1px solid #749581;
+  border-bottom: 1px solid #2d4d3a;
 }
 
 .styled-table tbody tr {
-  border-bottom: 1px solid #749581;
+  border-bottom: 1px solid #2d4d3a;
 }
 
 .styled-table tbody tr:last-of-type {
   border-bottom: none;
-}
-
-.badge {
-  padding: 5px 10px;
-  border-radius: 12px;
-  font-size: 0.8em;
-  color: white;
 }
 
 /* 하단 네비 */
