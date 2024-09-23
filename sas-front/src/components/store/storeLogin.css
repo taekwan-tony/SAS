@@ -18,7 +18,7 @@
   position: relative;
   padding: 20px;
 }
-.close {
+.storeLogin-close {
   position: absolute;
   top: 3%;
   right: 8%;
@@ -37,7 +37,7 @@
   font-family: "Jost", sans-serif;
   background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
 }
-.main {
+.storeLogin-main {
   width: 350px;
   height: 500px;
   background: red;
@@ -50,13 +50,14 @@
 #chk {
   display: none;
 }
-.signup {
+.storeLogin-signup {
   position: relative;
   width: 100%;
   background-color: #302b63;
   height: 100%;
   margin-top: -60px;
 }
+/*
 label {
   color: #fff;
   font-size: 2.3em;
@@ -79,6 +80,7 @@ input {
   outline: none;
   border-radius: 5px;
 }
+*/
 
 .storeLogin-btn-zone {
   width: 100%;
@@ -101,10 +103,12 @@ input {
   transition: 0.2s ease-in;
   cursor: pointer;
 }
+/*
 button:hover {
   background: #6d44b8;
 }
-.login {
+*/
+.storeLogin-login {
   margin-top: 100px;
   height: 500px;
   background: #eee;
@@ -112,6 +116,7 @@ button:hover {
   transform: translateY(-180px);
   transition: 0.8s ease-in-out;
 }
+/*
 .login label {
   color: #573b8a;
   transform: scale(0.6);
@@ -129,3 +134,4 @@ button:hover {
 
 .storeLogin-dashboard {
 }
+*/
