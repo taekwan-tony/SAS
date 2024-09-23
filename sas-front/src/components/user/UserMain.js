@@ -167,9 +167,9 @@ function UserMain() {
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to="mypage/myreview">
                         <i class="fa-solid fa-comment"></i>나의 리뷰
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
