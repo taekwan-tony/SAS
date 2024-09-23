@@ -11,7 +11,6 @@ const Mypage = () => {
   return (
     <Routes>
       <Route path="resview" element={<ReservationView />}></Route>
-      {/* <Route path="myreview" element={<MyReview />} /> */}
       <Route path="myreview" element={<ReviewWrite />} />
     </Routes>
   );
