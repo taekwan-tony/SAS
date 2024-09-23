@@ -74,9 +74,7 @@ public class NoticeController {
 
 	@PatchMapping(value="/modify")
 	public ResponseEntity<Integer> modify(@ModelAttribute NoticeDTO notice){
-		System.out.println(notice);
 		int result = noticeService.updateNotice(notice);
-		System.out.println(result);
 		return ResponseEntity.ok(result);
 	}
 }
