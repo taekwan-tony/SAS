@@ -18,31 +18,48 @@
   transform: none;
   border-bottom: 1px solid #fff;
   font-weight: 200;
+  padding: 5px 0; /* 위아래 패딩을 균일하게 설정 */
+  display: inline-block;
+  vertical-align: middle; /* 라벨과 같은 줄에서 수직 정렬 */
+  line-height: 1.5; /* 입력 필드 텍스트의 높이를 조정 */
+  margin-left: 40px;
 }
 
 .storeMenuView-table {
   width: 100%;
   color: #fff;
+  border-spacing: 0 10px;
 }
 
 .storeMenuView-tr {
   height: 100px;
 }
 
-.storeMenuView-th {
+.storeMenuView-td {
   font-size: 25px;
-  text-align: center;
   color: #fff;
   font-weight: 200;
+  text-align: left;
+  vertical-align: middle;
+}
+.storeMenuView-img-td {
+  width: 50%;
 }
 
 .storeMenuView-label {
+  font-size: 25px;
   color: #fff;
   font-weight: 200;
-  font-size: 25px;
+  margin-right: 10px; /* 라벨과 인풋 필드 사이의 간격 */
+  display: inline-block; /* 인풋과 같은 줄에 배치 */
+  vertical-align: middle; /* 인풋 필드와 수직으로 정렬 */
+  line-height: 1.5; /* 라벨의 텍스트 높이도 입력 필드와 맞춤 */
+  text-align: center;
+  width: 100px;
 }
 
 .storeMenuView-imgdiv-zone {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,8 +73,8 @@
 }
 
 .storeMenuView-imgDiv {
-  width: 20%;
-  height: 20%;
+  width: 45%;
+  height: 45%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,12 +96,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 125px;
 }
 
 .storeMenuView-storeMenuImg-btn {
-  width: 140px;
-  height: 50px;
+  width: 160px;
+  height: 70px;
   border: none;
   background-color: #518142;
   color: #fff;
@@ -204,14 +220,13 @@
   object-fit: cover; /* 이미지를 비율에 맞게 덮도록 설정 */
   z-index: -1; /* 이미지가 콘텐츠 뒤에 있도록 설정 */
 }
-.top-section,
-.middle-section,
-.bottom-section {
+.top-section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 20px;
 }
 .info-card {
+  position: relative;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
   border-radius: 12px;
@@ -222,6 +237,13 @@
   align-items: center; /* 수직 가운데 정렬 */
   padding: 50px;
   margin-top: 50px;
+}
+
+.storeMenuView-close-div {
+  position: absolute; /* info-card 내에서 절대 위치 */
+  top: 15px; /* info-card의 상단으로부터 10px 떨어짐 */
+  right: 15px; /* info-card의 오른쪽에서 10px 떨어짐 */
+  cursor: pointer; /* 마우스를 올렸을 때 포인터 표시 */
 }
 
 .info-card h2 {
@@ -458,4 +480,36 @@
   font-size: 16px;
   color: #bfbfbf;
   padding: 10px;
+}
+
+.storeMenuView-close {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.storeMenuView-td-right {
+  text-align: right;
+}
+
+.storeMenuView-insert {
+  margin-top: 10px;
+}
+
+.storeMenuView-insert-btn {
+  width: 130px;
+  height: 50px;
+  border: none;
+  background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
+  color: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 300;
+  float: right;
+}
+
+.storeMenuView-add {
+  width: 23px;
+  height: 23px;
+  margin-right: 5px;
 }
