@@ -13,7 +13,7 @@ import ManageReserved from "./components/store/ManageReserved";
 import ManageReview from "./components/store/ManageReview";
 import StorePartnership from "./components/store/StorePartnership";
 import StoreCheckMain from "./components/store/StoreCheckMain";
-import Ownerstatistics from "./components/ownerstatistics/Ownerstatistics";
+import Ownerstatistics from "./components/ownerstatistics/OwnerStatistics";
 
 function App() {
   return (
