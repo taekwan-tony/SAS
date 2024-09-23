@@ -5,7 +5,7 @@
 }
 */
 
-.storePartnership-inputBox {
+.storeMenuView-inputBox {
   box-sizing: border-box;
   width: 75%;
   border: none;
@@ -20,40 +20,42 @@
   font-weight: 200;
 }
 
-.storePartnership-table {
+.storeMenuView-table {
   width: 100%;
   color: #fff;
 }
 
-.storePartnership-tr {
+.storeMenuView-tr {
   height: 100px;
 }
 
-.storePartnership-th {
-  font-size: 22px;
+.storeMenuView-th {
+  font-size: 25px;
   text-align: center;
+  color: #fff;
+  font-weight: 200;
 }
 
-.storePartnership-label {
+.storeMenuView-label {
   color: #fff;
   font-weight: 200;
   font-size: 25px;
 }
 
-.storePartnership-imgdiv-zone {
+.storeMenuView-imgdiv-zone {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.storePartnership-div {
+.storeMenuView-div {
   display: flex;
   align-items: center;
   justify-content: left;
   margin-left: 50px;
 }
 
-.storePartnership-imgDiv {
+.storeMenuView-imgDiv {
   width: 20%;
   height: 20%;
   display: flex;
@@ -65,7 +67,7 @@
   margin-top: 50px;
 }
 
-.storePartnership-img {
+.storeMenuView-img {
   width: 100%;
   height: 100%;
   display: flex;
@@ -73,14 +75,14 @@
   justify-content: center;
 }
 
-.storePartnership-btn-zone {
+.storeMenuView-btn-zone {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 125px;
 }
 
-.storePartnership-storeImg-btn {
+.storeMenuView-storeMenuImg-btn {
   width: 140px;
   height: 50px;
   border: none;
@@ -93,18 +95,18 @@
   padding: 5px;
 }
 
-.storePartnership-storeImg-btn:hover {
+.storeMenuView-storeMenuImg-btn:hover {
   color: #518142;
   background-color: #fff;
   font-weight: 500;
 }
 
-.storePartnership-addr {
+.storeMenuView-addr {
   width: 100%;
   margin-left: 45px;
 }
 
-.storePartnership-btn {
+.storeMenuView-btn {
   width: 130px;
   height: 40px;
   border: none;
@@ -121,7 +123,7 @@
   justify-content: center;
 }
 
-.storePartnership-btn:hover {
+.storeMenuView-btn:hover {
   border: none;
   color: #518142;
   background-color: #fff;
