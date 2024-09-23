@@ -307,7 +307,7 @@ const Main = () => {
             제공하며 더 나은 내일을 만들어갑니다.
           </span>
           <div className="buttons">
-            <Link to="/storeLogin">
+            <Link to="/StoreLogin">
               <button className="button1">
                 점주 로그인
                 <span className="material-icons arrow">arrow_forward</span>
