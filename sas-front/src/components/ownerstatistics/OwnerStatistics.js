@@ -152,7 +152,7 @@ function Ownerstatistics() {
             <div className="info-text">
               <h3>이번달 총 예약 수</h3>
               <h2>
-                $53,000 <span className="positive">+55%</span>
+                1,200건<span className="positive">+20%</span>
               </h2>
             </div>
             <div className="info-card-icon-bg">
@@ -164,7 +164,7 @@ function Ownerstatistics() {
             <div className="info-text">
               <h3>방문한 총 고객 수</h3>
               <h2>
-                2,300 <span className="positive">+3%</span>
+                3,300명 <span className="positive">+3%</span>
               </h2>
             </div>
             <div className="info-card-icon-bg">
@@ -176,7 +176,7 @@ function Ownerstatistics() {
             <div className="info-text">
               <h3>이번달 배달/포장 수</h3>
               <h2>
-                +3,462 <span className="negative">-2%</span>
+                120건 <span className="negative">-5%</span>
               </h2>
             </div>
             <div className="info-card-icon-bg">
@@ -188,7 +188,7 @@ function Ownerstatistics() {
             <div className="info-text">
               <h3>금일 매출</h3>
               <h2>
-                $103,430 <span className="positive">+5%</span>
+                7,500,000원 <span className="positive">+5%</span>
               </h2>
             </div>
             <div className="info-card-icon-bg">
