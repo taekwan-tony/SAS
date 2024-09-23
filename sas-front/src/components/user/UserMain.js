@@ -153,13 +153,13 @@ function UserMain() {
             <div className="sidebar-user-page">
               <ul>
                 <li className={`has-submenu ${submenuOpen ? "open" : ""}`}>
-                  <a
-                    href="#"
+                  <Link
+                    to="mypage"
                     className="toggle-submenu"
                     onClick={toggleSubmenu}
                   >
                     <i className="fa-solid fa-image-portrait"></i>마이페이지
-                  </a>
+                  </Link>
                   <ul class="user-navi-submenu">
                     <li>
                       <a href="#">
