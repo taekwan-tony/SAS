@@ -31,4 +31,6 @@ public class StoreService {
 		int result = storeDao.insertStore(store); //매장 사업자번호를 가져와서 점주 등록 정보를 수정
 		return result;
 	}//insertStore
+
+
 }
