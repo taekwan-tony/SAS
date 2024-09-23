@@ -28,7 +28,7 @@ ChartJS.register(
   Legend
 );
 
-function OwnerStatistics() {
+function Ownerstatistics() {
   // Line chart data
   const lineData = {
     labels: [
@@ -283,4 +283,4 @@ function OwnerStatistics() {
   );
 }
 
-export default OwnerStatistics;
+export default Ownerstatistics;

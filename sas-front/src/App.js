@@ -5,7 +5,6 @@ import Main from "./components/main/Main";
 import Join from "./components/user/Join";
 
 import UserMain from "./components/user/UserMain";
-import OwnerStatistics from "./components/ownerstatistics/OwnerStatistics";
 import AdminMain from "./components/admin/AdminMain";
 import MenuView from "./components/menu/MenuView";
 import StoreRegist from "./components/store/StoreRegist";
@@ -14,6 +13,7 @@ import ManageReserved from "./components/store/ManageReserved";
 import ManageReview from "./components/store/ManageReview";
 import StorePartnership from "./components/store/StorePartnership";
 import StoreCheckMain from "./components/store/StoreCheckMain";
+import Ownerstatistics from "./components/ownerstatistics/OwnerStatistics";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Route path="/usermain/*" element={<UserMain />} />
         <Route
           path="/storemain/ownerstatistics"
-          element={<OwnerStatistics />}
+          element={<Ownerstatistics />}
         />
         <Route path="/storemain/managereview" element={<ManageReview />} />
         <Route path="/storemain/managereserved" element={<ManageReserved />} />
