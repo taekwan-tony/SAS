@@ -6,6 +6,7 @@ import axios from "axios";
 const StoreApprovalList = (props) => {
   const setAdminDetailTitle = props.setAdminDetailTitle;
   const navigate = useNavigate();
+
   setAdminDetailTitle("제휴승인 목록");
   const [storeList, setStoreList] = useState([]);
   const [storeType, setStoreType] = useState(0);
@@ -112,7 +113,9 @@ const StoreItem = (props) => {
   return (
     <tr
       onClick={() => {
-        navigate(`/admin/store/approvalDetail/${store.storeNo}/${storeType}`);
+        if (storeType == 0) {
+          navigate(`/admin/store/approvalDetail/${store.storeNo}/${storeType}`);
+        }
       }}
     >
       <td style={{ width: "10%" }}>{store.storeNo}</td>
