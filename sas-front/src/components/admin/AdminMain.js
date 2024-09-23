@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import AdminSideTab from "./AdminSideTab";
 import NoticeMain from "../notice/NoticeMain";
 import "./adminMain.css";
+import AdminStore from "./AdminStore";
 
 const AdminMain = () => {
   return (
@@ -10,6 +11,7 @@ const AdminMain = () => {
       <div className="admin-content-wrap">
         <Routes>
           <Route path="notice/*" element={<NoticeMain />} />
+          <Route path="store/*" element={<AdminStore />} />
         </Routes>
       </div>
     </div>

@@ -1,0 +1,231 @@
+.admin-store-wrap {
+  width: 100%;
+}
+
+.admin-store-title-wrap {
+  width: 100%;
+  padding: 30px;
+  height: 100px;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+  line-height: 40px;
+}
+
+.admin-store-title-wrap > * {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.admin-store-content-wrap {
+  width: 100%;
+}
+
+.admin-store-list-wrap {
+  min-width: 900px;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.admin-store-list-menu {
+  display: flex;
+  margin: 30px 0 0 30px;
+  border-bottom: 1px solid var(--font3);
+  align-items: center;
+}
+.admin-store-menu {
+  border: 1px solid var(--font3);
+  border-bottom: none;
+  width: 120px;
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  cursor: pointer;
+}
+
+.admin-store-menu-check {
+  background-color: var(--main2);
+}
+.admin-store-menu-check > span {
+  color: white;
+}
+
+.admin-store-list-main {
+  margin-left: 30px;
+}
+
+.admin-store-posting-wrap {
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.admin-store-posting-wrap > tr {
+  cursor: pointer;
+}
+
+.admin-store-posting-wrap > tr:hover * {
+  background-color: var(--main2);
+  color: white;
+}
+
+.admin-store-posting-wrap > tr > td {
+  border-bottom: 1px solid #ccc;
+  height: 50px;
+  font-size: 20px;
+}
+
+.admin-store-paging-wrap {
+  min-width: 900px;
+  width: 70%;
+  margin: 20px auto;
+}
+.admin-store-paging-wrap > .pagination {
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.pagination li {
+  display: flex;
+}
+
+.pagination li > span {
+  font-size: 24px;
+  cursor: pointer;
+  width: 20px;
+  text-align: center;
+}
+
+.active-page {
+  background-color: var(--main2);
+  opacity: 0.3;
+  color: white;
+}
+
+.admin-store-write-btn {
+  float: right;
+}
+.admin-store-write {
+  width: 120px;
+  height: 50px;
+}
+
+.admin-store-write-btn button {
+  width: 120px;
+  height: 50px;
+}
+.admin-store-write-form {
+  width: 100%;
+}
+.admin-store-write-wrap {
+  min-width: 900px;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.admin-store-editor-wrap {
+  min-height: 500px;
+}
+
+.admin-store-write-title-wrap {
+  width: 100%;
+  margin-top: 50px;
+}
+.admin-store-write-title-wrap > div {
+  margin-bottom: 30px;
+}
+.admin-store-title {
+  width: 100%;
+  text-align: left;
+  line-height: 50px;
+}
+.admin-store-title > label {
+  font-size: 24px;
+  height: 50px;
+}
+.admin-store-title > input {
+  border: none;
+  padding-left: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  border-bottom: 1px solid var(--font3);
+}
+
+.admin-store-type {
+  width: 100%;
+  display: flex;
+}
+.admin-store-type > div:first-child {
+  width: 20%;
+  text-align: left;
+  line-height: 50px;
+  font-size: 24px;
+}
+
+.admin-store-mui-wrap {
+  width: 80%;
+}
+.admin-store-mui-wrap > * {
+  width: 100%;
+}
+
+.admin-store-write-button-zone {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.admin-store-write-button-zone > button {
+  width: 180px;
+  height: 50px;
+  font-size: 24px;
+}
+
+.admin-store-detail-wrap {
+  min-width: 900px;
+  width: 70%;
+  margin: 50px auto;
+}
+
+.admin-store-detail-table {
+  width: 100%;
+}
+.admin-store-detail-table tr {
+  height: 60px;
+  border: 0.5px solid var(--font3);
+}
+
+.admin-store-detail-table tr th {
+  text-align: center;
+  border-right: 0.5px solid var(--font3);
+  border-left: 0.5px solid var(--font3);
+}
+
+.admin-store-detail-table tr td {
+  padding-left: 10px;
+}
+.admin-store-detail-table-td {
+  height: 500px;
+  padding-top: 10px;
+  vertical-align: top;
+}
+
+.admin-store-both-wrap {
+  cursor: pointer;
+}
+
+.admin-store-both-wrap:hover * {
+  background-color: var(--main2);
+  color: white;
+}
+.admin-store-write-button-zone > .admin-store-back {
+  width: 360px;
+  height: 50px;
+  font-size: 24px;
+}
