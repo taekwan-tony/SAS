@@ -4,12 +4,26 @@ import { RiReservedFill } from "react-icons/ri";
 import { FaHourglassHalf } from "react-icons/fa";
 import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
+import axios from "axios";
 
 function ManageReserved() {
   const [inputValue, setInputValue] = useState(0); // 입력 값 관리
   const [totalValue, setTotalValue] = useState(0); // 누적 값 관리
   const [warningVisible, setWarningVisible] = useState(false); // 경고 메시지 상태
   const maxValue = 100; // 최대 값 설정
+
+  const [reservations, setReservations] = useState([]);
+  const [storeNo, setStoreNo] = useState(1);
+  useEffect(() => {
+    axios
+      .get(`/api/reservations?storeNo=${storeNo}`)
+      .then((response) => {
+        setReservations(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching reservation data:", error);
+      });
+  }, [storeNo]);
 
   useEffect(() => {
     console.log("Total Value:", totalValue);
@@ -47,6 +61,19 @@ function ManageReserved() {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
+  // 입금 상태 표시용 함수
+  const getPayStatusBadge = (payStatus) => {
+    switch (payStatus) {
+      case 0:
+        return <span className="badge bg-danger">입금취소</span>;
+      case 1:
+        return <span className="badge bg-warning">입금대기</span>;
+      case 2:
+        return <span className="badge bg-success">입금완료</span>;
+      default:
+        return <span className="badge bg-secondary">상태 미확인</span>;
+    }
+  };
   return (
     <>
       <div className="dashboard-body">
@@ -184,44 +211,30 @@ function ManageReserved() {
             <thead>
               <tr>
                 <th>순번</th>
-                <th>이름</th>
                 <th>날짜</th>
-                <th>시간</th>
                 <th>입금현황</th>
-                <th>전화번호</th>
+                <th>예약현황</th>
+                <th>인원수</th>
+                <th>좌석번호</th>
+                <th>손님아이디</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>#1</td>
-                <td>임민규</td>
-                <td>2024-09-18</td>
-                <td>18:30</td>
-                <td>
-                  <span className="badge bg-danger">입금취소</span>
-                </td>
-                <td>010-1111-1111</td>
-              </tr>
-              <tr>
-                <td>#2</td>
-                <td>김새봄</td>
-                <td>2024-09-19</td>
-                <td>15:30</td>
-                <td>
-                  <span className="badge bg-warning">입금대기</span>
-                </td>
-                <td>010-1111-1111</td>
-              </tr>
-              <tr>
-                <td>#3</td>
-                <td>윤태구</td>
-                <td>2024-09-20</td>
-                <td>17:30</td>
-                <td>
-                  <span className="badge bg-success">입금완료</span>
-                </td>
-                <td>010-1111-1111</td>
-              </tr>
+              {reservations.map((reservation, index) => (
+                <tr key={reservation.reserveNo}>
+                  <td>#{index + 1}</td>
+                  <td>
+                    {new Date(reservation.reserveDate).toLocaleDateString()}
+                  </td>
+                  <td>{getPayStatusBadge(reservation.reservePayStatus)}</td>
+                  <td>
+                    {reservation.reserveStatus === 1 ? "예약완료" : "예약대기"}
+                  </td>
+                  <td>{reservation.reservePeople}</td>
+                  <td>{reservation.seatNo}</td>
+                  <td>{reservation.userId}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
