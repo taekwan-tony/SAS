@@ -33,7 +33,7 @@ div.mypage-main > .profile-wrap > div.img > button {
   background-color: transparent;
   position: absolute;
   bottom: 0;
-  right: -10px;
+  right: -40px;
 }
 div.mypage-main > .profile-wrap > div.img > button > span {
   color: var(--main1);
