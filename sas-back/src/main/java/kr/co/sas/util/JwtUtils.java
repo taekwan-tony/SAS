@@ -32,7 +32,7 @@ public class JwtUtils {
 	 * 
 	 * */
 	//1시간짜리 토큰생성
-	public String createAccessToken(String userId,int loginType) {
+	public String createAccessToken(String userId,int loginType, int userNo) {
 		//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 		SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 		//2. 토큰 생성시간 및 만료시간 설정
@@ -46,12 +46,13 @@ public class JwtUtils {
 						.expiration(expireTime)			//토큰만료 시간
 						.signWith(key)					//암호화서명
 						.claim("userId", userId)	//토큰에 포함할 회원정보 세팅(key = value)
-						.claim("loginType", loginType) //토큰에 포함할 회원정보 세팅(key = value)
+						.claim("userType", loginType) //토큰에 포함할 회원정보 세팅(key = value)
+						.claim("userNo", userNo)//토큰에 포함할 회원정보 세팅
 						.compact();
 		return token;
 	}
 	//8760시간(1년)짜리 accessToken
-	public String createRefreshToken(String userId, int loginType) {
+	public String createRefreshToken(String userId, int loginType, int userNo) {
 		//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 				SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 				//2. 토큰 생성시간 및 만료시간 설정
@@ -66,6 +67,7 @@ public class JwtUtils {
 								.signWith(key)					//암호화서명
 								.claim("userId", userId)	//토큰에 포함할 회원정보 세팅(key = value)
 								.claim("userType", loginType) //토큰에 포함할 회원정보 세팅(key = value)
+								.claim("userNo", userNo)
 								.compact();
 				return token;
 	}
@@ -80,10 +82,12 @@ public class JwtUtils {
 										.parse(token)
 										.getPayload();
 			String userId = (String)claims.get("userId");
-			int loginType = (int)claims.get("loginType");
+			int loginType = (int)claims.get("userType");
+			int userNo = (int)claims.get("userNo");
 			LoginUserDTO loginUser = new LoginUserDTO();
 			loginUser.setUserId(userId);
 			loginUser.setLoginType(loginType);
+			loginUser.setUserNo(userNo);
 			return loginUser;
 		}
 		

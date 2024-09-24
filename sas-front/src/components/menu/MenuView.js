@@ -8,7 +8,7 @@ import axios from "axios";
 
 const MenuView = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-
+  const [store, setStore] = useState({});
   const [storinfo, setStoreinfo] = useState({});
   useEffect(() => {
     axios
