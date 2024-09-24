@@ -102,7 +102,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     const soEmailElement = document.getElementById("soEmail");
 
     const emailCheck = soEmailElement.value;
-    if (!emailCheck) {
+    if (emailCheck) {
       Swal.fire({
         title: "이메일을 입력해주세요.",
         icon: "warning",
