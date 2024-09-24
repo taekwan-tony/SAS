@@ -4,7 +4,7 @@ import NoticeMain from "../notice/NoticeMain";
 import "./adminMain.css";
 import AdminStore from "./AdminStore";
 import "./adminStore.css";
-import QuestionMain from "../question/QuestionMain";
+import "../question/question.css";
 
 const AdminMain = () => {
   return (
@@ -14,7 +14,6 @@ const AdminMain = () => {
         <Routes>
           <Route path="notice/*" element={<NoticeMain />} />
           <Route path="store/*" element={<AdminStore />} />
-          <Route path="question/*" element={<QuestionMain />} />
         </Routes>
       </div>
     </div>

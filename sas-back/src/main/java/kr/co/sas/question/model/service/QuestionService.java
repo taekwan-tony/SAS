@@ -2,6 +2,7 @@ package kr.co.sas.question.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,11 @@ import kr.co.sas.question.model.dto.QuestionFile;
 public class QuestionService {
 	@Autowired
 	private QuestionDao questionDao;
+
+	public Map selectAllquestion(int reqPage, int questionWriterType) {
+		
+		return null;
+	}
 	
 	
 }
