@@ -18,10 +18,18 @@ const StoreLogin = () => {
     soEmail: "",
     soPw: "",
   });
+  const [storeLogin, setStoreLogin] = useState({
+    soEmail: "",
+  });
 
   const changeStore = (e) => {
     const name = e.target.name;
     setStore({ ...store, [name]: e.target.value });
+  };
+
+  const changeStoreLogin = (e) => {
+    const name = e.target.name;
+    setStoreLogin({ ...storeLogin, [name]: e.target.value });
   };
 
   const storeRegistBusinessNumber = () => {
@@ -214,8 +222,8 @@ const StoreLogin = () => {
                                     type="text"
                                     id="soEmail"
                                     name="soEmail"
-                                    value={store.soEmail}
-                                    onChange={changeStore}
+                                    value={storeLogin.soEmail}
+                                    onChange={changeStoreLogin}
                                   ></input>
                                 </div>
                               </td>
@@ -248,7 +256,7 @@ const StoreLogin = () => {
                         <div className="storeLogin-btn-zone">
                           <button
                             type="submit"
-                            className="storeLogin-partnership-btn"
+                            className="storeLogin-login-btn"
                             onClick={storePartnership}
                           >
                             로그인
@@ -399,7 +407,7 @@ const StoreLogin = () => {
                           </tr>
                         </tbody>
                       </table>
-                      <div className="storeLogin-btn-zone">
+                      <div className="storeLogin-partnership-btn-zone">
                         <button
                           type="submit"
                           className="storeLogin-partnership-btn"

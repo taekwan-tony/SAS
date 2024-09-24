@@ -95,6 +95,12 @@
   margin-top: 50px;
 }
 
+.storeLogin-partnership-btn-zone {
+  width: 100%;
+  margin-top: 30px;
+  justify-content: center;
+}
+
 .storeLogin-btn {
   width: 50%;
   height: 40px;
@@ -286,7 +292,13 @@
   justify-content: center;
 }
 
-.storeLogin-partnership-btn {
+.storeLogin-partnership-btn-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storeLogin-login-btn {
   width: 300px;
   height: 80px;
   border: none;
@@ -297,6 +309,18 @@
   font-size: 38px;
   font-weight: 600;
   margin-top: 30px;
+}
+
+.storeLogin-partnership-btn {
+  width: 300px;
+  height: 80px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 38px;
+  font-weight: 600;
 }
 
 .storeRegist-partnership-btn:hover {
