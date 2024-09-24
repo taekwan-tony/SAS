@@ -15,13 +15,15 @@ import StorePartnership from "./components/store/StorePartnership";
 import StoreCheckMain from "./components/store/StoreCheckMain";
 import Ownerstatistics from "./components/ownerstatistics/OwnerStatistics";
 import StoreLogin from "./components/store/StoreLogin";
+import ReservationMain from "./components/reservation/ReservationMain";
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Main />} />
-        {/* 확인용-수진;user 메인 생기면 옮기겠슴다 */}
+        {/* 확인용-수진;예약 창 생기면 옮기겠슴다 */}
+
         {/* 답변: ㅇㅋ */}
         <Route path="/storeLogin" element={<StoreLogin />} />
         <Route path="/storemain" element={<StoreMain />} />

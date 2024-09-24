@@ -59,8 +59,9 @@ public class UserService {
 				loginUser.setUserPw(null);
 				map.put("loginId", loginUser.getUserId());
 				map.put("userType", loginUser.getLoginType());
-				map.put("accessToken", jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType()));
-				map.put("refreshToken", jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType()));
+				map.put("userNo", loginUser.getUserNo());
+				map.put("accessToken", jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo()));
+				map.put("refreshToken", jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo()));
 			}else {
 				result=3;
 			}
@@ -72,13 +73,14 @@ public class UserService {
 	public LoginUserDTO refresh(String token) {
 		try {
 			LoginUserDTO loginUser = jwtUtils.checkToken(token);
-			String accessToken = jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType());
-			String refreshToken = jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType());
+			String accessToken = jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo());
+			String refreshToken = jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo());
 			loginUser.setAccessToken(accessToken);
 			loginUser.setRefreshToken(refreshToken);;
 			return loginUser;
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println("에러임 ");
 		}
 		return null;
 	}
@@ -122,3 +124,10 @@ public class UserService {
 
 	}	
 
+	public UserDTO selectOneUser(int userNo) {
+		UserDTO user = userDao.selectOneUser(userNo);
+		System.out.println(user);
+		return user;
+	}
+	
+}

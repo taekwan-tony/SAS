@@ -9,6 +9,8 @@ import axios from "axios";
 const MenuView = () => {
   const [store, setStore] = useState({ storeNo: 73 });
   const backServer = process.env.REACT_APP_BACK_SERVER;
+
+  const [storinfo, setStoreinfo] = useState({});
   useEffect(() => {
     axios
       .get(`${backServer}/user/storeNo/${store.storeNo}`)
