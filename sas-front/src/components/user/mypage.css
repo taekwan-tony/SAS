@@ -24,8 +24,13 @@ div.mypage-main > .profile-wrap > div.img {
   border-radius: 50%;
   height: 163px;
   width: 163px;
-  border: 1px solid black;
+  /* border: 1px solid var(--font1); */
   position: relative;
+}
+div.mypage-main > .profile-wrap > div.img > img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 div.mypage-main > .profile-wrap > div.img > button {
   outline: none;
@@ -33,7 +38,7 @@ div.mypage-main > .profile-wrap > div.img > button {
   background-color: transparent;
   position: absolute;
   bottom: 0;
-  right: -40px;
+  right: -15px;
 }
 div.mypage-main > .profile-wrap > div.img > button > span {
   color: var(--main1);
@@ -115,7 +120,8 @@ div.mypage-main > .mypage-list-wrap > .list-content {
 /* 메인화면-리스트목록-예약내역 */
 div.mypage-main .reserve-content-wrap {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 10px;
 }
 div.mypage-main .reserve-content-wrap > .reserve-content {
   background-color: #fff;
@@ -273,4 +279,16 @@ div.mypage-main .review-content-wrap > .review-list-content .star > span {
   padding: 0;
   margin: 0;
   color: gold;
+}
+/* 존재하지 않을때 */
+div.mypage-main div.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  background-color: #d9d9d9;
+}
+div.mypage-main div.empty > p.text {
+  padding: 10px;
+  margin: 0;
 }

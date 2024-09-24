@@ -3,8 +3,12 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import FindMain from "./FindMain";
 import "./login.css";
 import axios from "axios";
-import { RecoilState, useRecoilState } from "recoil";
-import { loginUserIdState, userTypeState } from "../utils/RecoilData";
+import { useRecoilState } from "recoil";
+import {
+  loginUserIdState,
+  userTypeState,
+  loginUserNoState,
+} from "../utils/RecoilData";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import FindResult from "./FindResult";
@@ -37,6 +41,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const [userType, setUserType] = useRecoilState(userTypeState);
+  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const changeInputVal = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -55,6 +60,7 @@ const Login = () => {
             case 1:
               setLoginUserId(res.data.loginId);
               setUserType(res.data.userType);
+              setLoginUserNo(res.data.userNo);
               //로그인 이후 axios 요청 시 발급받은 토큰 값을 자동으로 axios에 추가하는 설정 (이 작업을 하지 않으면 매번 header에 token값을 보내줘야함)==>이제ㅡ Authorization을 키값으로 해서 token값을 받을 수 있음
               axios.defaults.headers.common["Authorization"] =
                 res.data.accessToken;

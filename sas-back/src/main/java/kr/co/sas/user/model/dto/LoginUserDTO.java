@@ -12,4 +12,5 @@ public class LoginUserDTO {
 	private String refreshToken;
 	private String userId;
 	private int loginType;
+	private int userNo;
 }

@@ -45,4 +45,24 @@
 	<update id="updatePw">
 		update user_tbl set user_pw = #{userPw} where user_no = #{userNo}
 	</update>
+	<select id="selectOneUser" resultMap="getUser">
+		select user_no, user_id, user_nickname, user_birth, user_phone, user_email, user_gender, user_photo	from user_tbl where user_no = #{userNo}
+	</select>
+	<resultMap type="user" id="getUser">
+		<result column="user_nickname" property="userNickname"/>
+		<result column="user_id" property="userId"/>
+		<result column="user_no" property="userNo"/>
+		<collection property="favoriteFolderList" select="selectFavoriteFolderList" column="user_no" javaType="java.util.List" ofType="favoriteFolder"/>
+		<collection property="reservationList" select="selectReservationList" column="user_id" javaType="java.util.List" ofType="reservation"/>
+		<collection property="reviewList" select="selectReviewList" column="user_nickname" javaType="java.util.List" ofType="review"/>
+	</resultMap>
+	<select id="selectFavoriteFolderList" resultType="favoriteFolder">
+		select * from favorite_folder where user_no=#{userNo}
+	</select>
+	<select id="selectReservationList" resultType="reservation">
+		select * from reservation where user_id=#{userId}
+	</select>
+	<select id="selectReviewList" resultType="review">
+		select * from review where user_nickname=#{userNickname}
+	</select>
 </mapper>

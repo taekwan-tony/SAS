@@ -58,11 +58,14 @@ public class UserController {
 	@Operation(summary = "일반회원 로그인 갱신", description = "리프레시 토큰을 가져와서 옳은 토큰이면 로그인 갱신하고 map으로 토큰값과 함께 보냄")
 	@PostMapping(value="/refresh")
 	public ResponseEntity<Map> refresh(@RequestHeader("Authorization") String token){
+//		System.out.println(token);
 		LoginUserDTO loginUser = userService.refresh(token);
+//		System.out.println(loginUser);
 		if(loginUser!=null) {
 			Map map = new HashMap<String, Object>();
 			map.put("loginId", loginUser.getUserId());
 			map.put("userType", loginUser.getLoginType());
+			map.put("userNo", loginUser.getUserNo());
 			map.put("accessToken", loginUser.getAccessToken());
 			map.put("refreshToken", loginUser.getRefreshToken());
 			return ResponseEntity.ok(map);
@@ -127,6 +130,16 @@ public class UserController {
 								+"</span>]입니다. </h3>";
 		email.sendMail(emailTitle, receiver, emailContent);
 		return ResponseEntity.ok(sb.toString());
+	}
+	
+	@Operation(summary="회원정보 조회", description = "userNo를 받아와서 그에 해당하는 유저객체 반환, 없으면 404")
+	@GetMapping(value="/userNo/{userNo}")
+	public ResponseEntity<UserDTO> getUserInfo(@PathVariable int userNo){
+		UserDTO user = userService.selectOneUser(userNo);
+		if(user!=null) {
+			return ResponseEntity.ok(user);
+		}
+		return ResponseEntity.status(404).build();
 	}
 	
 }
