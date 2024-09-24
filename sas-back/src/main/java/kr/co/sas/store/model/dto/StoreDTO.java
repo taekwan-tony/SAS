@@ -37,6 +37,6 @@ public class StoreDTO {
 	private int mapY;
 	private int type;
 	private int servicePrice;
-	private String storerequestDate;
+	private String storeRequestDate;
 	private Date storeEnrollDate;
 }
