@@ -141,6 +141,11 @@ function UserMain() {
             />
           </form>
         </div>
+        <div className="user-main-login-button">
+          <Link to="/user/login">
+            <button className="user-main-login-btn">로그인</button>
+          </Link>
+        </div>
         <div className="user-box-bell">
           <div className="user-page-box">
             <div className="bellWrapper">

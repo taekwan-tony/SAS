@@ -247,7 +247,27 @@ h1 {
   border: 1px solid #000;
   margin-left: -400px;
 }
+.user-main-login-button {
+  position: absolute;
+  right: 300px;
+  top: 50%;
+  transform: translateY(-60%);
+}
 
+.user-main-login-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: transparent;
+  color: #399918;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.user-main-login-btn:hover {
+  background-color: #399918;
+  color: #fff;
+}
 .page-header .notification {
   font-size: 20px;
   margin-right: 40px;
