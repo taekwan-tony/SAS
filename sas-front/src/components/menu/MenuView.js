@@ -4,11 +4,23 @@ import { Map } from "react-kakao-maps-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import { PiStarFill, PiStarLight } from "react-icons/pi";
+import axios from "axios";
 
 const MenuView = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const params = useParams();
-  const [storename, setStorename] = useState({});
+
+  const [storinfo, setStoreinfo] = useState({});
+  useEffect(() => {
+    axios
+      .get(`${backServer}/menuview`)
+      .then((res) => {
+        console.log(res);
+        setStoreinfo(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="menuview-bigwrap">
       <div className="menuview-wrap">
@@ -17,7 +29,7 @@ const MenuView = () => {
             <img src="/image/s&s로고.png" alt="가게 로고" />
           </div>
           <div className="menuview-info">
-            <p>벨라스가든 석촌호수점</p>
+            <p>{store.storename}</p>
             <div className="schedule">
               <span className="material-icons">place</span>
               <p>8호선 9호선 석촌역에서 506m</p>
@@ -61,7 +73,6 @@ const MenuView = () => {
           <Route path="menu" element={<Menu />}></Route>
           <Route path="photo" element={<MenuPhoto />}></Route>
           <Route path="review" element={<MenuReview />}></Route>
-
           <Route path="info" element={<Menuinfo />}></Route>
         </Routes>
       }

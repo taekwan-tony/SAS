@@ -33,7 +33,6 @@ function App() {
         <Route path="/storemain/managereview" element={<ManageReview />} />
         <Route path="/storemain/managereserved" element={<ManageReserved />} />
         <Route path="/admin/*" element={<AdminMain />} />
-        <Route path="/menuview" element={<MenuView />} />
         <Route path="/storecheck/*" element={<StoreCheckMain />} />
       </Routes>
     </div>

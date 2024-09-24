@@ -211,6 +211,17 @@
   height: 100vh;
 }
 
+.review-container .label1 {
+  color: #fff;
+  font-size: 2.3em;
+  justify-content: center;
+  display: flex;
+  margin: 60px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+
 .review-title {
   margin-bottom: 10px;
 }
@@ -254,7 +265,7 @@ div.review-container span.MuiRating-iconFilled path {
   margin-left: 20px; /* 여백 추가 */
 }
 
-button {
+.toggle-button {
   background-color: #007bff; /* 버튼 색상 */
   color: white;
   border: none;
