@@ -12,8 +12,8 @@
   display: flex; /* 중앙 정렬을 위한 flex 속성 */
 }
 .storeModal-content {
-  width: 80%;
-  height: 90%;
+  width: 28%;
+  height: 65%;
   border-radius: 10px;
   position: relative;
   padding: 20px;
@@ -21,7 +21,7 @@
 .storeLogin-close {
   position: absolute;
   top: 3%;
-  right: 3%;
+  right: 8%;
   font-size: 35px;
   color: #5e9960;
   cursor: pointer;
@@ -57,7 +57,7 @@
 
 .storeLogin-label {
   color: #5e9960;
-  font-size: 3.8em;
+  font-size: 2.5em;
   justify-content: center;
   display: flex;
   font-weight: bold;
@@ -68,13 +68,13 @@
 
 .storeLogin-regist-label {
   color: #5e9960;
-  font-size: 3em;
+  font-size: 2em;
   justify-content: center;
   display: flex;
   font-weight: bold;
   cursor: pointer;
   transition: 0.5s ease-in-out;
-  padding: 30px;
+  padding: 20px;
 }
 
 .storeLogin-input {
@@ -92,12 +92,10 @@
 
 .storeLogin-btn-zone {
   width: 100%;
-  margin-top: 50px;
 }
 
 .storeLogin-partnership-btn-zone {
   width: 100%;
-  margin-top: 30px;
   justify-content: center;
 }
 
@@ -128,9 +126,9 @@
   height: 100%;
   background: #eee;
   border-radius: 60% / 10%;
-  transform: translateY(-20px);
+  transform: translateY(-40px);
   transition: 0.8s ease-in-out;
-  padding: 0px 50px;
+  padding: 0px 15px;
 }
 
 .storeLogin-login .storeLogin-label {
@@ -139,7 +137,7 @@
 }
 
 #chk:checked ~ .storeLogin-login {
-  transform: translateY(-600px);
+  transform: translateY(-440px);
 }
 
 #chk:checked ~ .storeLogin-login .storeLogin-label {
@@ -174,59 +172,55 @@
   box-shadow: 5px 6px 1px rgba(0, 0, 0, 0.3);
 }
 
-.storeRegist-inputBox {
+.storeLogin-inputBox {
   box-sizing: border-box;
-  width: 70%;
   border: none;
   border-radius: 0%;
   background: none;
   color: #544f4f;
-  font-size: 19px;
+  font-size: 16px;
   outline: 0;
   transition: none;
   transform: none;
   border-bottom: 1px solid #b9b9bd;
   font-weight: 200;
+  margin-left: 15px;
 }
 
 .storeLogin-storeRegist-inputBox {
   box-sizing: border-box;
-  width: 80%;
   border: none;
   border-radius: 0%;
   background: none;
   color: #544f4f;
-  font-size: 19px;
+  font-size: 13px;
   outline: 0;
   transition: none;
   transform: none;
   border-bottom: 1px solid #b9b9bd;
   font-weight: 200;
+  width: 70%;
 }
 
 .storeLogin-storeRegist-inputBox::placeholder {
   color: #b9b9bd;
   font-weight: 100;
-  font-size: 20px;
+  font-size: 13px;
 }
 .storeRegist-inputBox::placeholder {
   color: #b9b9bd;
   font-weight: 100;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .storeLogin-table {
   width: 100%;
-  margin-top: 100px;
+  margin-bottom: 15px;
 }
 
 .storeRegist-table {
   width: 100%;
   padding: 50px;
-}
-
-.storeRegist-tr {
-  height: 100px;
 }
 
 .storeRegist-th {
@@ -235,33 +229,35 @@
 }
 
 .storeLogin-storeRegist-label {
-  font-size: 30px;
+  font-size: 15px;
   font-weight: 600;
   color: #544f4f;
 }
 
-.storeRegist-label {
-  font-size: 24px;
+.storeLogin-login-label {
+  font-size: 16px;
   font-weight: 600;
   color: #544f4f;
 }
 
-.storeRegist-div {
-  margin-left: 10px;
-}
-
-.storeRegist-btn {
-  width: 90px;
-  height: 40px;
+.storeLogin-storeRegist-btn {
+  width: 65px;
+  height: 30px;
   border: none;
   background-color: #5e9960;
   color: #fff;
   margin-top: 10px;
-  margin-left: 75px;
   border-radius: 3px;
   cursor: pointer;
-  font-size: 19px;
+  font-size: 13px;
   font-weight: 590;
+  margin-left: 20px;
+}
+
+.storeLogin-storeRegist-btn:hover {
+  border: 2px solid #5e9960;
+  color: #5e9960;
+  background-color: #eee;
 }
 
 .storeRegist-btn:hover {
@@ -299,28 +295,35 @@
 }
 
 .storeLogin-login-btn {
-  width: 300px;
-  height: 80px;
+  width: 290px;
+  height: 60px;
   border: none;
   background-color: #5e9960;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 38px;
+  font-size: 20px;
   font-weight: 600;
-  margin-top: 30px;
+  margin-top: 15px;
+}
+
+.storeLogin-login-btn:hover {
+  background-color: #fff;
+  color: #5e9960;
+  border: 2px solid #5e9960;
 }
 
 .storeLogin-partnership-btn {
-  width: 300px;
-  height: 80px;
+  width: 290px;
+  height: 45px;
   border: none;
   background-color: #5e9960;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 38px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 15px;
 }
 
 .storeRegist-partnership-btn:hover {
@@ -329,5 +332,21 @@
 }
 
 .storeLogin-regist {
-  padding: 10px 30px;
+  padding: 15px 30px;
+}
+
+.storeLogin-find {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.storeLogin-a {
+  text-decoration: none;
+}
+
+.storeLogin-msg {
+  color: #5e9960;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
 }

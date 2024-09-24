@@ -6,6 +6,7 @@ import Ownerstatistics from "../ownerstatistics/OwnerStatistics";
 import StoreRegist from "./StoreRegist";
 import StorePartnership from "./StorePartnership";
 import StoreMenuView from "./StoreMenuView";
+import StoreViewFrm from "./StoreViewFrm";
 
 const StoreCheckMain = () => {
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
@@ -21,7 +22,7 @@ const StoreCheckMain = () => {
     {
       text: "매장페이지",
       icon: "fa-solid fa-store",
-      to: "/storecheck/StoreRegist",
+      to: "/storecheck/StoreViewFrm",
     },
     {
       text: "매장등록",
@@ -53,7 +54,7 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
-        <Route path="StoreRegist" element={<StoreRegist />} />
+        <Route path="storeView" element={<StoreViewFrm />} />
         <Route path="managereserved" element={<ManageReserved />} />
         <Route path="ownerstatistics" element={<Ownerstatistics />} />
         <Route path="managereview" element={<ManageReview />} />

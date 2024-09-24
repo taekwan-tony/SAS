@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const StoreLogin = () => {
+const StoreLogin = ({ isModalOpen, closeModal }) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
   const [bnMsg, setBnMsg] = useState("");
@@ -144,18 +144,6 @@ const StoreLogin = () => {
         console.log(err);
       });
   };
-  // 모달의 열림/닫힘 상태를 관리하는 useState
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // 모달 열기 함수
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  // 모달 닫기 함수
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   // 모달 외부 클릭 시 모달 닫기
   const handleOutsideClick = (event) => {
@@ -164,19 +152,15 @@ const StoreLogin = () => {
     }
   };
 
+  if (!isModalOpen) {
+    return null; // 모달이 열리지 않았을 경우 null을 반환하여 아무것도 렌더링하지 않음
+  }
+
   return (
     <>
       <div className="storeLogin-wrap">
         <div className="storeLogin-dashboard">
-          <div className="owner-background">
-            <img src="/image/200.jpg" alt="back" />
-          </div>
           <div>
-            <div className="storeLogin-btn-zone">
-              <button onClick={openModal} className="storeLogin-btn">
-                로그인
-              </button>
-            </div>
             {/* 메인 페이지 내용 */}
 
             {/* 모달 창 */}
@@ -209,7 +193,7 @@ const StoreLogin = () => {
                               <th className="storeRegist-th">
                                 <label
                                   htmlFor="soEmail"
-                                  className="storeLogin-storeRegist-label"
+                                  className="storeLogin-login-label"
                                 >
                                   아이디
                                 </label>
@@ -217,7 +201,7 @@ const StoreLogin = () => {
                               <td>
                                 <div className="storeRegist-div">
                                   <input
-                                    className="storeLogin-storeRegist-inputBox"
+                                    className="storeLogin-inputBox"
                                     placeholder="이메일을 입력해주세요."
                                     type="text"
                                     id="soEmail"
@@ -232,7 +216,7 @@ const StoreLogin = () => {
                               <th className="storeRegist-th">
                                 <label
                                   htmlFor="soPw"
-                                  className="storeLogin-storeRegist-label"
+                                  className="storeLogin-login-label"
                                 >
                                   비밀번호
                                 </label>
@@ -240,7 +224,7 @@ const StoreLogin = () => {
                               <td>
                                 <div className="storeRegist-div">
                                   <input
-                                    className="storeLogin-storeRegist-inputBox"
+                                    className="storeLogin-inputBox"
                                     placeholder="비밀번호를 입력해주세요."
                                     type="text"
                                     id="soPw"
@@ -262,6 +246,14 @@ const StoreLogin = () => {
                             로그인
                           </button>
                         </div>
+                        {/*비밀번호 찾기, 비밀번호 변경 */}
+                        <>
+                          <div className="storeLogin-find">
+                            <a className="storeLogin-a">
+                              비밀번호 찾기 / 비밀번호 변경
+                            </a>
+                          </div>
+                        </>
                       </div>
                     </div>
                     {/* 제휴 신청 */}
@@ -275,11 +267,11 @@ const StoreLogin = () => {
                       </label>
                       <table className="storeRegist-table">
                         <tbody className="storeRegist-tbody">
-                          <tr className="storeRegist-tr">
+                          <tr className="storeLogin-storeRegist-tr">
                             <th className="storeRegist-th">
                               <label
                                 htmlFor="businessNumber"
-                                className="storeRegist-label"
+                                className="storeLogin-storeRegist-label"
                               >
                                 사업자번호
                               </label>
@@ -287,7 +279,7 @@ const StoreLogin = () => {
                             <td>
                               <div className="storeRegist-div">
                                 <input
-                                  className="storeRegist-inputBox"
+                                  className="storeLogin-storeRegist-inputBox"
                                   placeholder="번호만 입력해주세요."
                                   type="text"
                                   id="businessNumber"
@@ -296,14 +288,14 @@ const StoreLogin = () => {
                                   onChange={changeStore}
                                 ></input>
                                 <button
-                                  className="storeRegist-btn"
+                                  className="storeLogin-storeRegist-btn"
                                   onClick={storeRegistBusinessNumber}
                                 >
                                   조회
                                 </button>
                               </div>
                               <p
-                                className="storeRegist-msg"
+                                className="storeLogin-msg"
                                 style={{
                                   backgroundImage: bnMsg
                                     ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)`
@@ -318,11 +310,11 @@ const StoreLogin = () => {
                               </p>
                             </td>
                           </tr>
-                          <tr className="storeRegist-tr">
+                          <tr className="storeLogin-storeRegist-tr">
                             <th className="storeRegist-th">
                               <label
                                 htmlFor="soName"
-                                className="storeRegist-label"
+                                className="storeLogin-storeRegist-label"
                               >
                                 이름
                               </label>
@@ -330,7 +322,7 @@ const StoreLogin = () => {
                             <td>
                               <div className="storeRegist-div">
                                 <input
-                                  className="storeRegist-inputBox"
+                                  className="storeLogin-storeRegist-inputBox"
                                   type="text"
                                   id="soName"
                                   name="soName"
@@ -340,11 +332,11 @@ const StoreLogin = () => {
                               </div>
                             </td>
                           </tr>
-                          <tr className="storeRegist-tr">
+                          <tr className="storeLogin-storeRegist-tr">
                             <th className="storeRegist-th">
                               <label
                                 htmlFor="soPhone"
-                                className="storeRegist-label"
+                                className="storeLogin-storeRegist-label"
                               >
                                 전화번호
                               </label>
@@ -352,7 +344,7 @@ const StoreLogin = () => {
                             <td>
                               <div className="storeRegist-div">
                                 <input
-                                  className="storeRegist-inputBox"
+                                  className="storeLogin-storeRegist-inputBox"
                                   placeholder="010-0000-0000 형태로 입력해주세요."
                                   type="text"
                                   id="sophone"
@@ -363,11 +355,11 @@ const StoreLogin = () => {
                               </div>
                             </td>
                           </tr>
-                          <tr className="storeRegist-tr">
+                          <tr className="storeLogin-storeRegist-tr">
                             <th className="storeRegist-th">
                               <label
                                 htmlFor="soEmail"
-                                className="storeRegist-label"
+                                className="storeLogin-storeRegist-label"
                               >
                                 이메일
                               </label>
@@ -375,7 +367,7 @@ const StoreLogin = () => {
                             <td>
                               <div className="storeRegist-div">
                                 <input
-                                  className="storeRegist-inputBox"
+                                  className="storeLogin-storeRegist-inputBox"
                                   type="text"
                                   id="soEmail"
                                   name="soEmail"
@@ -383,14 +375,14 @@ const StoreLogin = () => {
                                   onChange={changeStore}
                                 ></input>
                                 <button
-                                  className="storeRegist-btn"
+                                  className="storeLogin-storeRegist-btn"
                                   onClick={storeRegistEmailCheck}
                                 >
                                   중복 체크
                                 </button>
                               </div>
                               <p
-                                className="storeRegist-msg"
+                                className="storeLogin-msg"
                                 style={{
                                   backgroundImage: emailMsg
                                     ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)`
@@ -398,7 +390,7 @@ const StoreLogin = () => {
                                   backgroundRepeat: "no-repeat",
                                   backgroundPosition: "left center",
                                   marginLeft: "10px",
-                                  paddingLeft: emailMsg ? "10px" : "0px", // 메시지가 있을 때만 padding
+                                  paddingLeft: emailMsg ? "27px" : "0px", // 메시지가 있을 때만 padding
                                 }}
                               >
                                 {emailMsg}
