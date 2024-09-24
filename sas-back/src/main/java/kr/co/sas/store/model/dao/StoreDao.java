@@ -26,5 +26,7 @@ public interface StoreDao {
 
 	int approvalStore(StoreDTO store);
 
+	StoreDTO searchStoreOwner(String soEmail);
+
 
 }

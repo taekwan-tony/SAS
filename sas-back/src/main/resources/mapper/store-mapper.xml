@@ -81,4 +81,9 @@
 			service_price = 1000
 			where store_no = #{storeNo}
 	</update>
+	
+	
+	<select id="searchStoreOwner" resultType="store">
+		select * from store where so_email=#{soEmail}
+	</select>
 </mapper>

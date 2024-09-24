@@ -1,26 +1,85 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./storeLogin.css";
 import { Route, Routes } from "react-router-dom";
 import StoreRegist from "./StoreRegist";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
 
 const StoreLogin = ({ isModalOpen, closeModal }) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
-  const [bnMsg, setBnMsg] = useState("");
-  const [emailMsg, setEmailMsg] = useState("");
   const [store, setStore] = useState({
     soName: "",
     businessNumber: "",
     soPhone: "",
     soEmail: "",
-    soPw: "",
   });
   const [storeLogin, setStoreLogin] = useState({
     soEmail: "",
+    soPw: "",
   });
+
+  {
+    /* 로그인 */
+  }
+  const [loginSoEmail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
+  const [storeType, setStoreType] = useRecoilState(storeTypeState);
+
+  const soEmailRef = useRef(null);
+  const soPwRef = useRef(null);
+
+  const login = () => {
+    soEmailRef.current.innerText = "";
+    soPwRef.current.innerText = "";
+    if (storeLogin.soEmail === "" || storeLogin.soPw === "") {
+      console.log("Email or password is empty");
+    } else {
+      console.log(store); //확인용
+      axios
+        .post(`${backServer}/store/storeLogin`, store)
+        .then((res) => {
+          console.log(res);
+          switch (res.data.result) {
+            case 0:
+              setLoginSoEmail(res.data.loginSoEmail);
+              setStoreType(res.data.storeType);
+
+              axios.defaults.headers.common["Authorization"] =
+                res.data.accessToken;
+
+              window.localStorage.setItem(
+                "storeRefreshToken",
+                res.data.refreshToken
+              );
+              navigate("/adminMain");
+              break;
+
+            case 1:
+              setLoginSoEmail(res.data.loginSoEmail);
+              setStoreType(res.data.storeType);
+
+              axios.defaults.headers.common["Authorization"] =
+                res.data.accessToken;
+
+              window.localStorage.setItem(
+                "storeRefreshToken",
+                res.data.refreshToken
+              );
+              navigate("/storeMain");
+              break;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const [bnMsg, setBnMsg] = useState("");
+  const [emailMsg, setEmailMsg] = useState("");
 
   const changeStore = (e) => {
     const name = e.target.name;
@@ -177,6 +236,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                       aria-hidden="true"
                       className="storeLogin-input"
                     />
+
                     {/* 로그인 */}
                     <div className="storeLogin-signup">
                       <div className="storeLogin-regist">
@@ -209,6 +269,10 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                     value={storeLogin.soEmail}
                                     onChange={changeStoreLogin}
                                   ></input>
+                                  <p
+                                    className="storeLogin-p"
+                                    ref={soEmailRef}
+                                  ></p>
                                 </div>
                               </td>
                             </tr>
@@ -229,9 +293,10 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                     type="text"
                                     id="soPw"
                                     name="soPw"
-                                    value={store.soPw}
-                                    onChange={changeStore}
+                                    value={storeLogin.soPw}
+                                    onChange={changeStoreLogin}
                                   ></input>
+                                  <p className="storeLogin-p" ref={soPwRef}></p>
                                 </div>
                               </td>
                             </tr>
@@ -241,7 +306,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                           <button
                             type="submit"
                             className="storeLogin-login-btn"
-                            onClick={storePartnership}
+                            onClick={login}
                           >
                             로그인
                           </button>
