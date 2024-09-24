@@ -1,6 +1,5 @@
 import ReactQuill from "react-quill";
-import { useState } from "react";
-import * as React from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
@@ -9,11 +8,15 @@ import { Link, Route, Routes } from "react-router-dom";
 import "../menu/menuview.css";
 import "./mypage.css";
 import {
+  EmptyBox,
   MypageFavorite,
   Profile,
   ReserveContent,
   ReviewContent,
 } from "./MypageContent";
+import { loginUserIdState, loginUserNoState } from "../utils/RecoilData";
+import { useRecoilState } from "recoil";
+import axios from "axios";
 
 const Mypage = () => {
   return (
@@ -27,31 +30,65 @@ const Mypage = () => {
   );
 };
 const MypageMain = () => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
+  const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    console.log(loginUserId);
+    axios
+      .get(`${backServer}/user/userNo/${loginUserNo}`)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [loginUserNo]);
   return (
     <>
-      <Profile />
+      <Profile user={user} setUser={setUser} />
       <section className="reserve-list mypage-list-wrap">
         <Link to="#">더보기</Link>
         <h3 className="title">
-          나의 예약 <span className="count">4</span>
+          나의 예약{" "}
+          <span className="count">
+            {user.reservationList ? user.reservationList.length : 0}
+          </span>
         </h3>
-        <div className="reserve-content-wrap list-content">
-          <ReserveContent />
-          <ReserveContent />
-          <ReserveContent />
-        </div>
+
+        {user.reservationList ? (
+          user.reservationList.length === 0 ? (
+            <EmptyBox text={"예약 내역이 존재하지 않습니다"} />
+          ) : (
+            <div className="reserve-content-wrap list-content">
+              {user.reservation.map((reserve, index) => {
+                return <ReserveContent />;
+              })}
+            </div>
+          )
+        ) : (
+          <EmptyBox text={"예약 내역이 존재하지 않습니다"} />
+        )}
       </section>
       <section className="mypage-list-wrap favorite-list">
         <Link to="#">더보기</Link>
         <h3 className="title">
-          즐겨찾기 <span className="count">4</span>
+          즐겨찾기{" "}
+          <span className="count">
+            {user.favoriteFolderList ? user.favoriteFolderList.length : 0}
+          </span>
         </h3>
         <MypageFavorite />
       </section>
       <section className="mypage-list-wrap review-list">
         <Link to="#">더보기</Link>
         <h3 className="title">
-          나의 리뷰 <span className="count">4</span>
+          나의 리뷰{" "}
+          <span className="count">
+            {user.reviewList ? user.reviewList.length : 0}
+          </span>
         </h3>
         <div className="list-content review-content-wrap">
           <ReviewContent />
@@ -166,7 +203,7 @@ const ReviewWrite = () => {
 
   return (
     <div className="review-container">
-      <label htmlFor="message" className="block mb-2 font-medium text-gray-900">
+      <label htmlFor="message" className="label1">
         이용하신 매장은 어떠셨나요? 평점을 남겨주세요
       </label>
       <HoverRating

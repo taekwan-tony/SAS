@@ -1,8 +1,13 @@
 package kr.co.sas.user.model.dto;
 
+import java.util.List;
+
 import org.apache.ibatis.type.Alias;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import kr.co.sas.favorite.model.dto.FavoriteFolderDTO;
+import kr.co.sas.reservation.model.dto.ReservationDTO;
+import kr.co.sas.review.model.dto.ReviewDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,5 +40,18 @@ public class UserDTO {
 	private String userPhoto;
 	@Schema(description = "일반 회원 소셜로그인 여부", type = "int")
 	private int loginType;
-	
+//여기서부터는 프로필용
+	@Schema(description="일반 회원 즐겨찾기 매장 개수", type="int")
+	private int favoriteCount;
+	@Schema(description="일반 회원 예약 개수", type="int")
+	private int reservationCount;
+	@Schema(description="일반 회원 작성한 리뷰 개수", type="int")
+	private int reviewCount;
+//	위에거 지울거임
+	@Schema(description="일반 회원 즐겨찾기 목록", type="list")
+	private List<FavoriteFolderDTO> favoriteFolderList;
+	@Schema(description = "일반 회원 예약 목록", type="list")
+	private List<ReservationDTO> reservationList;
+	@Schema(description = "일반 회원 리뷰 목록", type="list")
+	private List<ReviewDTO> reviewList;
 }

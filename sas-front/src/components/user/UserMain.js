@@ -7,8 +7,13 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import "swiper/css/mousewheel";
-import { loginUserIdState, userTypeState } from "../utils/RecoilData";
-import { useRecoilState } from "recoil";
+import {
+  isUserLoginState,
+  loginUserIdState,
+  loginUserNoState,
+  userTypeState,
+} from "../utils/RecoilData";
+import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Join from "./Join";
@@ -17,6 +22,7 @@ import Mypage from "./Mypage";
 import MenuView from "../menu/MenuView";
 import "../menu/menuview.css";
 import SearchList from "../menu/SearchList";
+import ReservationMain from "../reservation/ReservationMain";
 
 function UserMain() {
   // 일반회원 로그인 지속 구현-수진(문제 생기면 말씀해주세요..)
@@ -24,6 +30,8 @@ function UserMain() {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const [userType, setUserType] = useRecoilState(userTypeState);
+  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
+  const isUserLogin = useRecoilValue(isUserLoginState);
   useEffect(() => {
     refreshLogin();
     window.setInterval(refreshLogin, 60 * 60 * 1000); //한시간이 지나면 로그인 정보 자동으로 refresh 될수 있게
@@ -32,7 +40,7 @@ function UserMain() {
   const refreshLogin = () => {
     //최초화면 접속하면 LocalStorage에 저장된 refreshToken을 가져와서 자동으로 로그인 처리
     const userRefreshToken = window.localStorage.getItem("userRefreshToken");
-    console.log(userRefreshToken);
+    // console.log(userRefreshToken);
     // 한번도 로그인하지 않았거나, 로그아웃을 했으면 refreshToken은 존재하지 않음==>아무행동도 하지 않을것
     if (userRefreshToken != null) {
       //존재하면 해당 토큰으로 다시 로그인 처리
@@ -42,8 +50,9 @@ function UserMain() {
         .then((res) => {
           console.log(res);
           //refresh 토큰을 전송해서 로그인 정보를 새로 갱신해옴
-          setLoginUserId(res.data.userId);
+          setLoginUserId(res.data.loginId);
           setUserType(res.data.userType);
+          setLoginUserNo(res.data.userNo);
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "userRefreshToken",
@@ -54,6 +63,7 @@ function UserMain() {
           console.log(err);
           setLoginUserId("");
           setUserType(0);
+          setLoginUserNo(0);
           delete axios.defaults.headers.common["Authorization"];
           window.localStorage.removeItem("userRefreshToken");
         });
@@ -141,11 +151,15 @@ function UserMain() {
             />
           </form>
         </div>
+<<<<<<< HEAD
         <div className="user-main-login-button">
           <Link to="/user/login">
             <button className="user-main-login-btn">로그인</button>
           </Link>
         </div>
+=======
+
+>>>>>>> 83219de40c5cb225ff29ee2eb6b7ca62065b9bda
         <div className="user-box-bell">
           <div className="user-page-box">
             <div className="bellWrapper">
@@ -254,6 +268,7 @@ function UserMain() {
             <UserMainView activeTab={activeTab} setActiveTab={setActiveTab} />
           }
         ></Route>
+        <Route path="/reservationMain/*" element={<ReservationMain />}></Route>
       </Routes>
     </div>
   );

@@ -65,4 +65,13 @@
 			     order by store_no desc)s)
 			where rnum between #{pi.start} and #{pi.end}
 	</select>
+	<update id="approvalStore">
+		update store set
+			<if test="registType ==1">
+				so_pw =#{soPw},
+			</if>
+			regist_type = #{registType},
+			service_price = 1000
+			where store_no = #{storeNo}
+	</update>
 </mapper>

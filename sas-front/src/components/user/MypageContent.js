@@ -2,6 +2,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./mypage.css";
+import { loginUserIdState, loginUserNoState } from "../utils/RecoilData";
+import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const ReserveContent = () => {
   return (
@@ -17,22 +21,33 @@ const ReserveContent = () => {
   );
 };
 
-const Profile = () => {
+const Profile = (props) => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const user = props.user;
+  const setUser = props.setUser;
   return (
     <section className="profile-wrap">
       <div className="img">
+        <img
+          src={
+            user.userPhoto
+              ? `${backServer}/${user.userPhoto}`
+              : "/image/프로필 기본.png"
+          }
+          alt=""
+        />
         <button>
           <span class="material-icons">edit</span>
         </button>
       </div>
       <div className="user-info">
-        <h2 className="user-nickName">회원 닉네임</h2>
-        <h3 className="user-Id">회원아이디</h3>
+        <h2 className="user-nickName">{user.userNickname}</h2>
+        <h3 className="user-Id">{user.userId}</h3>
         <div className="user-info-other">
-          <span>여</span>
-          <span>1997.05.17</span>
-          <span>010-0000-0000</span>
-          <span>user01@gmail.com</span>
+          <span>{user.userGender}</span>
+          <span>{user.userBirth}</span>
+          <span>{user.userPhone}</span>
+          <span>{user.userEmail}</span>
         </div>
       </div>
       <div className="user-page-info">
@@ -41,21 +56,27 @@ const Profile = () => {
             <span class="material-icons">bookmark</span>
             즐겨찾기
           </div>
-          <h3 className="info-count">5</h3>
+          <h3 className="info-count">
+            {user.favoriteFolderList ? user.favoriteFolderList.length : 0}
+          </h3>
         </div>
         <div className="info-wrap">
           <div className="info-title">
             <span class="material-icons">schedule</span>
             나의 예약
           </div>
-          <h3 className="info-count">5</h3>
+          <h3 className="info-count">
+            {user.reservationList ? user.reservationList.length : 0}
+          </h3>
         </div>
         <div className="info-wrap">
           <div className="info-title">
             <span class="material-icons">assignment</span>
             나의 리뷰
           </div>
-          <h3 className="info-count">5</h3>
+          <h3 className="info-count">
+            {user.reviewList ? user.reviewList.length : 0}
+          </h3>
         </div>
       </div>
     </section>
@@ -84,6 +105,14 @@ const FavoriteBoxEmpty = () => {
   );
 };
 
+const EmptyBox = (props) => {
+  const text = props.text;
+  return (
+    <div className="empty round">
+      <p className="text">{text}</p>
+    </div>
+  );
+};
 const MypageFavorite = () => {
   const settings = {
     dots: false,
@@ -128,4 +157,11 @@ const ReviewContent = () => {
   );
 };
 
-export { ReserveContent, Profile, MypageFavorite, FavoriteBox, ReviewContent };
+export {
+  ReserveContent,
+  Profile,
+  MypageFavorite,
+  FavoriteBox,
+  ReviewContent,
+  EmptyBox,
+};

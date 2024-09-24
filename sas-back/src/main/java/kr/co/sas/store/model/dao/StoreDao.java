@@ -21,4 +21,9 @@ public interface StoreDao {
 
 	List selectApprovalStore(PageInfo pi,int storeType);
 
+	StoreDTO selectOneApprovalStore(int storeNo);
+
+	int approvalStore(StoreDTO store);
+
+
 }
