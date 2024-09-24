@@ -1,6 +1,7 @@
 package kr.co.sas.user.model.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.sas.menu.model.dao.MenuDao;
+import kr.co.sas.menu.model.dto.MenuDTO;
+import kr.co.sas.review.model.dao.ReviewDao;
+import kr.co.sas.store.model.dao.StoreDao;
+import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.user.model.dao.UserDao;
 import kr.co.sas.user.model.dto.LoginUserDTO;
 import kr.co.sas.user.model.dto.UserDTO;
@@ -17,6 +23,12 @@ import kr.co.sas.util.JwtUtils;
 public class UserService {
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private StoreDao storeDao;
+	@Autowired 
+	private MenuDao menuDao;
+	@Autowired
+	private ReviewDao reviewDao;
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	@Autowired
@@ -92,6 +104,25 @@ public class UserService {
 		int result = userDao.updatePw(user);
 		return result;
 	}
+
+	public StoreDTO getStoreinfo(int storeNo) {
+		StoreDTO getStoreinfo = storeDao.getStoreinfo(storeNo);
+		return getStoreinfo;
+			
+		}
+
+	public List getMenuinfo(int storeNo) {
+		List getMenuinfo = menuDao.getMenuinfo(storeNo);
+		return getMenuinfo;
+	}
+
+	public List getReviewinfo(int storeNo) {
+		List getReviewinfo = reviewDao.getReviewinfo(storeNo);
+		return getReviewinfo;
+	}
+
+
+	}	
 
 	public UserDTO selectOneUser(int userNo) {
 		UserDTO user = userDao.selectOneUser(userNo);
