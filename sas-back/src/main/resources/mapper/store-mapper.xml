@@ -58,7 +58,7 @@
 			        business_number,
 			        store_request_date,
 			        so_email,
-			        store_phone,
+			        so_phone,
 			        so_name
 			    from store 
 		 		where regist_type = #{storeType}

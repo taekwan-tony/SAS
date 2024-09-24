@@ -41,13 +41,13 @@ const StoreLogin = () => {
             {isModalOpen && (
               <div className="modal" onClick={handleOutsideClick}>
                 <div className="modal-content">
-                  <span className="close" onClick={closeModal}>
+                  <span className="storeLogin-close" onClick={closeModal}>
                     &times;
                   </span>
-                  <div className="main">
+                  <div className="storeLogin-main">
                     <input type="checkbox" id="chk" aria-hidden="true" />
 
-                    <div className="signup">
+                    <div className="storeLogin-signup">
                       <form>
                         <label htmlFor="chk" aria-hidden="true">
                           회원가입
@@ -75,7 +75,7 @@ const StoreLogin = () => {
                       </form>
                     </div>
 
-                    <div className="login">
+                    <div className="storeLogin-login">
                       <form>
                         <label htmlFor="chk" aria-hidden="true">
                           로그인

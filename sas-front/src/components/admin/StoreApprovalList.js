@@ -119,11 +119,11 @@ const StoreItem = (props) => {
       }}
     >
       <td style={{ width: "10%" }}>{store.storeNo}</td>
-      <td style={{ width: "20%" }}>{store.storeEnrollDate}</td>
+      <td style={{ width: "20%" }}>{store.storeRequestDate}</td>
       <td style={{ width: "15%" }}>{store.soName}</td>
       <td style={{ width: "15%" }}>{store.businessNumber}</td>
       <td style={{ width: "25%" }}>{store.soEmail}</td>
-      <td style={{ width: "15%" }}>{store.storePhone}</td>
+      <td style={{ width: "15%" }}>{store.soPhone}</td>
     </tr>
   );
 };
