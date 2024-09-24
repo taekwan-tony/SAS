@@ -166,7 +166,7 @@ const ReviewWrite = () => {
 
   return (
     <div className="review-container">
-      <label htmlFor="message" className="block mb-2 font-medium text-gray-900">
+      <label htmlFor="message" className="label1">
         이용하신 매장은 어떠셨나요? 평점을 남겨주세요
       </label>
       <HoverRating
