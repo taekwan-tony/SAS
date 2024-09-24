@@ -65,6 +65,13 @@
 			     order by store_no desc)s)
 			where rnum between #{pi.start} and #{pi.end}
 	</select>
+	<select id="getStoreinfo" resultType="store">
+		select store_no, store_name, store_addr, store_introduce, store_time
+		from store 
+		where store_no = #{storeNo}
+	</select>
+
+	
 	<update id="approvalStore">
 		update store set
 			<if test="registType ==1">

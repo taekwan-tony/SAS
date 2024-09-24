@@ -1,6 +1,7 @@
 package kr.co.sas.user.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.co.sas.menu.model.dto.MenuDTO;
+import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.user.model.dto.LoginUserDTO;
 import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.user.model.service.UserService;
@@ -131,6 +134,25 @@ public class UserController {
 		email.sendMail(emailTitle, receiver, emailContent);
 		return ResponseEntity.ok(sb.toString());
 	}
+	@GetMapping(value="/storeNo/{storeNo}")
+	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo) {
+		StoreDTO store = userService.getStoreinfo(storeNo);
+		if(store !=null) {
+			return ResponseEntity.ok(store);
+		}
+		return ResponseEntity.status(404).build();
+	}
+	@GetMapping(value="/storeNo/{storeNo}/menu")
+	public ResponseEntity<List> getMenuinfo(@PathVariable int storeNo){
+		List list = userService.getMenuinfo(storeNo);	
+		return ResponseEntity.ok(list);
+	}
+	@GetMapping(value="/storeNo/{storeNo}/review")
+	public ResponseEntity<List> getReviewinfo(@PathVariable int storeNo){
+		List list = userService.getReviewinfo(storeNo);
+		return ResponseEntity.ok(list);
+	}
+
 	
 	@Operation(summary="회원정보 조회", description = "userNo를 받아와서 그에 해당하는 유저객체 반환, 없으면 404")
 	@GetMapping(value="/userNo/{userNo}")
