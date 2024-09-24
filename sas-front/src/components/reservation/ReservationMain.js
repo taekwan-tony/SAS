@@ -2,6 +2,7 @@ import { useState } from "react";
 import Modal from "react-modal";
 import { useRecoilValue } from "recoil";
 import { isUserLoginState } from "../utils/RecoilData";
+import DatePicker from "../utils/DatePicker";
 const ReservationMain = () => {
   const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
   const goTOReserve = () => {
@@ -20,8 +21,8 @@ const ReservationMain = () => {
       left: "0",
     },
     content: {
-      width: "360px",
-      height: "180px",
+      width: "1000px",
+      height: "500px",
       zIndex: "150",
       position: "absolute",
       top: "50%",
@@ -34,6 +35,7 @@ const ReservationMain = () => {
       overflow: "auto",
     },
   };
+  const [reservationPage, setReservationPage] = useState(1);
   return (
     <>
       <button onClick={goTOReserve} style={{ marginTop: "100px" }}>
@@ -48,11 +50,20 @@ const ReservationMain = () => {
           }}
           style={customModalStyles}
         >
-          하이..
+          {" "}
+          {reservationPage === 1 ? <ReservationModalFirst /> : ""}
         </Modal>
       ) : (
         ""
       )}
+    </>
+  );
+};
+
+const ReservationModalFirst = () => {
+  return (
+    <>
+      <DatePicker />
     </>
   );
 };
