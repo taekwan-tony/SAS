@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.sas.admin.model.service.AdminService;
+import kr.co.sas.store.model.dto.StoreDTO;
 
 @CrossOrigin("*")
 @RestController
@@ -21,9 +24,15 @@ public class AdminController {
 	private AdminService adminService;
 	
 	@GetMapping(value="/storeList/{reqPage}/{storeType}")
-	public ResponseEntity<Map> list(@PathVariable int reqPage,@PathVariable int storeType){
+	public ResponseEntity<Map> storeList(@PathVariable int reqPage,@PathVariable int storeType){
 		Map map = adminService.selectApprovalStore(reqPage,storeType);
 		return ResponseEntity.ok(map);
+	}
+	
+	@PatchMapping(value="/approvalStore")
+	public ResponseEntity<Integer> approvalStore(@ModelAttribute StoreDTO store){
+		int result = adminService.approvalStore(store);
+		return ResponseEntity.ok(result);
 	}
 
 }

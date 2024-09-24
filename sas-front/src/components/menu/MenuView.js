@@ -29,7 +29,7 @@ const MenuView = () => {
             <img src="/image/s&s로고.png" alt="가게 로고" />
           </div>
           <div className="menuview-info">
-            <p>{store.storename}</p>
+            <p>{}</p>
             <div className="schedule">
               <span className="material-icons">place</span>
               <p>8호선 9호선 석촌역에서 506m</p>
