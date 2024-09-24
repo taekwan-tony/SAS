@@ -46,3 +46,6 @@ npm install @mui/material @mui/styled-engine-sc styled-components
 
 김태관 2024-09-23 14:04
 npm install @mui/icons-material
+
+조수진 2024-09-24 17:12
+npm i react-modal

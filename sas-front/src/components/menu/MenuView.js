@@ -3,23 +3,21 @@ import "./menuview.css";
 import { Map } from "react-kakao-maps-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
-import { PiStarFill, PiStarLight } from "react-icons/pi";
+import { PiArrowFatLeft, PiStarFill, PiStarLight } from "react-icons/pi";
 import axios from "axios";
 
 const MenuView = () => {
+  const [store, setStore] = useState({ storeNo: 73 });
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
   const [storinfo, setStoreinfo] = useState({});
   useEffect(() => {
     axios
-      .get(`${backServer}/menuview`)
+      .get(`${backServer}/user/storeNo/${store.storeNo}`)
       .then((res) => {
-        console.log(res);
-        setStoreinfo(res.data);
+        setStore(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
   return (
     <div className="menuview-bigwrap">
@@ -32,12 +30,12 @@ const MenuView = () => {
             <p></p>
             <div className="schedule">
               <span className="material-icons">place</span>
-              <p>8호선 9호선 석촌역에서 506m</p>
+              <p>{store.storeAddr}</p>
             </div>
-            <p>도심속에 정원같은 공간에서 즐기는 브런치&파스타&와인</p>
+            <p>{store.storeIntroduce}</p>
             <div className="schedule">
               <span className="material-icons">schedule</span>
-              <p>10:00 ~ 23:00</p>
+              <p>{store.storeTime}</p>
             </div>
           </div>
         </section>
@@ -110,48 +108,77 @@ const MenuMain = () => {
 };
 
 const Menunews = () => {
+  const [store, setStore] = useState({ storeNo: 73 });
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  useEffect(() => {
+    axios
+      .get(`${backServer}/user/storeNo/${store.storeNo}`)
+      .then((res) => {
+        console.log(res);
+        setStore(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="news">
-      <p>
-        신메뉴 출시: "새로운 맛의 경험! 이번 주부터 신메뉴가 출시됩니다. 많은
-        관심 부탁드려요!" 이벤트 안내: "🎉 특별 이벤트 소식! 이번 주말,
-        방문하시는 모든 분께 할인 혜택을 드립니다!" 운영 시간 변경: "📅 운영
-        시간이 변경되었습니다. 새로운 시간표를 확인해 주세요!"
-      </p>
+      <p>{store.storeIntroduce}</p>
     </div>
   );
 };
 
 const Menu = () => {
+  const [store, setStore] = useState({ storeNo: 73 });
+  const [menu, setMenu] = useState([]);
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  useEffect(() => {
+    axios
+      .get(`${backServer}/user/storeNo/${store.storeNo}/menu`)
+      .then((res) => {
+        setMenu(res.data);
+      })
+      .catch((err) => {});
+  }, []);
   return (
-    <div className="menu">
+    <div className="menuview-menu">
       <div className="menu-board">
         <h2>메뉴판</h2>
-        <img
-          src="/image/youtube.png"
-          alt="메뉴"
-          style={{ width: "200px", height: "auto" }}
-        />
-        <p>크림 파스타</p>
-        <p>12,000원</p>
-        <img
-          src="/image/youtube.png"
-          alt="메뉴"
-          style={{ width: "200px", height: "auto" }}
-        />
-        <p>크림 파스타</p>
-        <p>12,000원</p>
+        <div className="menu-board-items">
+          {menu.map((menuItem, index) => {
+            console.log(index, menuItem);
+            return (
+              <div className="menu-item">
+                <img
+                  src="/image/youtube.png"
+                  alt="메뉴"
+                  style={{ width: "200px", height: "auto" }}
+                />
+                <p>{menuItem.menuName}</p>
+                <p className="price">{menuItem.menuPrice + "원"}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <hr></hr>
+      <hr />
       <h2>메뉴</h2>
-      <img
-        src="/image/youtube.png"
-        alt="메뉴"
-        style={{ width: "200px", height: "auto" }}
-      />
-      <p>크림 파스타</p>
-      <p>가격: 12,000원</p>
-      <p>풍부한 크림 소스와 신선한 채소가 어우러진 고소한 파스타입니다.</p>
+      <div className="menu-board-items2">
+        {menu.map((menuItem, index) => {
+          return (
+            <div className="menu-item">
+              <img
+                src="/image/youtube.png"
+                alt="메뉴"
+                style={{ width: "200px", height: "auto" }}
+              />
+              <p>{menuItem.menuName}</p>
+              <p className="price">{menuItem.menuPrice + "원"}</p>
+              <p>{menuItem.menuInfo}</p>
+            </div>
+          );
+        })}
+      </div>
       <img
         src="/image/youtube.png"
         alt="메뉴"
@@ -195,7 +222,7 @@ const MenuPhoto = () => {
 
 const MenuReview = () => {
   const commentText =
-    "으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으";
+    "으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아으아아악으아아악으아악으아아악으아아악으아아악으아아악으아아악으아악으아아악으아아악으아아악으";
   const [isExpanded, setIsExpanded] = useState(false);
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -214,9 +241,9 @@ const MenuReview = () => {
       <p>
         {displayText}
         {commentText.length > 100 && (
-          <button className="toggle-button" onClick={handleToggle}>
+          <span className="toggle-button" onClick={handleToggle}>
             {isExpanded ? "접기" : "더보기"}
-          </button>
+          </span>
         )}
       </p>
     </div>
