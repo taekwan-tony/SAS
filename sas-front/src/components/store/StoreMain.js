@@ -28,13 +28,14 @@ function StoreMain() {
                     icon="fas fa-store"
                     title="매장페이지"
                     className="color"
-                    to="/storepage"
+                    to="/storecheck/StoreRegist"
+                    //제휴 신청 페이지 : 임시
                   />
                   <HexagonItem
                     icon="fas fa-id-card"
                     title="매장등록"
                     className="color"
-                    to="/storecheck/StoreRegist"
+                    to="/storecheck/StorePartnership"
                   />
                   <HexagonItem
                     icon="fas fa-utensils"

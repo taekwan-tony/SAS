@@ -18,7 +18,11 @@ const StoreCheckMain = () => {
   };
 
   const menuItems = [
-    { text: "매장페이지", icon: "fa-solid fa-store", to: "/storepage" },
+    {
+      text: "매장페이지",
+      icon: "fa-solid fa-store",
+      to: "/storecheck/StoreRegist",
+    },
     {
       text: "매장등록",
       icon: "fas fa-id-card",
@@ -49,6 +53,7 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
+        <Route path="StoreRegist" element={<StoreRegist />} />
         <Route path="managereserved" element={<ManageReserved />} />
         <Route path="ownerstatistics" element={<Ownerstatistics />} />
         <Route path="managereview" element={<ManageReview />} />
