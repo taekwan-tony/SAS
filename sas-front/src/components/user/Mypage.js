@@ -64,7 +64,7 @@ const MypageMain = () => {
             <EmptyBox text={"예약 내역이 존재하지 않습니다"} />
           ) : (
             <div className="reserve-content-wrap list-content">
-              {user.reservation.map((reserve, index) => {
+              {user.reservationList.map((reserve, index) => {
                 return <ReserveContent />;
               })}
             </div>
