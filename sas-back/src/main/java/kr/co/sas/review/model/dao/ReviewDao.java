@@ -15,4 +15,5 @@ public interface ReviewDao {
 
 	List getReviewinfo(int storeNo);
 
+	List<ReviewDTO> getReviewsByStoreNo(int storeNo);
 }

@@ -28,5 +28,7 @@ public interface StoreDao {
 
 	StoreDTO searchStoreOwner(String soEmail);
 
+	List selectAllPayStore();
+
 
 }

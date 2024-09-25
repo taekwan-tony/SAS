@@ -18,8 +18,8 @@ import kr.co.sas.review.model.service.ReviewService;
 public class ReviewController {
 	@Autowired
 	private ReviewService reviewService;
-	// 모든 리뷰 가져오기 (관리자용)
-    @GetMapping
+	// 모든 리뷰 가져오기
+    @GetMapping(value="/allList")
     public List<ReviewDTO> getAllReview() {
         return reviewService.getAllReview();
     }
@@ -30,4 +30,5 @@ public class ReviewController {
         return reviewService.getReviewNo(reviewNo);
     }
     
+ 
 }
