@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import PostCodeApi from "../utils/PostCodeApi";
 import "./modal.css";
-import SelectMUI from "../utils/selectMUI";
+import SelectMUI from "../utils/SelectMUI";
 import { useNavigate } from "react-router-dom";
 
 const StorePartnership = (props) => {
@@ -110,7 +110,7 @@ const StorePartnership = (props) => {
         <div className="owner-background">
           <img src="/image/238.jpg" alt="back" />
         </div>
-
+        {/* section */}
         <div className="top-section">
           <div className="info-card">
             <div className="info-header">
