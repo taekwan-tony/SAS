@@ -54,7 +54,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                 "storeRefreshToken",
                 res.data.refreshToken
               );
-              navigate("/adminMain");
+              navigate("/admin/adminMain");
               break;
 
             case 1:

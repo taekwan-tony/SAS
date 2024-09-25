@@ -46,12 +46,12 @@ public class StoreService {
 
 
 	public Map storeLogin(StoreDTO store) {
-		int result = 1;
+		int result = 0;
 		Map map = new HashMap<String, Object>();
 		StoreDTO loginStore = storeDao.searchStoreOwner(store.getSoEmail());
 		if(loginStore != null) {
 			if(encoder.matches(store.getSoPw(), loginStore.getSoPw())) {
-				result = 0;
+				result = 1;
 				loginStore.setSoPw(null);
 				map.put("loginSoEmail", loginStore.getSoEmail());
 				map.put("storeType", loginStore.getType());
