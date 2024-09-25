@@ -3,10 +3,10 @@ import StoreApprovalList from "./StoreApprovalList";
 import { Route, Routes } from "react-router-dom";
 import QuestionList from "../question/QuestionList";
 import QuestionDetail from "../question/QuestionDetail";
+import QuestionWrite from "../question/QuestionWrite";
 
 const AdminStore = () => {
   const [adminDetailTitle, setAdminDetailTitle] = useState("");
-  const [adminSubDetailTitle, setSubAdminDetailTitle] = useState(null);
 
   const questionWriterType = 2;
   return (
@@ -15,11 +15,6 @@ const AdminStore = () => {
         <span className="material-icons admin-store-icon">home</span>
         <span className="admin-store-icon-text"> : 매장관리 + </span>
         <span className="admin-store-icon-text">{adminDetailTitle || ""}</span>
-        {adminSubDetailTitle ? (
-          <span className="admin-store-icon-text">+{adminSubDetailTitle}</span>
-        ) : (
-          ""
-        )}
       </div>
       <div className="admin-store-content-wrap">
         <Routes>
@@ -39,10 +34,14 @@ const AdminStore = () => {
             }
           />
           <Route
-            path="detail"
+            path="questionDetail/:questionNo"
             element={
-              <QuestionDetail setSubAdminDetailTitle={setSubAdminDetailTitle} />
+              <QuestionDetail setAdminDetailTitle={setAdminDetailTitle} />
             }
+          />
+          <Route
+            path="questionWrite"
+            element={<QuestionWrite questionWriterType={questionWriterType} />}
           />
         </Routes>
       </div>

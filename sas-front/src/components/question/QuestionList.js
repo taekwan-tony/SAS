@@ -77,7 +77,7 @@ const QuestionItem = (props) => {
     <tr
       onClick={() => {
         if (questionWriterType == 2) {
-          navigate(`/admin/store/detail/${question.questionNo}`);
+          navigate(`/admin/store/questionDetail/${question.questionNo}`);
         } else {
         }
       }}
