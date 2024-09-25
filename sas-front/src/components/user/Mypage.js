@@ -17,6 +17,7 @@ import {
 import { loginUserIdState, loginUserNoState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Mypage = () => {
   return (
@@ -189,17 +190,20 @@ const HoverRating = ({ value, setValue, hover, setHover }) => {
   );
 };
 const ReviewWrite = () => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
   const [content, setContent] = useState("");
   console.log(content);
   const [title, setTitle] = useState("");
+  const [loginId, setLoginId] = useRecoilState(loginUserIdState);
+  const [userNickName, setUserNickName] = useState("");
+  const [reviewContent, setreviewContent] = useState("");
   const handleTitleChange = (e) => {
     setTitle(e.currentTarget.value);
   };
+
   const [ratingValue, setRatingValue] = useState(2);
   const [hover, setHover] = useState(-1);
-  const handleSubmit = async () => {
-    const date = new Date();
-  };
+  const handleSubmit = () => {};
 
   return (
     <div className="review-container">
@@ -219,6 +223,7 @@ const ReviewWrite = () => {
         placeholder="레스토랑과 유저들에게 도움이 되는 따뜻한 리뷰를 작성해주세요."
       />
       <button
+        type="submit"
         className="review-submit"
         style={{ marginTop: "20px" }}
         onClick={handleSubmit}

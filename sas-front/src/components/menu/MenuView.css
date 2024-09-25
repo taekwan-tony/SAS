@@ -61,14 +61,13 @@
 .menu-nav li {
   cursor: pointer;
 }
-
-.main-menu {
+re .main-menu-home {
   margin-top: 20px;
 }
 
 /* 여기까지 메인뷰*/
 
-.reservation-info {
+.reservation-information {
   text-align: center;
   margin-bottom: 20px;
   box-sizing: content-box;
