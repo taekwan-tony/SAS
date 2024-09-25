@@ -51,7 +51,6 @@
 .storechangePw-signup {
   position: relative;
   width: 100%;
-  background-color: #fff;
   height: 75%;
 }
 
@@ -74,7 +73,6 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.5s ease-in-out;
-  padding: 20px;
 }
 
 .storechangePw-input {
@@ -101,13 +99,13 @@
 
 .storechangePw-btn {
   width: 60%;
-  height: 50px;
+  height: 70px;
   margin: 10px auto;
   justify-content: center;
   display: block;
   color: #fff;
   background-color: #518142;
-  font-size: 1.5em;
+  font-size: 1.7em;
   font-weight: bold;
   margin-top: 20px;
   outline: none;
@@ -121,14 +119,17 @@
   background: #6d44b8;
 }
 
-.storechangePw-login {
+.storechangePw-up {
   margin-top: 100px;
   height: 100%;
   background: #eee;
-  border-radius: 60% / 10%;
-  transform: translateY(-33px);
+  transform: translateY(60px);
   transition: 0.8s ease-in-out;
   padding: 0px 15px;
+}
+
+#chk:checked ~ .storechangePw-up {
+  transform: translateY(-570px);
 }
 
 .storechangePw-pw .storechangePw-label {
@@ -171,7 +172,7 @@
   border-bottom: 1px solid #b9b9bd;
   font-weight: 200;
   margin-left: 15px;
-  width: 80%;
+  width: 90%;
 }
 
 .storechangePw-storeRegist-inputBox {
@@ -202,7 +203,7 @@
 
 .storechangePw-table {
   width: 100%;
-  padding: 50px;
+  margin: 50px 0px;
 }
 
 .storechangePw-tr {
@@ -210,7 +211,7 @@
 }
 
 .storechangePw-th {
-  height: 100px;
+  height: 120px;
 }
 
 .storechangePw-td {
@@ -323,7 +324,7 @@
 }
 
 .storechangePw-regist {
-  padding: 15px 15px;
+  padding: 15px 0px;
 }
 
 .storechangePw-find {
@@ -345,9 +346,5 @@
 .storechangePw-msg {
   color: #5e9960;
   font-size: 13px;
-  display: flex;
-  align-items: center;
-}
-
-.storechangePw-div {
+  position: absolute;
 }

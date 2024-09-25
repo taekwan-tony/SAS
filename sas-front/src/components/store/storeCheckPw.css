@@ -27,14 +27,14 @@
   cursor: pointer;
   z-index: 1;
 }
-.storechangePw-wrap {
+.storeCheckPw-wrap {
   margin: 0;
   padding: 0;
   min-height: 100vh;
   font-family: "Jost", sans-serif;
   background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
 }
-.storechangePw-main {
+.storeCheckPw-main {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -45,17 +45,18 @@
   margin-top: 0px;
   background-color: #fff;
 }
+
 #chk {
   display: none;
 }
-.storechangePw-signup {
+.storeCheckPw-signup {
   position: relative;
   width: 100%;
   background-color: #fff;
   height: 75%;
 }
 
-.storechangePw-label {
+.storeCheckPw-label {
   color: #5e9960;
   font-size: 2.5em;
   justify-content: center;
@@ -66,7 +67,7 @@
   padding: 30px;
 }
 
-.storechangePw-pw-label {
+.storeCheckPw-pw-label {
   color: #5e9960;
   font-size: 1.8em;
   justify-content: center;
@@ -74,10 +75,10 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.5s ease-in-out;
-  padding: 20px;
+  padding: 10 px;
 }
 
-.storechangePw-input {
+.storeCheckPw-input {
   width: 60%;
   height: 20px;
   background: #e0dede;
@@ -90,16 +91,16 @@
   border-radius: 5px;
 }
 
-.storechangePw-btn-zone {
+.storeCheckPw-btn-zone {
   width: 100%;
 }
 
-.storechangePw-partnership-btn-zone {
+.storeCheckPw-partnership-btn-zone {
   width: 100%;
   justify-content: center;
 }
 
-.storechangePw-btn {
+.storeCheckPw-btn {
   width: 60%;
   height: 50px;
   margin: 10px auto;
@@ -117,11 +118,15 @@
   cursor: pointer;
 }
 
-.storechangePw-btn:hover {
+.storeCheckPw-btn:focus {
+  outline: none;
+}
+
+.storeCheckPw-btn:hover {
   background: #6d44b8;
 }
 
-.storechangePw-login {
+.storeCheckPw-login {
   margin-top: 100px;
   height: 100%;
   background: #eee;
@@ -131,24 +136,24 @@
   padding: 0px 15px;
 }
 
-.storechangePw-pw .storechangePw-label {
+.storeCheckPw-pw .storeCheckPw-label {
   color: #5e9960;
   transform: scale(0.6);
 }
 
-#chk:checked ~ .storechangePw-login {
+#chk:checked ~ .storeCheckPw-login {
   transform: translateY(-440px);
 }
 
-#chk:checked ~ .storechangePw-pw .storechangePw-label {
+#chk:checked ~ .storeCheckPw-pw .storeCheckPw-label {
   transform: scale(1);
 }
 
-#chk:checked ~ .storechangePw-signup .storechangePw-label {
+#chk:checked ~ .storeCheckPw-signup .storeCheckPw-label {
   transform: scale(0.6);
 }
 
-.storechangePw-dashboard {
+.storeCheckPw-dashboard {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -158,23 +163,23 @@
 
 /*storeRegist css*/
 
-.storechangePw-inputBox {
+.storeCheckPw-inputBox {
   box-sizing: border-box;
   border: none;
   border-radius: 0%;
   background: none;
   color: #544f4f;
-  font-size: 16px;
+  font-size: 20px;
   outline: 0;
   transition: none;
   transform: none;
   border-bottom: 1px solid #b9b9bd;
   font-weight: 200;
   margin-left: 15px;
-  width: 80%;
+  width: 90%;
 }
 
-.storechangePw-storeRegist-inputBox {
+.storeCheckPw-storeRegist-inputBox {
   box-sizing: border-box;
   border: none;
   border-radius: 0%;
@@ -189,48 +194,39 @@
   width: 70%;
 }
 
-.storechangePw-storeRegist-inputBox::placeholder {
+.storeCheckPw-storeRegist-inputBox::placeholder {
   color: #b9b9bd;
   font-weight: 100;
   font-size: 13px;
 }
-.storechangePw-inputBox::placeholder {
+.storeCheckPw-inputBox::placeholder {
   color: #b9b9bd;
   font-weight: 100;
   font-size: 16px;
 }
 
-.storechangePw-table {
+.storeCheckPw-table {
   width: 100%;
-  height: 70%;
   padding: 50px;
 }
 
-.storechangePw-tr {
-  height: 100px;
+.storeCheckPw-tr {
+  height: 180px;
 }
 
-.storechangePw-th {
-  height: 100px;
-}
-
-.storechangePw-td {
-  height: 100px;
-}
-
-.storechangePw-storeRegist-label {
+.storeCheckPw-storeRegist-label {
   font-size: 15px;
   font-weight: 600;
   color: #544f4f;
 }
 
-.storechangePw-pw-label {
-  font-size: 18px;
+.storeCheckPw-pw-label {
+  font-size: 20px;
   font-weight: 600;
   color: #544f4f;
 }
 
-.storechangePw-storeRegist-btn {
+.storeCheckPw-storeRegist-btn {
   width: 65px;
   height: 30px;
   border: none;
@@ -244,27 +240,26 @@
   margin-left: 20px;
 }
 
-.storechangePw-storeRegist-btn:hover {
+.storeCheckPw-storeRegist-btn:hover {
   border: 2px solid #5e9960;
   color: #5e9960;
   background-color: #eee;
 }
 
-.storechangePw-btn:hover {
+.storeCheckPw-btn:hover {
   border: 2px solid #5e9960;
   color: #5e9960;
   background-color: #fff;
 }
 
-.storechangePw-msg {
+.storeCheckPw-msg {
   color: #5e9960;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
+  font-size: 18px;
+  position: absolute;
   margin-top: 5px;
 }
 
-.storechangePw-msg::before {
+.storeCheckPw-msg::before {
   content: "";
   display: inline-block;
   width: 10px;
@@ -274,19 +269,19 @@
   /*background: url("/image/icon_info_success.svg") no-repeat center / contain;*/
 }
 
-.storechangePw-btn-zone {
+.storeCheckPw-btn-zone {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.storechangePw-partnership-btn-zone {
+.storeCheckPw-partnership-btn-zone {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.storechangePw-login-btn {
+.storeCheckPw-login-btn {
   width: 290px;
   height: 60px;
   border: none;
@@ -299,13 +294,13 @@
   margin-top: 15px;
 }
 
-.storechangePw-login-btn:hover {
+.storeCheckPw-login-btn:hover {
   background-color: #fff;
   color: #5e9960;
   border: 2px solid #5e9960;
 }
 
-.storechangePw-partnership-btn {
+.storeCheckPw-partnership-btn {
   width: 290px;
   height: 45px;
   border: none;
@@ -318,37 +313,34 @@
   margin-top: 20px;
 }
 
-.storechangePw-partnership-btn:hover {
+.storeCheckPw-partnership-btn:hover {
   background-color: #fff;
   color: #5e9960;
 }
 
-.storechangePw-regist {
+.storeCheckPw-regist {
   padding: 15px 15px;
 }
 
-.storechangePw-find {
+.storeCheckPw-find {
   margin-top: 25px;
   text-align: center;
 }
 
-.storechangePw-find-btn {
+.storeCheckPw-find-btn {
   border: none;
   background-color: #fff;
   outline: none;
 }
 
-.storechangePw-find-btn:focus {
+.storeCheckPw-find-btn:focus {
   color: #518142;
   outline: none;
 }
 
-.storechangePw-msg {
+.storeCheckPw-msg {
   color: #5e9960;
   font-size: 13px;
   display: flex;
   align-items: center;
-}
-
-.storechangePw-div {
 }

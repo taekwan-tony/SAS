@@ -103,4 +103,10 @@ public class StoreService {
 	}
 
 
+	public boolean checkPw(StoreDTO store) {
+		StoreDTO checkPw = storeDao.checkPw(store);
+		return (checkPw==null);
+	}//checkPw
+
+
 }

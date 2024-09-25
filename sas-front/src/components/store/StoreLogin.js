@@ -374,7 +374,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                               <div className="storeRegist-div">
                                 <input
                                   className="storeLogin-storeRegist-inputBox"
-                                  placeholder="번호만 입력해주세요."
+                                  placeholder="-을 제외한 번호만 입력해주세요."
                                   type="text"
                                   id="businessNumber"
                                   name="businessNumber"
@@ -397,7 +397,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   backgroundRepeat: "no-repeat",
                                   backgroundPosition: "left center",
                                   marginLeft: "10px",
-                                  paddingLeft: bnMsg ? "10px" : "0px", // 메시지가 있을 때만 padding
+                                  paddingLeft: bnMsg ? "27px" : "0px", // 메시지가 있을 때만 padding
                                 }}
                               >
                                 {bnMsg}
@@ -410,7 +410,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                 htmlFor="soName"
                                 className="storeLogin-storeRegist-label"
                               >
-                                이름
+                                점주 이름
                               </label>
                             </th>
                             <td>

@@ -97,4 +97,9 @@
 	<select id="selectAllPayStore" resultType="store">
 		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
+	
+	
+	<select id="checkPw" resultType="store">
+		select COUNT(*) from store where so_email=#{soEmail} and so_pw=#{soPw}
+	</select>
 </mapper>

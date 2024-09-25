@@ -32,5 +32,7 @@ public interface StoreDao {
 	
 	List selectAllPayStore();
 
+	StoreDTO checkPw(StoreDTO store);
+
 
 }

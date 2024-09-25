@@ -185,7 +185,7 @@ const StoreRegist = () => {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "left center",
                     marginLeft: "10px",
-                    paddingLeft: bnMsg ? "10px" : "0px", // 메시지가 있을 때만 padding
+                    paddingLeft: bnMsg ? "15px" : "0px", // 메시지가 있을 때만 padding
                   }}
                 >
                   {bnMsg}

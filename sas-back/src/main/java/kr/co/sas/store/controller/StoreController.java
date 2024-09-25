@@ -85,5 +85,13 @@ public class StoreController {
 	}//changePw
 	
 	
+	@Operation(summary = "매장 비밀번호 변경 회원 조회", description = "점주 이메일, 기존 비밀번호 일치하는지 확인")
+	@PostMapping(value = "/checkPw")
+	public ResponseEntity<Boolean> checkPw(@RequestBody StoreDTO store) {
+		boolean result = storeService.checkPw(store);
+		return ResponseEntity.ok(result);
+	}//checkPw
+	
+	
 	
 }
