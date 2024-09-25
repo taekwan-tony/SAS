@@ -7,5 +7,7 @@
     <select id="getAllReview" resultType="review">
         SELECT * FROM review
     </select>
-
+	<insert id="writeReview">
+		insert into review values(notice_seq.nextval,#{review_content},to_char(sysdate,'yyyy-mm-dd')#{review_score},#{user_nickname});	
+	</insert>
 </mapper>

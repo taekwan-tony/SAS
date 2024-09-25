@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.review.model.dao.ReviewDao;
 import kr.co.sas.review.model.dto.ReviewDTO;
@@ -19,5 +20,11 @@ public class ReviewService {
     	
         return reviewDao.getAllReview();
     }
+    
+    @Transactional
+	public int insertReview(ReviewDTO review) {
+		int result = reviewDao.insertReview(review);
+		return result;
+	}
 
 }

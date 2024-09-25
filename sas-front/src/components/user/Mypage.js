@@ -190,13 +190,15 @@ const HoverRating = ({ value, setValue, hover, setHover }) => {
   );
 };
 const ReviewWrite = () => {
+  const [review, setReview] = useState({
+    reviewContent: "",
+    reviewScore: 0,
+  });
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [content, setContent] = useState("");
   console.log(content);
   const [title, setTitle] = useState("");
   const [loginId, setLoginId] = useRecoilState(loginUserIdState);
-  const [userNickName, setUserNickName] = useState("");
-  const [reviewContent, setreviewContent] = useState("");
   const handleTitleChange = (e) => {
     setTitle(e.currentTarget.value);
   };
@@ -205,9 +207,10 @@ const ReviewWrite = () => {
   const [hover, setHover] = useState(-1);
   const handleSubmit = () => {
     axios
-      .post(`${backServer}/usermain/mypage/myreview`)
+      .post(`${backServer}/review/usermain/mypage/myreview`)
       .then((res) => {
         console.log(res);
+        setReview(res.data);
       })
       .catch((err) => {
         console.log(err);
