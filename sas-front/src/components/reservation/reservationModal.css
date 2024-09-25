@@ -1,52 +1,83 @@
 .reservation-modal-wrap.first {
   display: flex;
-  align-items: center;
   padding: 30px;
 }
 .reservation-modal-wrap.first .day-picker {
+  order: 1;
   width: 50%;
   display: flex;
+  position: relative;
 }
 .reservation-modal-wrap.first .day-picker > .rdp-root {
   width: 100%;
 }
-
-.reservation-modal-wrap.first .reservation-info-wrap {
+.reservation-modal-wrap.first .day-picker > button.today-btn {
+  outline: none;
+  color: var(--main1);
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  font-family: var(--pointFont);
+  top: 10px;
+  left: 20px;
+  font-size: larger;
+  cursor: pointer;
+  z-index: 99;
+}
+.reservation-modal-wrap.first .day-picker > button.today-btn:hover {
+  text-decoration: underline;
+}
+.reservation-modal-wrap.first > .reservation-info-wrap {
+  order: 2;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
+  padding: 10px;
+  padding-left: 30px;
+  gap: 15px;
+  /* display: table-cell; */
 }
-.reservation-modal-wrap.first .reservation-info-wrap > .reservation-how-many {
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > [class^="reservation-how"] {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 .reservation-modal-wrap.first
   .reservation-info-wrap
-  > .reservation-how-many
+  > [class^="reservation-how"]
   > span.title {
-  font: bold 1.2em LeeSeoyun;
-  color: var(--main1);
   align-self: flex-start;
 }
 .reservation-modal-wrap.first
   .reservation-info-wrap
-  > .reservation-how-many
+  > [class^="reservation-how"]
+  > span.title
+  > label {
+  font: bold 1.7em var(--pointFont);
+  color: var(--main1);
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > [class^="reservation-how"]
   > .input-item {
   position: relative;
   align-self: flex-end;
 }
 .reservation-modal-wrap.first
   .reservation-info-wrap
-  > .reservation-how-many
+  > [class^="reservation-how"]
   > .input-item
   > input {
-  width: 70px;
+  width: 90px;
   border-radius: 20%;
   text-align: center;
   background-color: #efefef;
   border: none;
   outline: none;
+  font-size: 1.2em;
 }
 .reservation-modal-wrap.first
   .reservation-info-wrap
@@ -58,7 +89,7 @@
   border: none;
   background-color: transparent;
   color: var(--main1);
-  font: bold 1em var(--defaultFont);
+  font: bold 1.2em var(--defaultFont);
   top: 2px;
   cursor: pointer;
 }
@@ -67,5 +98,99 @@
   > .reservation-how-many
   > .input-item
   > button.plus {
-  right: 15px;
+  right: 30px;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > [class^="reservation-how"]
+  > .input-item
+  > span.unit {
+  padding-left: 15px;
+  font-size: 1.2em;
+}
+.reservation-modal-wrap.first .reservation-info-wrap > .reservation-when {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-content: flex-start;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-when
+  > .time-btn-box {
+  width: 23%;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-when
+  > .time-btn-box
+  > button {
+  width: 100%;
+  height: 35px;
+  outline: none;
+}
+
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-when
+  > .time-btn-box
+  > button.disabled {
+  background-color: var(--font3);
+  border: 1px solid var(--font3);
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-when
+  > .time-btn-box
+  > button.disabled:hover {
+  background-color: var(--font3);
+  border: 1px solid var(--font3);
+  color: #fff;
+  cursor: default;
+}
+
+.reservation-modal-wrap.first .reservation-info-wrap .btn-box > button {
+  width: 100%;
+  height: 45px;
+  font: bold 1.5em var(--defaultFont);
+  outline: none;
+}
+/* 예약 모달 두번째 페이지 */
+.reservation-modal-wrap.second {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 10px;
+}
+.reservation-modal-wrap.second > .modalTitle > * {
+  margin: 0 auto;
+  text-align: center;
+}
+.reservation-modal-wrap.second > .modalTitle > h1 {
+  font: bold 40px var(--defaultFont);
+  color: var(--main1);
+}
+.reservation-modal-wrap.second > .modalTitle > p {
+  font-size: 20px;
+  padding: 20px;
+}
+
+.reservation-modal-wrap.second > .modalContent {
+  width: 100%;
+  flex: 1;
+}
+.reservation-modal-wrap.second > .modalContent > .reservation-info-wrap {
+  border: 1px solid var(--font3);
+  width: 90%;
+  margin: 0 auto;
+}
+.reservation-modal-wrap.second > .modalContent > .reservation-info-wrap > h2 {
+  font: bold 30px var(--defaultFont);
+  color: var(--font1);
+  text-align: center;
+  padding: 20px;
 }

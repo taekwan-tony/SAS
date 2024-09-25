@@ -25,7 +25,7 @@ const ReservationMain = () => {
     },
     content: {
       width: "1000px",
-      height: "max-content",
+      height: "470px",
       zIndex: "150",
       position: "absolute",
       top: "50%",
@@ -68,7 +68,10 @@ const ReservationMain = () => {
             <ReservationModalFirst
               reservation={reservation}
               setReservation={setReservation}
+              setReservationPage={setReservationPage}
             />
+          ) : reservationPage === 2 ? (
+            <ReservationModalSecond />
           ) : (
             ""
           )}
@@ -81,11 +84,9 @@ const ReservationMain = () => {
 };
 
 const ReservationModalFirst = (props) => {
+  const setReservationPage = props.setReservationPage;
   const reservation = props.reservation;
   const setReservation = props.setReservation;
-  const changeReservationPeople = (e) => {
-    setReservation({ ...reservation, reservePeople: e.target.value });
-  };
   const peoplePlus = () => {
     setReservation({
       ...reservation,
@@ -93,10 +94,12 @@ const ReservationModalFirst = (props) => {
     });
   };
   const peopleMinus = () => {
-    setReservation({
-      ...reservation,
-      reservePeople: reservation.reservePeople - 1,
-    });
+    if (reservation.reservePeople > 1) {
+      setReservation({
+        ...reservation,
+        reservePeople: reservation.reservePeople - 1,
+      });
+    }
   };
   const dayNow = new Date();
   const year = dayNow.getFullYear();
@@ -110,6 +113,11 @@ const ReservationModalFirst = (props) => {
   const timeNow = format(dayNow, "hh:mm");
   console.log(timeNow);
   const [selected, setSelected] = useState(today);
+
+  // 예약하기 버튼 클릭
+  const reserve = () => {
+    setReservationPage(2);
+  };
   return (
     <div className="reservation-modal-wrap first">
       <DatePicker
@@ -120,7 +128,7 @@ const ReservationModalFirst = (props) => {
       <div className="reservation-info-wrap">
         <div className="reservation-how-many">
           <span className="title">
-            <label htmlFor="reservePeople"></label>인원 수
+            <label htmlFor="reservePeople">인원 수</label>
           </span>
           <div className="input-item">
             <button className="minus" onClick={peopleMinus}>
@@ -131,14 +139,85 @@ const ReservationModalFirst = (props) => {
               type="text"
               id="reservePeople"
               value={reservation.reservePeople}
+              readOnly={true}
             />
             <button className="plus" onClick={peoplePlus}>
               +
             </button>
-            <span>명</span>
+            <span className="unit">명</span>
+          </div>
+        </div>
+        <div className="reservation-when">
+          <ReserveTimeBox />
+          <ReserveTimeBox />
+          <ReserveTimeBox />
+          <ReserveTimeBox />
+          <ReserveTimeBox />
+          <ReserveTimeBox />
+          <ReserveTimeBox />
+        </div>
+        <div className="reservation-how-much">
+          <span className="title">
+            <label htmlFor="">예약금</label>
+          </span>
+          <div className="input-item">
+            <input type="text" readOnly={true} value={8000} />
+            <span className="unit">원</span>
+          </div>
+        </div>
+        <div className="btn-box">
+          <button className="btn-main round" onClick={reserve}>
+            예약하기
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ReservationModalSecond = () => {
+  return (
+    <div className="reservation-modal-wrap second">
+      <div className="modalTitle">
+        <h1>예약화인</h1>
+        <p className="text">예약 일정을 다시 한번 확인해 주세요</p>
+      </div>
+      <div className="modalContent">
+        <div className="reservation-info-wrap round">
+          <h2>가게이름</h2>
+          <div className="reservation-info-content">
+            <div className="content-wrap">
+              <span class="material-icons icon">calendar_today</span>
+              <span className="info">9.13(금)</span>
+            </div>
+            <div className="content-wrap">
+              <span class="material-icons icon">schedule</span>
+              <span className="info">오후 4:00</span>
+            </div>
+            <div className="content-wrap">
+              <span class="material-icons icon">person</span>
+              <span className="info">8명</span>
+            </div>
+            {/* <div className="content-wrap">
+              <span class="material-icons icon">calendar_today</span>
+              <span className="info">9.13(금)</span>
+            </div> */}
           </div>
         </div>
       </div>
+      <div className="modalFooter">
+        <button className="btn-sub">변경</button>
+        <button className="btn-main">확인</button>
+      </div>
+    </div>
+  );
+};
+
+const ReserveTimeBox = () => {
+  return (
+    <div className="time-btn-box">
+      {/* 버튼 활성화 안할때 disabled 라는 클래스명 추가할것 */}
+      <button className="round time-btn btn-main">오후 5:00</button>
     </div>
   );
 };

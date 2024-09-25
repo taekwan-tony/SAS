@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { parseISO, format } from "date-fns";
+import { parseISO, format, addMonths } from "date-fns";
 import { ko } from "date-fns/locale";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
@@ -12,6 +12,8 @@ const DatePicker = (props) => {
   if (selected) {
     footer = <p>You picked {format(selected, "PP")}.</p>;
   }
+  // 오늘 버튼 만들기 위해 달 이동 버튼 구현...
+  const [month, setMonth] = useState(addMonths(dayNow, 1));
   const css = `
 
   button[class^="rdp"] {
@@ -20,12 +22,20 @@ const DatePicker = (props) => {
   .rdp-root{
     --rdp-accent-color: var(--main1);
     --rdp-font-family-accent: LeeSeoyun;
-    --rdp-month_caption-font: bold larger var(--rdp-font-family-accent); /* The font of the month caption. */
     --rdp-weekday-font: 500 smaller var(--rdp-font-family-accent);
     font-size: 20px;
     --rdp-day-height: 3.5rem;
     --rdp-day-width: 3.5rem;
+    --rdp-selected-font: bold 20px var(--rdp-font-family);
   }
+    .rdp-month_caption{
+      display : flex;
+      justify-content: center;
+    }
+    .rdp-caption_label{
+    color: var(--main1);
+    font:bold larger var(--rdp-font-family-accent);
+    }
   .rdp-today:not(.rdp-outside) {
     color: var(--main1);
 }
@@ -51,6 +61,15 @@ const DatePicker = (props) => {
   `;
   return (
     <div className="day-picker">
+      <button
+        className="today-btn"
+        onClick={() => {
+          setSelected(dayNow);
+          setMonth(dayNow);
+        }}
+      >
+        오늘
+      </button>
       <style>{css}</style>
       <DayPicker
         locale={ko}
@@ -59,13 +78,15 @@ const DatePicker = (props) => {
         required={true} //필수로 날짜 선택하게
         onSelect={setSelected}
         showOutsideDays={true}
+        month={month}
+        onMonthChange={setMonth}
         //오늘 전 날짜는 선택 불가능
         disabled={{ before: new Date() }}
         // 처음 시작할 달 설정, 달력 위에 뜨는 연 월 선택여부
         captionLayout="label"
         defaultMonth={new Date(dayNow)}
         startMonth={new Date(dayNow)}
-        endMonth={new Date(dayNow.getFullYear(), dayNow.getMonth() + 3)}
+        endMonth={new Date(dayNow.getFullYear(), dayNow.getMonth() + 2)}
       />
     </div>
   );
