@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 
 const AdminStore = () => {
   const [adminDetailTitle, setAdminDetailTitle] = useState("");
+
+  const questionWriterType = 2;
   return (
     <div className="admin-store-wrap">
       <div className="admin-store-title-wrap">
