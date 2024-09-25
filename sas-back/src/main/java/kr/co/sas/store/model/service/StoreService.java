@@ -88,4 +88,12 @@ public class StoreService {
 	}//storeRefresh
 
 
+	@Transactional
+	public int changePw(StoreDTO store) {
+		store.setSoPw(encoder.encode(store.getSoPw()));
+		int result = storeDao.changePw(store);
+		return result;
+	}//changePw
+
+
 }
