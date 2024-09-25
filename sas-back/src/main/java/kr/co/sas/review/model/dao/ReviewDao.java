@@ -4,9 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.co.sas.review.model.dto.ReviewDTO;
+
 @Mapper
 public interface ReviewDao {
 
-	List getReviewinfo(int storeNo);
+	List<ReviewDTO> getAllReview();
+
+	ReviewDTO getReviewNo(int reviewNo);
 
 }

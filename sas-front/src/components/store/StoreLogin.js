@@ -87,10 +87,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
             if (storeType === 1) {
               //판매자 로그인
               navigate("/storeMain");
+            } else if (storeType === 0) {
+              navigate("/admin/adminMain");
             } // else
-          } else if (result === 1) {
-            // 관리자 로그인
-            navigate("/admin/adminMain");
           }
         })
         .catch((err) => {
