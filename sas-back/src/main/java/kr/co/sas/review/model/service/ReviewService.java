@@ -13,13 +13,11 @@ public class ReviewService {
 	@Autowired
 	private ReviewDao reviewDao;
 	
-	// 모든 리뷰 가져오기 (관리자용)
+	// 모든 리뷰 가져오기
     public List<ReviewDTO> getAllReview() {
+    	//매장번호가져오고
+    	
         return reviewDao.getAllReview();
     }
 
-    // 리뷰 번호로 특정 리뷰 가져오기 (관리자용)
-    public ReviewDTO getReviewNo(int reviewNo) {
-        return reviewDao.getReviewNo(reviewNo);
-    }
 }

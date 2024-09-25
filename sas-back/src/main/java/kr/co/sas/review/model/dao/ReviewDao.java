@@ -13,4 +13,7 @@ public interface ReviewDao {
 
 	ReviewDTO getReviewNo(int reviewNo);
 
+	List getReviewinfo(int storeNo);
+
+	List<ReviewDTO> getReviewsByStoreNo(int storeNo);
 }
