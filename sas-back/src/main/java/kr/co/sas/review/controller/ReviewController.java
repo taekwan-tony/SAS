@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +35,8 @@ public class ReviewController {
 //    }
     //소비자리뷰등록
     @PostMapping("/usermain/mypage/myreview")
-    public ResponseEntity<Integer> insertReview(@ModelAttribute ReviewDTO review){
+    public ResponseEntity<Integer> insertReview(@RequestBody ReviewDTO review){
+    	System.out.println(review);
     	int result = reviewService.insertReview(review);
     	return ResponseEntity.ok(result);
     }

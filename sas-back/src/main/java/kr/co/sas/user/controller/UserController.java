@@ -171,6 +171,11 @@ public class UserController {
 		}
 		return ResponseEntity.status(404).build();
 	}
+	@GetMapping(value="/userId/{loginId}/getUserNickname")
+	public ResponseEntity<String> getUserNickname (@PathVariable String loginId){
+		String userNickname = userService.getUserNickname(loginId);
+		return ResponseEntity.ok(userNickname);
+	}
 	
 	
 }

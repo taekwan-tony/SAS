@@ -127,5 +127,11 @@ public class UserService {
 		System.out.println(user);
 		return user;
 	}
+
+	public String getUserNickname(String loginId) {
+		UserDTO userDTO = userDao.searchUser(loginId);
+		return userDTO.getUserNickname();
+		//반환타입,void는 반환할게없다 string이면 스트링타입을 반환
+	}
 	
 }

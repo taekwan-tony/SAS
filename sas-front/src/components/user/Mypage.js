@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import { Link, Route, Routes } from "react-router-dom";
 import "../menu/menuview.css";
 import "./mypage.css";
+import Swal, { swal } from "sweetalert2";
 import {
   EmptyBox,
   MypageFavorite,
@@ -18,6 +19,7 @@ import { loginUserIdState, loginUserNoState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { switchClasses } from "@mui/material";
 
 const Mypage = () => {
   return (
@@ -25,7 +27,7 @@ const Mypage = () => {
       <Routes>
         <Route path="" element={<MypageMain />}></Route>
         <Route path="resview" element={<ReservationView />}></Route>
-        <Route path="myreview" element={<ReviewWrite />} />
+        <Route path="reviewWrite" element={<ReviewWrite />} />
       </Routes>
     </div>
   );
@@ -64,7 +66,7 @@ const MypageMain = () => {
             <EmptyBox text={"예약 내역이 존재하지 않습니다"} />
           ) : (
             <div className="reserve-content-wrap list-content">
-              {user.reservation.map((reserve, index) => {
+              {user.reservationList.map((reserve, index) => {
                 return <ReserveContent />;
               })}
             </div>
@@ -100,6 +102,7 @@ const MypageMain = () => {
 };
 
 const ReservationView = () => {
+  const navigate = useNavigate();
   return (
     <div className="res-view">
       <section>
@@ -118,7 +121,14 @@ const ReservationView = () => {
             >
               방문완료
             </button>
-            <button className="btn-main">리뷰쓰기</button>
+            <button
+              className="btn-main"
+              onClick={() => {
+                navigate("/usermain/mypage/reviewWrite");
+              }}
+            >
+              리뷰쓰기
+            </button>
           </div>
           <div className="res-content">
             <img
@@ -190,41 +200,68 @@ const HoverRating = ({ value, setValue, hover, setHover }) => {
   );
 };
 const ReviewWrite = () => {
+  const navigate = useNavigate();
+  const [loginId, setLoginId] = useRecoilState(loginUserIdState);
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  useEffect(() => {
+    axios
+      .get(`${backServer}/user/userId/${loginId}/getUserNickname`)
+      .then((res) => {
+        console.log(res.data);
+        setReview({ ...review, userNickname: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [loginId]);
   const [review, setReview] = useState({
     reviewContent: "",
-    reviewScore: 0,
+    reviewScore: 2,
+    userNickname: "",
+    // 여기는 예약구현후에 넣는 방법 생각해보겠음
+    storeNo: 73,
+    reserveNo: null,
   });
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [content, setContent] = useState("");
-  console.log(content);
+  const setContent = (content) => {
+    setReview({ ...review, reviewContent: content });
+  };
+  console.log(review.reviewContent);
   const [title, setTitle] = useState("");
-  const [loginId, setLoginId] = useRecoilState(loginUserIdState);
   const handleTitleChange = (e) => {
     setTitle(e.currentTarget.value);
   };
-
-  const [ratingValue, setRatingValue] = useState(2);
+  const changeStarRating = (star) => {
+    setReview({ ...review, reviewScore: star });
+  };
+  // const [ratingValue, setRatingValue] = useState(2);
   const [hover, setHover] = useState(-1);
   const handleSubmit = () => {
     axios
-      .post(`${backServer}/review/usermain/mypage/myreview`)
+      .post(`${backServer}/review/usermain/mypage/myreview`, review)
       .then((res) => {
         console.log(res);
-        setReview(res.data);
+        if (res.data > 0) {
+          Swal.fire({
+            title: "감사합니다",
+            text: "다음에 또 이용해주세요",
+            icon: "success",
+          }).then(() => {
+            navigate("usermain/mypage");
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
   return (
     <div className="review-container">
       <label htmlFor="message" className="label1">
         이용하신 매장은 어떠셨나요? 평점을 남겨주세요
       </label>
       <HoverRating
-        value={ratingValue}
-        setValue={setRatingValue}
+        value={review.reviewScore}
+        setValue={changeStarRating}
         hover={hover}
         setHover={setHover}
       />
