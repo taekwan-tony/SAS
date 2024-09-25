@@ -46,24 +46,30 @@ public class StoreService {
 
 
 	public Map storeLogin(StoreDTO store) {
-		int result = 0;
-		Map map = new HashMap<String, Object>();
-		StoreDTO loginStore = storeDao.searchStoreOwner(store.getSoEmail());
-		if(loginStore != null) {
-			if(encoder.matches(store.getSoPw(), loginStore.getSoPw())) {
-				result = 1;
-				loginStore.setSoPw(null);
-				map.put("loginSoEmail", loginStore.getSoEmail());
-				map.put("storeType", loginStore.getType());
-				map.put("accessToken", jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType()));
-				map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType()));
-			}else {
-				result = 3;
-			}//else
-		}//if
-		map.put("result", result);
-		return map;
+	    Map map = new HashMap<String, Object>();
+	    StoreDTO loginStore = storeDao.searchStoreOwner(store.getSoEmail());
+	    if (loginStore != null) {
+	        if (encoder.matches(store.getSoPw(), loginStore.getSoPw())) {
+	        	// 비밀번호 일치: 로그인 성공
+	            map.put("result", 0); // 로그인 성공 상태
+	            loginStore.setSoPw(null); // 비밀번호는 null로 반환
+	            map.put("loginSoEmail", loginStore.getSoEmail());
+	            map.put("storeType", loginStore.getType());
+	            map.put("accessToken", jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType()));
+	            map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType()));
+	        } else {
+	        	// 비밀번호 불일치
+	            map.put("result", 1); // 로그인 실패 상태
+	        } //else
+	    } else {
+	    	// 이메일 없음: 로그인 실패
+	        map.put("result", 1); // 로그인 실패 상태
+	    } //else
+	    
+	    System.out.println(map);
+	    return map;
 	}//storeLogin
+
 
 
 	public LoginStoreDTO storeRefresh(String token) {

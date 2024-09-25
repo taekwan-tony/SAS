@@ -37,39 +37,31 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     if (storeLogin.soEmail === "" || storeLogin.soPw === "") {
       console.log("Email or password is empty");
     } else {
-      console.log(store); //확인용
       axios
-        .post(`${backServer}/store/storeLogin`, store)
+        .post(`${backServer}/store/storeLogin`, storeLogin)
         .then((res) => {
-          console.log(res);
-          switch (res.data.result) {
-            case 0:
-              setLoginSoEmail(res.data.loginSoEmail);
-              setStoreType(res.data.storeType);
+          console.log("서버 응답:", res.data); // 전체 응답
+          console.log("result 값:", res.data.result); // result 값만 확인
+          console.log("type 값:", res.data.storeType); // type 값만 확인
 
-              axios.defaults.headers.common["Authorization"] =
-                res.data.accessToken;
+          const { result, storeType, loginSoEmail, accessToken, refreshToken } =
+            res.data;
 
-              window.localStorage.setItem(
-                "storeRefreshToken",
-                res.data.refreshToken
-              );
-              navigate("/admin/adminMain");
-              break;
+          if (result === 0) {
+            // 로그인 성공
+            setLoginSoEmail(loginSoEmail);
+            setStoreType(storeType);
 
-            case 1:
-              setLoginSoEmail(res.data.loginSoEmail);
-              setStoreType(res.data.storeType);
+            axios.defaults.headers.common["Authorization"] = accessToken;
+            window.localStorage.setItem("storeRefreshToken", refreshToken);
 
-              axios.defaults.headers.common["Authorization"] =
-                res.data.accessToken;
-
-              window.localStorage.setItem(
-                "storeRefreshToken",
-                res.data.refreshToken
-              );
+            if (storeType === 1) {
+              //판매자 로그인
               navigate("/storeMain");
-              break;
+            } // else
+          } else if (result === 1) {
+            // 관리자 로그인
+            navigate("/admin/adminMain");
           }
         })
         .catch((err) => {
