@@ -78,12 +78,17 @@
 				so_pw =#{soPw},
 			</if>
 			regist_type = #{registType},
-			service_price = 1000
+			service_price = 1000,
+			store_enroll_date = sysdate
 			where store_no = #{storeNo}
 	</update>
 	
 	
 	<select id="searchStoreOwner" resultType="store">
 		select * from store where so_email=#{soEmail}
+	</select>
+	
+	<select id="selectAllPayStore" resultType="store">
+		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
 </mapper>

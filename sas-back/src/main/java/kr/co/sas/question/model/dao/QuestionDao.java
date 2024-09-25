@@ -1,8 +1,0 @@
-package kr.co.sas.question.model.dao;
-
-import org.apache.ibatis.annotations.Mapper;
-
-@Mapper
-public interface QuestionDao {
-
-}
