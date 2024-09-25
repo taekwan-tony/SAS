@@ -1,5 +1,8 @@
 package kr.co.sas.store.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -7,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.co.sas.store.model.dto.LoginStoreDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.service.StoreService;
 
@@ -46,6 +51,30 @@ public class StoreController {
 		int result = storeService.insertStore(store);
 		return ResponseEntity.ok(result > 0);
 	}//insertStore
+	
+	
+	@Operation(summary = "매장 로그인", description = "이메일, 비밀번호를 객체로 가져와서 로그인")
+	@PostMapping(value = "/storeLogin")
+	public ResponseEntity<Map> storeLogin(@RequestBody StoreDTO store) {
+		Map map = storeService.storeLogin(store);
+		return ResponseEntity.ok(map);
+	}//storeLogin
+	
+	
+	@Operation(summary = "매장 로그인 갱신", description = "토큰으로 로그인 갱신")
+	@PostMapping(value = "/storeRefresh")
+	public ResponseEntity<Map> storeRefresh(@RequestHeader("Authorization") String token) {
+		LoginStoreDTO loginStore = storeService.storeRefresh(token);
+		if(loginStore != null) {
+			Map map = new HashMap<String, Object>();
+			map.put("loginSoEmail", loginStore.getSoEmail());
+			map.put("storeType", loginStore.getType());
+			map.put("accessToken", loginStore.getAccessToken());
+			map.put("refreshToken", loginStore.getRefreshToken());
+			return ResponseEntity.ok(map);
+		}//if
+		return ResponseEntity.status(404).build();
+	}//storeRefresh
 	
 	
 	

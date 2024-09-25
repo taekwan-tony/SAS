@@ -27,7 +27,7 @@ const MenuView = () => {
             <img src="/image/s&s로고.png" alt="가게 로고" />
           </div>
           <div className="menuview-info">
-            <p>{store.storeName}</p>
+            <p></p>
             <div className="schedule">
               <span className="material-icons">place</span>
               <p>{store.storeAddr}</p>
