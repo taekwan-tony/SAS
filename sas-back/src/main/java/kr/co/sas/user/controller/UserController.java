@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +29,7 @@ import kr.co.sas.user.model.dto.LoginUserDTO;
 import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.user.model.service.UserService;
 import kr.co.sas.util.EmailSender;
+import kr.co.sas.util.FileUtils;
 
 
 @CrossOrigin("*")
@@ -34,6 +39,10 @@ import kr.co.sas.util.EmailSender;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private FileUtils fileUtil;
+	@Value("${file.root}")
+	private String root;
 	
 	@Autowired
 	private EmailSender email;
@@ -152,7 +161,6 @@ public class UserController {
 		List list = userService.getReviewinfo(storeNo);
 		return ResponseEntity.ok(list);
 	}
-
 	
 	@Operation(summary="회원정보 조회", description = "userNo를 받아와서 그에 해당하는 유저객체 반환, 없으면 404")
 	@GetMapping(value="/userNo/{userNo}")
@@ -163,5 +171,6 @@ public class UserController {
 		}
 		return ResponseEntity.status(404).build();
 	}
+
 	
 }
