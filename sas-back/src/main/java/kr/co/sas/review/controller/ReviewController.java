@@ -29,4 +29,5 @@ public class ReviewController {
     public ReviewDTO getReviewNo(@PathVariable int reviewNo) {
         return reviewService.getReviewNo(reviewNo);
     }
+    
 }

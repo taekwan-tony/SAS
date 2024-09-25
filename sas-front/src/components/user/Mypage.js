@@ -203,7 +203,16 @@ const ReviewWrite = () => {
 
   const [ratingValue, setRatingValue] = useState(2);
   const [hover, setHover] = useState(-1);
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    axios
+      .post(`${backServer}/usermain/mypage/myreview`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="review-container">

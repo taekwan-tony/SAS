@@ -121,9 +121,6 @@ public class UserService {
 		return getReviewinfo;
 	}
 
-
-		
-
 	public UserDTO selectOneUser(int userNo) {
 		UserDTO user = userDao.selectOneUser(userNo);
 		System.out.println(user);
