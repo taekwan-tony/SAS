@@ -79,7 +79,9 @@
 .negative {
   color: #f44336;
 }
-
+.middle-section {
+  margin-top: 0;
+}
 .middle-section .main-info,
 .middle-section .satisfaction,
 .middle-section .referral-tracking {
