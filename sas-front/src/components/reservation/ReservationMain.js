@@ -71,7 +71,11 @@ const ReservationMain = () => {
               setReservationPage={setReservationPage}
             />
           ) : reservationPage === 2 ? (
-            <ReservationModalSecond />
+            <ReservationModalSecond
+              reservation={reservation}
+              setReservationPage={setReservationPage}
+              setIsReserveModalOpen={setIsReserveModalOpen}
+            />
           ) : (
             ""
           )}
@@ -175,7 +179,8 @@ const ReservationModalFirst = (props) => {
   );
 };
 
-const ReservationModalSecond = () => {
+const ReservationModalSecond = (props) => {
+  const { reservation, setReservationPage, setIsReserveModalOpen } = props;
   return (
     <div className="reservation-modal-wrap second">
       <div className="modalTitle">
@@ -198,16 +203,34 @@ const ReservationModalSecond = () => {
               <span class="material-icons icon">person</span>
               <span className="info">8명</span>
             </div>
-            {/* <div className="content-wrap">
-              <span class="material-icons icon">calendar_today</span>
-              <span className="info">9.13(금)</span>
-            </div> */}
+            {reservation.reservePayStatus !== 0 ? (
+              <div className="content-wrap">
+                <span class="material-icons icon">credit_card</span>
+                <span className="info">8000원</span>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
       <div className="modalFooter">
-        <button className="btn-sub">변경</button>
-        <button className="btn-main">확인</button>
+        <button
+          className="btn-sub round"
+          onClick={() => {
+            setReservationPage(1);
+          }}
+        >
+          변경
+        </button>
+        <button
+          className="btn-main round"
+          onClick={() => {
+            setIsReserveModalOpen(false);
+          }}
+        >
+          확인
+        </button>
       </div>
     </div>
   );
