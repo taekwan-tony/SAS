@@ -204,7 +204,7 @@ function UserMain() {
           <div className="user-sidebar">
             <header className="header-user">
               <img src="/image/IMG_3238.jpg" alt="User" />
-              <p>user-id</p>
+              <p>{loginUserId}</p>
             </header>
             <div className="sidebar-user-page">
               <ul>

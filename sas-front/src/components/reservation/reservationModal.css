@@ -10,10 +10,62 @@
 .reservation-modal-wrap.first .day-picker > .rdp-root {
   width: 100%;
 }
+
+.reservation-modal-wrap.first .reservation-info-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.reservation-modal-wrap.first .reservation-info-wrap > .reservation-how-many {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 .reservation-modal-wrap.first
   .reservation-info-wrap
   > .reservation-how-many
   > span.title {
   font: bold 1.2em LeeSeoyun;
   color: var(--main1);
+  align-self: flex-start;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-how-many
+  > .input-item {
+  position: relative;
+  align-self: flex-end;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-how-many
+  > .input-item
+  > input {
+  width: 70px;
+  border-radius: 20%;
+  text-align: center;
+  background-color: #efefef;
+  border: none;
+  outline: none;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-how-many
+  > .input-item
+  > button {
+  position: absolute;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: var(--main1);
+  font: bold 1em var(--defaultFont);
+  top: 2px;
+  cursor: pointer;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-how-many
+  > .input-item
+  > button.plus {
+  right: 15px;
 }

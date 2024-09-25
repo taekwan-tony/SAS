@@ -7,6 +7,9 @@
   --font1: #544f4f;
   --font2: #767a82;
   --font3: #b9b9bd;
+  /* 글씨 폰트 --이름이 기억이 안나서.. */
+  --defaultFont: Pretendard-Regular;
+  --pointFont: LeeSeoyun;
 }
 /* 이서윤체 */
 @font-face {

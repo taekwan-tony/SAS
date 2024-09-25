@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Modal from "react-modal";
-import { useRecoilValue } from "recoil";
-import { isUserLoginState } from "../utils/RecoilData";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isUserLoginState, loginUserIdState } from "../utils/RecoilData";
 import DatePicker from "../utils/DatePicker";
 import { format } from "date-fns";
 import "./reservationModal.css";
 const ReservationMain = () => {
+  const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
   const goTOReserve = () => {
     setIsReserveModalOpen(!isReserveModalOpen);
@@ -38,6 +39,15 @@ const ReservationMain = () => {
     },
   };
   const [reservationPage, setReservationPage] = useState(1);
+  const [reservation, setReservation] = useState({
+    reserveDate: "",
+    // 결제여부는 매장 상세에서 가져와야함
+    reservePayStatus: 0,
+    reservePeople: 1,
+    //매장상세, 회원에서 가져와야 할 것들
+    storeNo: 0,
+    userId: loginUserId,
+  });
 
   return (
     <>
@@ -54,7 +64,14 @@ const ReservationMain = () => {
           style={customModalStyles}
         >
           {" "}
-          {reservationPage === 1 ? <ReservationModalFirst /> : ""}
+          {reservationPage === 1 ? (
+            <ReservationModalFirst
+              reservation={reservation}
+              setReservation={setReservation}
+            />
+          ) : (
+            ""
+          )}
         </Modal>
       ) : (
         ""
@@ -63,7 +80,24 @@ const ReservationMain = () => {
   );
 };
 
-const ReservationModalFirst = () => {
+const ReservationModalFirst = (props) => {
+  const reservation = props.reservation;
+  const setReservation = props.setReservation;
+  const changeReservationPeople = (e) => {
+    setReservation({ ...reservation, reservePeople: e.target.value });
+  };
+  const peoplePlus = () => {
+    setReservation({
+      ...reservation,
+      reservePeople: reservation.reservePeople + 1,
+    });
+  };
+  const peopleMinus = () => {
+    setReservation({
+      ...reservation,
+      reservePeople: reservation.reservePeople - 1,
+    });
+  };
   const dayNow = new Date();
   const year = dayNow.getFullYear();
   const month =
@@ -85,7 +119,24 @@ const ReservationModalFirst = () => {
       />
       <div className="reservation-info-wrap">
         <div className="reservation-how-many">
-          <span className="title">인원 수</span>
+          <span className="title">
+            <label htmlFor="reservePeople"></label>인원 수
+          </span>
+          <div className="input-item">
+            <button className="minus" onClick={peopleMinus}>
+              -
+            </button>
+
+            <input
+              type="text"
+              id="reservePeople"
+              value={reservation.reservePeople}
+            />
+            <button className="plus" onClick={peoplePlus}>
+              +
+            </button>
+            <span>명</span>
+          </div>
         </div>
       </div>
     </div>
