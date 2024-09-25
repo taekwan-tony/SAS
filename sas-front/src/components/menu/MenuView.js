@@ -5,12 +5,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import { PiArrowFatLeft, PiStarFill, PiStarLight } from "react-icons/pi";
 import axios from "axios";
+import KaKao from "../utils/Kakao";
+const { kakao } = window;
 
 const MenuView = () => {
   const [store, setStore] = useState({ storeNo: 73 });
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
-  const [storinfo, setStoreinfo] = useState({});
   useEffect(() => {
     axios
       .get(`${backServer}/user/storeNo/${store.storeNo}`)
@@ -71,7 +72,7 @@ const MenuView = () => {
           <Route path="menu" element={<Menu />}></Route>
           <Route path="photo" element={<MenuPhoto />}></Route>
           <Route path="review" element={<MenuReview />}></Route>
-          <Route path="info" element={<Menuinfo />}></Route>
+          <Route path="info" element={<Menuinfo store={store} />}></Route>
         </Routes>
       }
       <div className="reservation-button">
@@ -83,22 +84,10 @@ const MenuView = () => {
   );
 };
 
-const MenuMain = () => {
+const MenuMain = (props) => {
+  const addr = props.addr;
   return (
-    <main className="main-menu">
-      <h2>예약</h2>
-      <section className="reservation-info">
-        <span className="material-icons page-item">
-          <span className="material-icons">calendar_today</span>날짜 - 인원 -
-          시간
-        </span>
-        <div className="res-time">
-          <div>오후 12:00</div>
-        </div>
-        <Link to="#" className="find-date btn-sub round">
-          예약가능날짜찾기
-        </Link>
-      </section>
+    <main className="main-menu-home">
       <div className="facilities">
         <h2>편의시설</h2>
         <div className="amenities">편의시설 이미지</div>
@@ -150,7 +139,7 @@ const Menu = () => {
             return (
               <div className="menu-item">
                 <img
-                  src="/image/youtube.png"
+                  src={menuItem.menuPhoto}
                   alt="메뉴"
                   style={{ width: "200px", height: "auto" }}
                 />
@@ -168,7 +157,7 @@ const Menu = () => {
           return (
             <div className="menu-item">
               <img
-                src="/image/youtube.png"
+                src={menuItem.menuPhoto}
                 alt="메뉴"
                 style={{ width: "200px", height: "auto" }}
               />
@@ -210,7 +199,7 @@ const MenuPhoto = () => {
     <div className="menu-photo">
       <h2>사진</h2>
       <div className="menu-image2">
-        <img src="/image/youtube.png" alt="가게 로고" />
+        <img src="" alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />
@@ -228,9 +217,9 @@ const MenuReview = () => {
     setIsExpanded(!isExpanded);
   };
   const displayText =
-    isExpanded || commentText.length <= 100
+    isExpanded || commentText.length <= 50
       ? commentText
-      : `${commentText.slice(0, 100)}`;
+      : `${commentText.slice(0, 50)}`;
 
   return (
     <div className="menu-review">
@@ -240,7 +229,7 @@ const MenuReview = () => {
       <p>댓글자리</p>
       <p>
         {displayText}
-        {commentText.length > 100 && (
+        {commentText.length > 50 && (
           <span className="toggle-button" onClick={handleToggle}>
             {isExpanded ? "접기" : "더보기"}
           </span>
@@ -250,31 +239,40 @@ const MenuReview = () => {
   );
 };
 
-const Menuinfo = () => {
+const Menuinfo = (props) => {
+  const store = props.store;
+  // const [store, setStore] = useState({ storeNo: 73 });
+  // const backServer = process.env.REACT_APP_BACK_SERVER;
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`${backServer}/user/storeNo/${store.storeNo}`)
+  //     .then((res) => {
+  //       setStore(res.data);
+  //     })
+  //     .catch((err) => {});
+  // }, []);
+  // const
   return (
     <div className="menu-info">
       <div className="menu-intro">
         <h2>매장소개</h2>
-        <p>
-          맛있는 정원은 신선한 재료와 정성으로 만든 요리를 제공하는 아늑한
-          식당입니다. 현대적인 감각으로 재해석한 전통 한식 메뉴를 다양하게 즐길
-          수 있으며, 특히 제철 재료를 활용한 특선 요리는 고객님들께 큰 인기를
-          얻고 있습니다. 우리 매장은 편안한 분위기를 자랑하며, 친구, 가족,
-          연인과 함께 오기 좋은 공간입니다. 각 테이블마다 아기자기한 인테리어
-          소품이 배치되어 있어 소중한 순간을 더욱 특별하게 만들어 줍니다. 또한,
-          친절한 직원들이 여러분의 방문을 기다리고 있으며, 고객님의 만족을 위해
-          항상 최선을 다하겠습니다. 맛있는 정원에서 특별한 한 끼를 즐겨보세요.
-          여러분의 방문을 기다립니다!
-        </p>
+        <p>{store.storeIntroduce}</p>
         <hr></hr>
       </div>
       <h2>매장정보</h2>
-      <Map
-        center={{ lat: 33.450701, lng: 126.570667 }}
-        style={{ width: "400px", height: "232px" }}
-        level={3}
-      />
-      <p>서울특별시 송파구 백제고분로41길 42-19 더블유123빌딩 1층</p>
+
+      {
+        <KaKao
+          addr={store.storeAddr}
+          name={store.storeName}
+          center={{ lat: 33.450701, lng: 126.570667 }}
+          style={{ width: "400px", height: "232px" }}
+          level={3}
+        />
+      }
+
+      <p>{store.storeAddr}</p>
       <h2>편의시설</h2>
       <div className="facilities">
         <div className="amenities">

@@ -1,6 +1,7 @@
 package kr.co.sas.store.model.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,12 @@ public class StoreService {
 		}//catch
 		return null;
 	}//storeRefresh
+
+
+	public List<StoreDTO> selectAllPayStore() {
+		List list = storeDao.selectAllPayStore();
+		return list;
+	}
 
 
 }
