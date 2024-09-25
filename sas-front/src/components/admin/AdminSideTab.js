@@ -22,7 +22,7 @@ const AdminSideTab = () => {
           <Link to="#">회원관리</Link>
           <ul className="admin-side-sub-tab">
             <li>
-              <Link to="#">매출관리</Link>
+              <Link to="/admin/user/questionList">1:1문의리스트</Link>
             </li>
             <li>
               <Link to="#">제휴현황</Link>

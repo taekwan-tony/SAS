@@ -36,13 +36,19 @@ const QuestionList = (props) => {
           <thead>
             <tr className="question-posting-title">
               <th style={{ width: "15%" }}>번호</th>
+              <th style={{ width: "15%" }}>문의유형</th>
+              <th style={{ width: "20%" }}>작성자</th>
               <th style={{ width: "50%" }}>제목</th>
-              <th style={{ width: "20%" }}>등록일</th>
-              <th style={{ width: "15%" }}>구분</th>
             </tr>
           </thead>
           {questionList.map((question, i) => {
-            return <QuestionItem key={"question-" + i} question={question} />;
+            return (
+              <QuestionItem
+                key={"question-" + i}
+                question={question}
+                questionWriterType={questionWriterType}
+              />
+            );
           })}
         </table>
       </div>
@@ -65,19 +71,21 @@ const QuestionList = (props) => {
 
 const QuestionItem = (props) => {
   const question = props.question;
+  const questionWriterType = props.questionWriterType;
   const navigate = useNavigate();
   return (
     <tr
-    //   onClick={() => {
-    //     navigate(`/admin/question/detail/${question.questionNo}/${questionType}`);
-    //   }}
+      onClick={() => {
+        if (questionWriterType == 2) {
+          navigate(`/admin/store/detail/${question.questionNo}`);
+        } else {
+        }
+      }}
     >
-      {/* <td style={{ width: "15%" }}>{question.questionNo}</td> */}
-      {/* <td style={{ width: "50%" }}>{question.questionTitle}</td> */}
-      {/* <td style={{ width: "20%" }}>{question.questionEnrollDate}</td> */}
-      {/* <td style={{ width: "15%" }}>
-        {question.questionType == 1 ? "소비자" : "매장"}
-      </td> */}
+      <td style={{ width: "15%" }}>{question.questionNo}</td>
+      <td style={{ width: "15%" }}>{question.questionType}</td>
+      <td style={{ width: "20%" }}>{question.questionWriter}</td>
+      <td style={{ width: "50%" }}>{question.questionTitle}</td>
     </tr>
   );
 };
