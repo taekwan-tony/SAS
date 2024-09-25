@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import "./storeChangePw.css";
+import "./storeCheckPw.css";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-const StoreChangePw = ({ isPwModalOpen, closePwModal }) => {
+const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const params = useParams();
   const storeNo = params.storeNo;
@@ -152,52 +152,6 @@ const StoreChangePw = ({ isPwModalOpen, closePwModal }) => {
                                 </p>
                               </td>
                             </tr>
-                            <tr className="storechangePw-tr">
-                              <th className="storechangePw-th">
-                                <label
-                                  htmlFor="newSoPw"
-                                  className="storechangePw-pw-label"
-                                >
-                                  새 비밀번호 입력
-                                </label>
-                              </th>
-                              <td className="storechangePw-td">
-                                <div className="storechangePw-div">
-                                  <input
-                                    className="storechangePw-inputBox"
-                                    placeholder="새 비밀번호를 입력해주세요."
-                                    type="text"
-                                    id="newSoPw"
-                                    name="newSoPw"
-                                    value={newSoPw}
-                                    onChange={changeNewSoPw}
-                                  ></input>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr className="storechangePw-tr">
-                              <th className="storechangePw-th">
-                                <label
-                                  htmlFor="newSoPw"
-                                  className="storechangePw-pw-label"
-                                >
-                                  새 비밀번호 확인
-                                </label>
-                              </th>
-                              <td className="storechangePw-td">
-                                <div className="storechangePw-div">
-                                  <input
-                                    className="storechangePw-inputBox"
-                                    placeholder="새 비밀번호를 다시 입력해주세요."
-                                    type="text"
-                                    id="newSoPwRe"
-                                    name="newSoPwRe"
-                                    value={newSoPwRe}
-                                    onChange={changeNewSoPwRe}
-                                  ></input>
-                                </div>
-                              </td>
-                            </tr>
                           </tbody>
                         </table>
                         <div className="storechangePw-btn-zone">
@@ -218,4 +172,4 @@ const StoreChangePw = ({ isPwModalOpen, closePwModal }) => {
   );
 };
 
-export default StoreChangePw;
+export default StoreCheckPw;

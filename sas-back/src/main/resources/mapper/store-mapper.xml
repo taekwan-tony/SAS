@@ -86,4 +86,9 @@
 	<select id="searchStoreOwner" resultType="store">
 		select * from store where so_email=#{soEmail}
 	</select>
+	
+	
+	<update id="changePw">
+		update store set so_pw=#{soPw} where store_no=#{storeNo}
+	</update>
 </mapper>
