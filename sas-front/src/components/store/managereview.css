@@ -53,34 +53,76 @@
 }
 
 /* 하단테이블 */
+/* managereview.css */
+.comments-container {
+  padding: 20px;
+}
 
-.styled-table {
+.consum-comment {
+  background-color: #ccc;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  position: relative;
+  max-width: 600px;
+  background-image: url("/public/image/review.png");
+  background-size: contain; /* 잘림 방지를 위해 'contain' 사용 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.consum-comment::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 30px;
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+}
+/* 답글 작성 폼 - 오른쪽에 고정 */
+.reply-form {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 80%; /* 답글 폼의 너비 */
+  float: right; /* 오른쪽 정렬 */
+}
+.reply-section {
+  margin-top: 10px;
+}
+
+.reply-input {
   width: 100%;
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #222623 10%, #0e1510 70%, #0f170f47 99%);
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.submit-reply-btn {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #007bff;
   color: white;
-  text-align: left;
-  border-radius: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.styled-table th,
-.styled-table td {
-  padding: 12px 15px;
+.submit-reply-btn:hover {
+  background-color: #0056b3;
 }
 
-.styled-table thead tr {
-  border-bottom: 1px solid #2d4d3a;
+.consum-comment strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 5px;
 }
 
-.styled-table tbody tr {
-  border-bottom: 1px solid #2d4d3a;
-}
-
-.styled-table tbody tr:last-of-type {
-  border-bottom: none;
+.consum-comment p {
+  font-size: 16px;
 }
 
 /* 하단 네비 */

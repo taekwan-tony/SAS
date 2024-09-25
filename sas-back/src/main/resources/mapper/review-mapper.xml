@@ -8,8 +8,4 @@
         SELECT * FROM review
     </select>
 
-    <!-- 리뷰 번호로 특정 리뷰 조회 -->
-    <select id="getReviewNo" parameterType="int" resultType="review">
-        SELECT * FROM review WHERE review_no = #{reviewNo}
-    </select>
 </mapper>

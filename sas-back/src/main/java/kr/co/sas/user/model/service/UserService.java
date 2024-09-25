@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.menu.model.dto.MenuDTO;
 import kr.co.sas.review.model.dao.ReviewDao;
+import kr.co.sas.review.model.dto.ReviewDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.user.model.dao.UserDao;
@@ -116,9 +117,9 @@ public class UserService {
 		return getMenuinfo;
 	}
 
-	public List getReviewinfo(int storeNo) {
-		List getReviewinfo = reviewDao.getReviewinfo(storeNo);
-		return getReviewinfo;
+	public List<ReviewDTO> getReviewinfo(int storeNo) {
+	    List<ReviewDTO> getReviewinfo = reviewDao.getReviewsByStoreNo(storeNo); 
+	    return getReviewinfo;
 	}
 
 
