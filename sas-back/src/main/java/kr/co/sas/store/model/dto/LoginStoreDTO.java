@@ -12,4 +12,5 @@ public class LoginStoreDTO {
 	private String refreshToken;
 	private String soEmail;
 	private int type;
+	private int storeNo;
 }

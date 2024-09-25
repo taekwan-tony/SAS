@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Link } from "react-router-dom";
 import "./Main.css";
+import StoreLogin from "../store/StoreLogin";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -253,6 +255,29 @@ const Main = () => {
     // };
   }, []);
 
+  {
+    /* 판매자 / 관리자 로그인 Modal */
+  }
+  // 모달의 열림/닫힘 상태를 관리하는 useState
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 모달 열기 함수
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // 모달 외부 클릭 시 모달 닫기
+  const handleOutsideClick = (event) => {
+    if (event.target.className === "storeModal") {
+      closeModal();
+    }
+  };
+
   return (
     <div>
       <div className="video-background">
@@ -307,8 +332,8 @@ const Main = () => {
             제공하며 더 나은 내일을 만들어갑니다.
           </span>
           <div className="buttons">
-            <Link to="/StoreLogin">
-              <button className="button1">
+            <Link to="/">
+              <button onClick={openModal} className="button1">
                 점주 로그인
                 <span className="material-icons arrow">arrow_forward</span>
               </button>
@@ -334,6 +359,10 @@ const Main = () => {
           </div>
         </div>
       </div>
+      {/* StoreLogin 컴포넌트를 렌더링, isModalOpen 상태를 전달 */}
+      {isModalOpen && (
+        <StoreLogin isModalOpen={isModalOpen} closeModal={closeModal} />
+      )}
     </div>
   );
 };

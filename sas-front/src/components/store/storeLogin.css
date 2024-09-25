@@ -1,4 +1,4 @@
-.modal {
+.storeModal {
   display: none; /* 기본적으로 모달 창을 숨깁니다 */
   position: fixed;
   z-index: 1000; /* 다른 요소들보다 앞에 나오도록 설정 */
@@ -11,9 +11,9 @@
   align-items: center;
   display: flex; /* 중앙 정렬을 위한 flex 속성 */
 }
-.modal-content {
-  width: 350px;
-  height: 500px;
+.storeModal-content {
+  width: 30%;
+  height: 65%;
   border-radius: 10px;
   position: relative;
   padding: 20px;
@@ -22,30 +22,28 @@
   position: absolute;
   top: 3%;
   right: 8%;
-  font-size: 28px;
-  color: white;
+  font-size: 35px;
+  color: #5e9960;
   cursor: pointer;
   z-index: 1;
 }
 .storeLogin-wrap {
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
   font-family: "Jost", sans-serif;
   background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
 }
 .storeLogin-main {
-  width: 350px;
-  height: 500px;
-  background: red;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38")
     no-repeat center/ cover;
   border-radius: 10px;
   box-shadow: 5px 20px 50px #000;
+  margin-top: 0px;
+  background-color: #fff;
 }
 #chk {
   display: none;
@@ -53,22 +51,33 @@
 .storeLogin-signup {
   position: relative;
   width: 100%;
-  background-color: #302b63;
-  height: 100%;
-  margin-top: -60px;
+  background-color: #fff;
+  height: 75%;
 }
-/*
-label {
-  color: #fff;
-  font-size: 2.3em;
+
+.storeLogin-label {
+  color: #5e9960;
+  font-size: 2.5em;
   justify-content: center;
   display: flex;
-  margin: 60px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.5s ease-in-out;
+  padding: 30px;
 }
-input {
+
+.storeLogin-regist-label {
+  color: #5e9960;
+  font-size: 1.8em;
+  justify-content: center;
+  display: flex;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+  padding: 20px;
+}
+
+.storeLogin-input {
   width: 60%;
   height: 20px;
   background: #e0dede;
@@ -80,14 +89,18 @@ input {
   outline: none;
   border-radius: 5px;
 }
-*/
 
 .storeLogin-btn-zone {
   width: 100%;
 }
 
-.storeLogin-btn {
+.storeLogin-partnership-btn-zone {
   width: 100%;
+  justify-content: center;
+}
+
+.storeLogin-btn {
+  width: 50%;
   height: 40px;
   margin: 10px auto;
   justify-content: center;
@@ -103,37 +116,238 @@ input {
   transition: 0.2s ease-in;
   cursor: pointer;
 }
-/*
-button:hover {
+
+.storeLogin-btn:hover {
   background: #6d44b8;
 }
-*/
+
 .storeLogin-login {
   margin-top: 100px;
-  height: 500px;
+  height: 100%;
   background: #eee;
   border-radius: 60% / 10%;
-  transform: translateY(-180px);
+  transform: translateY(-33px);
   transition: 0.8s ease-in-out;
+  padding: 0px 15px;
 }
-/*
-.login label {
-  color: #573b8a;
+
+.storeLogin-login .storeLogin-label {
+  color: #5e9960;
   transform: scale(0.6);
 }
 
-#chk:checked ~ .login {
-  transform: translateY(-540px);
+#chk:checked ~ .storeLogin-login {
+  transform: translateY(-440px);
 }
-#chk:checked ~ .login label {
+
+#chk:checked ~ .storeLogin-login .storeLogin-label {
   transform: scale(1);
 }
-#chk:checked ~ .signup label {
+
+#chk:checked ~ .storeLogin-signup .storeLogin-label {
   transform: scale(0.6);
 }
 
-/* .storeLogin-dashboard {
-} 
 .storeLogin-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 100px;
+  color: white;
 }
-*/
+
+/*storeRegist css*/
+.storeRegist-main {
+  height: 1400px;
+  background-color: #ccc;
+  padding-top: 80px;
+}
+
+.storeRegist-wrap {
+  width: 60%;
+  background-color: white;
+  border-radius: 20px;
+  margin: 0 auto;
+  padding: 50px;
+  box-shadow: 5px 6px 1px rgba(0, 0, 0, 0.3);
+}
+
+.storeLogin-inputBox {
+  box-sizing: border-box;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #544f4f;
+  font-size: 16px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #b9b9bd;
+  font-weight: 200;
+  margin-left: 15px;
+  width: 80%;
+}
+
+.storeLogin-storeRegist-inputBox {
+  box-sizing: border-box;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #544f4f;
+  font-size: 13px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #b9b9bd;
+  font-weight: 200;
+  width: 70%;
+}
+
+.storeLogin-storeRegist-inputBox::placeholder {
+  color: #b9b9bd;
+  font-weight: 100;
+  font-size: 13px;
+}
+.storeRegist-inputBox::placeholder {
+  color: #b9b9bd;
+  font-weight: 100;
+  font-size: 16px;
+}
+
+.storeLogin-table {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.storeRegist-table {
+  width: 100%;
+  padding: 50px;
+}
+
+.storeRegist-th {
+  line-height: 60px;
+  text-align: center;
+}
+
+.storeLogin-storeRegist-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #544f4f;
+}
+
+.storeLogin-login-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #544f4f;
+}
+
+.storeLogin-storeRegist-btn {
+  width: 65px;
+  height: 30px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  margin-top: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 590;
+  margin-left: 20px;
+}
+
+.storeLogin-storeRegist-btn:hover {
+  border: 2px solid #5e9960;
+  color: #5e9960;
+  background-color: #eee;
+}
+
+.storeRegist-btn:hover {
+  border: 2px solid #5e9960;
+  color: #5e9960;
+  background-color: #fff;
+}
+
+.storeRegist-msg {
+  color: #5e9960;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.storeRegist-msg::before {
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+  /*background: url("/image/icon_info_success.svg") no-repeat center / contain;*/
+}
+
+.storeLogin-btn-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storeLogin-partnership-btn-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storeLogin-login-btn {
+  width: 290px;
+  height: 60px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.storeLogin-login-btn:hover {
+  background-color: #fff;
+  color: #5e9960;
+  border: 2px solid #5e9960;
+}
+
+.storeLogin-partnership-btn {
+  width: 290px;
+  height: 45px;
+  border: none;
+  background-color: #5e9960;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 20px;
+}
+
+.storeRegist-partnership-btn:hover {
+  background-color: #fff;
+  color: #5e9960;
+}
+
+.storeLogin-regist {
+  padding: 15px 15px;
+}
+
+.storeLogin-find {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.storeLogin-a {
+  text-decoration: none;
+}
+
+.storeLogin-msg {
+  color: #5e9960;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}

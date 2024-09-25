@@ -127,7 +127,7 @@ public class UserController {
 				sb.append(randomCode);
 			}
 		}
-		String emailContent = "<h1>안녕하세요. Spoon & Smiles 입니다 </h1>"
+		String emailContent = "<h1>안녕하세요. Spoon & Smiles 입니다. </h1>"
 								+"<h3>인증번호는 [<span style='color:red;'>"
 								+sb.toString()
 								+"</span>]입니다. </h3>";

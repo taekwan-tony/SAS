@@ -32,7 +32,7 @@
 							    null, 
 							    1, 
 							    null,
-							    to_char(systdate,'yyyy-mm-dd'),
+							    to_char(sysdate,'yyyy-mm-dd'),
 							    null)
 	</insert>
 	
@@ -81,4 +81,9 @@
 			service_price = 1000
 			where store_no = #{storeNo}
 	</update>
+	
+	
+	<select id="searchStoreOwner" resultType="store">
+		select * from store where so_email=#{soEmail}
+	</select>
 </mapper>

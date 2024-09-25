@@ -1,3 +1,145 @@
+.storeView-inputBox {
+  box-sizing: border-box;
+  width: 75%;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #fff;
+  font-size: 20px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #fff;
+  font-weight: 200;
+}
+
+.storeView-table {
+  width: 100%;
+  color: #fff;
+}
+
+.storeView-tr {
+  height: 100px;
+}
+
+.storeView-th {
+  font-size: 22px;
+  text-align: center;
+}
+
+.storeView-label {
+  color: #fff;
+  font-weight: 200;
+  font-size: 25px;
+}
+
+.storeView-imgDiv-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storeView-div {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-left: 50px;
+}
+
+.storeView-imgDiv {
+  width: 20%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+.storeView-img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storeView-btn-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 125px;
+}
+
+.storeView-storeImg-btn {
+  width: 140px;
+  height: 50px;
+  border: none;
+  background-color: #518142;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 19px;
+  font-weight: 590;
+  padding: 5px;
+}
+
+.storeView-storeImg-btn:hover {
+  color: #518142;
+  background-color: #fff;
+  font-weight: 500;
+}
+
+.storeView-addr {
+  width: 100%;
+  margin-left: 45px;
+}
+
+.storeView-btn {
+  width: 130px;
+  height: 40px;
+  border: none;
+  background-color: #518142;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 19px;
+  font-weight: 590;
+  margin-left: 77px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storeView-btn:hover {
+  border: none;
+  color: #518142;
+  background-color: #fff;
+  font-weight: 500;
+}
+
+.store-regist-btn {
+  width: 300px;
+  height: 90px;
+  border: none;
+  background-color: #518142;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.store-regist-btn:hover {
+  border: none;
+  background-color: #fff;
+  color: #518142;
+}
+
+/* ownerstatistics.css */
 /* 헤드 */
 .dashboard-body {
   padding: 0 auto;
@@ -6,7 +148,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 80px;
+  padding: 100px;
   color: white;
 }
 .dashboard-head {
@@ -20,6 +162,8 @@
   left: 0;
   padding-bottom: 20px;
   max-width: 100%;
+  line-height: 100px;
+  margin-top: 25px;
 }
 
 .dashboard-head h1 {
@@ -60,11 +204,15 @@
 }
 .info-card {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-}
-.info-card h3 {
-  font-size: 1.2rem;
-  color: #bfbfbf;
-  padding: 10px;
+  background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
+  border-radius: 12px;
+  flex: 1;
+  text-align: left;
+  display: flex;
+  justify-content: space-between; /* 텍스트와 아이콘을 양 끝으로 배치 */
+  align-items: center; /* 수직 가운데 정렬 */
+  padding: 50px;
+  margin-top: 50px;
 }
 
 .info-card h2 {
@@ -146,50 +294,6 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* 하단 차트 테이블 */
-.charts-section {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  gap: 20px;
-}
-
-.chart-container {
-  flex: 1;
-  background: linear-gradient(50deg, #222623 20%, #0e110e, #13241747 80%);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-}
-.chart-empl-container {
-  flex: 1;
-  background: linear-gradient(50deg, #222623 20%, #0e110e, #13241747 80%);
-  padding: 50px;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-  width: 100%; /* 부모의 100% 크기로 설정 */
-  height: 300px; /* 차트 높이를 적절히 설정 */
-  overflow: visible; /* 잘리지 않도록 설정 */
-}
-.orders-overview ul {
-  list-style: none; /* 기본 리스트 스타일 제거 */
-  padding: 0;
-}
-
-.orders-overview li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px; /* 리스트 항목 간 간격 */
-}
-
-.order-image {
-  width: 6.1rem; /* 이미지 너비 */
-  height: 6.1rem; /* 이미지 높이 */
-  object-fit: cover; /* 이미지 비율 유지하며 자르기 */
-  margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
-  border-radius: 5px; /* 이미지의 모서리 둥글게 */
-}
 /* 하단 네비 */
 .owner-navi {
   position: fixed; /* 화면에 고정 */
@@ -338,4 +442,52 @@
 }
 .navigation ul li:nth-child(7).active ~ .indicator {
   transform: translateX(calc(70px * 6));
+}
+
+/* 추가 */
+.info-header-h3 {
+  font-size: 16px;
+  color: #bfbfbf;
+  padding: 10px;
+}
+
+.storeView-textarea {
+  box-sizing: border-box;
+  width: 75%;
+  height: 30%;
+  border-radius: 0%;
+  background: none;
+  color: #fff;
+  font-size: 20px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border: 1px solid #fff;
+  font-weight: 200;
+  resize: none; /* 크기 조절 불가 */
+}
+
+.storeView-modify-btn {
+  width: 300px;
+  height: 90px;
+  border: none;
+  background-color: #518142;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.storeView-modifyBtn-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 125px;
+}
+
+.storeView-modify-btn:hover {
+  color: #518142;
+  background-color: #fff;
+  font-weight: 900;
 }
