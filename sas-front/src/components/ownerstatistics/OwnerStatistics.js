@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ownerstatistics1.css";
+import "./ownerstatistics.css";
 import { Link } from "react-router-dom";
 import { Line, Bar } from "react-chartjs-2";
 import {
