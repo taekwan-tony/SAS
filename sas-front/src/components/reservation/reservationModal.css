@@ -1,0 +1,19 @@
+.reservation-modal-wrap.first {
+  display: flex;
+  align-items: center;
+  padding: 30px;
+}
+.reservation-modal-wrap.first .day-picker {
+  width: 50%;
+  display: flex;
+}
+.reservation-modal-wrap.first .day-picker > .rdp-root {
+  width: 100%;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-how-many
+  > span.title {
+  font: bold 1.2em LeeSeoyun;
+  color: var(--main1);
+}

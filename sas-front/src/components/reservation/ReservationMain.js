@@ -3,6 +3,8 @@ import Modal from "react-modal";
 import { useRecoilValue } from "recoil";
 import { isUserLoginState } from "../utils/RecoilData";
 import DatePicker from "../utils/DatePicker";
+import { format } from "date-fns";
+import "./reservationModal.css";
 const ReservationMain = () => {
   const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
   const goTOReserve = () => {
@@ -22,7 +24,7 @@ const ReservationMain = () => {
     },
     content: {
       width: "1000px",
-      height: "500px",
+      height: "max-content",
       zIndex: "150",
       position: "absolute",
       top: "50%",
@@ -32,10 +34,11 @@ const ReservationMain = () => {
       boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
       backgroundColor: "white",
       justifyContent: "center",
-      overflow: "auto",
+      overflow: "hidden",
     },
   };
   const [reservationPage, setReservationPage] = useState(1);
+
   return (
     <>
       <button onClick={goTOReserve} style={{ marginTop: "100px" }}>
@@ -61,10 +64,31 @@ const ReservationMain = () => {
 };
 
 const ReservationModalFirst = () => {
+  const dayNow = new Date();
+  const year = dayNow.getFullYear();
+  const month =
+    dayNow.getMonth() + 1 < 10
+      ? `0${dayNow.getMonth() + 1}`
+      : dayNow.getMonth() + 1;
+  const date =
+    dayNow.getDate() < 10 ? `0${dayNow.getDate()}` : dayNow.getDate();
+  const today = `${year}-${month}-${date}`;
+  const timeNow = format(dayNow, "hh:mm");
+  console.log(timeNow);
+  const [selected, setSelected] = useState(today);
   return (
-    <>
-      <DatePicker />
-    </>
+    <div className="reservation-modal-wrap first">
+      <DatePicker
+        selected={selected}
+        setSelected={setSelected}
+        dayNow={dayNow}
+      />
+      <div className="reservation-info-wrap">
+        <div className="reservation-how-many">
+          <span className="title">인원 수</span>
+        </div>
+      </div>
+    </div>
   );
 };
 
