@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.review.model.dao.ReviewDao;
 import kr.co.sas.review.model.dto.ReviewDTO;
@@ -13,13 +14,18 @@ public class ReviewService {
 	@Autowired
 	private ReviewDao reviewDao;
 	
-	// 모든 리뷰 가져오기 (관리자용)
-    public List<ReviewDTO> getAllReview() {
-        return reviewDao.getAllReview();
+	
+    public List<ReviewDTO> getAllReview(String storeId) {
+    	if (storeId != null) {
+    		return reviewDao.getAllReview(storeId);
+        } else {
+        	return null;    
+        }
     }
 
-    // 리뷰 번호로 특정 리뷰 가져오기 (관리자용)
-    public ReviewDTO getReviewNo(int reviewNo) {
-        return reviewDao.getReviewNo(reviewNo);
-    }
+
+    @Transactional
+	public int insertReviewAnswer(ReviewDTO review) {
+		return reviewDao.insertReviewAnswer(review);
+	}
 }

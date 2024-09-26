@@ -52,37 +52,100 @@
   z-index: -1; /* 이미지가 콘텐츠 뒤에 있도록 설정 */
 }
 
-/* 하단테이블 */
+/* 댓글 */
+/* 댓글과 답글 폼을 나란히 배치 */
+.comments-container {
+  margin-top: 5%;
+}
+.consum-comment {
+  position: relative;
+  left: 15%;
+  padding: 20px;
+  background: linear-gradient(120deg, #222623 10%, #0e110e 50%, #13241747 99%);
+  margin-bottom: 20px;
+  border-radius: 20px;
+  width: 40%;
+}
 
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #222623 10%, #0e1510 70%, #0f170f47 99%);
+.review-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.reply-btn {
+  margin-top: 10px;
+  padding: 10px;
+  background: linear-gradient(
+    290deg,
+    #104622 10%,
+    #29482a47 80%,
+    #29482a47 99%
+  );
   color: white;
-  text-align: left;
-  border-radius: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.styled-table th,
-.styled-table td {
-  padding: 12px 15px;
+.reply-btn:hover {
+  background: linear-gradient(290deg, #3b5f47 10%, #29482a47 80%);
 }
 
-.styled-table thead tr {
-  border-bottom: 1px solid #2d4d3a;
+/* 답글 작성 폼 스타일 */
+.reply-form-container {
+  margin-top: 10px;
+  padding: 20px;
+  background: linear-gradient(120deg, #222623 10%, #0e110e 50%, #13241747 99%);
+
+  border-radius: 10px;
 }
 
-.styled-table tbody tr {
-  border-bottom: 1px solid #2d4d3a;
+.reply-form {
+  display: flex;
+  flex-direction: column;
 }
 
-.styled-table tbody tr:last-of-type {
-  border-bottom: none;
+.reply-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background: linear-gradient(120deg, #222623 10%, #0e110e 50%, #13241747 99%);
 }
 
+.reply-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.submit-reply-btn,
+.cancel-reply-btn {
+  padding: 10px;
+  background: linear-gradient(
+    290deg,
+    #104622 10%,
+    #29482a47 80%,
+    #29482a47 99%
+  );
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.cancel-reply-btn {
+  background: linear-gradient(290deg, #291a1a 10%, #f7080847 80%);
+}
+
+.submit-reply-btn:hover {
+  background: linear-gradient(290deg, #3b5f47 10%, #29482a47 80%);
+}
+
+.cancel-reply-btn:hover {
+  background-color: #999;
+}
 /* 하단 네비 */
 .owner-navi {
   position: fixed; /* 화면에 고정 */

@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
     "@looop/quill-image-resize-module-react": "^3.1.5",
     "@mui/icons-material": "^6.1.1",
     "@mui/material": "^6.1.1",

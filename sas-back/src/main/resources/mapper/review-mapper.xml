@@ -5,11 +5,11 @@
 
 	<!-- 모든 리뷰 조회 -->
     <select id="getAllReview" resultType="review">
-        SELECT * FROM review
+        select * from review where store_no = (select store_no from store where so_email=#{storeId})
     </select>
+    <update id="insertReviewAnswer">
+    	update review set review_answer=#{reviewAnswer}, review_answer_date=sysdate where review_no = #{reviewNo}
+    </update>
+ 
 
-    <!-- 리뷰 번호로 특정 리뷰 조회 -->
-    <select id="getReviewNo" parameterType="int" resultType="review">
-        SELECT * FROM review WHERE review_no = #{reviewNo}
-    </select>
 </mapper>
