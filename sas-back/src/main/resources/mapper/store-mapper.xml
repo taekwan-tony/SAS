@@ -88,6 +88,12 @@
 		select * from store where so_email=#{soEmail}
 	</select>
 	
+	
+	<update id="changePw">
+		update store set so_pw=#{soPw} where so_email=#{soEmail}
+	</update>
+
+	
 	<select id="selectAllPayStore" resultType="store">
 		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
@@ -99,5 +105,9 @@
 		</selectKey>
 		 -->
 		select store_no,store_name,store_time,store_introduce,store_addr from store
+	</select>
+	
+	<select id="checkPw" resultType="store">
+		select * from store where so_email=#{soEmail} and so_pw=#{soPw}
 	</select>
 </mapper>

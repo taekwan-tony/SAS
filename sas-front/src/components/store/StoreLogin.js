@@ -1,26 +1,59 @@
 import React, { useRef, useState } from "react";
 import "./storeLogin.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import StoreRegist from "./StoreRegist";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
+import StoreChangePw from "./StoreChangePw";
+import StoreCheckPw from "./StoreCheckPw";
 
 const StoreLogin = ({ isModalOpen, closeModal }) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
+  const params = useParams();
+  const storeNo = params.storeNo;
   const [store, setStore] = useState({
     soName: "",
     businessNumber: "",
     soPhone: "",
     soEmail: "",
   });
+
   const [storeLogin, setStoreLogin] = useState({
     soEmail: "",
     soPw: "",
+    storeNo: storeNo,
   });
+
+  //이메일 중복 확인
+  const [isSoEmailValid, setIsSoEmailValid] = useState(false);
+
+  {
+    /* 비밀번호 찾기 / 변경 창 Modal */
+  }
+
+  // 모달의 열림/닫힘 상태를 관리하는 useState
+  const [isPwModalOpen, setIsPwModalOpen] = useState(false);
+
+  // 모달 열기 함수
+  const openPwModal = () => {
+    setIsPwModalOpen(true);
+  };
+
+  // 모달 닫기 함수
+  const closePwModal = () => {
+    setIsPwModalOpen(false);
+  };
+
+  // 모달 외부 클릭 시 모달 닫기
+  const pwHandleOutsideClick = (event) => {
+    if (event.target.className === "storeModal") {
+      closePwModal();
+    }
+  };
 
   {
     /* 로그인 */
@@ -40,10 +73,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       axios
         .post(`${backServer}/store/storeLogin`, storeLogin)
         .then((res) => {
-          console.log("서버 응답:", res.data); // 전체 응답
-          console.log("result 값:", res.data.result); // result 값만 확인
-          console.log("type 값:", res.data.storeType); // type 값만 확인
-
           const { result, storeType, loginSoEmail, accessToken, refreshToken } =
             res.data;
 
@@ -149,10 +178,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   };
 
   const storeRegistEmailCheck = () => {
-    const soEmailElement = document.getElementById("soEmail");
+    const emailCheck = store.soEmail.trim();
 
-    const emailCheck = soEmailElement.value;
-    if (emailCheck) {
+    if (!emailCheck) {
       Swal.fire({
         title: "이메일을 입력해주세요.",
         icon: "warning",
@@ -160,22 +188,37 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       });
       return false;
     }
+
+    console.log("이메일 : ", emailCheck);
+
     axios
-      .get(`${backServer}/store/soEmail/${store.soEmail}/checkEmail`)
+      .get(`${backServer}/store/soEmail/${emailCheck}/checkEmail`)
       .then((res) => {
-        console.log(res);
+        console.log("응답 : ", res);
         if (res.data) {
           setEmailMsg("사용 가능한 이메일입니다.");
+          setIsSoEmailValid(true); // 이메일이 유효하면 true
         } else {
           setEmailMsg("이미 가입한 이메일입니다.");
+          setIsSoEmailValid(false); // 이메일이 중복되면 false
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log("에러 : ", err);
       });
   };
 
   const storePartnership = () => {
+    // 이메일이 유효하지 않으면 함수 실행을 중단
+    if (!isSoEmailValid) {
+      Swal.fire({
+        title: "이미 가입한 이메일입니다.",
+        icon: "error",
+        text: "이메일을 변경해주세요.",
+        confirmButtonColor: "#5e9960",
+      });
+      return; // 이메일이 중복일 경우 함수 실행 중단
+    }
     axios
       .post(`${backServer}/store`, store)
       .then((res) => {
@@ -183,10 +226,11 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
           Swal.fire({
             title: "제휴 신청 완료",
             icon: "success",
-            text: "관리자 승인까지 약 1~3일 소요됩니다.",
+            text: "요청 승인까지 약 1~3일 소요됩니다.",
             confirmButtonColor: "#5e9960",
           }).then(() => {
-            navigate("/storeMain");
+            closeModal();
+            navigate("/");
           });
         }
       })
@@ -205,6 +249,12 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   if (!isModalOpen) {
     return null; // 모달이 열리지 않았을 경우 null을 반환하여 아무것도 렌더링하지 않음
   }
+
+  // 비밀번호 변경
+  const storeChangePw = () => {
+    console.log("비밀번호 변경 버튼");
+    navigate("/storeChangePw");
+  };
 
   return (
     <>
@@ -305,9 +355,12 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                         {/*비밀번호 찾기, 비밀번호 변경 */}
                         <>
                           <div className="storeLogin-find">
-                            <a className="storeLogin-a">
-                              비밀번호 찾기 / 비밀번호 변경
-                            </a>
+                            <button
+                              className="storeLogin-find-btn"
+                              onClick={openPwModal}
+                            >
+                              비밀번호 변경
+                            </button>
                           </div>
                         </>
                       </div>
@@ -336,7 +389,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                               <div className="storeRegist-div">
                                 <input
                                   className="storeLogin-storeRegist-inputBox"
-                                  placeholder="번호만 입력해주세요."
+                                  placeholder="-을 제외한 번호만 입력해주세요."
                                   type="text"
                                   id="businessNumber"
                                   name="businessNumber"
@@ -359,7 +412,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   backgroundRepeat: "no-repeat",
                                   backgroundPosition: "left center",
                                   marginLeft: "10px",
-                                  paddingLeft: bnMsg ? "10px" : "0px", // 메시지가 있을 때만 padding
+                                  paddingLeft: bnMsg ? "27px" : "0px", // 메시지가 있을 때만 padding
                                 }}
                               >
                                 {bnMsg}
@@ -372,7 +425,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                 htmlFor="soName"
                                 className="storeLogin-storeRegist-label"
                               >
-                                이름
+                                점주 이름
                               </label>
                             </th>
                             <td>
@@ -440,13 +493,22 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                               <p
                                 className="storeLogin-msg"
                                 style={{
-                                  backgroundImage: emailMsg
-                                    ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)`
-                                    : "none", // 이미지가 없을 때는 none
+                                  backgroundImage:
+                                    emailMsg === "사용 가능한 이메일입니다."
+                                      ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)` // 성공 아이콘
+                                      : emailMsg === "이미 가입한 이메일입니다."
+                                      ? `url(${process.env.PUBLIC_URL}/image/error.svg)` // 실패 아이콘
+                                      : "none", // 메시지가 없을 때는 아이콘 없음
                                   backgroundRepeat: "no-repeat",
                                   backgroundPosition: "left center",
                                   marginLeft: "10px",
                                   paddingLeft: emailMsg ? "27px" : "0px", // 메시지가 있을 때만 padding
+                                  color:
+                                    emailMsg === "사용 가능한 이메일입니다."
+                                      ? "#5e9960" // 성공 시 글씨 색 초록색
+                                      : emailMsg === "이미 가입한 이메일입니다."
+                                      ? "#D16D6A" // 실패 시 글씨 색 빨간색
+                                      : "black", // 기본 글씨 색
                                 }}
                               >
                                 {emailMsg}
@@ -460,6 +522,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                           type="submit"
                           className="storeLogin-partnership-btn"
                           onClick={storePartnership}
+                          disabled={!isSoEmailValid} // 이메일이 중복이면 버튼 비활성화
                         >
                           제휴 신청
                         </button>
@@ -471,6 +534,13 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
             )}
           </div>
         </div>
+        {/*storeChangePw 컴포넌트 렌더링 */}
+        {isPwModalOpen && (
+          <StoreCheckPw
+            isPwModalOpen={isPwModalOpen}
+            closePwModal={closePwModal}
+          />
+        )}
       </div>
     </>
   );
