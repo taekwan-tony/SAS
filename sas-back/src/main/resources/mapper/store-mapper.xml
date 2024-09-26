@@ -102,4 +102,50 @@
 	<select id="checkPw" resultType="store">
 		select * from store where so_email=#{soEmail} and so_pw=#{soPw}
 	</select>
+	
+	
+	<update id="insertStoreFrm">
+		update store set
+			store_name=#{storeName},
+			store_phone=#{storePhone},
+			store_introduce=#{storeIntroduce},
+			store_addr=#{storeAddr},
+			store_re_start=#{storeReStart},
+			store_re_end=#{storeReEnd},
+			break_time_start=#{breakTimeStart},
+			break_time_end=#{breakTimeEnd},
+			deposit=#{deposit}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<insert id="insertStoreFile">
+		insert into store_image_file values(si_file_no.nextval, #{storeNo}, #{siFileName}, #{siFilepath})
+	</insert>
+	
+
+	<delete id="deleteStoreMood">
+	    delete from store_mood where store_no=#{storeNo}
+	</delete>
+	
+
+	<insert id="insertStoreMood">
+	    insert into store_mood values(store_mood_seq.nextval, #{storeNo}, #{moodNo})
+	</insert>
+	
+	
+
+	<delete id="deleteStoreAmenities">
+	    delete from store_amenities where store_no=#{storeNo}
+	</delete>
+	
+
+	<insert id="insertStoreAmenities">
+	    insert into store_amenities values(store_amenities_seq.nextval, #{storeNo}, #{amenitiesNo})
+	</insert>
+	
+	
+	<insert id="insertSeat">
+		insert into seat values(seat_seq.nextval, #{seatCapacity}, #{seatAmount}, #{storeNo})
+	</insert>
 </mapper>

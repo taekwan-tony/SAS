@@ -19,11 +19,11 @@ public class StoreDTO {
 	private String soPw;
 	private String businessNumber;
 	private String storeName;
-	private Date storeReStart;
-	private Date storeReEnd;
+	private String storeReStart;
+	private String storeReEnd;
 	private String storeTime;
-	private Date breakTimeStart;
-	private Date breakTimeEnd;
+	private String breakTimeStart;
+	private String breakTimeEnd;
 	private String storePhone;
 	private int OneMaxPrice;
 	private String storeAddr;
