@@ -37,9 +37,13 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
             text: "로그인 페이지로 이동합니다.",
             icon: "success",
             confirmButtonColor: "#5e9960",
-          }).then(() => {
-            navigate("/storeLogin");
-          });
+          })
+            .then(() => {
+              navigate("/storeLogin");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       });
     }
@@ -319,6 +323,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                               <button
                                 type="submit"
                                 className="storechangePw-btn"
+                                onClick={changeStorePw}
                               >
                                 비밀번호 변경
                               </button>
