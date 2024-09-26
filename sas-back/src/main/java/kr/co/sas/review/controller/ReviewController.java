@@ -31,5 +31,12 @@ public class ReviewController {
     public int insertReviewAnswer(@RequestBody ReviewDTO review) {
     	return reviewService.insertReviewAnswer(review);
     }
+
+    // 리뷰 번호로 특정 리뷰 가져오기 (관리자용)
+    @GetMapping("/{reviewNo}")
+    public ReviewDTO getReviewNo(@PathVariable int reviewNo) {
+        return reviewService.getReviewNo(reviewNo);
+    }
+    
  
 }
