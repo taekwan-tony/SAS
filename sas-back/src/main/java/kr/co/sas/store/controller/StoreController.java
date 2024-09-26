@@ -63,17 +63,13 @@ public class StoreController {
 	
 	@Operation(summary = "매장 로그인 갱신", description = "토큰으로 로그인 갱신")
 	@PostMapping(value = "/storeRefresh")
-	public ResponseEntity<Map> storeRefresh(@RequestHeader("Authorization") String token) {
+	public ResponseEntity<LoginStoreDTO> storeRefresh(@RequestHeader("Authorization") String token) {
 		LoginStoreDTO loginStore = storeService.storeRefresh(token);
 		if(loginStore != null) {
-			Map map = new HashMap<String, Object>();
-			map.put("loginSoEmail", loginStore.getSoEmail());
-			map.put("storeType", loginStore.getType());
-			map.put("accessToken", loginStore.getAccessToken());
-			map.put("refreshToken", loginStore.getRefreshToken());
-			return ResponseEntity.ok(map);
-		}//if
-		return ResponseEntity.status(404).build();
+			return ResponseEntity.ok(loginStore);
+		}else {
+			return ResponseEntity.status(404).build();
+		}//else
 	}//storeRefresh
 	
 	
@@ -85,11 +81,15 @@ public class StoreController {
 	}//changePw
 	
 	
-	@Operation(summary = "매장 비밀번호 변경 회원 조회", description = "점주 이메일, 기존 비밀번호 일치하는지 확인")
+	@Operation(summary = "매장 비밀번호 변경 시 회원 조회", description = "점주 이메일, 기존 비밀번호 일치하는지 확인")
 	@PostMapping(value = "/checkPw")
-	public ResponseEntity<Boolean> checkPw(@RequestBody StoreDTO store) {
-		boolean result = storeService.checkPw(store);
-		return ResponseEntity.ok(result);
+	public ResponseEntity<LoginStoreDTO> checkPw(@RequestBody StoreDTO store) {
+		LoginStoreDTO result = storeService.checkPw(store);
+		if(result != null) {
+			return ResponseEntity.ok(result);
+		}else {
+			return ResponseEntity.status(404).build();
+		}//else
 	}//checkPw
 	
 	

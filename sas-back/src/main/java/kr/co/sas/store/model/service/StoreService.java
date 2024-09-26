@@ -103,9 +103,15 @@ public class StoreService {
 	}
 
 
-	public boolean checkPw(StoreDTO store) {
-		StoreDTO checkPw = storeDao.checkPw(store);
-		return (checkPw==null);
+	public LoginStoreDTO checkPw(StoreDTO store) {
+		StoreDTO checkPw = storeDao.searchStoreOwner(store.getSoEmail());
+		if(checkPw != null && encoder.matches(store.getSoPw(), checkPw.getSoPw())) {
+			String accessToken = jwtUtils.storeCreateAccessToken(checkPw.getSoEmail(), checkPw.getType());
+			String refreshToken = jwtUtils.storeCreateRefreshToken(checkPw.getSoEmail(), checkPw.getType());
+			LoginStoreDTO loginStore = new LoginStoreDTO(accessToken, refreshToken, checkPw.getSoEmail(), checkPw.getType(), store.getStoreNo());
+			return loginStore;
+		}//if
+		return null;
 	}//checkPw
 
 
