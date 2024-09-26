@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import ManageReserved from "./ManageReserved";
 import ManageReview from "./ManageReview";
@@ -7,8 +7,48 @@ import StoreRegist from "./StoreRegist";
 import StorePartnership from "./StorePartnership";
 import StoreMenuView from "./StoreMenuView";
 import StoreViewFrm from "./StoreViewFrm";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
 
 const StoreCheckMain = () => {
+  // 로그인 지속
+
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
+  const [storeType, setStoreType] = useRecoilState(storeTypeState);
+
+  useEffect(() => {
+    storeRefreshLogin();
+    window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
+  }, []);
+
+  const storeRefreshLogin = () => {
+    const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
+    if (storeRefreshToken != null) {
+      axios.defaults.headers.common["Authorization"] = storeRefreshToken;
+      axios
+        .post(`${backServer}/store/storeRefresh`)
+        .then((res) => {
+          console.log(res);
+          setLoginSoEmail(res.data.soEmail);
+          setStoreType(res.data.storeType);
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
+          window.localStorage.setItem(
+            "storeRefreshToken",
+            res.data.refreshToken
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoginSoEmail("");
+          setStoreType(2);
+          delete axios.defaults.headers.common["Authorization"];
+          window.localStorage.removeItem("storeRefreshToken");
+        });
+    }
+  };
+
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
 
   const handleClick = (index) => {
