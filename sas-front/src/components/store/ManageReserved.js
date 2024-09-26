@@ -5,12 +5,13 @@ import { FaHourglassHalf } from "react-icons/fa";
 import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
 import axios from "axios";
+import Recal from "./Recal";
 
 function ManageReserved() {
   const [inputValue, setInputValue] = useState(0); // 입력 값 관리
   const [totalValue, setTotalValue] = useState(0); // 누적 값 관리
   const [warningVisible, setWarningVisible] = useState(false); // 경고 메시지 상태
-  const maxValue = 100; // 최대 값 설정
+  const maxValue = 20; // 최대 값 설정
 
   const [reservations, setReservations] = useState([]);
   const [storeNo, setStoreNo] = useState(1);
@@ -139,8 +140,8 @@ function ManageReserved() {
         {/* 중단 섹션 */}
         <div className="middle-section">
           <div className="calendar-placeholder">
-            <h2>달력 API 연결 예정</h2>
-            {/* 여기에 API로 가져온 달력 데이터를 넣을 공간 */}
+            <h2>예약 달력</h2>
+            <Recal /> {/* Recal 컴포넌트 불러오기 */}
           </div>
 
           <div className="reservation-section">

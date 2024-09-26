@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.sas.review.model.dto.ReviewDTO;
@@ -23,9 +25,14 @@ public class ReviewController {
 	@Autowired
 	private ReviewService reviewService;
 	// 모든 리뷰 가져오기
-    @GetMapping(value="/allList")
-    public List<ReviewDTO> getAllReview() {
-        return reviewService.getAllReview();
+    @GetMapping(value="/allList/{storeId}")
+    public List<ReviewDTO> getAllReview(@PathVariable String storeId) {
+    	System.out.println(storeId);
+        return reviewService.getAllReview(storeId);
+    }
+    @PatchMapping
+    public int insertReviewAnswer(@RequestBody ReviewDTO review) {
+    	return reviewService.insertReviewAnswer(review);
     }
 
     // 리뷰 번호로 특정 리뷰 가져오기 (관리자용)

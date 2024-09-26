@@ -5,9 +5,14 @@
 
 	<!-- 모든 리뷰 조회 -->
     <select id="getAllReview" resultType="review">
-        SELECT * FROM review
+        select * from review where store_no = (select store_no from store where so_email=#{storeId})
     </select>
 	<insert id="insertReview">
 		insert into review values(review_seq.nextval,#{reviewContent},sysdate,#{reviewScore},#{userNickname},#{storeNo},null,null,null)	
 	</insert>
+    <update id="insertReviewAnswer">
+    	update review set review_answer=#{reviewAnswer}, review_answer_date=sysdate where review_no = #{reviewNo}
+    </update>
+ 
+
 </mapper>

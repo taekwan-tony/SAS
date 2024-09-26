@@ -17,9 +17,9 @@
 			        notice_title,
 			        notice_enroll_date,
 			        notice_type
-			    from notice 
+			    from notice where so_email is null 
 				<if test="noticeType != 0">
-		 		where notice_type = #{noticeType}
+		 		and notice_type = #{noticeType}
 		 		</if>	    
 			     order by notice_no desc)b)
 			where rnum between #{pi.start} and #{pi.end}

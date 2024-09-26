@@ -52,3 +52,6 @@ npm i react-modal
 
 조수진 2024-09-24 19:06
 npm install react-day-picker date-fns
+
+양창모 2024-09-26 09:51
+npm install @fullcalendar/react @fullcalendar/daygrid

@@ -47,7 +47,7 @@ const StoreRegist = () => {
 
     // Fetch API를 사용하여 POST 요청 보내기
     fetch(
-      "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=izDvzK%2FsSEz9bDSkKZ2ITpUtPOjeYOTTFEsMUh%2BOKm%2B1SNrCWoYHCLtDCJ1F184rdJo3an8rhug39mJE4F59Xw%3D%3D",
+      "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=izDvzK%2 FsSEz9bDSkKZ2ITpUtPOjeYOTTFEsMUh%2BOKm%2B1SNrCWoYHCLtDCJ1F184rdJo3an8rhug39mJE4F59Xw%3D%3D",
       {
         method: "POST",
         headers: {
@@ -162,7 +162,7 @@ const StoreRegist = () => {
                 <div className="storeRegist-div">
                   <input
                     className="storeRegist-inputBox"
-                    placeholder="번호만 입력해주세요."
+                    placeholder="-을 제외한 번호만 입력해주세요."
                     type="text"
                     id="businessNumber"
                     name="businessNumber"
@@ -185,7 +185,7 @@ const StoreRegist = () => {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "left center",
                     marginLeft: "10px",
-                    paddingLeft: bnMsg ? "10px" : "0px", // 메시지가 있을 때만 padding
+                    paddingLeft: bnMsg ? "15px" : "0px", // 메시지가 있을 때만 padding
                   }}
                 >
                   {bnMsg}
@@ -195,7 +195,7 @@ const StoreRegist = () => {
             <tr className="storeRegist-tr">
               <th className="storeRegist-th">
                 <label htmlFor="soName" className="storeRegist-label">
-                  이름
+                  점주 이름
                 </label>
               </th>
               <td>
