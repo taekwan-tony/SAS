@@ -115,8 +115,8 @@ public class StoreService {
 		return list;
 	}
 
-	public StoreDTO getStoreinfo(int storeNo) {
-		StoreDTO getStoreinfo = storeDao.getStoreinfo(storeNo);
+	public StoreDTO getStoreinfo(int storeNo, int userNo) {
+		StoreDTO getStoreinfo = storeDao.getStoreinfo(storeNo, userNo);
 		return getStoreinfo;
 			
 		}

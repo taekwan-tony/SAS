@@ -39,4 +39,5 @@ public class StoreDTO {
 	private int servicePrice;
 	private String storeRequestDate;
 	private Date storeEnrollDate;
+	private boolean isFavorite;
 }

@@ -79,9 +79,11 @@ public class StoreController {
 		return ResponseEntity.ok(storeList);
 	}
 	
-	@GetMapping(value="/storeNo/{storeNo}")
-	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo) {
-		StoreDTO store = storeService.getStoreinfo(storeNo);
+	@GetMapping(value="/storeNo/{storeNo}/userNo/{userNo}")
+	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo, @PathVariable int userNo) {
+//		System.out.println(userNo);
+		StoreDTO store = storeService.getStoreinfo(storeNo, userNo);
+		System.out.println(store);
 		if(store !=null) {
 			return ResponseEntity.ok(store);
 		}

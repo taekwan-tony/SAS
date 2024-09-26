@@ -6,7 +6,7 @@ import ReactQuill from "react-quill";
 import { PiArrowFatLeft, PiStarFill, PiStarLight } from "react-icons/pi";
 import axios from "axios";
 import KaKao from "../utils/Kakao";
-import { loginUserNicknameState } from "../utils/RecoilData";
+import { loginUserNicknameState, loginUserNoState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 const { kakao } = window;
 
@@ -15,15 +15,39 @@ const MenuView = () => {
   const storeNo = params.storeNo;
   const [store, setStore] = useState({ storeNo: storeNo });
   const backServer = process.env.REACT_APP_BACK_SERVER;
-
+  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   useEffect(() => {
+    console.log("userNo:", loginUserNo);
     axios
-      .get(`${backServer}/store/storeNo/${store.storeNo}`)
+      .get(`${backServer}/store/storeNo/${store.storeNo}/userNo/${loginUserNo}`)
       .then((res) => {
+        // console.log(res.data);
         setStore(res.data);
       })
       .catch((err) => {});
-  }, []);
+  }, [loginUserNo]);
+  const changeFavorite = () => {
+    if (loginUserNo !== 0) {
+      if (store.favorite) {
+        axios
+          .delete(
+            `${backServer}/favorite/storeNo/${store.storeNo}/userNo/${loginUserNo}`
+          )
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        axios
+          .post(`${backServer}/favorite/userNo/${loginUserNo}`)
+          .then((res) => {
+            console.log(res);
+          });
+      }
+    }
+  };
   return (
     <div className="menuview-bigwrap">
       <div className="menuview-wrap">
@@ -80,7 +104,9 @@ const MenuView = () => {
         </Routes>
       }
       <div className="reservation-button">
-        <span className="material-icons page-item">bookmark_border</span>
+        <span className="material-icons page-item">
+          {store.favorite ? "bookmark" : "bookmark_border"}
+        </span>
         <span className="material-icons page-item">share</span>
         <button className="reservation-btn">예약하기</button>
       </div>

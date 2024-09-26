@@ -67,6 +67,9 @@
 	</select>
 	<select id="getStoreinfo" resultType="store">
 		select store_no, store_name, store_addr, store_introduce, store_time
+		<if test="userNo!=0">
+		, (select count(*) from favorite join favorite_folder using(favorite_folder_no) where store_no=#{storeNo} and user_no = #{userNo}) is_favorite
+		</if>
 		from store 
 		where store_no = #{storeNo}
 	</select>
