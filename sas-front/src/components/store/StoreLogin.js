@@ -69,10 +69,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       axios
         .post(`${backServer}/store/storeLogin`, storeLogin)
         .then((res) => {
-          console.log("서버 응답:", res.data); // 전체 응답
-          console.log("result 값:", res.data.result); // result 값만 확인
-          console.log("type 값:", res.data.storeType); // type 값만 확인
-
           const { result, storeType, loginSoEmail, accessToken, refreshToken } =
             res.data;
 
