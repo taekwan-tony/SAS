@@ -73,16 +73,30 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       axios
         .post(`${backServer}/store/storeLogin`, storeLogin)
         .then((res) => {
-          const { result, storeType, loginSoEmail, accessToken, refreshToken } =
-            res.data;
+          const {
+            result,
+            storeType,
+            loginSoEmail,
+            storeNo,
+            accessToken,
+            refreshToken,
+          } = res.data;
 
           if (result === 0) {
             // 로그인 성공
             setLoginSoEmail(loginSoEmail);
             setStoreType(storeType);
 
+            console.log("매장번호 : ", storeNo);
+
             axios.defaults.headers.common["Authorization"] = accessToken;
             window.localStorage.setItem("storeRefreshToken", refreshToken);
+
+            // storeLogin 객체에 storeNo 값을 업데이트
+            setStoreLogin((prev) => ({
+              ...prev,
+              storeNo: storeNo, //서버에서 받아온거
+            }));
 
             if (storeType === 1) {
               //판매자 로그인

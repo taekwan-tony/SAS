@@ -3,92 +3,46 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-const StoreAmenitiesCheckBoxMUI = () => {
+const StoreAmenitiesCheckBoxMUI = ({ onAmenitiesChange }) => {
+  const [selectedAmenities, setSelectedAmenities] = React.useState([]);
+
+  const handleAmenitiesChange = (event) => {
+    const { value, checked } = event.target;
+    setSelectedAmenities((prev) =>
+      checked ? [...prev, value] : prev.filter((amenity) => amenity !== value)
+    );
+    onAmenitiesChange(event); // 부모 컴포넌트에 상태 전달
+  };
+
   return (
     <FormGroup row>
-      <FormControlLabel
-        control={
-          <Checkbox
-            sx={{
-              color: "#ccc", // 체크박스 기본 색상
-              "&.Mui-checked": {
-                color: "#518142 !important", // 체크박스 선택 시 색상 (우선순위 높임)
-              },
-            }}
-          />
-        }
-        label="주차 여부"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "#fff", // 라벨 글씨 색상
-            fontSize: "20px", // 라벨 폰트 크기
-            fontFamily: "ns-r",
-          },
-          marginRight: "100px",
-        }}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            sx={{
-              color: "#ccc",
-              "&.Mui-checked": {
-                color: "#518142 !important",
-              },
-            }}
-          />
-        }
-        label="키즈존"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "#fff",
-            fontSize: "20px",
-            fontFamily: "ns-r",
-          },
-          marginRight: "100px",
-        }}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            sx={{
-              color: "#ccc",
-              "&.Mui-checked": {
-                color: "#518142 !important",
-              },
-            }}
-          />
-        }
-        label="반려동물 동반"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "#fff",
-            fontSize: "20px",
-            fontFamily: "ns-r",
-          },
-          marginRight: "100px",
-        }}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            sx={{
-              color: "#ccc",
-              "&.Mui-checked": {
-                color: "#518142 !important",
-              },
-            }}
-          />
-        }
-        label="단체석"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "#fff",
-            fontSize: "20px",
-            fontFamily: "ns-r",
-          },
-        }}
-      />
+      {["주차 여부", "키즈존", "반려동물 동반", "단체석"].map((amenity) => (
+        <FormControlLabel
+          key={amenity}
+          control={
+            <Checkbox
+              value={amenity}
+              checked={selectedAmenities.includes(amenity)}
+              onChange={handleAmenitiesChange}
+              sx={{
+                color: "#ccc",
+                "&.Mui-checked": {
+                  color: "#518142 !important",
+                },
+              }}
+            />
+          }
+          label={amenity}
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              color: "#fff",
+              fontSize: "20px",
+              fontFamily: "ns-r",
+            },
+            marginRight: "100px",
+          }}
+        />
+      ))}
     </FormGroup>
   );
 };

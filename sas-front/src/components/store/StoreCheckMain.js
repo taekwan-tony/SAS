@@ -30,9 +30,10 @@ const StoreCheckMain = () => {
       axios
         .post(`${backServer}/store/storeRefresh`)
         .then((res) => {
-          console.log(res);
+          console.log("로그인 유지 :", res);
           setLoginSoEmail(res.data.soEmail);
           setStoreType(res.data.storeType);
+          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "storeRefreshToken",
@@ -67,7 +68,7 @@ const StoreCheckMain = () => {
     {
       text: "매장등록",
       icon: "fas fa-id-card",
-      to: "/storecheck/StorePartnership",
+      to: "/storecheck/StoreViewFrm",
     },
     {
       text: "메뉴관리",
@@ -94,7 +95,7 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
-        <Route path="storeView" element={<StoreViewFrm />} />
+        <Route path="storeViewFrm" element={<StoreViewFrm />} />
         <Route path="managereserved" element={<ManageReserved />} />
         <Route path="ownerstatistics" element={<Ownerstatistics />} />
         <Route path="managereview" element={<ManageReview />} />

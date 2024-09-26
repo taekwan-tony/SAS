@@ -34,7 +34,7 @@ function StoreMain() {
                     icon="fas fa-id-card"
                     title="매장등록"
                     className="color"
-                    to="/storecheck/StorePartnership"
+                    to="/storecheck/StoreViewFrm"
                   />
                   <HexagonItem
                     icon="fas fa-utensils"

@@ -1,5 +1,6 @@
 package kr.co.sas.store.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.review.model.dao.ReviewDao;
 import kr.co.sas.review.model.dto.ReviewDTO;
+import kr.co.sas.seat.model.dto.SeatDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
+import kr.co.sas.store.model.dto.StoreFileDTO;
 import kr.co.sas.util.JwtUtils;
 
 @Service
@@ -62,8 +65,9 @@ public class StoreService {
 	            loginStore.setSoPw(null); // 비밀번호는 null로 반환
 	            map.put("loginSoEmail", loginStore.getSoEmail());
 	            map.put("storeType", loginStore.getType());
-	            map.put("accessToken", jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType()));
-	            map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType()));
+	            map.put("storeNo", loginStore.getStoreNo()); // storeNo 추가
+	            map.put("accessToken", jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo()));
+	            map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo()));
 	        } else {
 	        	// 비밀번호 불일치
 	            map.put("result", 1); // 로그인 실패 상태
@@ -82,8 +86,9 @@ public class StoreService {
 	public LoginStoreDTO storeRefresh(String token) {
 		try {
 			LoginStoreDTO loginStore = jwtUtils.storeCheckToken(token);
-			String accessToken = jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType());
-			String refreshToken = jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType());
+			System.out.println("갱신된 storeNo: " + loginStore.getStoreNo()); // storeNo 값 로그로 확인
+			String accessToken = jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo());
+			String refreshToken = jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo());
 			loginStore.setAccessToken(accessToken);
 			loginStore.setRefreshToken(refreshToken);
 			return loginStore;
@@ -133,13 +138,29 @@ public class StoreService {
 	public LoginStoreDTO checkPw(StoreDTO store) {
 		StoreDTO checkPw = storeDao.searchStoreOwner(store.getSoEmail());
 		if(checkPw != null && encoder.matches(store.getSoPw(), checkPw.getSoPw())) {
-			String accessToken = jwtUtils.storeCreateAccessToken(checkPw.getSoEmail(), checkPw.getType());
-			String refreshToken = jwtUtils.storeCreateRefreshToken(checkPw.getSoEmail(), checkPw.getType());
+			String accessToken = jwtUtils.storeCreateAccessToken(checkPw.getSoEmail(), checkPw.getType(), checkPw.getStoreNo());
+			String refreshToken = jwtUtils.storeCreateRefreshToken(checkPw.getSoEmail(), checkPw.getType(), checkPw.getStoreNo());
 			LoginStoreDTO loginStore = new LoginStoreDTO(accessToken, refreshToken, checkPw.getSoEmail(), checkPw.getType(), store.getStoreNo());
 			return loginStore;
 		}//if
 		return null;
 	}//checkPw
+
+
+	@Transactional
+	public int insertStoreFrm(StoreDTO store) {
+		//매장 정보
+		int result = storeDao.insertStoreFrm(store);
+		return result;
+		
+	}//insertStoreFrm
+
+
+	@Transactional
+	public int insertSeat(SeatDTO seat) {
+		int result = storeDao.insertSeat(seat);
+		return result;
+	}//insertSeat
 
 
 }

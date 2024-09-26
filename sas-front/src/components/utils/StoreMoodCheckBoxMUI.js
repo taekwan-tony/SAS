@@ -3,92 +3,46 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-const StoreMoodCheckBoxMUI = () => {
+const StoreMoodCheckBoxMUI = ({ onMoodChange }) => {
+  const [selectedMoods, setSelectedMoods] = React.useState([]);
+
+  const handleMoodChange = (event) => {
+    const { value, checked } = event.target;
+    setSelectedMoods((prev) =>
+      checked ? [...prev, value] : prev.filter((mood) => mood !== value)
+    );
+    onMoodChange(event); // 부모 컴포넌트에 상태 전달
+  };
+
   return (
     <FormGroup row>
-      <FormControlLabel
-        control={
-          <Checkbox
-            sx={{
-              color: "#ccc", // 체크박스 기본 색상
-              "&.Mui-checked": {
-                color: "#518142 !important", // 체크박스 선택 시 색상 (우선순위 높임)
-              },
-            }}
-          />
-        }
-        label="데이트"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "#fff", // 라벨 글씨 색상
-            fontSize: "20px", // 라벨 폰트 크기
-            fontFamily: "ns-r",
-          },
-          marginRight: "100px",
-        }}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            sx={{
-              color: "#ccc",
-              "&.Mui-checked": {
-                color: "#518142 !important",
-              },
-            }}
-          />
-        }
-        label="단체"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "#fff",
-            fontSize: "20px",
-            fontFamily: "ns-r",
-          },
-          marginRight: "100px",
-        }}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            sx={{
-              color: "#ccc",
-              "&.Mui-checked": {
-                color: "#518142 !important",
-              },
-            }}
-          />
-        }
-        label="조용한"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "#fff",
-            fontSize: "20px",
-            fontFamily: "ns-r",
-          },
-          marginRight: "100px",
-        }}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            sx={{
-              color: "#ccc",
-              "&.Mui-checked": {
-                color: "#518142 !important",
-              },
-            }}
-          />
-        }
-        label="트렌디한"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "#fff",
-            fontSize: "20px",
-            fontFamily: "ns-r",
-          },
-        }}
-      />
+      {["데이트", "단체", "조용한", "트렌디한"].map((mood) => (
+        <FormControlLabel
+          key={mood}
+          control={
+            <Checkbox
+              value={mood}
+              checked={selectedMoods.includes(mood)}
+              onChange={handleMoodChange}
+              sx={{
+                color: "#ccc",
+                "&.Mui-checked": {
+                  color: "#518142 !important",
+                },
+              }}
+            />
+          }
+          label={mood}
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              color: "#fff",
+              fontSize: "20px",
+              fontFamily: "ns-r",
+            },
+            marginRight: "100px",
+          }}
+        />
+      ))}
     </FormGroup>
   );
 };
