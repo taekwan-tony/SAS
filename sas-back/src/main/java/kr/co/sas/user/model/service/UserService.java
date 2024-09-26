@@ -134,4 +134,10 @@ public class UserService {
 		//반환타입,void는 반환할게없다 string이면 스트링타입을 반환
 	}
 	
+	@Transactional
+	public int updateUserPhoto(UserDTO user) {
+		int result = userDao.updateUserPhoto(user);
+		return result;
+	}
+	
 }

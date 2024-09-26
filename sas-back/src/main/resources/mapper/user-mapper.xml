@@ -65,4 +65,7 @@
 	<select id="selectReviewList" resultType="review">
 		select * from review where user_nickname=#{userNickname}
 	</select>
+	<update id="updateUserPhoto">
+		update user_tbl set user_photo=#{userPhoto} where user_no = #{userNo}
+	</update>
 </mapper>

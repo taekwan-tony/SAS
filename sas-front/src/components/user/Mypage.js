@@ -38,11 +38,11 @@ const MypageMain = () => {
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const [user, setUser] = useState({});
   useEffect(() => {
-    console.log(loginUserId);
+    // console.log(loginUserId);
     axios
       .get(`${backServer}/user/userNo/${loginUserNo}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setUser(res.data);
       })
       .catch((err) => {
@@ -67,7 +67,7 @@ const MypageMain = () => {
           ) : (
             <div className="reserve-content-wrap list-content">
               {user.reservationList.map((reserve, index) => {
-                return <ReserveContent />;
+                return <ReserveContent key={"reserveContent" + index} />;
               })}
             </div>
           )
