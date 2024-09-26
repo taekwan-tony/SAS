@@ -117,13 +117,6 @@ public class UserService {
 		return getMenuinfo;
 	}
 
-	public List<ReviewDTO> getReviewinfo(int storeNo) {
-	    List<ReviewDTO> getReviewinfo = reviewDao.getReviewsByStoreNo(storeNo); 
-	    return getReviewinfo;
-	}
-
-
-		
 
 	public UserDTO selectOneUser(int userNo) {
 		UserDTO user = userDao.selectOneUser(userNo);
