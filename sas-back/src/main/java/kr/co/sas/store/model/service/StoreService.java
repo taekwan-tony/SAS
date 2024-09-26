@@ -9,6 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.sas.menu.model.dao.MenuDao;
+import kr.co.sas.review.model.dao.ReviewDao;
+import kr.co.sas.review.model.dto.ReviewDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
@@ -24,7 +27,10 @@ public class StoreService {
 	
 	@Autowired
 	private JwtUtils jwtUtils;
-
+	@Autowired
+	private MenuDao menuDao;
+	@Autowired
+	private ReviewDao reviewDao;
 	
 	public boolean checkEmail(String soEmail) {
 		StoreDTO store = storeDao.checkEmail(soEmail);
@@ -89,10 +95,51 @@ public class StoreService {
 	}//storeRefresh
 
 
+	@Transactional
+	public int changePw(StoreDTO store) {
+		String encPw = (encoder.encode(store.getSoPw()));
+		store.setSoPw(encPw);
+		int result = storeDao.changePw(store);
+		return result;
+	}//changePw
+
+	
 	public List<StoreDTO> selectAllPayStore() {
 		List list = storeDao.selectAllPayStore();
 		return list;
 	}
+
+
+	public List selectAllstore() {
+		List list = storeDao.selectAllstore();
+		return list;
+	}
+
+	public StoreDTO getStoreinfo(int storeNo) {
+		StoreDTO getStoreinfo = storeDao.getStoreinfo(storeNo);
+		return getStoreinfo;
+			
+		}
+
+	public List getMenuinfo(int storeNo) {
+		List getMenuinfo = menuDao.getMenuinfo(storeNo);
+		return getMenuinfo;
+	}
+
+	public List<ReviewDTO> getReviewinfo(int storeNo) {
+	    List<ReviewDTO> getReviewinfo = reviewDao.getReviewsByStoreNo(storeNo); 
+	    return getReviewinfo;
+	}
+	public LoginStoreDTO checkPw(StoreDTO store) {
+		StoreDTO checkPw = storeDao.searchStoreOwner(store.getSoEmail());
+		if(checkPw != null && encoder.matches(store.getSoPw(), checkPw.getSoPw())) {
+			String accessToken = jwtUtils.storeCreateAccessToken(checkPw.getSoEmail(), checkPw.getType());
+			String refreshToken = jwtUtils.storeCreateRefreshToken(checkPw.getSoEmail(), checkPw.getType());
+			LoginStoreDTO loginStore = new LoginStoreDTO(accessToken, refreshToken, checkPw.getSoEmail(), checkPw.getType(), store.getStoreNo());
+			return loginStore;
+		}//if
+		return null;
+	}//checkPw
 
 
 }

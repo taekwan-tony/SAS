@@ -5,6 +5,7 @@
 .dashboard {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   gap: 20px;
   padding: 80px;
   color: white;
@@ -119,16 +120,15 @@
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  flex-grow: 1;
 }
 
 .calendar-placeholder {
   flex: 1;
   margin-right: 20px;
-  border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
   text-align: center;
-  height: 500px; /* 임시 높이 설정 */
 }
 
 .reservation-info {
@@ -252,35 +252,8 @@
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
-
-.styled-table th,
-.styled-table td {
-  padding: 12px 15px;
-}
-
-.styled-table thead tr {
-  border-bottom: 1px solid #749581;
-}
-
-.styled-table tbody tr {
-  border-bottom: 1px solid #749581;
-}
-
-.styled-table tbody tr:last-of-type {
-  border-bottom: none;
-}
-
-/* 하단테이블 */
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(35deg, #222623 20%, #1f2822 50%, #95c29647 99%);
-  color: white;
-  text-align: left;
-  border-radius: 12px;
+.table-container {
+  margin-top: auto; /* 자동으로 여유 공간을 밀어냄 */
 }
 
 .styled-table th,

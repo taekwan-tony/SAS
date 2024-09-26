@@ -28,7 +28,13 @@ public interface StoreDao {
 
 	StoreDTO searchStoreOwner(String soEmail);
 
+	int changePw(StoreDTO store);
+	
 	List selectAllPayStore();
+
+	List selectAllstore();
+	
+	StoreDTO checkPw(StoreDTO store);
 
 
 }

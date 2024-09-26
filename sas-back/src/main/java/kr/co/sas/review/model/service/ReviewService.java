@@ -14,17 +14,36 @@ public class ReviewService {
 	@Autowired
 	private ReviewDao reviewDao;
 	
-	// 모든 리뷰 가져오기
-    public List<ReviewDTO> getAllReview() {
-    	//매장번호가져오고
-    	
-        return reviewDao.getAllReview();
+	
+    public List<ReviewDTO> getAllReview(String storeId) {
+    	if (storeId != null) {
+    		return reviewDao.getAllReview(storeId);
+        } else {
+        	return null;    
+        }
     }
     
+    //리뷰등록
     @Transactional
 	public int insertReview(ReviewDTO review) {
 		int result = reviewDao.insertReview(review);
 		return result;
 	}
+    //리뷰수정
+    @Transactional
+	public int modifyReview(ReviewDTO review) {
+		int result = reviewDao.modifyReview(review);
+		return result;
+	}
 
+	public List getReviewList(Object parameter, String type) {
+		List list = reviewDao.getReviewList(parameter, type);
+		return list;
+	}
+
+
+    @Transactional
+	public int insertReviewAnswer(ReviewDTO review) {
+		return reviewDao.insertReviewAnswer(review);
+	}
 }

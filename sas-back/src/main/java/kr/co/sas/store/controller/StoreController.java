@@ -1,6 +1,7 @@
 package kr.co.sas.store.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,18 +64,58 @@ public class StoreController {
 	
 	@Operation(summary = "매장 로그인 갱신", description = "토큰으로 로그인 갱신")
 	@PostMapping(value = "/storeRefresh")
-	public ResponseEntity<Map> storeRefresh(@RequestHeader("Authorization") String token) {
+	public ResponseEntity<LoginStoreDTO> storeRefresh(@RequestHeader("Authorization") String token) {
 		LoginStoreDTO loginStore = storeService.storeRefresh(token);
 		if(loginStore != null) {
-			Map map = new HashMap<String, Object>();
-			map.put("loginSoEmail", loginStore.getSoEmail());
-			map.put("storeType", loginStore.getType());
-			map.put("accessToken", loginStore.getAccessToken());
-			map.put("refreshToken", loginStore.getRefreshToken());
-			return ResponseEntity.ok(map);
-		}//if
-		return ResponseEntity.status(404).build();
+			return ResponseEntity.ok(loginStore);
+		}else {
+			return ResponseEntity.status(404).build();
+		}//else
 	}//storeRefresh
+	
+	@GetMapping(value="/storeList")
+	public ResponseEntity<List> selectAllstore (){
+		List storeList = storeService.selectAllstore();
+		return ResponseEntity.ok(storeList);
+	}
+	
+	@GetMapping(value="/storeNo/{storeNo}")
+	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo) {
+		StoreDTO store = storeService.getStoreinfo(storeNo);
+		if(store !=null) {
+			return ResponseEntity.ok(store);
+		}
+		return ResponseEntity.status(404).build();
+	}
+	@GetMapping(value="/storeNo/{storeNo}/menu")
+	public ResponseEntity<List> getMenuinfo(@PathVariable int storeNo){
+		List list = storeService.getMenuinfo(storeNo);	
+		return ResponseEntity.ok(list);
+	}
+	@GetMapping(value="/storeNo/{storeNo}/review")
+	public ResponseEntity<List> getReviewinfo(@PathVariable int storeNo){
+		List list = storeService.getReviewinfo(storeNo);
+		return ResponseEntity.ok(list);
+	}
+	
+	@Operation(summary = "매장 비밀번호 변경", description ="새 비밀번호와 기존 비밀번호를 객체로 받아서 새 비밀번호로 변경")
+	@PostMapping(value = "/changePw")
+	public ResponseEntity<Integer> changePw(@RequestBody StoreDTO store) {
+		int result = storeService.changePw(store);
+		return ResponseEntity.ok(result);
+	}//changePw
+	
+	
+	@Operation(summary = "매장 비밀번호 변경 시 회원 조회", description = "점주 이메일, 기존 비밀번호 일치하는지 확인")
+	@PostMapping(value = "/checkPw")
+	public ResponseEntity<LoginStoreDTO> checkPw(@RequestBody StoreDTO store) {
+		LoginStoreDTO result = storeService.checkPw(store);
+		if(result != null) {
+			return ResponseEntity.ok(result);
+		}else {
+			return ResponseEntity.status(404).build();
+		}//else
+	}//checkPw
 	
 	
 	
