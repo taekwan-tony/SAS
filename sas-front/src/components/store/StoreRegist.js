@@ -47,7 +47,7 @@ const StoreRegist = () => {
 
     // Fetch API를 사용하여 POST 요청 보내기
     fetch(
-      "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=izDvzK%2FsSEz9bDSkKZ2ITpUtPOjeYOTTFEsMUh%2BOKm%2B1SNrCWoYHCLtDCJ1F184rdJo3an8rhug39mJE4F59Xw%3D%3D",
+      "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=izDvzK%2 FsSEz9bDSkKZ2ITpUtPOjeYOTTFEsMUh%2BOKm%2B1SNrCWoYHCLtDCJ1F184rdJo3an8rhug39mJE4F59Xw%3D%3D",
       {
         method: "POST",
         headers: {

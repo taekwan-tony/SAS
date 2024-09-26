@@ -75,9 +75,9 @@ public class StoreController {
 	
 	@Operation(summary = "매장 비밀번호 변경", description ="새 비밀번호와 기존 비밀번호를 객체로 받아서 새 비밀번호로 변경")
 	@PostMapping(value = "/changePw")
-	public ResponseEntity<Boolean> changePw(@RequestBody StoreDTO store) {
+	public ResponseEntity<Integer> changePw(@RequestBody StoreDTO store) {
 		int result = storeService.changePw(store);
-		return ResponseEntity.ok(result > 0);
+		return ResponseEntity.ok(result);
 	}//changePw
 	
 	

@@ -19,6 +19,36 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
   const [checkSoPwRe, setCheckSoPwRe] = useState(false);
   const [checkNewSoPwRe, setCheckNewSoPwRe] = useState(false);
 
+  const [store, setStore] = useState({
+    soEmail: "",
+    soPw: "",
+  });
+
+  const [newSoPw, setNewSoPw] = useState("");
+  const [newSoPwRe, setNewSoPwRe] = useState("");
+
+  const changeStorePw = () => {
+    if (newSoPw === newSoPwRe) {
+      axios.post(`${backServer}/store/changePw`, store).then((res) => {
+        console.log(res.data);
+        if (res.data) {
+          Swal.fire({
+            title: "비밀번호가 변경되었습니다.",
+            text: "로그인 페이지로 이동합니다.",
+            icon: "success",
+            confirmButtonColor: "#5e9960",
+          })
+            .then(() => {
+              navigate("/storeLogin");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
+    }
+  };
+
   const soPwChange = () => {
     axios
       .post(`${backServer}/store/checkPw`, store)
@@ -38,6 +68,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
       })
       .catch((err) => {
         if (err.response && err.response.status === 404) {
+          console.log(err.response.status);
           console.log("불일치");
           Swal.fire({
             title: "회원정보가 일치하지 않습니다.",
@@ -78,14 +109,6 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
       }
     }
   };
-
-  const [store, setStore] = useState({
-    soEmail: "",
-    soPw: "",
-  });
-
-  const [newSoPw, setNewSoPw] = useState("");
-  const [newSoPwRe, setNewSoPwRe] = useState("");
 
   const changeSoPw = (e) => {
     const name = e.target.name;
@@ -300,6 +323,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                               <button
                                 type="submit"
                                 className="storechangePw-btn"
+                                onClick={changeStorePw}
                               >
                                 비밀번호 변경
                               </button>

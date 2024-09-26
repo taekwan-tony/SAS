@@ -21,11 +21,15 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     soPhone: "",
     soEmail: "",
   });
+
   const [storeLogin, setStoreLogin] = useState({
     soEmail: "",
     soPw: "",
     storeNo: storeNo,
   });
+
+  //이메일 중복 확인
+  const [isSoEmailValid, setIsSoEmailValid] = useState(false);
 
   {
     /* 비밀번호 찾기 / 변경 창 Modal */
@@ -174,10 +178,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   };
 
   const storeRegistEmailCheck = () => {
-    const soEmailElement = document.getElementById("soEmail");
+    const emailCheck = store.soEmail.trim();
 
-    const emailCheck = soEmailElement.value;
-    if (emailCheck) {
+    if (!emailCheck) {
       Swal.fire({
         title: "이메일을 입력해주세요.",
         icon: "warning",
@@ -185,22 +188,37 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       });
       return false;
     }
+
+    console.log("이메일 : ", emailCheck);
+
     axios
-      .get(`${backServer}/store/soEmail/${store.soEmail}/checkEmail`)
+      .get(`${backServer}/store/soEmail/${emailCheck}/checkEmail`)
       .then((res) => {
-        console.log(res);
+        console.log("응답 : ", res);
         if (res.data) {
           setEmailMsg("사용 가능한 이메일입니다.");
+          setIsSoEmailValid(true); // 이메일이 유효하면 true
         } else {
           setEmailMsg("이미 가입한 이메일입니다.");
+          setIsSoEmailValid(false); // 이메일이 중복되면 false
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log("에러 : ", err);
       });
   };
 
   const storePartnership = () => {
+    // 이메일이 유효하지 않으면 함수 실행을 중단
+    if (!isSoEmailValid) {
+      Swal.fire({
+        title: "이미 가입한 이메일입니다.",
+        icon: "error",
+        text: "이메일을 변경해주세요.",
+        confirmButtonColor: "#5e9960",
+      });
+      return; // 이메일이 중복일 경우 함수 실행 중단
+    }
     axios
       .post(`${backServer}/store`, store)
       .then((res) => {
@@ -208,10 +226,11 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
           Swal.fire({
             title: "제휴 신청 완료",
             icon: "success",
-            text: "관리자 승인까지 약 1~3일 소요됩니다.",
+            text: "요청 승인까지 약 1~3일 소요됩니다.",
             confirmButtonColor: "#5e9960",
           }).then(() => {
-            navigate("/storeMain");
+            closeModal();
+            navigate("/");
           });
         }
       })
@@ -474,13 +493,22 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                               <p
                                 className="storeLogin-msg"
                                 style={{
-                                  backgroundImage: emailMsg
-                                    ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)`
-                                    : "none", // 이미지가 없을 때는 none
+                                  backgroundImage:
+                                    emailMsg === "사용 가능한 이메일입니다."
+                                      ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)` // 성공 아이콘
+                                      : emailMsg === "이미 가입한 이메일입니다."
+                                      ? `url(${process.env.PUBLIC_URL}/image/error.svg)` // 실패 아이콘
+                                      : "none", // 메시지가 없을 때는 아이콘 없음
                                   backgroundRepeat: "no-repeat",
                                   backgroundPosition: "left center",
                                   marginLeft: "10px",
                                   paddingLeft: emailMsg ? "27px" : "0px", // 메시지가 있을 때만 padding
+                                  color:
+                                    emailMsg === "사용 가능한 이메일입니다."
+                                      ? "#5e9960" // 성공 시 글씨 색 초록색
+                                      : emailMsg === "이미 가입한 이메일입니다."
+                                      ? "#D16D6A" // 실패 시 글씨 색 빨간색
+                                      : "black", // 기본 글씨 색
                                 }}
                               >
                                 {emailMsg}
@@ -494,6 +522,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                           type="submit"
                           className="storeLogin-partnership-btn"
                           onClick={storePartnership}
+                          disabled={!isSoEmailValid} // 이메일이 중복이면 버튼 비활성화
                         >
                           제휴 신청
                         </button>
