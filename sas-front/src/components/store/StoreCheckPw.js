@@ -23,18 +23,33 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
     axios
       .post(`${backServer}/store/checkPw`, store)
       .then((res) => {
-        console.log(res);
-        if (res.data) {
+        console.log("응답 상태:", res.status); // 상태 코드 출력
+        if (res.status === 200) {
           // 이메일과 비밀번호가 일치할 때
-          setIsChecked(true);
-        } else {
-          // 이메일 비밀번호가 일치하지 않을 때
-          console.log("불일치");
-          setIsChecked(false);
+          Swal.fire({
+            title: "회원정보가 일치합니다.",
+            icon: "success",
+            text: "비밀번호 변경 페이지로 이동합니다.",
+            confirmButtonColor: "#5e9960",
+          }).then(() => {
+            setIsChecked(true);
+          });
         }
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.status === 404) {
+          console.log("불일치");
+          Swal.fire({
+            title: "회원정보가 일치하지 않습니다.",
+            icon: "error",
+            text: "다시 입력해주세요.",
+            confirmButtonColor: "#5e9960",
+          }).then(() => {
+            setIsChecked(false);
+          });
+        } else {
+          console.log("기타 에러 발생 : ", err);
+        }
       });
   };
 
@@ -51,10 +66,10 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
     }
   };
 
-  const newSoPwReCheck = (e) => {
+  const newSoPwReCheck = () => {
     setCheckNewSoPwRe(false);
     if (newSoPwRe !== "") {
-      if (newSoPwRe === newSoPwRe) {
+      if (newSoPw === newSoPwRe) {
         setNewSoPwReMsg("새 비밀번호와 일치합니다.");
         setCheckNewSoPwRe(true);
       } else {
@@ -251,15 +266,28 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                                     <p
                                       className="storechangePw-msg"
                                       style={{
-                                        backgroundImage: newSoPwReMsg
-                                          ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)`
-                                          : "none", // 이미지가 없을 때는 none
+                                        backgroundImage:
+                                          newSoPwReMsg ===
+                                          "새 비밀번호와 일치합니다."
+                                            ? `url(${process.env.PUBLIC_URL}/image/icon_check.svg)`
+                                            : newSoPwReMsg ===
+                                              "새 비밀번호와 일치하지 않습니다."
+                                            ? `url(${process.env.PUBLIC_URL}/image/error.svg)` // 아이콘을 다르게 설정
+                                            : "none", // 그 외의 경우 아이콘 없음
                                         backgroundRepeat: "no-repeat",
                                         backgroundPosition: "left center",
                                         marginLeft: "10px",
                                         paddingLeft: newSoPwReMsg
                                           ? "10px"
                                           : "0px", // 메시지가 있을 때만 padding
+                                        color:
+                                          newSoPwReMsg ===
+                                          "새 비밀번호와 일치합니다."
+                                            ? "#5e9960" // 비밀번호가 일치할 때는 글씨 색을 초록색
+                                            : newSoPwReMsg ===
+                                              "새 비밀번호와 일치하지 않습니다."
+                                            ? "#D16D6A" // 비밀번호가 일치하지 않을 때는 글씨 색을 빨간색
+                                            : "#5e9960", // 기본 글씨 색
                                       }}
                                     >
                                       {newSoPwReMsg}
