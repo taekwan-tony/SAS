@@ -13,4 +13,5 @@ public class LoginUserDTO {
 	private String userId;
 	private int loginType;
 	private int userNo;
+	private String userNickname;
 }

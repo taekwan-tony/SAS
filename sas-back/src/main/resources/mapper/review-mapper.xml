@@ -10,4 +10,21 @@
 	<insert id="insertReview">
 		insert into review values(review_seq.nextval,#{reviewContent},sysdate,#{reviewScore},#{userNickname},#{storeNo},null,null,null)	
 	</insert>
+	
+	<update id="modifyReview">
+		update review set review_content=#{reviewContent}
+		where user_nickname= #{userNickname}
+	</update>
+	<select id ="getReviewList" resultType="review">
+		select user_nickname,review_content, store_name from review join store using(store_no) where
+		<choose>
+			<when test="type.equals('store')">
+				store_no = #{parameter}
+			</when>
+			<when test="type.equals('user')">
+				user_nickname=#{parameter}
+			</when>
+		</choose>
+		<!-- 첨부 파일 만들면 selectkey 이용해서 첨부파일 가져오기 -->
+	</select>
 </mapper>

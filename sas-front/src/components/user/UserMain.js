@@ -10,6 +10,7 @@ import "swiper/css/mousewheel";
 import {
   isUserLoginState,
   loginUserIdState,
+  loginUserNicknameState,
   loginUserNoState,
   userTypeState,
 } from "../utils/RecoilData";
@@ -19,7 +20,7 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Join from "./Join";
 import LoginMain from "./LoginMain";
 import Mypage from "./Mypage";
-import MenuView from "../menu/MenuView";
+import { MenuView } from "../menu/MenuView";
 import "../menu/menuview.css";
 import SearchList from "../menu/SearchList";
 import ReservationMain from "../reservation/ReservationMain";
@@ -32,6 +33,9 @@ function UserMain() {
   const [userType, setUserType] = useRecoilState(userTypeState);
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const isUserLogin = useRecoilValue(isUserLoginState);
+  const [loginUserNickname, setLoginUserNickname] = useRecoilState(
+    loginUserNicknameState
+  );
   useEffect(() => {
     refreshLogin();
     window.setInterval(refreshLogin, 60 * 60 * 1000); //한시간이 지나면 로그인 정보 자동으로 refresh 될수 있게
@@ -53,6 +57,7 @@ function UserMain() {
           setLoginUserId(res.data.loginId);
           setUserType(res.data.userType);
           setLoginUserNo(res.data.userNo);
+          setLoginUserNickname(res.data.userNickname);
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "userRefreshToken",
@@ -64,6 +69,7 @@ function UserMain() {
           setLoginUserId("");
           setUserType(0);
           setLoginUserNo(0);
+          setLoginUserNickname("");
           delete axios.defaults.headers.common["Authorization"];
           window.localStorage.removeItem("userRefreshToken");
         });
@@ -77,6 +83,7 @@ function UserMain() {
     setLoginUserId("");
     setUserType(0);
     setLoginUserNo(0);
+    setLoginUserNickname("");
     delete axios.defaults.headers.common["Authorization"];
     window.localStorage.removeItem("userRefreshToken");
   };
@@ -274,7 +281,7 @@ function UserMain() {
         <Route path="join" element={<Join />} />
         <Route path="login/*" element={<LoginMain />} />
         <Route path="mypage/*" element={<Mypage />}></Route>
-        <Route path="menuview/*" element={<MenuView />} />
+        <Route path="menuview/:storeNo/*" element={<MenuView />} />
         <Route path="searchlist/:searchItem" element={<SearchList />} />
         <Route
           path=""

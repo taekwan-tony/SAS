@@ -8,6 +8,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import "../menu/menuview.css";
 import "./mypage.css";
 import Swal, { swal } from "sweetalert2";
+
 import {
   EmptyBox,
   MypageFavorite,
@@ -15,11 +16,16 @@ import {
   ReserveContent,
   ReviewContent,
 } from "./MypageContent";
-import { loginUserIdState, loginUserNoState } from "../utils/RecoilData";
+import {
+  loginUserIdState,
+  loginUserNicknameState,
+  loginUserNoState,
+} from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { switchClasses } from "@mui/material";
+import { MenuReview } from "../menu/MenuView";
 
 const Mypage = () => {
   return (
@@ -28,6 +34,7 @@ const Mypage = () => {
         <Route path="" element={<MypageMain />}></Route>
         <Route path="resview" element={<ReservationView />}></Route>
         <Route path="reviewWrite" element={<ReviewWrite />} />
+        <Route path="myreview" element={<MenuReview />} />
       </Routes>
     </div>
   );
@@ -246,7 +253,7 @@ const ReviewWrite = () => {
             text: "다음에 또 이용해주세요",
             icon: "success",
           }).then(() => {
-            navigate("usermain/mypage");
+            navigate("usermain/mypage/myreview");
           });
         }
       })
@@ -282,4 +289,5 @@ const ReviewWrite = () => {
     </div>
   );
 };
+
 export default Mypage;

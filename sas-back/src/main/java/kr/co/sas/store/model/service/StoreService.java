@@ -9,6 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.sas.menu.model.dao.MenuDao;
+import kr.co.sas.review.model.dao.ReviewDao;
+import kr.co.sas.review.model.dto.ReviewDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
@@ -24,7 +27,10 @@ public class StoreService {
 	
 	@Autowired
 	private JwtUtils jwtUtils;
-
+	@Autowired
+	private MenuDao menuDao;
+	@Autowired
+	private ReviewDao reviewDao;
 	
 	public boolean checkEmail(String soEmail) {
 		StoreDTO store = storeDao.checkEmail(soEmail);
@@ -95,4 +101,24 @@ public class StoreService {
 	}
 
 
+	public List selectAllstore() {
+		List list = storeDao.selectAllstore();
+		return list;
+	}
+
+	public StoreDTO getStoreinfo(int storeNo) {
+		StoreDTO getStoreinfo = storeDao.getStoreinfo(storeNo);
+		return getStoreinfo;
+			
+		}
+
+	public List getMenuinfo(int storeNo) {
+		List getMenuinfo = menuDao.getMenuinfo(storeNo);
+		return getMenuinfo;
+	}
+
+	public List<ReviewDTO> getReviewinfo(int storeNo) {
+	    List<ReviewDTO> getReviewinfo = reviewDao.getReviewsByStoreNo(storeNo); 
+	    return getReviewinfo;
+	}
 }

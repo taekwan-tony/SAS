@@ -78,6 +78,7 @@ public class UserController {
 			map.put("loginId", loginUser.getUserId());
 			map.put("userType", loginUser.getLoginType());
 			map.put("userNo", loginUser.getUserNo());
+			map.put("userNickname", loginUser.getUserNickname());
 			map.put("accessToken", loginUser.getAccessToken());
 			map.put("refreshToken", loginUser.getRefreshToken());
 			return ResponseEntity.ok(map);
@@ -143,24 +144,7 @@ public class UserController {
 		email.sendMail(emailTitle, receiver, emailContent);
 		return ResponseEntity.ok(sb.toString());
 	}
-	@GetMapping(value="/storeNo/{storeNo}")
-	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo) {
-		StoreDTO store = userService.getStoreinfo(storeNo);
-		if(store !=null) {
-			return ResponseEntity.ok(store);
-		}
-		return ResponseEntity.status(404).build();
-	}
-	@GetMapping(value="/storeNo/{storeNo}/menu")
-	public ResponseEntity<List> getMenuinfo(@PathVariable int storeNo){
-		List list = userService.getMenuinfo(storeNo);	
-		return ResponseEntity.ok(list);
-	}
-	@GetMapping(value="/storeNo/{storeNo}/review")
-	public ResponseEntity<List> getReviewinfo(@PathVariable int storeNo){
-		List list = userService.getReviewinfo(storeNo);
-		return ResponseEntity.ok(list);
-	}
+	
 	
 	@Operation(summary="회원정보 조회", description = "userNo를 받아와서 그에 해당하는 유저객체 반환, 없으면 404")
 	@GetMapping(value="/userNo/{userNo}")

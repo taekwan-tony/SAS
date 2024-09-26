@@ -91,4 +91,13 @@
 	<select id="selectAllPayStore" resultType="store">
 		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
+	<select id ="selectAllstore" resultType="store">
+		<!-- 
+			이미지 업로드까지 되면 다시 할 예정		
+		<selectKey order="BEFORE" resultType="int" keyProperty="si_file_no">
+			select min(si_file_no) from store_image_file where store_no=#{storeNo}
+		</selectKey>
+		 -->
+		select store_no,store_name,store_time,store_introduce,store_addr from store
+	</select>
 </mapper>

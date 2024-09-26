@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +41,24 @@ public class ReviewController {
     	int result = reviewService.insertReview(review);
     	return ResponseEntity.ok(result);
     }
-  }
+    //소비자리뷰수정
+    @PatchMapping("/usermain/mypage/myreview")
+    public ResponseEntity<Integer> modifyReview(@RequestBody ReviewDTO review){
+    	int result = reviewService.modifyReview(review);
+    	return ResponseEntity.ok(result);
+    }
+	@GetMapping("/storeNo/{storeNo}/getReviewList")
+	public ResponseEntity<List> getReviewList(@PathVariable int storeNo){
+		String type = "store";
+		List list = reviewService.getReviewList(storeNo, type);
+		return ResponseEntity.ok(list);
+	}
+	@GetMapping("/userNickname/{userNickname}/getReviewList")
+	public ResponseEntity<List> getReviewList(@PathVariable String userNickname){
+		String type = "user";
+		List list = reviewService.getReviewList(userNickname, type);
+		return ResponseEntity.ok(list);
+	}
  
+}
 

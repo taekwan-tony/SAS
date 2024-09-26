@@ -1,6 +1,7 @@
 package kr.co.sas.store.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,30 @@ public class StoreController {
 		return ResponseEntity.status(404).build();
 	}//storeRefresh
 	
+	@GetMapping(value="/storeList")
+	public ResponseEntity<List> selectAllstore (){
+		List storeList = storeService.selectAllstore();
+		return ResponseEntity.ok(storeList);
+	}
+	
+	@GetMapping(value="/storeNo/{storeNo}")
+	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo) {
+		StoreDTO store = storeService.getStoreinfo(storeNo);
+		if(store !=null) {
+			return ResponseEntity.ok(store);
+		}
+		return ResponseEntity.status(404).build();
+	}
+	@GetMapping(value="/storeNo/{storeNo}/menu")
+	public ResponseEntity<List> getMenuinfo(@PathVariable int storeNo){
+		List list = storeService.getMenuinfo(storeNo);	
+		return ResponseEntity.ok(list);
+	}
+	@GetMapping(value="/storeNo/{storeNo}/review")
+	public ResponseEntity<List> getReviewinfo(@PathVariable int storeNo){
+		List list = storeService.getReviewinfo(storeNo);
+		return ResponseEntity.ok(list);
+	}
 	
 	
 }

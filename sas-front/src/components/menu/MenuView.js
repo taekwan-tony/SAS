@@ -6,15 +6,19 @@ import ReactQuill from "react-quill";
 import { PiArrowFatLeft, PiStarFill, PiStarLight } from "react-icons/pi";
 import axios from "axios";
 import KaKao from "../utils/Kakao";
+import { loginUserNicknameState } from "../utils/RecoilData";
+import { useRecoilState } from "recoil";
 const { kakao } = window;
 
 const MenuView = () => {
-  const [store, setStore] = useState({ storeNo: 73 });
+  const params = useParams();
+  const storeNo = params.storeNo;
+  const [store, setStore] = useState({ storeNo: storeNo });
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
   useEffect(() => {
     axios
-      .get(`${backServer}/user/storeNo/${store.storeNo}`)
+      .get(`${backServer}/store/storeNo/${store.storeNo}`)
       .then((res) => {
         setStore(res.data);
       })
@@ -25,10 +29,10 @@ const MenuView = () => {
       <div className="menuview-wrap">
         <section className="section-menu">
           <div className="menu-image">
-            <img src="/image/s&s로고.png" alt="가게 로고" />
+            <img src="/image/국빱.jpg" alt="가게 로고" />
           </div>
           <div className="menuview-info">
-            <p></p>
+            <p>{store.storeName}</p>
             <div className="schedule">
               <span className="material-icons">place</span>
               <p>{store.storeAddr}</p>
@@ -67,11 +71,11 @@ const MenuView = () => {
       </section>
       {
         <Routes>
-          <Route path="menuview" element={<MenuMain />}></Route>
-          <Route path="menunews" element={<Menunews />}></Route>
-          <Route path="menu" element={<Menu />}></Route>
-          <Route path="photo" element={<MenuPhoto />}></Route>
-          <Route path="review" element={<MenuReview />}></Route>
+          <Route path="menuview" element={<MenuMain store={store} />}></Route>
+          <Route path="menunews" element={<Menunews store={store} />}></Route>
+          <Route path="menu" element={<Menu store={store} />}></Route>
+          <Route path="photo" element={<MenuPhoto store={store} />}></Route>
+          <Route path="review" element={<MenuReview store={store} />}></Route>
           <Route path="info" element={<Menuinfo store={store} />}></Route>
         </Routes>
       }
@@ -84,8 +88,7 @@ const MenuView = () => {
   );
 };
 
-const MenuMain = (props) => {
-  const addr = props.addr;
+const MenuMain = () => {
   return (
     <main className="main-menu-home">
       <div className="facilities">
@@ -96,20 +99,8 @@ const MenuMain = (props) => {
   );
 };
 
-const Menunews = () => {
-  const [store, setStore] = useState({ storeNo: 73 });
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  useEffect(() => {
-    axios
-      .get(`${backServer}/user/storeNo/${store.storeNo}`)
-      .then((res) => {
-        console.log(res);
-        setStore(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+const Menunews = (props) => {
+  const store = props.store;
   return (
     <div className="news">
       <p>{store.storeIntroduce}</p>
@@ -123,7 +114,7 @@ const Menu = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
     axios
-      .get(`${backServer}/user/storeNo/${store.storeNo}/menu`)
+      .get(`${backServer}/store/storeNo/${store.storeNo}/menu`)
       .then((res) => {
         setMenu(res.data);
       })
@@ -209,34 +200,100 @@ const MenuPhoto = () => {
   );
 };
 
-const MenuReview = () => {
-  const commentText =
-    "으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아아악으아으아아악으아아악으아악으아아악으아아악으아아악으아아악으아아악으아악으아아악으아아악으아아악으";
-  const [isExpanded, setIsExpanded] = useState(false);
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
-  };
-  const displayText =
-    isExpanded || commentText.length <= 50
-      ? commentText
-      : `${commentText.slice(0, 50)}`;
+const MenuReview = (props) => {
+  const store = props.store;
+  const [userNickname, setUserNickname] = useRecoilState(
+    loginUserNicknameState
+  );
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [reviewList, setReviewList] = useState([]);
+  useEffect(() => {
+    axios
+      .get(
+        store
+          ? `${backServer}/review/storeNo/${store.storeNo}/getReviewList`
+          : `${backServer}/review/userNickname/${userNickname}/getReviewList`
+      )
+      .then((res) => {
+        console.log(res);
+        res.data.forEach((review, index) => {
+          review.isExpanded = false;
+        });
+        // console.log(res.data);
+        setReviewList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className="menu-review">
-      <h2>리뷰</h2>
-      <p>닉네임</p>
-      <p>이미지파일</p>
-      <p>댓글자리</p>
-      <p>
-        {displayText}
-        {commentText.length > 50 && (
-          <span className="toggle-button" onClick={handleToggle}>
-            {isExpanded ? "접기" : "더보기"}
-          </span>
-        )}
-      </p>
+      {reviewList
+        ? reviewList.map((review, index) => {
+            // const [isExpanded, setIsExpanded] = useState(false);
+            // review.isExpanded = false;
+
+            // const isExpanded = false;
+            const setIsExpanded = (param) => {
+              console.log(param);
+              review.isExpanded = param;
+              console.log(review.isExpanded);
+              // console.log(reviewList);
+              setReviewList([...reviewList]);
+            };
+            const handleToggle = () => {
+              console.log(review.isExpanded);
+              setIsExpanded(!review.isExpanded);
+              // setReviewList([...]);
+            };
+            const regExp = /[</p>]/;
+            const displayText =
+              review.isExpanded || review.reviewContent.length <= 50
+                ? review.reviewContent
+                : `${review.reviewContent.slice(0, 50)}</p>`;
+            return (
+              <section className="review-box-container">
+                <div className="review-content">
+                  <p>{review.userNickname}</p>
+                  <p>이미지파일</p>
+                  <p>
+                    <p
+                      dangerouslySetInnerHTML={{ __html: displayText }}
+                      className="reviewContent-text"
+                    ></p>
+                    {review.reviewContent.length > 50 && (
+                      <span className="toggle-button" onClick={handleToggle}>
+                        {review.isExpanded ? "접기" : "더보기"}
+                      </span>
+                    )}
+                  </p>
+                  <button className="review-manager" onClick={ReviewModify}>
+                    수정
+                  </button>
+                  <button className="review-manager">삭제</button>
+                </div>
+              </section>
+            );
+          })
+        : ""}
     </div>
   );
+};
+const ReviewModify = (props) => {
+  const setReview = props.setReview;
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  useEffect(() => {
+    axios
+      .get(`${backServer}/review/usermain/mypage/myrview`)
+      .then((res) => {
+        console.log(res);
+        setReview(res.data.reviewContent);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 };
 
 const Menuinfo = (props) => {
@@ -285,4 +342,4 @@ const Menuinfo = (props) => {
   );
 };
 
-export default MenuView;
+export { MenuView, MenuReview };
