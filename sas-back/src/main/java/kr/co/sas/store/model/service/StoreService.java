@@ -91,7 +91,8 @@ public class StoreService {
 
 	@Transactional
 	public int changePw(StoreDTO store) {
-		store.setSoPw(encoder.encode(store.getSoPw()));
+		String encPw = (encoder.encode(store.getSoPw()));
+		store.setSoPw(encPw);
 		int result = storeDao.changePw(store);
 		return result;
 	}//changePw
