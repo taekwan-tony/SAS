@@ -89,10 +89,30 @@ public class StoreService {
 	}//storeRefresh
 
 
+	@Transactional
+	public int changePw(StoreDTO store) {
+		store.setSoPw(encoder.encode(store.getSoPw()));
+		int result = storeDao.changePw(store);
+		return result;
+	}//changePw
+
+	
 	public List<StoreDTO> selectAllPayStore() {
 		List list = storeDao.selectAllPayStore();
 		return list;
 	}
+
+
+	public LoginStoreDTO checkPw(StoreDTO store) {
+		StoreDTO checkPw = storeDao.searchStoreOwner(store.getSoEmail());
+		if(checkPw != null && encoder.matches(store.getSoPw(), checkPw.getSoPw())) {
+			String accessToken = jwtUtils.storeCreateAccessToken(checkPw.getSoEmail(), checkPw.getType());
+			String refreshToken = jwtUtils.storeCreateRefreshToken(checkPw.getSoEmail(), checkPw.getType());
+			LoginStoreDTO loginStore = new LoginStoreDTO(accessToken, refreshToken, checkPw.getSoEmail(), checkPw.getType(), store.getStoreNo());
+			return loginStore;
+		}//if
+		return null;
+	}//checkPw
 
 
 }

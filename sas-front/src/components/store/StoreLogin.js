@@ -1,16 +1,20 @@
 import React, { useRef, useState } from "react";
 import "./storeLogin.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import StoreRegist from "./StoreRegist";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
+import StoreChangePw from "./StoreChangePw";
+import StoreCheckPw from "./StoreCheckPw";
 
 const StoreLogin = ({ isModalOpen, closeModal }) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
+  const params = useParams();
+  const storeNo = params.storeNo;
   const [store, setStore] = useState({
     soName: "",
     businessNumber: "",
@@ -20,7 +24,32 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const [storeLogin, setStoreLogin] = useState({
     soEmail: "",
     soPw: "",
+    storeNo: storeNo,
   });
+
+  {
+    /* 비밀번호 찾기 / 변경 창 Modal */
+  }
+
+  // 모달의 열림/닫힘 상태를 관리하는 useState
+  const [isPwModalOpen, setIsPwModalOpen] = useState(false);
+
+  // 모달 열기 함수
+  const openPwModal = () => {
+    setIsPwModalOpen(true);
+  };
+
+  // 모달 닫기 함수
+  const closePwModal = () => {
+    setIsPwModalOpen(false);
+  };
+
+  // 모달 외부 클릭 시 모달 닫기
+  const pwHandleOutsideClick = (event) => {
+    if (event.target.className === "storeModal") {
+      closePwModal();
+    }
+  };
 
   {
     /* 로그인 */
@@ -206,6 +235,12 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     return null; // 모달이 열리지 않았을 경우 null을 반환하여 아무것도 렌더링하지 않음
   }
 
+  // 비밀번호 변경
+  const storeChangePw = () => {
+    console.log("비밀번호 변경 버튼");
+    navigate("/storeChangePw");
+  };
+
   return (
     <>
       <div className="storeLogin-wrap">
@@ -305,9 +340,12 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                         {/*비밀번호 찾기, 비밀번호 변경 */}
                         <>
                           <div className="storeLogin-find">
-                            <a className="storeLogin-a">
-                              비밀번호 찾기 / 비밀번호 변경
-                            </a>
+                            <button
+                              className="storeLogin-find-btn"
+                              onClick={openPwModal}
+                            >
+                              비밀번호 변경
+                            </button>
                           </div>
                         </>
                       </div>
@@ -336,7 +374,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                               <div className="storeRegist-div">
                                 <input
                                   className="storeLogin-storeRegist-inputBox"
-                                  placeholder="번호만 입력해주세요."
+                                  placeholder="-을 제외한 번호만 입력해주세요."
                                   type="text"
                                   id="businessNumber"
                                   name="businessNumber"
@@ -359,7 +397,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   backgroundRepeat: "no-repeat",
                                   backgroundPosition: "left center",
                                   marginLeft: "10px",
-                                  paddingLeft: bnMsg ? "10px" : "0px", // 메시지가 있을 때만 padding
+                                  paddingLeft: bnMsg ? "27px" : "0px", // 메시지가 있을 때만 padding
                                 }}
                               >
                                 {bnMsg}
@@ -372,7 +410,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                 htmlFor="soName"
                                 className="storeLogin-storeRegist-label"
                               >
-                                이름
+                                점주 이름
                               </label>
                             </th>
                             <td>
@@ -471,6 +509,13 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
             )}
           </div>
         </div>
+        {/*storeChangePw 컴포넌트 렌더링 */}
+        {isPwModalOpen && (
+          <StoreCheckPw
+            isPwModalOpen={isPwModalOpen}
+            closePwModal={closePwModal}
+          />
+        )}
       </div>
     </>
   );

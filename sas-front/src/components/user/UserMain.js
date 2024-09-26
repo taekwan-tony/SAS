@@ -72,6 +72,16 @@ function UserMain() {
 
   //일반회원 로그인 지속 구현-수진 끝
 
+  // 로그아웃-수진
+  const logout = () => {
+    setLoginUserId("");
+    setUserType(0);
+    setLoginUserNo(0);
+    delete axios.defaults.headers.common["Authorization"];
+    window.localStorage.removeItem("userRefreshToken");
+  };
+  // 로그아웃 -수진 끝
+
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false); // 검색창 확장 여부 상태
   const [activeTab, setActiveTab] = useState("below-30");
@@ -115,6 +125,7 @@ function UserMain() {
     navigate(`searchlist/${searchInput}`);
     setSearchInput("");
   };
+
   return (
     /* 페이지헤더 */
     <div className="all-page-wrap">
@@ -152,9 +163,15 @@ function UserMain() {
           </form>
         </div>
         <div className="user-main-login-button">
-          <Link to="/user/login">
-            <button className="user-main-login-btn">로그인</button>
-          </Link>
+          {isUserLogin ? (
+            <button className="user-main-login-btn" onClick={logout}>
+              로그아웃
+            </button>
+          ) : (
+            <Link to="/usermain/login">
+              <button className="user-main-login-btn">로그인</button>
+            </Link>
+          )}
         </div>
 
         <div className="user-box-bell">
@@ -187,7 +204,7 @@ function UserMain() {
           <div className="user-sidebar">
             <header className="header-user">
               <img src="/image/IMG_3238.jpg" alt="User" />
-              <p>user-id</p>
+              <p>{loginUserId}</p>
             </header>
             <div className="sidebar-user-page">
               <ul>
