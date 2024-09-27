@@ -6,7 +6,6 @@ import { useRecoilState } from "recoil";
 import { loginStoreIdState } from "../utils/RecoilData";
 
 function ManageReview({ comments }) {
-  const [replies, setReplies] = useState({}); // 각 댓글의 답글을 저장
   const [review, setReview] = useState([]);
   const [selectedReview, setSelectedReview] = useState({
     reviewNo: 0,

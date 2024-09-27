@@ -1,140 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ownerstatistics.css";
-import { Link } from "react-router-dom";
-import { Line, Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import { RiReservedFill } from "react-icons/ri";
 import { FaPersonHalfDress, FaSackDollar } from "react-icons/fa6";
 import { MdDeliveryDining } from "react-icons/md";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import axios from "axios";
+import Chart, { chartData, chartOptions } from "../store/Chart";
 
 function Ownerstatistics() {
-  // Line chart data
-  const lineData = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "이번달 손님",
-        data: [200, 300, 400, 500, 400, 350, 450, 500, 350, 450, 250, 330],
-        borderColor: "#1e90ff",
-        backgroundColor: "rgba(30, 144, 255, 0.2)",
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: "지난달손님",
-        data: [150, 250, 350, 450, 300, 320, 400, 470, 300, 400, 280, 320],
-        borderColor: "#20c997",
-        backgroundColor: "rgba(32, 201, 151, 0.2)",
-        fill: true,
-        tension: 0.4,
-      },
-    ],
-  };
+  const [totalReserve, setTotalReserve] = useState(0); // 이번달 예약 건수 상태
+  const [totalReservedPeople, setTotalReservedPeople] = useState(0); // 이번달 예약된 총 인원수 상태
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [ageData, setAgeData] = useState({ ...chartData.agedata });
+  console.log(ageData);
+  useEffect(() => {
+    axios
+      .get(`${backServer}/reservation/totalreservation/storeNo/90`)
+      .then((response) => {
+        setTotalReserve(response.data);
+      })
+      .catch((error) => {
+        console.error("예약 데이터 가져오기 실패:", error);
+      });
+  }, [backServer]);
 
-  // Bar chart data
-  const barData = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    datasets: [
-      {
-        label: "손님수",
-        data: [200, 300, 150, 400, 350, 100, 320],
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
-      },
-    ],
-  };
+  // 예약된 총 인원수 가져오기
+  useEffect(() => {
+    axios
+      .get(`${backServer}/reservation/totalreservedpeople/storeNo/90`)
+      .then((response) => {
+        setTotalReservedPeople(response.data);
+      })
+      .catch((error) => {
+        console.error("예약된 총 인원수 데이터 가져오기 실패:", error);
+      });
+  }, [backServer]);
 
-  const employeedata = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "홀직원",
-        data: [15, 25, 35, 40, 45, 60, 80, 60, 65, 70, 75, 85],
-        backgroundColor: "rgba(54, 162, 235, 0.5)",
-      },
-      {
-        label: "주방직원",
-        data: [5, 15, 25, 35, 50, 65, 70, 75, 70, 65, 63, 66],
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
-      },
-    ],
-  };
-
-  const employeeoptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "top",
-        labels: {
-          color: "white", // 레전드 텍스트 색상을 하얀색으로 설정
-        },
-      },
-      title: {
-        display: true,
-        text: "Worldwide Sales",
-        color: "white", // 타이틀 텍스트 색상을 하얀색으로 설정
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: "white", // X축 텍스트 색상
-        },
-      },
-      y: {
-        ticks: {
-          color: "white", // Y축 텍스트 색상
-        },
-      },
-    },
-  };
   return (
     <>
       <div className="dashboard-body">
@@ -151,9 +51,7 @@ function Ownerstatistics() {
           <div className="info-card">
             <div className="info-text">
               <h3>이번달 총 예약 수</h3>
-              <h2>
-                1,200건<span className="positive">+20%</span>
-              </h2>
+              <h2>{totalReserve}건</h2>
             </div>
             <div className="info-card-icon-bg">
               <RiReservedFill />
@@ -163,9 +61,7 @@ function Ownerstatistics() {
           <div className="info-card">
             <div className="info-text">
               <h3>방문한 총 고객 수</h3>
-              <h2>
-                3,300명 <span className="positive">+3%</span>
-              </h2>
+              <h2>{totalReservedPeople}명</h2> {/* 상태를 표시 */}
             </div>
             <div className="info-card-icon-bg">
               <FaPersonHalfDress />
@@ -214,23 +110,18 @@ function Ownerstatistics() {
             </div>
           </div>
 
-          <div className="satisfaction">
+          <div className="mf-ratio">
             <h3>남녀 비율</h3>
-            <p>From all projects</p>
-            <div className="satisfaction-rate">
-              <span>95%</span>
-              <p>Based on likes</p>
-            </div>
+            <Chart type="doughnut" data={chartData.doughnutData} />
           </div>
 
-          <div className="referral-tracking">
+          <div className="age-distribution">
             <h3>연령대 분포</h3>
-            <p>Invited: 145 people</p>
-            <p>Bonus: 1,465</p>
-            <div className="safety-score">
-              <span>9.3</span>
-              <p>Total Score</p>
-            </div>
+            <Chart
+              type="bar"
+              data={chartData.agedata}
+              options={chartOptions.generalOptions}
+            />
           </div>
         </div>
 
@@ -239,7 +130,11 @@ function Ownerstatistics() {
           {/* 그래프 섹션 */}
           <div className="chart-empl-container">
             <h3>매장 내 직원 수</h3>
-            <Bar data={employeedata} options={employeeoptions} />
+            <Chart
+              type="bar"
+              data={chartData.employeedata}
+              options={chartOptions.employeeOptions}
+            />
           </div>
 
           <div className="orders-overview">
@@ -270,12 +165,12 @@ function Ownerstatistics() {
         <div className="charts-section">
           <div className="chart-container">
             <h3>매출 그래프</h3>
-            <Line data={lineData} />
+            <Chart type="line" data={chartData.lineData} />
           </div>
 
           <div className="chart-container">
             <h3>이번주 손님 수</h3>
-            <Bar data={barData} />
+            <Chart type="bar" data={chartData.barData} />
           </div>
         </div>
       </div>

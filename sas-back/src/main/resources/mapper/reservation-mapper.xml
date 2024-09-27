@@ -2,4 +2,53 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.sas.reservation.model.dao.ReservationDao">
 
+	<!-- 이번 달 예약 건수를 조회하는 쿼리 -->
+    <select id="selectTotalReserve" resultType="int">
+    SELECT COUNT(*)
+    FROM reservation
+    WHERE store_no = #{storeNo}
+    AND TO_CHAR(reserve_date, 'YYYYMMDD')
+    BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
+    AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
+	</select>
+	
+	<!-- 이번 달 예약한 사람의 총 인원을 조회하는 쿼리 -->
+    <select id="selectTotalReservedPeople" resultType="int">
+    SELECT SUM(reserve_people)
+    FROM reservation
+    WHERE store_no = #{storeNo}
+    AND TO_CHAR(reserve_date, 'YYYYMMDD')
+    BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
+    AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
+    </select>
+    
+    <!-- 연령대별 예약 손님 수 조회 -->
+    <select id="selectAgeReservation" resultType="map">
+    SELECT 
+        CASE
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 10 AND 19 THEN '10대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 20 AND 29 THEN '20대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 30 AND 39 THEN '30대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 40 AND 49 THEN '40대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 50 AND 59 THEN '50대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 60 AND 69 THEN '60대'
+            ELSE '70대 이상'
+        END AS ageGroup,
+     count(*)  as totalPeople
+    FROM reservation
+    join user_tbl using (user_id)
+    WHERE store_no = #{storeNo}
+    AND TO_CHAR(reserve_date, 'YYYYMMDD') BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
+    AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
+    group by   CASE
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 10 AND 19 THEN '10대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 20 AND 29 THEN '20대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 30 AND 39 THEN '30대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 40 AND 49 THEN '40대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 50 AND 59 THEN '50대'
+            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 60 AND 69 THEN '60대'
+            ELSE '70대 이상'
+            end
+    </select>
+    
 </mapper>
