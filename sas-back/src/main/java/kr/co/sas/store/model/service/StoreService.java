@@ -171,7 +171,7 @@ public class StoreService {
 			result += storeDao.insertStoreFile(storeFile);
 		}//for
 		return result;
-	}
+	}//insertStoreImg
 
 
 }

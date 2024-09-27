@@ -2,6 +2,7 @@ package kr.co.sas.store.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -164,7 +166,13 @@ public class StoreController {
 	
 	@Operation(summary = "매장 사진")
 	@PostMapping(value = "/insertStoreImg")
-	public ResponseEntity<Boolean> insertStoreImg(@RequestBody MultipartFile[] storeFile, @RequestBody StoreDTO store) {
+	public ResponseEntity<Boolean> insertStoreImg(
+	        @RequestPart("storeFile") MultipartFile[] storeFile, 
+	        @RequestPart("store") StoreDTO store) {
+		
+	    // 데이터 로그
+	    System.out.println("StoreFileDTO : " + Arrays.toString(storeFile));
+		
 		List<StoreFileDTO> storeFileList = new ArrayList<StoreFileDTO>();
 		if(storeFile != null) {
 			String savepath = root + "/store/";

@@ -125,7 +125,8 @@
 			store_re_end=#{storeReEnd},
 			break_time_start=#{breakTimeStart},
 			break_time_end=#{breakTimeEnd},
-			deposit=#{deposit}
+			deposit=#{deposit},
+			store_class=#{storeClass}
 		where store_no=#{storeNo}
 	</update>
 	
