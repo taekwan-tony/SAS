@@ -160,6 +160,27 @@ public class StoreController {
 		int result = storeService.insertSeat(seat);
 		return ResponseEntity.ok(result > 0);
 	}//insertSeat
+	
+	
+	@Operation(summary = "매장 사진")
+	@PostMapping(value = "/insertStoreImg")
+	public ResponseEntity<Boolean> insertStoreImg(@RequestBody MultipartFile[] storeFile, @RequestBody StoreDTO store) {
+		List<StoreFileDTO> storeFileList = new ArrayList<StoreFileDTO>();
+		if(storeFile != null) {
+			String savepath = root + "/store/";
+			for(MultipartFile file : storeFile) {
+				StoreFileDTO storeFileDTO = new StoreFileDTO();
+				String filename = file.getOriginalFilename();
+				String filepath = fileUtil.upload(savepath, file);
+				storeFileDTO.setSiFileName(filename);
+				storeFileDTO.setSiFilepath(filepath);
+				storeFileDTO.setStoreNo(store.getStoreNo());
+				storeFileList.add(storeFileDTO);
+			}//for
+		}//if
+		int result = storeService.insertStoreImg(store, storeFileList);
+		return ResponseEntity.ok(result == 1 + storeFileList.size());
+	}//insertStoreImg
 
 	
 	
