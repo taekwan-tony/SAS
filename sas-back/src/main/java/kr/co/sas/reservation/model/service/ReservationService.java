@@ -32,5 +32,9 @@ public class ReservationService {
 	    public List<Map<String, Object>> getAgeReservation(int storeNo) {
 	        return reservationDao.selectAgeReservation(storeNo);
 	    }
+	    // 예약 상태를 가져오는 서비스 메서드
+	    public List<Map<String, Object>> getReservationStatus(int storeNo) {
+	        return reservationDao.selectReservationStatus(storeNo);
+	    }
 }
 

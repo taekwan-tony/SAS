@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Line, Bar, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,7 +12,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import axios from "axios";
 
 ChartJS.register(
   CategoryScale,
@@ -174,30 +173,15 @@ export const chartOptions = {
 
 // 차트 컴포넌트
 function Chart({ type, data, options }) {
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  useEffect(() => {
-    axios
-      .get(`${backServer}/reservation/agereservation/storeNo/90`)
-      .then((res) => {
-        const data = chartData.agedata;
-        const dataArr = [0, 0, 0, 0, 0, 0, 0];
-        res.data.forEach((item, index) => {
-          dataArr[index] = item.TOTALPEOPLE;
-        });
-        data.datasets[0].data = dataArr;
-        if (type === "bar") {
-          return <Bar data={data} options={options} />;
-        } else if (type === "line") {
-          return <Line data={data} options={options} />;
-        } else if (type === "doughnut") {
-          return <Doughnut data={data} options={options} />; // 도넛 차트 처리
-        } else {
-          return <div>올바른 차트 타입을 입력하세요.</div>; // 올바른 타입이 아닌 경우 처리
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  if (type === "bar") {
+    return <Bar data={data} options={options} />;
+  } else if (type === "line") {
+    return <Line data={data} options={options} />;
+  } else if (type === "doughnut") {
+    return <Doughnut data={data} options={options} />; // 도넛 차트 처리
+  } else {
+    return <div>올바른 차트 타입을 입력하세요.</div>; // 올바른 타입이 아닌 경우 처리
+  }
 }
+
 export default Chart;

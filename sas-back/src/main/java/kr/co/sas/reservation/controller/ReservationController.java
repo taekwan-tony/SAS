@@ -43,4 +43,10 @@ public class ReservationController {
     	List<Map<String, Object>> ageData = reservationService.getAgeReservation(storeNo);
         return ResponseEntity.ok(ageData);
     }
+    // 예약 상태를 가져오는 엔드포인트
+    @GetMapping("/status/storeNo/{storeNo}")
+    public ResponseEntity<List<Map<String, Object>>> getReservationStatus(@PathVariable int storeNo) {
+        List<Map<String, Object>> reservationStatus = reservationService.getReservationStatus(storeNo);
+        return ResponseEntity.ok(reservationStatus);
+    }
 }

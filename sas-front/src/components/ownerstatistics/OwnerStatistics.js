@@ -9,9 +9,16 @@ import Chart, { chartData, chartOptions } from "../store/Chart";
 function Ownerstatistics() {
   const [totalReserve, setTotalReserve] = useState(0); // 이번달 예약 건수 상태
   const [totalReservedPeople, setTotalReservedPeople] = useState(0); // 이번달 예약된 총 인원수 상태
+  const [updatedChartData, setUpdatedChartData] = useState({
+    ...chartData,
+    agedata: {
+      labels: [],
+      datasets: [{ data: [] }],
+    },
+  });
+
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [ageData, setAgeData] = useState({ ...chartData.agedata });
-  console.log(ageData);
+
   useEffect(() => {
     axios
       .get(`${backServer}/reservation/totalreservation/storeNo/90`)
@@ -32,6 +39,36 @@ function Ownerstatistics() {
       })
       .catch((error) => {
         console.error("예약된 총 인원수 데이터 가져오기 실패:", error);
+      });
+
+    // 연령대 데이터 가져와서 차트 업데이트
+    axios
+      .get(`${backServer}/reservation/agereservation/storeNo/90`)
+      .then((response) => {
+        const fetchedData = response.data;
+        const ageLabels = fetchedData.map((item) => item.ageGroup);
+        const ageCounts = fetchedData.map((item) => item.totalPeople);
+
+        if (ageLabels.length > 0 && ageCounts.length > 0) {
+          console.log(1);
+          setUpdatedChartData((prevData) => ({
+            ...prevData,
+            agedata: {
+              ...prevData.agedata,
+              labels: ageLabels,
+              datasets: [
+                {
+                  ...prevData.agedata.datasets[0],
+                  data: ageCounts,
+                },
+              ],
+            },
+          }));
+          console.log(response);
+        }
+      })
+      .catch((error) => {
+        console.error("연령대 데이터 가져오기 실패:", error);
       });
   }, [backServer]);
 
@@ -112,14 +149,14 @@ function Ownerstatistics() {
 
           <div className="mf-ratio">
             <h3>남녀 비율</h3>
-            <Chart type="doughnut" data={chartData.doughnutData} />
+            <Chart type="doughnut" data={updatedChartData.doughnutData} />
           </div>
 
           <div className="age-distribution">
             <h3>연령대 분포</h3>
             <Chart
               type="bar"
-              data={chartData.agedata}
+              data={updatedChartData.agedata}
               options={chartOptions.generalOptions}
             />
           </div>

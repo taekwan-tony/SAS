@@ -49,6 +49,25 @@
             WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 60 AND 69 THEN '60대'
             ELSE '70대 이상'
             end
-    </select>
+    </select> 
+    
+    <!-- 예약 상태에 따른 필터링과 상태명을 조회하는 쿼리 -->
+	<select id="selectReservationStatus" resultType="map">
+    	SELECT 
+        	reserve_no,
+        	reserve_date,
+        	reserve_people,
+        	store_no,
+        	seat_no,
+        	user_id,
+        	CASE 
+            	WHEN reserve_pay_status = 0 THEN '입금대기'
+            	WHEN reserve_pay_status = 1 THEN '결제완료'
+            	WHEN reserve_pay_status = 2 THEN '취소'
+            	ELSE '알 수 없음'
+        	END AS reserveStatus
+    	FROM reservation
+    	WHERE store_no = #{storeNo}
+	</select>
     
 </mapper>
