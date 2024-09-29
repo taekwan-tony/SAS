@@ -126,17 +126,28 @@
   .reservation-info-wrap
   > .reservation-when
   > .time-btn-box
-  > button {
+  > label {
   width: 100%;
   height: 35px;
-  outline: none;
+  cursor: pointer;
+  text-align: center;
+  line-height: 35px;
 }
-
 .reservation-modal-wrap.first
   .reservation-info-wrap
   > .reservation-when
   > .time-btn-box
-  > button.disabled {
+  > input:checked
+  + label {
+  background-color: #fff;
+  color: var(--main1);
+  font-weight: bold;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-when
+  > .time-btn-box
+  > label.disabled {
   background-color: var(--font3);
   border: 1px solid var(--font3);
 }
@@ -144,7 +155,7 @@
   .reservation-info-wrap
   > .reservation-when
   > .time-btn-box
-  > button.disabled:hover {
+  > label.disabled:hover {
   background-color: var(--font3);
   border: 1px solid var(--font3);
   color: #fff;

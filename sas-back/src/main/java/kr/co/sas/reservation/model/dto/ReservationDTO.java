@@ -19,6 +19,7 @@ public class ReservationDTO {
 	private int reserveStatus;
 	private int reservePeople;
 	private int storeNo;
+	private String storeName;
 	private int seatNo;
 	private String userId;
 }

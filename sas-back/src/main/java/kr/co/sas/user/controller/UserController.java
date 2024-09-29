@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -78,6 +79,7 @@ public class UserController {
 			map.put("loginId", loginUser.getUserId());
 			map.put("userType", loginUser.getLoginType());
 			map.put("userNo", loginUser.getUserNo());
+			map.put("userNickname", loginUser.getUserNickname());
 			map.put("accessToken", loginUser.getAccessToken());
 			map.put("refreshToken", loginUser.getRefreshToken());
 			return ResponseEntity.ok(map);
@@ -143,24 +145,7 @@ public class UserController {
 		email.sendMail(emailTitle, receiver, emailContent);
 		return ResponseEntity.ok(sb.toString());
 	}
-	@GetMapping(value="/storeNo/{storeNo}")
-	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo) {
-		StoreDTO store = userService.getStoreinfo(storeNo);
-		if(store !=null) {
-			return ResponseEntity.ok(store);
-		}
-		return ResponseEntity.status(404).build();
-	}
-	@GetMapping(value="/storeNo/{storeNo}/menu")
-	public ResponseEntity<List> getMenuinfo(@PathVariable int storeNo){
-		List list = userService.getMenuinfo(storeNo);	
-		return ResponseEntity.ok(list);
-	}
-	@GetMapping(value="/storeNo/{storeNo}/review")
-	public ResponseEntity<List> getReviewinfo(@PathVariable int storeNo){
-		List list = userService.getReviewinfo(storeNo);
-		return ResponseEntity.ok(list);
-	}
+	
 	
 	@Operation(summary="회원정보 조회", description = "userNo를 받아와서 그에 해당하는 유저객체 반환, 없으면 404")
 	@GetMapping(value="/userNo/{userNo}")
@@ -171,6 +156,28 @@ public class UserController {
 		}
 		return ResponseEntity.status(404).build();
 	}
-
+	@GetMapping(value="/userId/{loginId}/getUserNickname")
+	public ResponseEntity<String> getUserNickname (@PathVariable String loginId){
+		String userNickname = userService.getUserNickname(loginId);
+		return ResponseEntity.ok(userNickname);
+	}
+	
+	@Operation(summary = "일반회원 프로필사진 업데이트", description = "이미지 파일을 form으로 받아와서 일반회원 정보 업데이트, 결과와 filepath를 반환")
+	@PatchMapping(value="/updateUserPhoto")
+	public ResponseEntity<Map> updateUserPhoto(@ModelAttribute UserDTO user, @ModelAttribute MultipartFile userImageFile){
+		Map map = new HashMap<String, Object>();
+		int result = 0;
+		if(userImageFile != null) {
+			String savepath = root + "/userProfile/";
+			String filepath = fileUtil.upload(savepath, userImageFile);
+			user.setUserPhoto(filepath);
+			result = userService.updateUserPhoto(user);
+			if(result>0) {
+				map.put("userPhoto", user.getUserPhoto());
+			}
+		}
+		map.put("result", result>0);
+		return ResponseEntity.ok(map);
+	}
 	
 }

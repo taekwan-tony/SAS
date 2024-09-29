@@ -10,9 +10,9 @@ const StoreMoodCheckBoxMUI = () => {
         control={
           <Checkbox
             sx={{
-              color: "#ccc", // 체크박스 기본 색상
+              color: "#ccc",
               "&.Mui-checked": {
-                color: "#518142 !important", // 체크박스 선택 시 색상 (우선순위 높임)
+                color: "#518142 !important",
               },
             }}
           />
@@ -20,8 +20,8 @@ const StoreMoodCheckBoxMUI = () => {
         label="데이트"
         sx={{
           "& .MuiFormControlLabel-label": {
-            color: "#fff", // 라벨 글씨 색상
-            fontSize: "20px", // 라벨 폰트 크기
+            color: "#fff",
+            fontSize: "20px",
             fontFamily: "ns-r",
           },
           marginRight: "100px",
@@ -87,6 +87,7 @@ const StoreMoodCheckBoxMUI = () => {
             fontSize: "20px",
             fontFamily: "ns-r",
           },
+          marginRight: "100px",
         }}
       />
     </FormGroup>

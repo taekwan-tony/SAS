@@ -20,4 +20,6 @@ public interface UserDao {
 
 	UserDTO selectOneUser(int userNo);
 
+	int updateUserPhoto(UserDTO user);
+
 }

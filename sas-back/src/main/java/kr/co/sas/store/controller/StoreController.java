@@ -1,24 +1,37 @@
 package kr.co.sas.store.controller;
 
-import java.util.HashMap;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
+import kr.co.sas.seat.model.dto.SeatDTO;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
+import kr.co.sas.store.model.dto.StoreFileDTO;
 import kr.co.sas.store.model.service.StoreService;
+import kr.co.sas.util.FileUtils;
 
 @CrossOrigin("*")
 @RestController
@@ -27,6 +40,12 @@ import kr.co.sas.store.model.service.StoreService;
 public class StoreController {
 	@Autowired
 	private StoreService storeService;
+	
+	@Autowired
+	private FileUtils fileUtil;
+	
+	@Value("${file.root}")
+	public String root;
 	
 	
 	@Operation(summary = "매장 점주 이메일 중복 체크", description = "이메일을 가져와서 중복 체크")
@@ -72,6 +91,32 @@ public class StoreController {
 		}//else
 	}//storeRefresh
 	
+	@GetMapping(value="/storeList")
+	public ResponseEntity<List> selectAllstore (){
+		List storeList = storeService.selectAllstore();
+		return ResponseEntity.ok(storeList);
+	}
+	
+	@GetMapping(value="/storeNo/{storeNo}/userNo/{userNo}")
+	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo, @PathVariable int userNo) {
+//		System.out.println(userNo);
+		StoreDTO store = storeService.getStoreinfo(storeNo, userNo);
+		System.out.println(store);
+		if(store !=null) {
+			return ResponseEntity.ok(store);
+		}
+		return ResponseEntity.status(404).build();
+	}
+	@GetMapping(value="/storeNo/{storeNo}/menu")
+	public ResponseEntity<List> getMenuinfo(@PathVariable int storeNo){
+		List list = storeService.getMenuinfo(storeNo);	
+		return ResponseEntity.ok(list);
+	}
+	@GetMapping(value="/storeNo/{storeNo}/review")
+	public ResponseEntity<List> getReviewinfo(@PathVariable int storeNo){
+		List list = storeService.getReviewinfo(storeNo);
+		return ResponseEntity.ok(list);
+	}
 	
 	@Operation(summary = "매장 비밀번호 변경", description ="새 비밀번호와 기존 비밀번호를 객체로 받아서 새 비밀번호로 변경")
 	@PostMapping(value = "/changePw")
@@ -91,6 +136,60 @@ public class StoreController {
 			return ResponseEntity.status(404).build();
 		}//else
 	}//checkPw
+	
+	
+	@Operation(summary = "매장 정보")
+	@PostMapping(value = "/insertStore")
+	public ResponseEntity<Boolean> insertStoreFrm(@RequestBody StoreDTO store) {
+		
+	    // 데이터 로그
+	    System.out.println("StoreDTO: " + store.toString());
+	    //System.out.println("Store Mood: " + storeMood);
+	    //System.out.println("Store Amenities: " + storeAmenities);
+
+	    int result = storeService.insertStoreFrm(store);
+	    return ResponseEntity.ok(result > 0);
+	}//insertStore
+	
+	
+	@Operation(summary = "매장 좌석 수")
+	@PostMapping(value = "/insertSeat")
+	public ResponseEntity<Boolean> insertSeat(@RequestBody SeatDTO seat) {
+		
+		// 데이터 로그
+		System.out.println("SeatDTO : " + seat.toString());
+		
+		int result = storeService.insertSeat(seat);
+		return ResponseEntity.ok(result > 0);
+	}//insertSeat
+	
+	
+	@Operation(summary = "매장 사진")
+	@PostMapping(value = "/insertStoreImg")
+	public ResponseEntity<Boolean> insertStoreImg(
+	        @RequestPart("storeFile") MultipartFile[] storeFile, 
+	        @RequestPart("store") StoreDTO store) {
+		
+	    // 데이터 로그
+	    System.out.println("StoreFileDTO : " + Arrays.toString(storeFile));
+		
+		List<StoreFileDTO> storeFileList = new ArrayList<StoreFileDTO>();
+		if(storeFile != null) {
+			String savepath = root + "/store/";
+			for(MultipartFile file : storeFile) {
+				StoreFileDTO storeFileDTO = new StoreFileDTO();
+				String filename = file.getOriginalFilename();
+				String filepath = fileUtil.upload(savepath, file);
+				storeFileDTO.setSiFileName(filename);
+				storeFileDTO.setSiFilepath(filepath);
+				storeFileDTO.setStoreNo(store.getStoreNo());
+				storeFileList.add(storeFileDTO);
+			}//for
+		}//if
+		int result = storeService.insertStoreImg(store, storeFileList);
+		return ResponseEntity.ok(result == 1 + storeFileList.size());
+	}//insertStoreImg
+
 	
 	
 	

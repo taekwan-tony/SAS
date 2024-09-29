@@ -68,6 +68,9 @@
 	</select>
 	<select id="getStoreinfo" resultType="store">
 		select store_no, store_name, store_addr, store_introduce, store_time
+		<if test="userNo!=0">
+		, (select count(*) from favorite join favorite_folder using(favorite_folder_no) where store_no=#{storeNo} and user_no = #{userNo}) is_favorite
+		</if>
 		from store 
 		where store_no = #{storeNo}
 	</select>
@@ -103,9 +106,44 @@
 	<select id="selectAllPayStore" resultType="store">
 		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
-	
+	<select id ="selectAllstore" resultType="store">
+		<!-- 
+			이미지 업로드까지 되면 다시 할 예정		
+		<selectKey order="BEFORE" resultType="int" keyProperty="si_file_no">
+			select min(si_file_no) from store_image_file where store_no=#{storeNo}
+		</selectKey>
+		 -->
+		select store_no,store_name,store_time,store_introduce,store_addr from store
+	</select>
 	
 	<select id="checkPw" resultType="store">
 		select * from store where so_email=#{soEmail} and so_pw=#{soPw}
 	</select>
+	
+	
+	<update id="insertStoreFrm">
+		update store set
+			store_name=#{storeName},
+			store_phone=#{storePhone},
+			store_introduce=#{storeIntroduce},
+			store_addr=#{storeAddr},
+			store_re_start=#{storeReStart},
+			store_re_end=#{storeReEnd},
+			break_time_start=#{breakTimeStart},
+			break_time_end=#{breakTimeEnd},
+			deposit=#{deposit},
+			store_class=#{storeClass}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<insert id="insertStoreFile">
+		insert into store_image_file values(si_file_no.nextval, #{storeNo}, #{siFileName}, #{siFilepath})
+	</insert>
+	
+	
+	
+	<insert id="insertSeat">
+		insert into seat values(seat_seq.nextval, #{seatCapacity}, #{seatAmount}, #{storeNo})
+	</insert>
 </mapper>

@@ -1,6 +1,8 @@
 package kr.co.sas.review.model.dto;
 
-import java.util.Date;
+
+
+import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
@@ -17,7 +19,7 @@ public class ReviewDTO {
 	private String reviewContent;
 	private Date reviewDate;
 	private int reviewScore;
-	private String userNickName;
+	private String userNickname;
 	private int storeNo;
 	private String reviewAnswer;
 	private String reviewAnswerDate;

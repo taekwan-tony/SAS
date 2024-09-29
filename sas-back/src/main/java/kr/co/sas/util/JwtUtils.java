@@ -32,7 +32,7 @@ public class JwtUtils {
 	 * 
 	 * */
 	//1시간짜리 토큰생성
-	public String createAccessToken(String userId,int loginType, int userNo) {
+	public String createAccessToken(String userId,int loginType, int userNo, String userNickname) {
 		//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 		SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 		//2. 토큰 생성시간 및 만료시간 설정
@@ -48,11 +48,12 @@ public class JwtUtils {
 						.claim("userId", userId)	//토큰에 포함할 회원정보 세팅(key = value)
 						.claim("userType", loginType) //토큰에 포함할 회원정보 세팅(key = value)
 						.claim("userNo", userNo)//토큰에 포함할 회원정보 세팅
+						.claim("userNickname", userNickname)
 						.compact();
 		return token;
 	}
 	//8760시간(1년)짜리 accessToken
-	public String createRefreshToken(String userId, int loginType, int userNo) {
+	public String createRefreshToken(String userId, int loginType, int userNo, String userNickname) {
 		//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 				SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 				//2. 토큰 생성시간 및 만료시간 설정
@@ -68,6 +69,7 @@ public class JwtUtils {
 								.claim("userId", userId)	//토큰에 포함할 회원정보 세팅(key = value)
 								.claim("userType", loginType) //토큰에 포함할 회원정보 세팅(key = value)
 								.claim("userNo", userNo)
+								.claim("userNickname", userNickname)
 								.compact();
 				return token;
 	}
@@ -84,10 +86,12 @@ public class JwtUtils {
 			String userId = (String)claims.get("userId");
 			int loginType = (int)claims.get("userType");
 			int userNo = (int)claims.get("userNo");
+			String userNickname = (String)claims.get("userNickname");
 			LoginUserDTO loginUser = new LoginUserDTO();
 			loginUser.setUserId(userId);
 			loginUser.setLoginType(loginType);
 			loginUser.setUserNo(userNo);
+			loginUser.setUserNickname(userNickname);
 			return loginUser;
 		}
 		
@@ -98,7 +102,7 @@ public class JwtUtils {
 		 * 
 		 * */
 		//1시간짜리 토큰생성
-		public String storeCreateAccessToken(String soEmail,int type) {
+		public String storeCreateAccessToken(String soEmail,int type, int storeNo) {
 			//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 			SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 			//2. 토큰 생성시간 및 만료시간 설정
@@ -113,11 +117,13 @@ public class JwtUtils {
 							.signWith(key)					//암호화서명
 							.claim("soEmail", soEmail)	//토큰에 포함할 회원정보 세팅(key = value)
 							.claim("type", type) //토큰에 포함할 회원정보 세팅(key = value)
+							.claim("storeNo", storeNo) //토큰에 포함할 회원정보 세팅(key = value)
 							.compact();
 			return token;
 		}
+		
 		//8760시간(1년)짜리 accessToken
-		public String storeCreateRefreshToken(String soEmail, int type) {
+		public String storeCreateRefreshToken(String soEmail, int type, int storeNo) {
 			//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 					SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 					//2. 토큰 생성시간 및 만료시간 설정
@@ -132,6 +138,7 @@ public class JwtUtils {
 									.signWith(key)					//암호화서명
 									.claim("soEmail", soEmail)	//토큰에 포함할 회원정보 세팅(key = value)
 									.claim("type", type) //토큰에 포함할 회원정보 세팅(key = value)
+									.claim("storeNo", storeNo) //토큰에 포함할 회원정보 세팅(key = value)
 									.compact();
 					return token;
 		}
@@ -147,9 +154,11 @@ public class JwtUtils {
 											.getPayload();
 				String soEmail = (String)claims.get("soEmail");
 				int type = (int)claims.get("type");
+				int storeNo = (int)claims.get("storeNo");
 				LoginStoreDTO loginStore = new LoginStoreDTO();
 				loginStore.setSoEmail(soEmail);
 				loginStore.setType(type);
+				loginStore.setStoreNo(storeNo);
 				return loginStore;
 			}
 			

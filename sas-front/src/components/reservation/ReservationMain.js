@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isUserLoginState, loginUserIdState } from "../utils/RecoilData";
@@ -63,18 +63,19 @@ const ReservationMain = () => {
           }}
           style={customModalStyles}
         >
-          {" "}
           {reservationPage === 1 ? (
             <ReservationModalFirst
               reservation={reservation}
               setReservation={setReservation}
               setReservationPage={setReservationPage}
+              setIsReserveModalOpen={setIsReserveModalOpen}
             />
           ) : reservationPage === 2 ? (
             <ReservationModalSecond
               reservation={reservation}
               setReservationPage={setReservationPage}
               setIsReserveModalOpen={setIsReserveModalOpen}
+              isReserveModalOpen={isReserveModalOpen}
             />
           ) : (
             ""
@@ -88,9 +89,26 @@ const ReservationMain = () => {
 };
 
 const ReservationModalFirst = (props) => {
+  const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const setReservationPage = props.setReservationPage;
   const reservation = props.reservation;
   const setReservation = props.setReservation;
+  const setIsReserveModalOpen = props.setIsReserveModalOpen;
+  const isReserveModalOpen = props.isReserveModalOpen;
+  useEffect(() => {
+    if (!isReserveModalOpen) {
+      setReservation({
+        reserveDate: "",
+        // 결제여부는 매장 상세에서 가져와야함
+        reservePayStatus: 0,
+        reservePeople: 1,
+        //매장상세, 회원에서 가져와야 할 것들
+        storeNo: 0,
+        userId: loginUserId,
+      });
+    }
+  }, [isReserveModalOpen]);
+  // console.log(reservation.reservePeople, typeof reservation.reservePeople);
   const peoplePlus = () => {
     setReservation({
       ...reservation,
@@ -115,7 +133,7 @@ const ReservationModalFirst = (props) => {
     dayNow.getDate() < 10 ? `0${dayNow.getDate()}` : dayNow.getDate();
   const today = `${year}-${month}-${date}`;
   const timeNow = format(dayNow, "hh:mm");
-  console.log(timeNow);
+  // console.log(timeNow);
   const [selected, setSelected] = useState(today);
 
   // 예약하기 버튼 클릭
@@ -226,6 +244,7 @@ const ReservationModalSecond = (props) => {
         <button
           className="btn-main round"
           onClick={() => {
+            setReservationPage(1);
             setIsReserveModalOpen(false);
           }}
         >
@@ -240,7 +259,16 @@ const ReserveTimeBox = () => {
   return (
     <div className="time-btn-box">
       {/* 버튼 활성화 안할때 disabled 라는 클래스명 추가할것 */}
-      <button className="round time-btn btn-main">오후 5:00</button>
+      <input
+        name="reserveTime"
+        type="radio"
+        value={"오후 5:00"}
+        id={"radioButton"} //key로 가져올듯
+        style={{ display: "none" }}
+      />
+      <label className="round time-btn btn-main" htmlFor="radioButton">
+        오후 5:00
+      </label>
     </div>
   );
 };

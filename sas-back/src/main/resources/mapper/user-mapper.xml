@@ -60,9 +60,16 @@
 		select * from favorite_folder where user_no=#{userNo}
 	</select>
 	<select id="selectReservationList" resultType="reservation">
-		select * from reservation where user_id=#{userId}
+		select * from 
+		(select rownum as rnum, r.* from 
+		(select reserve_date, reserve_status, reserve_people, store_name 
+		from reservation join store using(store_no) where user_id=#{userId} and reserve_status =0 order by 
+1)r )rnum_tbl where rnum between 1 and 3
 	</select>
 	<select id="selectReviewList" resultType="review">
 		select * from review where user_nickname=#{userNickname}
 	</select>
+	<update id="updateUserPhoto">
+		update user_tbl set user_photo=#{userPhoto} where user_no = #{userNo}
+	</update>
 </mapper>
