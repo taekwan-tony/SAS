@@ -35,6 +35,9 @@ const MenuView = () => {
           )
           .then((res) => {
             console.log(res);
+            if (res.data) {
+              setStore({ ...store, favorite: false });
+            }
           })
           .catch((err) => {
             console.log(err);
@@ -44,6 +47,9 @@ const MenuView = () => {
           .post(`${backServer}/favorite/userNo/${loginUserNo}`)
           .then((res) => {
             console.log(res);
+            if (res.data) {
+              setStore({ ...store, favorite: true });
+            }
           });
       }
     }
