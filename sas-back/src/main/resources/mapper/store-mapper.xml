@@ -59,9 +59,10 @@
 			        store_request_date,
 			        so_email,
 			        so_phone,
-			        so_name
+			        so_name,
+			        to_char(store_enroll_date,'yyyy-mm-dd') as store_enroll_date
 			    from store 
-		 		where regist_type = #{storeType}
+		 		where regist_type = #{storeType} and type=1
 			     order by store_no desc)s)
 			where rnum between #{pi.start} and #{pi.end}
 	</select>

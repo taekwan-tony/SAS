@@ -38,5 +38,5 @@ public class StoreDTO {
 	private int type;
 	private int servicePrice;
 	private String storeRequestDate;
-	private Date storeEnrollDate;
+	private String storeEnrollDate;
 }
