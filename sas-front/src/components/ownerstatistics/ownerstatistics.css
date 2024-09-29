@@ -65,6 +65,7 @@
   font-size: 1.2rem;
   color: #bfbfbf;
   padding: 10px;
+  margin-left: -10px;
 }
 
 .info-card h2 {
@@ -139,6 +140,34 @@
   padding-top: 20px;
   font-size: 1rem;
 }
+.mf-ratio {
+  flex: 1;
+  height: 225px;
+  background: linear-gradient(50deg, #222623 50%, #29482a47 99%);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.mf-ratio canvas {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 90% !important;
+  width: 45% !important;
+}
+.age-distribution {
+  flex: 1;
+  height: 225px;
+  background: linear-gradient(50deg, #222623 50%, #29482a47 99%);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+.age-distribution canvas {
+  height: 85% !important;
+  width: 100% !important;
+}
 .bottom-section .projects,
 .bottom-section .orders-overview {
   flex: 1;
@@ -162,17 +191,28 @@
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+  height: 500px;
+  overflow-y: visible;
+}
+.chart-container canvas {
+  height: 93% !important;
+  width: 100% !important;
 }
 .chart-empl-container {
   flex: 1;
   background: linear-gradient(50deg, #222623 20%, #0e110e, #13241747 80%);
-  padding: 50px;
+  padding: 35px;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   width: 100%; /* 부모의 100% 크기로 설정 */
-  height: 300px; /* 차트 높이를 적절히 설정 */
+  height: 350px; /* 차트 높이를 적절히 설정 */
   overflow: visible; /* 잘리지 않도록 설정 */
+}
+.chart-empl-container h3 {
+  margin-top: -10px;
+}
+.chart-empl-container canvas {
+  margin-top: -20px;
 }
 .orders-overview ul {
   list-style: none; /* 기본 리스트 스타일 제거 */
