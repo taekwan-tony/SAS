@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.sas.favorite.model.dao.FavoriteDao;
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.menu.model.dto.MenuDTO;
 import kr.co.sas.review.model.dao.ReviewDao;
@@ -34,14 +35,18 @@ public class UserService {
 	private BCryptPasswordEncoder encoder;
 	@Autowired
 	private JwtUtils jwtUtils;
-	
+	@Autowired
+	private FavoriteDao favoriteDao;
 	
 	@Transactional
 	public int insertUser(UserDTO user) {
-		System.out.println(user.getUserPw());
+//		System.out.println(user.getUserPw());
 		user.setUserPw(encoder.encode(user.getUserPw()));
-		System.out.println(user.getUserPw());
+//		System.out.println(user.getUserPw());
 		int result = userDao.insertUser(user);
+		if(result>0) {
+			result = favoriteDao.insertStandardFavorieFolder();
+		}
 		return result;
 	}
 

@@ -57,7 +57,7 @@
 		<collection property="reviewList" select="selectReviewList" column="user_nickname" javaType="java.util.List" ofType="review"/>
 	</resultMap>
 	<select id="selectFavoriteFolderList" resultType="favoriteFolder">
-		select * from favorite_folder where user_no=#{userNo}
+		select * from favorite_folder where user_no=#{userNo} and favorite_folder_name!='기본폴더'
 	</select>
 	<select id="selectReservationList" resultType="reservation">
 		select * from 

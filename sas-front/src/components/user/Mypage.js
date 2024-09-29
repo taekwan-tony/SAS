@@ -60,7 +60,7 @@ const MypageMain = () => {
     <>
       <Profile user={user} setUser={setUser} />
       <section className="reserve-list mypage-list-wrap">
-        <Link to="#">더보기</Link>
+        <Link to="resview">더보기</Link>
         <h3 className="title">
           나의 예약{" "}
           <span className="count">
@@ -70,7 +70,7 @@ const MypageMain = () => {
 
         {user.reservationList ? (
           user.reservationList.length === 0 ? (
-            <EmptyBox text={"예약 내역이 존재하지 않습니다"} />
+            <EmptyBox text={"진행중인 예약이 존재하지 않습니다"} />
           ) : (
             <div className="reserve-content-wrap list-content">
               {user.reservationList.map((reserve, index) => {
@@ -79,7 +79,7 @@ const MypageMain = () => {
             </div>
           )
         ) : (
-          <EmptyBox text={"예약 내역이 존재하지 않습니다"} />
+          <EmptyBox text={"진행중인 예약이 존재하지 않습니다"} />
         )}
       </section>
       <section className="mypage-list-wrap favorite-list">

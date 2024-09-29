@@ -273,4 +273,4 @@ const ReserveTimeBox = () => {
   );
 };
 
-export default ReservationMain;
+export { ReservationModalFirst, ReservationModalSecond, ReserveTimeBox };
