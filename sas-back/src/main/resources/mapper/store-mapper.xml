@@ -71,6 +71,11 @@
 		from store 
 		where store_no = #{storeNo}
 	</select>
+	<select id="selectOneStoreInfo" resultType="store">
+		select store_no, store_name, store_addr, store_phone, store_time,business_number,so_name,so_phone,map_x,map_y
+		from store 
+		where store_no = #{storeNo}
+	</select>
 
 	
 	<update id="approvalStore">

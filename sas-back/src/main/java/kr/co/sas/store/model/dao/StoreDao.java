@@ -34,5 +34,7 @@ public interface StoreDao {
 
 	StoreDTO checkPw(StoreDTO store);
 
+	StoreDTO selectOneStoreInfo(int storeNo);
+
 
 }

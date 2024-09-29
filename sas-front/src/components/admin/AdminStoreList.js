@@ -59,7 +59,12 @@ const StoreItem = (props) => {
   const store = props.store;
   const navigate = useNavigate();
   return (
-    <tr onClick={navigate(`/admin/store/storeDetail/${store.storeNo}`)}>
+    <tr
+      className="admin-store-select-wrap"
+      onClick={() => {
+        navigate(`/admin/store/storeDetail/${store.storeNo}`);
+      }}
+    >
       <td style={{ width: "10%" }}>{store.storeNo}</td>
       <td style={{ width: "20%" }}>{store.storeEnrollDate}</td>
       <td style={{ width: "15%" }}>{store.soName}</td>

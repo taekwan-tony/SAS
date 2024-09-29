@@ -82,6 +82,15 @@ public class AdminService {
 	}
 
 
+	public Map storeDetail(int storeNo) {
+		StoreDTO store = storeDao.selectOneStoreInfo(storeNo);
+		System.out.println(store.getStoreName());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("store", store);
+		return map;
+	}
+
+
 	
 
 }

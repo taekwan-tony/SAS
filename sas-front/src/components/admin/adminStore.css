@@ -118,3 +118,58 @@
 .admin-store-button-zone > button {
   width: 100px;
 }
+
+.admin-store-select-wrap {
+  cursor: pointer;
+}
+
+.admin-store-select-wrap:hover > * {
+  background-color: var(--main2);
+  color: white;
+}
+
+.admin-store-detail-wrap {
+  min-width: 900px;
+  width: 70%;
+  margin: 50px auto;
+}
+
+.admin-store-detail-info {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+}
+
+.admin-store-detail-info-wrap {
+  width: 45%;
+  border: 1px solid var(--font3);
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.admin-store-detail-data-wrap {
+  width: 50%;
+  border: 1px solid var(--font3);
+  border-radius: 10px;
+}
+.admin-store-detail-info-title > h4 {
+  text-align: center;
+}
+.admin-store-detail-info-content {
+  margin-top: 20px;
+}
+.admin-store-detail-info-content > div {
+  margin-top: 20px;
+}
+.admin-store-detail-info-content > div span {
+  font-size: 18px;
+}
+
+.admin-store-detail-business {
+  display: flex;
+  gap: 30px;
+}
+.admin-store-detail-map-data > div {
+  width: 100%;
+  height: 200px;
+}

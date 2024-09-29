@@ -33,8 +33,8 @@ public class StoreDTO {
 	private int deposit;
 	private int registType;
 	private String storeIntroduce;
-	private int mapX;
-	private int mapY;
+	private double mapX;
+	private double mapY;
 	private int type;
 	private int servicePrice;
 	private String storeRequestDate;

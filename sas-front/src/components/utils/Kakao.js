@@ -3,6 +3,7 @@ import { useEffect } from "react";
 const KaKao = (props) => {
   const storeAddr = props.addr;
   const storeName = props.name;
+
   console.log(storeAddr);
   useEffect(() => {
     const { kakao } = window;
@@ -39,15 +40,7 @@ const KaKao = (props) => {
     });
   }, []);
 
-  return (
-    <div
-      id="map"
-      style={{
-        width: "500px",
-        height: "500px",
-      }}
-    ></div>
-  );
+  return <div id="map"></div>;
 };
 
 export default KaKao;
