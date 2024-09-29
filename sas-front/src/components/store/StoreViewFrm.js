@@ -16,13 +16,14 @@ const StoreViewFrm = () => {
   const navigate = useNavigate();
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
+  const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
 
   useEffect(() => {
     storeRefreshLogin();
-    window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
-  }, []);
+    const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
 
-  let storeNumber = null; // 함수 외부에서 변수 선언
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 정리
+  }, []);
 
   const storeRefreshLogin = () => {
     const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
@@ -34,7 +35,7 @@ const StoreViewFrm = () => {
           setLoginSoEmail(res.data.soEmail);
           setStoreType(res.data.storeType);
           console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
-          storeNumber = res.data.storeNo; // 함수 외부 변수에 storeNo 값 할당
+          setStoreNumber(res.data.storeNo); // storeNumber 상태 업데이트
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "storeRefreshToken",
@@ -51,17 +52,13 @@ const StoreViewFrm = () => {
     }
   };
 
-  // 다른 곳에서 storeNumber를 사용
-  console.log(storeNumber); // storeRefreshLogin 함수 실행 후 값이 저장됨
-
   const [store, setStore] = useState({
-    storeNo: storeNumber,
-    soName: "",
+    storeNo: null,
     storeName: "",
     storePhone: "",
     storeAddr: "",
     storeTime: "",
-    //storeClass: "",
+    storeClass: "",
     storeReStart: "",
     storeReEnd: "",
     breakTimeStart: "",
@@ -70,13 +67,35 @@ const StoreViewFrm = () => {
     storeIntroduce: "",
   });
 
-  const [storeMood, setStoreMood] = useState("");
+  // storeNumber가 업데이트될 때마다 실행
+  useEffect(() => {
+    if (storeNumber !== null) {
+      setStore((prevStore) => ({
+        ...prevStore,
+        storeNo: storeNumber, // storeNumber가 바뀔 때 storeNo 업데이트
+      }));
+      setSeat((prevSeat) => ({
+        ...prevSeat,
+        storeNo: storeNumber,
+      }));
+      setStoreMood((prevMood) => ({
+        ...prevMood,
+        storeNo: storeNumber,
+      }));
+    }
+  }, [storeNumber]);
+
+  const [storeMood, setStoreMood] = useState({
+    storeNo: null,
+    mood: "",
+  });
   const [storeAmenities, setStoreAmenities] = useState("");
 
   const [selectedMoods, setSelectedMoods] = useState([]);
   const [selectedAmenities, setSelectedAmenities] = useState([]);
 
   const [seat, setSeat] = useState({
+    storeNo: null,
     seatCapacity: 0,
     seatAmount: 0,
   });
@@ -92,12 +111,17 @@ const StoreViewFrm = () => {
   const [delStoreFileNo, setDelStoreFileNo] = useState("");
 
   const addStoreFile = (e) => {
-    const files = Array.from(e.target.files); // Array.from으로 변경
-    const fileArr = [...storeFile, ...files];
-    const filenameArr = [...showStoreFile, ...files.map((file) => file.name)];
+    const files = e.currentTarget.files;
+    const fileArr = new Array();
+    const filenameArr = new Array();
 
-    setStoreFile(fileArr);
-    setShowStoreFile(filenameArr);
+    for (let i = 0; i < files.length; i++) {
+      fileArr.push(files[i]);
+      filenameArr.push(files[i].name);
+    }
+
+    setStoreFile([...storeFile, ...fileArr]);
+    setShowStoreFile([...showStoreFile, ...filenameArr]);
 
     console.log("선택한 파일 :", fileArr); // 디버깅용 로그 추가
   };
@@ -145,7 +169,11 @@ const StoreViewFrm = () => {
 
   // 매장 유형 변경 핸들러
   const handleChange = (event) => {
-    setStore({ ...store, storeClass: event.target.value });
+    const { value } = event.target;
+    setStore((prevStore) => ({
+      ...prevStore, // 기존 store 값 유지
+      storeClass: value, // 선택된 값을 storeClass에 저장
+    }));
   };
 
   const handleMoodChange = (event) => {
@@ -173,31 +201,21 @@ const StoreViewFrm = () => {
   };
 
   const storeModify = () => {
-    const formData = new FormData();
+    const form = new FormData();
 
-    // store 객체를 문자열로 변환해서 추가
-    formData.append("store", JSON.stringify(store));
+    //파일 추가
+    for (let i = 0; i < storeFile.length; i++) {
+      form.append("storeFile", storeFile[i]);
+    }
 
-    // 선택된 파일들을 추가
-    storeFile.forEach((file) => {
-      formData.append("storeFile", file);
-    });
-
-    // 분위기와 편의시설 데이터를 배열로 추가
-    selectedMoods.forEach((mood) => {
-      formData.append("storeMood", mood); // 배열의 각 요소를 별도로 추가
-    });
-
-    selectedAmenities.forEach((amenity) => {
-      formData.append("storeAmenities", amenity); // 배열의 각 요소를 별도로 추가
-    });
+    // 매장 정보 추가 (JSON 형태로)
+    form.append("store", JSON.stringify(store)); // "store" 키로 StoreDTO 객체 추가
 
     // 데이터가 올바르게 들어가 있는지 콘솔로 확인
     console.log("FormData (Store):", store);
     console.log("FormData (Files):", storeFile);
-    console.log("FormData (Mood):", selectedMoods);
-    console.log("FormData (Amenities):", selectedAmenities);
 
+    // 매장 정보
     axios.post(`${backServer}/store/insertStore`, store).then((res) => {
       console.log(res.data);
       if (res.data) {
@@ -216,17 +234,20 @@ const StoreViewFrm = () => {
       }
     });
 
+    // 매장 좌석 수
     axios
       .post(`${backServer}/store/insertSeat`, seat)
       .then((res) => {
         console.log(res.data);
         if (res.data) {
-          console.log("매장 좌석수 등록");
+          console.log("매장 좌석수 등록 완료");
         }
       })
       .catch((err) => {
         console.log("좌석 에러 :", err);
       });
+
+    // 매장 사진 및 매장 정보 요청
   };
 
   const storeThumbnail = () => {
@@ -347,25 +368,6 @@ const StoreViewFrm = () => {
                 </tr>
                 <tr className="storeView-tr">
                   <th className="storeView-th">
-                    <label htmlFor="soName" className="storeView-label">
-                      점주 이름
-                    </label>
-                  </th>
-                  <td>
-                    <div className="storeView-div">
-                      <input
-                        className="storeView-inputBox"
-                        type="text"
-                        id="soName"
-                        name="soName"
-                        value={store.soName}
-                        onChange={changeStore}
-                      ></input>
-                    </div>
-                  </td>
-                </tr>
-                <tr className="storeView-tr">
-                  <th className="storeView-th">
                     <label htmlFor="storeName" className="storeView-label">
                       매장 상호명
                     </label>
@@ -404,8 +406,8 @@ const StoreViewFrm = () => {
                 </tr>
                 <tr className="storeView-tr">
                   <th className="storeView-th">
-                    <label htmlFor="storeNews" className="storeView-label">
-                      매장 소식
+                    <label htmlFor="storeIntroduce" className="storeView-label">
+                      매장 소개
                     </label>
                   </th>
                   <td className="storeView-td">
@@ -636,10 +638,7 @@ const StoreViewFrm = () => {
                   </th>
                   <td>
                     <div className="storeView-div">
-                      <StoreMoodCheckBoxMUI
-                        selectedMoods={selectedMoods} // 부모 상태를 전달
-                        onMoodChange={handleMoodChange} // 부모 핸들러를 전달
-                      />
+                      <StoreMoodCheckBoxMUI value={storeMood} />
                     </div>
                   </td>
                 </tr>
@@ -651,10 +650,7 @@ const StoreViewFrm = () => {
                   </th>
                   <td>
                     <div className="storeView-div">
-                      <StoreAmenitiesCheckBoxMUI
-                        value={storeAmenities}
-                        onAmenitiesChange={handleAmenitiesChange}
-                      />
+                      <StoreAmenitiesCheckBoxMUI value={storeAmenities} />
                     </div>
                   </td>
                 </tr>

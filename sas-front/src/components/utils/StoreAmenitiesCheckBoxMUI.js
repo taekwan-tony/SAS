@@ -16,33 +16,90 @@ const StoreAmenitiesCheckBoxMUI = ({ onAmenitiesChange }) => {
 
   return (
     <FormGroup row>
-      {["주차 여부", "키즈존", "반려동물 동반", "단체석"].map((amenity) => (
-        <FormControlLabel
-          key={amenity}
-          control={
-            <Checkbox
-              value={amenity}
-              checked={selectedAmenities.includes(amenity)}
-              onChange={handleAmenitiesChange}
-              sx={{
-                color: "#ccc",
-                "&.Mui-checked": {
-                  color: "#518142 !important",
-                },
-              }}
-            />
-          }
-          label={amenity}
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              color: "#fff",
-              fontSize: "20px",
-              fontFamily: "ns-r",
-            },
-            marginRight: "100px",
-          }}
-        />
-      ))}
+      <FormControlLabel
+        control={
+          <Checkbox
+            sx={{
+              color: "#ccc",
+              "&.Mui-checked": {
+                color: "#518142 !important",
+              },
+            }}
+          />
+        }
+        label="주차 여부"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "#fff",
+            fontSize: "20px",
+            fontFamily: "ns-r",
+          },
+          marginRight: "100px",
+        }}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            sx={{
+              color: "#ccc",
+              "&.Mui-checked": {
+                color: "#518142 !important",
+              },
+            }}
+          />
+        }
+        label="키즈존"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "#fff",
+            fontSize: "20px",
+            fontFamily: "ns-r",
+          },
+          marginRight: "100px",
+        }}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            sx={{
+              color: "#ccc",
+              "&.Mui-checked": {
+                color: "#518142 !important",
+              },
+            }}
+          />
+        }
+        label="반려동물 동반"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "#fff",
+            fontSize: "20px",
+            fontFamily: "ns-r",
+          },
+          marginRight: "100px",
+        }}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            sx={{
+              color: "#ccc",
+              "&.Mui-checked": {
+                color: "#518142 !important",
+              },
+            }}
+          />
+        }
+        label="단체석"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "#fff",
+            fontSize: "20px",
+            fontFamily: "ns-r",
+          },
+          marginRight: "100px",
+        }}
+      />
     </FormGroup>
   );
 };

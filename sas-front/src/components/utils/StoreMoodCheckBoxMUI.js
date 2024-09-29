@@ -3,46 +3,93 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-const StoreMoodCheckBoxMUI = ({ onMoodChange }) => {
-  const [selectedMoods, setSelectedMoods] = React.useState([]);
-
-  const handleMoodChange = (event) => {
-    const { value, checked } = event.target;
-    setSelectedMoods((prev) =>
-      checked ? [...prev, value] : prev.filter((mood) => mood !== value)
-    );
-    onMoodChange(event); // 부모 컴포넌트에 상태 전달
-  };
-
+const StoreMoodCheckBoxMUI = () => {
   return (
     <FormGroup row>
-      {["데이트", "단체", "조용한", "트렌디한"].map((mood) => (
-        <FormControlLabel
-          key={mood}
-          control={
-            <Checkbox
-              value={mood}
-              checked={selectedMoods.includes(mood)}
-              onChange={handleMoodChange}
-              sx={{
-                color: "#ccc",
-                "&.Mui-checked": {
-                  color: "#518142 !important",
-                },
-              }}
-            />
-          }
-          label={mood}
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              color: "#fff",
-              fontSize: "20px",
-              fontFamily: "ns-r",
-            },
-            marginRight: "100px",
-          }}
-        />
-      ))}
+      <FormControlLabel
+        control={
+          <Checkbox
+            sx={{
+              color: "#ccc",
+              "&.Mui-checked": {
+                color: "#518142 !important",
+              },
+            }}
+          />
+        }
+        label="데이트"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "#fff",
+            fontSize: "20px",
+            fontFamily: "ns-r",
+          },
+          marginRight: "100px",
+        }}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            sx={{
+              color: "#ccc",
+              "&.Mui-checked": {
+                color: "#518142 !important",
+              },
+            }}
+          />
+        }
+        label="단체"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "#fff",
+            fontSize: "20px",
+            fontFamily: "ns-r",
+          },
+          marginRight: "100px",
+        }}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            sx={{
+              color: "#ccc",
+              "&.Mui-checked": {
+                color: "#518142 !important",
+              },
+            }}
+          />
+        }
+        label="조용한"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "#fff",
+            fontSize: "20px",
+            fontFamily: "ns-r",
+          },
+          marginRight: "100px",
+        }}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            sx={{
+              color: "#ccc",
+              "&.Mui-checked": {
+                color: "#518142 !important",
+              },
+            }}
+          />
+        }
+        label="트렌디한"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "#fff",
+            fontSize: "20px",
+            fontFamily: "ns-r",
+          },
+          marginRight: "100px",
+        }}
+      />
     </FormGroup>
   );
 };

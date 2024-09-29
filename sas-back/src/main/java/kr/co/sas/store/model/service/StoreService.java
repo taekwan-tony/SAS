@@ -163,4 +163,15 @@ public class StoreService {
 	}//insertSeat
 
 
+	@Transactional
+	public int insertStoreImg(StoreDTO store, List<StoreFileDTO> storeFileList) {
+		int result = 0;
+		for(StoreFileDTO storeFile : storeFileList) {
+			storeFile.setStoreNo(store.getStoreNo());
+			result += storeDao.insertStoreFile(storeFile);
+		}//for
+		return result;
+	}//insertStoreImg
+
+
 }

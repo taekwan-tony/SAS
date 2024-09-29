@@ -130,7 +130,9 @@
   border-radius: 5px;
   text-align: center;
 }
-
+.reservation-section {
+  margin-top: 20%;
+}
 .reservation-info {
   display: flex;
   flex-direction: column;
