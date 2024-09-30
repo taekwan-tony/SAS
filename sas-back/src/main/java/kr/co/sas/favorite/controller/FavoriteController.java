@@ -1,9 +1,12 @@
 package kr.co.sas.favorite.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,4 +39,12 @@ public class FavoriteController {
 		int result = favoriteService.insertFavorite(favorite);
 		return ResponseEntity.ok(result>0);
 	}
+	
+	@Operation(summary = "즐겨찾기 목록 가져오기", description = "유저번호를 받아 즐겨찾기 목록 폴더 리스트 가져오기")
+	@GetMapping(value="/userNo/{userNo}/getFavoriteFolder")
+	public ResponseEntity<List> selectFavoriteFolder(@PathVariable int userNo){
+		List list = favoriteService.selectFavoriteFolder(userNo);
+		return ResponseEntity.ok(list);
+	}
+	
 }
