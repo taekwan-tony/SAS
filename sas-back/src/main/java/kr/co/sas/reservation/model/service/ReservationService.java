@@ -1,5 +1,7 @@
 package kr.co.sas.reservation.model.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.sas.reservation.model.dao.ReservationDao;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
+import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
 @Service
 public class ReservationService {
@@ -16,9 +19,7 @@ public class ReservationService {
 	
 		
 		public List<ReservationDTO> getAllReservation(int storeNo){
-			System.out.println("Fetching reservations for storeNo: " + storeNo);
 		    List<ReservationDTO> reservations = reservationDao.selectAllReservation(storeNo);
-		    System.out.println("Fetched from Dao: " + reservations);
 			return reservationDao.selectAllReservation(storeNo);
 		}
 
@@ -48,9 +49,13 @@ public class ReservationService {
 	    public int getLastMonthTotalReservation(int storeNo) {
 	        return reservationDao.selectLastMonthTotalReservation(storeNo);
 	    }
-	 // 지난달 예약된 총 인원수를 조회하는 메서드
+	    // 지난달 예약된 총 인원수를 조회하는 메서드
 	    public int getLastMonthTotalReservedPeople(int storeNo) {
 	        return reservationDao.selectLastMonthTotalReservedPeople(storeNo);
+	    }
+	    // 한 주간의 손님 수를 요일별로 가져오는 메서드
+	    public List<WeekCustomerDTO> getWeeklyCustomer(int storeNo) {
+	        return reservationDao.selectWeekCustomer(storeNo);
 	    }
 }
 
