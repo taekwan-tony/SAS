@@ -1,0 +1,44 @@
+/* 달력 셀의 기본 스타일 */
+.fc {
+  background-color: #1d1c1c;
+  padding: 10px;
+  border-radius: 15px; /* 모서리를 둥글게 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 박스 그림자 */
+}
+.fc-daygrid-day {
+  border: 1px solid #ddd; /* 경계선 색 */
+  height: 10vh;
+}
+
+/* 이벤트 항목 스타일 */
+.fc-daygrid-event {
+  background-color: #3b5f47;
+  color: white; /* 글자 색 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  padding: 2px 5px; /* 패딩 */
+  border: 1px solid #29482a47;
+}
+.fc-sticky {
+  color: #fff;
+}
+.fc-more-link {
+  color: #d1dace;
+}
+/* 더보기 팝업 전체 스타일 */
+.fc-more-popover.fc-day {
+  background-color: #363535; /* 팝업 배경색 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 */
+  padding: 10px; /* 내부 여백 */
+  border: 1px solid #000;
+}
+.fc-theme-standard .fc-popover-header {
+  background: none;
+  border-radius: 10px; /* 좌상단 모서리 둥글게 */
+}
+.fc-popover-title {
+  color: #fff;
+}
+.fc-day-today {
+  background-color: #19380e !important;
+}

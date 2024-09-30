@@ -52,6 +52,19 @@ function ManageReview({ comments }) {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>리뷰관리</h1>
+          <button className="button-bell">
+            <div className="user-box-bell">
+              <div className="user-page-box">
+                <div className="bellWrapper">
+                  <i className="fas fa-bell my-bell"></i>
+                </div>
+
+                <div className="circle first"></div>
+                <div className="circle second"></div>
+                <div className="circle third"></div>
+              </div>
+            </div>
+          </button>
         </header>
       </div>
       <div className="dashboard">
