@@ -974,3 +974,7 @@ footer {
     opacity: 0;
   }
 }
+
+.all-page-wrap > .notice-list-wrap {
+  margin-top: 50px;
+}
