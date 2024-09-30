@@ -19,4 +19,8 @@
 		</selectKey>
 		insert into favorite values(favorite_seq.nextval, #{favoriteFolderNo}, #{storeNo})
 	</insert>
+	
+	<select id="selectFavoriteFolder" resultType="favoriteFolder">
+		select favorite_folder_no, favorite_folder_name from favorite_folder where user_no = #{userNo}
+	</select>
 </mapper>

@@ -179,6 +179,19 @@ const MenuView = () => {
       height: "400px",
     },
   };
+  // 즐겨찾기에서 사용할 즐겨찾기 목록 가져오기
+  const [checkAddFolder, setCheckAddFolder] = useState(false);
+  useEffect(() => {
+    axios
+      .get(`${backServer}/favorite/userNo/${loginUserNo}/getFavoriteFolder`)
+      .then((res) => {
+        console.log(res.data);
+        setFavoriteFolderList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [loginUserNo, checkAddFolder]);
   return (
     <div className="menuview-bigwrap">
       <div className="menuview-wrap">
