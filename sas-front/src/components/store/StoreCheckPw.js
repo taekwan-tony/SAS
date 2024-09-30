@@ -23,12 +23,14 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
   const [newSoPwRe, setNewSoPwRe] = useState("");
 
   const [store, setStore] = useState({
+    storeNo: storeNo,
     soEmail: "",
     soPw: "",
   });
 
   const changeStorePw = () => {
-    if (newSoPw === newSoPwRe) {
+    console.log(store);
+    if (store.soPw === newSoPwRe) {
       axios.post(`${backServer}/store/changePw`, store).then((res) => {
         console.log(res);
         if (res.data) {
@@ -105,6 +107,9 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
       if (newSoPw === newSoPwRe) {
         setNewSoPwReMsg("새 비밀번호와 일치합니다.");
         setCheckNewSoPwRe(true);
+
+        // newSoPw와 newSoPwRe가 동일할 때 store의 soPw에 newSoPw를 저장
+        setStore({ ...store, soPw: newSoPw });
       } else {
         setNewSoPwReMsg("새 비밀번호와 일치하지 않습니다.");
         setCheckNewSoPwRe(false);
@@ -246,7 +251,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                                 <tr className="storechangePw-tr">
                                   <th className="storechangePw-th">
                                     <label
-                                      htmlFor="newSoPw"
+                                      htmlFor="soPw"
                                       className="storechangePw-pw-label"
                                     >
                                       새 비밀번호 입력
@@ -258,8 +263,8 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                                         className="storechangePw-inputBox"
                                         placeholder="새 비밀번호를 입력해주세요."
                                         type="text"
-                                        id="newSoPw"
-                                        name="newSoPw"
+                                        id="soPw"
+                                        name="soPw"
                                         value={newSoPw}
                                         onChange={changeNewSoPw}
                                       ></input>

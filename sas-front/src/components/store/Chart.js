@@ -62,18 +62,6 @@ export const chartData = {
     ],
   },
 
-  //이번주 손님
-  barData: {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    datasets: [
-      {
-        label: "손님수",
-        data: [200, 300, 150, 400, 350, 100, 320],
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
-      },
-    ],
-  },
-
   //매장직원
   employeedata: {
     labels: [
@@ -100,20 +88,6 @@ export const chartData = {
         label: "주방직원",
         data: [5, 15, 25, 35, 50, 65, 70, 75, 70, 65, 63, 66],
         backgroundColor: "rgba(75, 192, 192, 0.5)",
-      },
-    ],
-  },
-
-  // 도넛 차트 데이터 추가
-  doughnutData: {
-    labels: ["남자", "여자"],
-    datasets: [
-      {
-        label: "성별 비율",
-        data: [55, 45], // 예시 데이터 (남자 55%, 여자 45%)
-        backgroundColor: ["#1e90ff", "#ff1493"], // 파란색과 분홍색
-        borderColor: ["#1e90ff", "#ff1493"],
-        borderWidth: 1,
       },
     ],
   },

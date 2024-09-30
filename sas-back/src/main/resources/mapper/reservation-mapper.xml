@@ -1,84 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="kr.co.sas.reservation.model.dao.ReservationDao">
+<mapper
+	namespace="kr.co.sas.reservation.model.dao.ReservationDao">
 
 	<!-- 모든 예약을 조회하는 쿼리 -->
-    <select id="selectAllReservation" resultType="reservation">
-        SELECT reserve_no, reserve_date, reserve_pay_status, reserve_status, reserve_people, store_no, seat_no, user_id
-        FROM reservation
-        WHERE store_no = #{storeNo}
-        
-    </select>
+	<select id="selectAllReservation" resultType="reservation">
+		SELECT reserve_no, reserve_date, reserve_pay_status, reserve_status,
+		reserve_people, store_no, seat_no, user_id
+		FROM reservation
+		WHERE store_no = #{storeNo}
+
+	</select>
 
 	<!-- 이번 달 예약 건수를 조회하는 쿼리 -->
-    <select id="selectTotalReserve" resultType="int">
-    SELECT COUNT(*)
-    FROM reservation
-    WHERE store_no = #{storeNo}
-    AND TO_CHAR(reserve_date, 'YYYYMMDD')
-    BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
-    AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
+	<select id="selectTotalReserve" resultType="int">
+		SELECT COUNT(*)
+		FROM reservation
+		WHERE store_no = #{storeNo}
+		AND TO_CHAR(reserve_date, 'YYYYMMDD')
+		BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
+		AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
 	</select>
-	
+
 	<!-- 이번 달 예약한 사람의 총 인원을 조회하는 쿼리 -->
-    <select id="selectTotalReservedPeople" resultType="int">
-    SELECT SUM(reserve_people)
-    FROM reservation
-    WHERE store_no = #{storeNo}
-    AND TO_CHAR(reserve_date, 'YYYYMMDD')
-    BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
-    AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
-    </select>
-    
-    <!-- 연령대별 예약 손님 수 조회 -->
-    <select id="selectAgeReservation" resultType="map">
-    SELECT 
-        CASE
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 10 AND 19 THEN '10대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 20 AND 29 THEN '20대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 30 AND 39 THEN '30대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 40 AND 49 THEN '40대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 50 AND 59 THEN '50대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 60 AND 69 THEN '60대'
-            ELSE '70대 이상'
-        END AS ageGroup,
-     count(*)  as totalPeople
-    FROM reservation
-    join user_tbl using (user_id)
-    WHERE store_no = #{storeNo}
-    AND TO_CHAR(reserve_date, 'YYYYMMDD') BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
-    AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
-    group by   CASE
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 10 AND 19 THEN '10대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 20 AND 29 THEN '20대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 30 AND 39 THEN '30대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 40 AND 49 THEN '40대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,  to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 50 AND 59 THEN '50대'
-            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12) BETWEEN 60 AND 69 THEN '60대'
-            ELSE '70대 이상'
-            end
-    </select> 
-    
-    <!-- 예약 상태에 따른 필터링과 상태명을 조회하는 쿼리 -->
-	<select id="selectReservationStatus" resultType="map">
-    	SELECT 
-        	reserve_no,
-        	reserve_date,
-        	reserve_people,
-        	store_no,
-        	seat_no,
-        	user_id,
-        	CASE 
-            	WHEN reserve_pay_status = 0 THEN '입금대기'
-            	WHEN reserve_pay_status = 1 THEN '결제완료'
-            	WHEN reserve_pay_status = 2 THEN '취소'
-            	
-        	END AS reserveStatus
-    	FROM reservation
-    	WHERE store_no = #{storeNo}
-    	AND TO_CHAR(reserve_date, 'YYYYMMDD')
-    BETWEEN TO_CHAR(SYSDATE, 'YYYYMMDD')
-    AND TO_CHAR(SYSDATE + 7, 'YYYYMMDD')
+	<select id="selectTotalReservedPeople" resultType="int">
+		SELECT SUM(reserve_people)
+		FROM reservation
+		WHERE store_no = #{storeNo}
+		AND TO_CHAR(reserve_date, 'YYYYMMDD')
+		BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
+		AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
 	</select>
     <select id="selectReservationList" resultType="reservation">
     	select * from
@@ -96,41 +47,121 @@
 			where rnum between 1 and 5
     </select>
 	
+
+	<!-- 연령대별 예약 손님 수 조회 -->
+	<select id="selectAgeReservation" resultType="map">
+		SELECT
+		CASE
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 10 AND 19 THEN '10대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 20 AND 29 THEN '20대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 30 AND 39 THEN '30대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 40 AND 49 THEN '40대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 50 AND 59 THEN '50대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 60 AND 69 THEN '60대'
+		ELSE '70대 이상'
+		END AS ageGroup,
+		count(*) as totalPeople
+		FROM reservation
+		join user_tbl using (user_id)
+		WHERE store_no = #{storeNo}
+		AND TO_CHAR(reserve_date, 'YYYYMMDD') BETWEEN TO_CHAR(TRUNC(SYSDATE,
+		'MM'), 'YYYYMMDD')
+		AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
+		group by CASE
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 10 AND 19 THEN '10대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 20 AND 29 THEN '20대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 30 AND 39 THEN '30대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 40 AND 49 THEN '40대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 50 AND 59 THEN '50대'
+		WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+		BETWEEN 60 AND 69 THEN '60대'
+		ELSE '70대 이상'
+		end
+	</select>
+
+	<!-- 예약 상태에 따른 필터링과 상태명을 조회하는 쿼리 -->
+	<select id="selectReservationStatus" resultType="map">
+		SELECT
+		reserve_no,
+		TO_CHAR(reserve_date, 'YYYY-MM-DD HH24:MI') AS reserve_date,
+		reserve_people,
+		store_no,
+		seat_no,
+		user_id,
+		CASE
+		WHEN reserve_pay_status = 0 THEN '입금대기'
+		WHEN reserve_pay_status = 1 THEN '결제완료'
+		WHEN reserve_pay_status = 2 THEN '취소'
+
+		END AS reserveStatus
+		FROM reservation
+		WHERE store_no = #{storeNo}
+		AND TO_CHAR(reserve_date, 'YYYYMMDD')
+		BETWEEN TO_CHAR(SYSDATE, 'YYYYMMDD')
+		AND TO_CHAR(SYSDATE + 7, 'YYYYMMDD')
+	</select>
+
 	<!-- 모든 예약을 Map으로 조회하는 쿼리 -->
-    <select id="selectReservationGender" resultType="map">
-        SELECT 
-            r.reserve_no, 
-            r.reserve_date, 
-            r.reserve_pay_status, 
-            r.reserve_status, 
-            r.reserve_people, 
-            r.store_no, 
-            r.seat_no, 
-            r.user_id,
-            u.user_gender 
-        FROM reservation r
-        JOIN user_tbl u ON r.user_id = u.user_id
-        WHERE r.store_no = #{storeNo}
-    </select>
-    
-    <!-- 지난달 예약 건수를 조회하는 쿼리 -->
-<select id="selectLastMonthTotalReservation" resultType="int">
-    SELECT COUNT(*)
-    FROM reservation
-    WHERE store_no = #{storeNo}
-    AND TO_CHAR(reserve_date, 'YYYYMMDD')
-    BETWEEN TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1), 'YYYYMMDD')
-    AND TO_CHAR(LAST_DAY(ADD_MONTHS(SYSDATE, -1)), 'YYYYMMDD')
+	<select id="selectReservationGender" resultType="map">
+		SELECT
+		u.user_gender AS USER_GENDER,
+		COUNT(*) AS count
+		FROM
+		reservation r
+		JOIN
+		user_tbl u ON r.user_id = u.user_id
+		WHERE
+		r.store_no = #{storeNo}
+		GROUP BY
+		u.user_gender
+	</select>
+
+	<!-- 지난달 예약 건수를 조회하는 쿼리 -->
+	<select id="selectLastMonthTotalReservation" resultType="int">
+		SELECT COUNT(*)
+		FROM reservation
+		WHERE store_no = #{storeNo}
+		AND TO_CHAR(reserve_date, 'YYYYMMDD')
+		BETWEEN TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1), 'YYYYMMDD')
+		AND TO_CHAR(LAST_DAY(ADD_MONTHS(SYSDATE, -1)), 'YYYYMMDD')
+	</select>
+
+
+	<!-- 지난달 예약된 총 인원수를 조회하는 쿼리 -->
+	<select id="selectLastMonthTotalReservedPeople" resultType="int">
+		SELECT SUM(reserve_people)
+		FROM reservation
+		WHERE store_no = #{storeNo}
+		AND TO_CHAR(reserve_date, 'YYYYMMDD')
+		BETWEEN TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1), 'YYYYMMDD')
+		AND TO_CHAR(LAST_DAY(ADD_MONTHS(SYSDATE, -1)), 'YYYYMMDD')
+	</select>
+
+	<!-- 한 주간의 손님 수를 요일별로 조회하는 쿼리 -->
+    <select id="selectWeekCustomer" resultType="map">
+	SELECT
+	TO_CHAR(reserve_date, 'DAY') AS dayOfWeek,
+	SUM(reserve_people) AS customerCount
+	FROM
+	reservation
+	WHERE
+	store_no = #{storeNo}
+	AND reserve_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+	GROUP BY
+	TO_CHAR(reserve_date, 'DAY')
+	ORDER BY
+	MIN(reserve_date)
 </select>
-    
-    
-    <!-- 지난달 예약된 총 인원수를 조회하는 쿼리 -->
-<select id="selectLastMonthTotalReservedPeople" resultType="int">
-    SELECT SUM(reserve_people)
-    FROM reservation
-    WHERE store_no = #{storeNo}
-    AND TO_CHAR(reserve_date, 'YYYYMMDD')
-    BETWEEN TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1), 'YYYYMMDD')
-    AND TO_CHAR(LAST_DAY(ADD_MONTHS(SYSDATE, -1)), 'YYYYMMDD')
-</select>
+
 </mapper>

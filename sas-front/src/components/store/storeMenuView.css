@@ -98,6 +98,35 @@
   justify-content: center;
 }
 
+.storeMenuView-menu-btn-zone {
+  position: absolute;
+  left: 50%; /* 수평 가운데 정렬 */
+  transform: translateX(-50%); /* 버튼을 수평 중앙에 맞추기 위한 transform */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.storeMenu-menu-btn {
+  width: 200px;
+  height: 70px;
+  border: none;
+  background-color: #518142;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 590;
+  padding: 5px;
+}
+
+.storeMenu-menu-btn:hover {
+  border: none;
+  color: #518142;
+  background-color: #fff;
+  font-weight: 590;
+}
+
 .storeMenuView-storeMenuImg-btn {
   width: 160px;
   height: 70px;
@@ -225,7 +254,7 @@
   flex-direction: column;
   gap: 20px;
 }
-.info-card {
+.storeMenuView-info-card {
   position: relative;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
@@ -237,6 +266,7 @@
   align-items: center; /* 수직 가운데 정렬 */
   padding: 50px;
   margin-top: 50px;
+  padding-bottom: 140px;
 }
 
 .storeMenuView-close-div {

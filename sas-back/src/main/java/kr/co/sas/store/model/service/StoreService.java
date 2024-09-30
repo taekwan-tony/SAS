@@ -16,8 +16,10 @@ import kr.co.sas.review.model.dto.ReviewDTO;
 import kr.co.sas.seat.model.dto.SeatDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
+import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
+import kr.co.sas.store.model.dto.StoreMoodDTO;
 import kr.co.sas.util.JwtUtils;
 
 @Service
@@ -162,14 +164,36 @@ public class StoreService {
 
 
 	@Transactional
-	public int insertStoreImg(StoreDTO store, List<StoreFileDTO> storeFileList) {
+	public int insertStoreImg(int storeNo, List<StoreFileDTO> storeFileList) {
 		int result = 0;
 		for(StoreFileDTO storeFile : storeFileList) {
-			storeFile.setStoreNo(store.getStoreNo());
+			storeFile.setStoreNo(storeNo);
 			result += storeDao.insertStoreFile(storeFile);
 		}//for
 		return result;
 	}//insertStoreImg
+
+
+	@Transactional
+	public int insertStoreMood(int storeNo, List<StoreMoodDTO> storeMoodList) {
+		int result = 0;
+		for(StoreMoodDTO mood : storeMoodList) {
+			mood.setStoreNo(storeNo);
+			result += storeDao.insertStoreMood(mood);
+		}//for
+		return result;
+	}//insertStoreMood
+
+
+	@Transactional
+	public int insertStoreAmenities(int storeNo, List<StoreAmenitiesDTO> storeAMList) {
+		int result = 0;
+		for(StoreAmenitiesDTO amenities : storeAMList) {
+			amenities.setStoreNo(storeNo);
+			result += storeDao.insertStoreAmenities(amenities);
+		}//for
+		return result;
+	}//insertStoreAmenities
 
 
 }

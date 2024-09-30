@@ -6,6 +6,7 @@ import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
 import axios from "axios";
 import Recal from "./Recal";
+import { Link } from "react-router-dom";
 
 function ManageReserved() {
   const [inputValue, setInputValue] = useState(0); // 입력 값 관리
@@ -15,7 +16,7 @@ function ManageReserved() {
 
   const [reservations, setReservations] = useState([]);
   const [weekReservations, setWeekReservations] = useState([]);
-  const [storeNo, setStoreNo] = useState(88);
+  const [storeNo, setStoreNo] = useState();
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
   // 입금 상태별 예약 건수 상태
@@ -26,7 +27,7 @@ function ManageReserved() {
 
   useEffect(() => {
     axios
-      .get(`${backServer}/reservation/reservation/${storeNo}`)
+      .get(`${backServer}/reservation/reservation/90`)
       .then((response) => {
         setReservations(response.data);
 
@@ -68,7 +69,7 @@ function ManageReserved() {
   // 예약 데이터를 서버에서 가져옴
   useEffect(() => {
     axios
-      .get(`${backServer}/reservation/status/storeNo/${storeNo}`)
+      .get(`${backServer}/reservation/status/storeNo/90`)
       .then((response) => {
         // 입금 상태별로 필터링하여 카운트 계산
         const pending = response.data.filter(
@@ -78,7 +79,7 @@ function ManageReserved() {
           (reservation) => reservation.RESERVESTATUS === "결제완료"
         ).length;
         const cancelled = response.data.filter(
-          (reservation) => reservation.RESERVESTATUS === "결제취소"
+          (reservation) => reservation.RESERVESTATUS === "취소"
         ).length;
         console.log(response.data);
         // 상태별 카운트 설정
@@ -93,12 +94,13 @@ function ManageReserved() {
   }, [storeNo, backServer]);
   // 입금 상태에 따라 뱃지를 보여주는 함수
   const getPayStatusBadge = (payStatus) => {
+    console.log("입금 상태:", payStatus); // 상태 확인을 위한 로그
     switch (payStatus) {
       case "입금대기":
         return <span className="badge bg-warning">입금대기</span>;
       case "결제완료":
         return <span className="badge bg-success">입금완료</span>;
-      case "결제취소":
+      case "취소":
         return <span className="badge bg-danger">입금취소</span>;
       default:
         return <span className="badge bg-secondary">상태 미확인</span>;
@@ -110,7 +112,7 @@ function ManageReserved() {
       return "예약대기"; // 입금 완료이면 예약완료로 설정
     } else if (payStatus == "결제완료") {
       return "예약완료"; // 입금 대기일 경우 예약대기로 설정
-    } else if (payStatus == "결제취소") {
+    } else if (payStatus == "취소") {
       return "예약취소"; // 입금 취소일 경우 예약취소로 설정
     }
   };
@@ -156,19 +158,21 @@ function ManageReserved() {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>예약관리</h1>
-          <button className="button-bell">
-            <div className="user-box-bell">
-              <div className="user-page-box">
-                <div className="bellWrapper">
-                  <i className="fas fa-bell my-bell"></i>
-                </div>
+          <Link to="/usermain">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
 
-                <div className="circle first"></div>
-                <div className="circle second"></div>
-                <div className="circle third"></div>
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
               </div>
-            </div>
-          </button>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">
@@ -305,7 +309,7 @@ function ManageReserved() {
               {weekReservations.map((reservation, index) => {
                 return (
                   <tr key={reservation.RESERVE_NO}>
-                    <td>#{index + 1}</td>
+                    <td> {index + 1}</td>
                     <td>
                       {new Date(reservation.RESERVE_DATE).toLocaleDateString()}
                     </td>

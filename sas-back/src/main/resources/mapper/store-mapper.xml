@@ -138,7 +138,7 @@
 	
 	
 	<insert id="insertStoreFile">
-		insert into store_image_file values(si_file_no.nextval, #{storeNo}, #{siFileName}, #{siFilepath})
+		insert into store_image_file values(store_image_file_seq.nextval, #{siFileName}, #{siFilepath},#{storeNo})
 	</insert>
 	
 	
@@ -150,4 +150,16 @@
 	<update id="contractExpire">
 		update store set regist_type=3 where store_no = #{storeNo}
 	</update>
+	
+	
+	<insert id="insertStoreMood">
+	  insert into store_mood values
+	    (store_mood_seq.nextval, #{mood}, #{storeNo})
+	</insert>
+	
+	
+	<insert id="insertStoreAmenities">
+		insert into store_amenities values (store_amenities_seq.nextval, #{amenities}, #{storeNo})
+	</insert>
+
 </mapper>
