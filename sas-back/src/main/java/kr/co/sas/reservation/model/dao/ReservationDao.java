@@ -23,4 +23,6 @@ public interface ReservationDao {
 
 	List<ReservationDTO> selectReservationList(int storeNo);
 
+	List<ReservationDTO> selectReservationForCount(String date, int storeNo);
+
 }

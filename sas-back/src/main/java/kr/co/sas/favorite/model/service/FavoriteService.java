@@ -1,6 +1,8 @@
 package kr.co.sas.favorite.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,15 +37,20 @@ public class FavoriteService {
 	}
 
 
-	@Transactional
-	public int updateFolderNo(int favoriteFolderNo) {
-		int result = favoriteDao.updateFolderNo(favoriteFolderNo);
-		return result;
-	}
+
 
 	@Transactional
 	public int insertFavoriteFolder(FavoriteFolderDTO addFolder) {
 		int result = favoriteDao.insertFavoriteFolder(addFolder);
+		return result;
+	}
+
+	@Transactional
+	public int updateFolderNo(FavoriteDTO changeFolder) {
+		int favoriteNo = favoriteDao.getFavoriteNo(changeFolder);
+		System.out.println(favoriteNo);
+		changeFolder.setFavoriteNo(favoriteNo);
+		int result = favoriteDao.updateFolderNo(changeFolder);
 		return result;
 	}
 }

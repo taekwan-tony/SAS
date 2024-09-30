@@ -150,4 +150,20 @@
 	<update id="contractExpire">
 		update store set regist_type=3 where store_no = #{storeNo}
 	</update>
+	
+	<select id="getStoreReserveInfo" resultMap="getStoreReservation">
+		select store_no, store_re_start, store_re_end, break_time_start, break_time_end, deposit from store where store_no=#{storeNo}
+	</select>
+	<resultMap type="store" id="getStoreReservation">
+		<result column="store_no" property="storeNo"/>
+		<result column="store_re_start" property="storeReStart"/>
+		<result column="store_re_end" property="storeReEnd"/>
+		<result column="break_time_start" property="breakTimeStart"/>
+		<result column="break_time_end" property="breakTimeEnd"/>
+		<result column="deposit" property="deposit"/>
+		<collection property="seatList" select="selectSeatList" column="store_no" javaType="java.util.List" ofType="seat"/>
+	</resultMap>
+	<select id="selectSeatList" resultType="seat">
+		select seat_no, seat_capacity, seat_amount from seat where store_no=#{storeNo}
+	</select>
 </mapper>

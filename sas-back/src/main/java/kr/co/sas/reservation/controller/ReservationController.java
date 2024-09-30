@@ -1,5 +1,6 @@
 package kr.co.sas.reservation.controller;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.reservation.model.service.ReservationService;
 
@@ -48,5 +50,12 @@ public class ReservationController {
     public ResponseEntity<List<Map<String, Object>>> getReservationStatus(@PathVariable int storeNo) {
         List<Map<String, Object>> reservationStatus = reservationService.getReservationStatus(storeNo);
         return ResponseEntity.ok(reservationStatus);
+    }
+    
+    @Operation(summary = "예약 좌석 수 비교", description = "해당 날짜의 예약명단에서 시간과 좌석코드 가져와 반환")
+    @GetMapping(value="/reserveDate/{date}/storeNo/{storeNo}/selectReservationForCount")
+    public ResponseEntity<List> selectReservationForCount(@PathVariable String date, @PathVariable int storeNo){
+    	List list = reservationService.selectReservationForCount(date, storeNo);
+    	return ResponseEntity.ok(list);
     }
 }

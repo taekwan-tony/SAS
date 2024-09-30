@@ -23,6 +23,7 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 import Snackbar from "@mui/material/Snackbar";
 import {
+  ReservationMain,
   ReservationModalFirst,
   ReservationModalSecond,
 } from "../reservation/ReservationMain";
@@ -67,9 +68,10 @@ const MenuView = () => {
           });
       } else {
         axios
-          .post(
-            `${backServer}/favorite/storeNo/${store.storeNo}/userNo/${loginUserNo}`
-          )
+          .post(`${backServer}/favorite`, {
+            storeNo: store.storeNo,
+            userNo: loginUserNo,
+          })
           .then((res) => {
             // console.log(res);
             if (res.data) {
@@ -77,13 +79,15 @@ const MenuView = () => {
               handleOpen("즐겨찾기가 기본폴더에 저장되었습니다.", action);
               // setStore({ ...store, favorite: true });
             }
+          })
+          .catch((err) => {
+            console.log(err);
           });
       }
     }
   };
 
   // 예약 모달창 위한 설정-수진
-  const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
   const goTOReserve = () => {
     setIsReserveModalOpen(!isReserveModalOpen);
@@ -115,16 +119,6 @@ const MenuView = () => {
       overflow: "hidden",
     },
   };
-  const [reservationPage, setReservationPage] = useState(1);
-  const [reservation, setReservation] = useState({
-    reserveDate: "",
-    // 결제여부는 매장 상세에서 가져와야함
-    reservePayStatus: 0,
-    reservePeople: 1,
-    //매장상세, 회원에서 가져와야 할 것들
-    storeNo: 0,
-    userId: loginUserId,
-  });
 
   // 스낵바 연결-수진
   // 스낵바 설정(상태, 위치)
@@ -189,11 +183,13 @@ const MenuView = () => {
   });
   // 즐겨찾기 목록 폴더 이동
   const changeFavoriteFolder = () => {
+    const form = new FormData();
+    form.append("userNo", changeFolder.userNo);
+    form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
     axios
-      .patch(
-        `${backServer}/favorite/favoriteFolderNo/${changeFolder.favoriteFolderNo}/changeFolder`
-      )
+      .patch(`${backServer}/favorite/changeFolder`, changeFolder)
       .then((res) => {
+        console.log(res.data);
         if (res.data) {
           setIsFavoriteModalOpen(false);
           handleOpen("즐겨찾기 이동이 완료되었습니다.");
@@ -221,12 +217,12 @@ const MenuView = () => {
       addFolder.favoriteFolderName !== null &&
       addFolder.favoriteFolderName !== ""
     ) {
+      // const form = new FormData();
+      // form.append("favoriteFolderName", addFolder.favoriteFolderName);
+      // form.append("userNo", addFolder.userNo);
       console.log(addFolder);
       axios
-        .post(`${backServer}/favorite/insertFavoriteFolder`, {
-          userNo: loginUserNo,
-          favoriteFolderName: addFolder.favoriteFolderName,
-        })
+        .post(`${backServer}/favorite/insertFolder`, addFolder)
         .then((res) => {
           if (res.data) {
             setAddFolder({
@@ -329,23 +325,10 @@ const MenuView = () => {
           }}
           style={customReserveModal}
         >
-          {reservationPage === 1 ? (
-            <ReservationModalFirst
-              reservation={reservation}
-              setReservation={setReservation}
-              setReservationPage={setReservationPage}
-              setIsReserveModalOpen={setIsReserveModalOpen}
-            />
-          ) : reservationPage === 2 ? (
-            <ReservationModalSecond
-              reservation={reservation}
-              setReservationPage={setReservationPage}
-              setIsReserveModalOpen={setIsReserveModalOpen}
-              isReserveModalOpen={isReserveModalOpen}
-            />
-          ) : (
-            ""
-          )}
+          <ReservationMain
+            storeNo={store.storeNo}
+            storeName={store.storeName}
+          />
         </Modal>
       ) : (
         ""

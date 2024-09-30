@@ -23,10 +23,10 @@
 	<select id="selectFavoriteFolder" resultType="favoriteFolder">
 		select favorite_folder_no, favorite_folder_name from favorite_folder where user_no = #{userNo}
 	</select>
+	<select id="getFavoriteNo" resultType="int">
+		select max(favorite_no) from favorite where favorite_folder_no=(select min(favorite_folder_no) from favorite_folder where user_no=#{userNo})
+	</select>
 	<update id="updateFolderNo">
-		<selectKey keyProperty="favoriteNo" resultType="int" order="BEFORE">
-			select max(favorite_no) favorite_no from favorite
-		</selectKey>
 		update favorite set favorite_folder_no = #{favoriteFolderNo} where favorite_no=#{favoriteNo}
 	</update>
 	<insert id="insertFavoriteFolder">

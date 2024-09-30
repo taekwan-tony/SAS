@@ -36,5 +36,10 @@ public class ReservationService {
 	    public List<Map<String, Object>> getReservationStatus(int storeNo) {
 	        return reservationDao.selectReservationStatus(storeNo);
 	    }
+
+		public List selectReservationForCount(String date, int storeNo) {
+			List<ReservationDTO> list = reservationDao.selectReservationForCount(date, storeNo);
+			return list;
+		}
 }
 

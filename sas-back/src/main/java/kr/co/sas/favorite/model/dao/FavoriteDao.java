@@ -18,8 +18,11 @@ public interface FavoriteDao {
 
 	List selectFavoriteFolder(int userNo);
 
-	int updateFolderNo(int favoriteFolderNo);
 
 	int insertFavoriteFolder(FavoriteFolderDTO addFolder);
+
+	int getFavoriteNo(FavoriteDTO changeFolder);
+
+	int updateFolderNo(FavoriteDTO changeFolder);
 
 }

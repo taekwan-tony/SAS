@@ -174,4 +174,10 @@ public class StoreService {
 	}//insertStoreImg
 
 
+	public StoreDTO getStoreReserveInfo(int storeNo) {
+		StoreDTO store=storeDao.getStoreReserveInfo(storeNo);
+		return store;
+	}
+
+
 }
