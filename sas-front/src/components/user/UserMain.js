@@ -289,7 +289,7 @@ function UserMain() {
             <UserMainView activeTab={activeTab} setActiveTab={setActiveTab} />
           }
         ></Route>
-        <Route path="/reservationMain/*" element={<ReservationMain />}></Route>
+        {/* <Route path="/reservationMain/*" element={<ReservationMain />}></Route> */}
       </Routes>
     </div>
   );

@@ -32,15 +32,16 @@ div.mypage-main > .profile-wrap > div.img > img {
   object-fit: cover;
   border-radius: 50%;
 }
-div.mypage-main > .profile-wrap > div.img > button {
+div.mypage-main > .profile-wrap > div.img > label {
   outline: none;
   border: none;
   background-color: transparent;
   position: absolute;
   bottom: 0;
   right: -15px;
+  cursor: pointer;
 }
-div.mypage-main > .profile-wrap > div.img > button > span {
+div.mypage-main > .profile-wrap > div.img > label > span {
   color: var(--main1);
 }
 

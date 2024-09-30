@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.sas.favorite.model.dao.FavoriteDao;
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.menu.model.dto.MenuDTO;
 import kr.co.sas.review.model.dao.ReviewDao;
@@ -34,14 +35,18 @@ public class UserService {
 	private BCryptPasswordEncoder encoder;
 	@Autowired
 	private JwtUtils jwtUtils;
-	
+	@Autowired
+	private FavoriteDao favoriteDao;
 	
 	@Transactional
 	public int insertUser(UserDTO user) {
-		System.out.println(user.getUserPw());
+//		System.out.println(user.getUserPw());
 		user.setUserPw(encoder.encode(user.getUserPw()));
-		System.out.println(user.getUserPw());
+//		System.out.println(user.getUserPw());
 		int result = userDao.insertUser(user);
+		if(result>0) {
+			result = favoriteDao.insertStandardFavorieFolder();
+		}
 		return result;
 	}
 
@@ -119,6 +124,12 @@ public class UserService {
 		UserDTO userDTO = userDao.searchUser(loginId);
 		return userDTO.getUserNickname();
 		//반환타입,void는 반환할게없다 string이면 스트링타입을 반환
+	}
+	
+	@Transactional
+	public int updateUserPhoto(UserDTO user) {
+		int result = userDao.updateUserPhoto(user);
+		return result;
 	}
 	
 }

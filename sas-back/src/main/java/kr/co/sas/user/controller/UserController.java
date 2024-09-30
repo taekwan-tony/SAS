@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -161,5 +162,22 @@ public class UserController {
 		return ResponseEntity.ok(userNickname);
 	}
 	
+	@Operation(summary = "일반회원 프로필사진 업데이트", description = "이미지 파일을 form으로 받아와서 일반회원 정보 업데이트, 결과와 filepath를 반환")
+	@PatchMapping(value="/updateUserPhoto")
+	public ResponseEntity<Map> updateUserPhoto(@ModelAttribute UserDTO user, @ModelAttribute MultipartFile userImageFile){
+		Map map = new HashMap<String, Object>();
+		int result = 0;
+		if(userImageFile != null) {
+			String savepath = root + "/userProfile/";
+			String filepath = fileUtil.upload(savepath, userImageFile);
+			user.setUserPhoto(filepath);
+			result = userService.updateUserPhoto(user);
+			if(result>0) {
+				map.put("userPhoto", user.getUserPhoto());
+			}
+		}
+		map.put("result", result>0);
+		return ResponseEntity.ok(map);
+	}
 	
 }

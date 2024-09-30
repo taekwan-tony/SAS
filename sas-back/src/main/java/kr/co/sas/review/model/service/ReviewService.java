@@ -46,4 +46,10 @@ public class ReviewService {
 	public int insertReviewAnswer(ReviewDTO review) {
 		return reviewDao.insertReviewAnswer(review);
 	}
+
+
+	public ReviewDTO getReviewNo(int reviewNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

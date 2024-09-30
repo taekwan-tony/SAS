@@ -19,11 +19,11 @@ public class StoreDTO {
 	private String soPw;
 	private String businessNumber;
 	private String storeName;
-	private Date storeReStart;
-	private Date storeReEnd;
+	private String storeReStart;
+	private String storeReEnd;
 	private String storeTime;
-	private Date breakTimeStart;
-	private Date breakTimeEnd;
+	private String breakTimeStart;
+	private String breakTimeEnd;
 	private String storePhone;
 	private int OneMaxPrice;
 	private String storeAddr;
@@ -33,10 +33,11 @@ public class StoreDTO {
 	private int deposit;
 	private int registType;
 	private String storeIntroduce;
-	private int mapX;
-	private int mapY;
+	private double mapX;
+	private double mapY;
 	private int type;
 	private int servicePrice;
 	private String storeRequestDate;
-	private Date storeEnrollDate;
+	private String storeEnrollDate;
+	private boolean isFavorite;
 }
