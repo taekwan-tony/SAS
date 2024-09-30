@@ -27,12 +27,10 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
     soPw: "",
   });
 
-  const [soPw, setSoPw] = useState("");
-
   const changeStorePw = () => {
     if (newSoPw === newSoPwRe) {
       axios.post(`${backServer}/store/changePw`, store).then((res) => {
-        console.log(res.data);
+        console.log(res);
         if (res.data) {
           Swal.fire({
             title: "비밀번호가 변경되었습니다.",
@@ -41,6 +39,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
             confirmButtonColor: "#5e9960",
           })
             .then(() => {
+              closePwModal(true);
               navigate("/");
             })
             .catch((err) => {
@@ -70,6 +69,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
       })
       .catch((err) => {
         if (err.response && err.response.status === 404) {
+          console.log(err);
           console.log(err.response.status);
           console.log("불일치");
           Swal.fire({

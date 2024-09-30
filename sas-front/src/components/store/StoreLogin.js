@@ -6,7 +6,11 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
+import {
+  loginStoreIdState,
+  loginStoreNoState,
+  storeTypeState,
+} from "../utils/RecoilData";
 import StoreChangePw from "./StoreChangePw";
 import StoreCheckPw from "./StoreCheckPw";
 
@@ -20,6 +24,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     businessNumber: "",
     soPhone: "",
     soEmail: "",
+    soPw: "",
+    storeNo: storeNo,
   });
 
   const [storeLogin, setStoreLogin] = useState({
@@ -60,6 +66,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   }
   const [loginSoEmail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
+  const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
 
   const soEmailRef = useRef(null);
   const soPwRef = useRef(null);
@@ -67,11 +74,11 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const login = () => {
     soEmailRef.current.innerText = "";
     soPwRef.current.innerText = "";
-    if (storeLogin.soEmail === "" || storeLogin.soPw === "") {
-      console.log("Email or password is empty");
+    if (store.soEmail === "" || store.soPw === "") {
+      console.log("이메일 / 비밀번호가 비어있음");
     } else {
       axios
-        .post(`${backServer}/store/storeLogin`, storeLogin)
+        .post(`${backServer}/store/storeLogin`, store)
         .then((res) => {
           const {
             result,
@@ -81,29 +88,47 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
             accessToken,
             refreshToken,
           } = res.data;
+          switch (res.data.result) {
+            case 1:
+              setLoginSoEmail(res.data.soEmail);
+              setStoreType(res.data.storeType);
+              setLoginStoreNo(res.data.storeNo);
 
-          if (result === 0) {
-            // 로그인 성공
-            setLoginSoEmail(loginSoEmail);
-            setStoreType(storeType);
-
-            console.log("매장번호 : ", storeNo);
-
-            axios.defaults.headers.common["Authorization"] = accessToken;
-            window.localStorage.setItem("storeRefreshToken", refreshToken);
-
-            // storeLogin 객체에 storeNo 값을 업데이트
-            setStoreLogin((prev) => ({
-              ...prev,
-              storeNo: storeNo, //서버에서 받아온거
-            }));
-
-            if (storeType === 1) {
-              //판매자 로그인
-              navigate("/storeMain");
-            } else if (storeType === 0) {
-              navigate("/admin/adminMain");
-            } // else
+              axios.defaults.headers.common["Authorization"] =
+                res.data.accessToken;
+              window.localStorage.setItem(
+                "storeRefreshToken",
+                res.data.refreshToken
+              );
+              if (storeType === 1) {
+                // 판매자 로그인
+                console.log("판매자 로그인 성공");
+                Swal.fire({
+                  title: "로그인 성공",
+                  icon: "success",
+                  confirmButtonColor: "#5e9960",
+                }).then((res) => {
+                  navigate("/storeMain");
+                });
+              } else if (storeType === 0) {
+                // 관리자 로그인
+                Swal.fire({
+                  title: "로그인 성공",
+                  icon: "success",
+                  confirmButtonColor: "#5e9960",
+                }).then((res) => {
+                  navigate("/admin/adminMain");
+                });
+              } // else
+              break;
+            case 2:
+              console.log("존재하지 않는 아이디");
+              soEmailRef.current.innerText = "존재하지 않는 아이디입니다.";
+              break;
+            case 3:
+              console.log("틀린 비밀번호");
+              soPwRef.current.innerText = "비밀번호를 잘못 입력하셨습니다.";
+              break;
           }
         })
         .catch((err) => {
@@ -321,8 +346,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                     type="text"
                                     id="soEmail"
                                     name="soEmail"
-                                    value={storeLogin.soEmail}
-                                    onChange={changeStoreLogin}
+                                    value={store.soEmail}
+                                    onChange={changeStore}
                                   ></input>
                                   <p
                                     className="storeLogin-p"
@@ -348,8 +373,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                     type="text"
                                     id="soPw"
                                     name="soPw"
-                                    value={storeLogin.soPw}
-                                    onChange={changeStoreLogin}
+                                    value={store.soPw}
+                                    onChange={changeStore}
                                   ></input>
                                   <p className="storeLogin-p" ref={soPwRef}></p>
                                 </div>
