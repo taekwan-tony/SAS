@@ -11,12 +11,14 @@
 		insert into review values(review_seq.nextval,#{reviewContent},sysdate,#{reviewScore},#{userNickname},#{storeNo},null,null,null)	
 	</insert>
 	
+	
 	<update id="modifyReview">
 		update review set review_content=#{reviewContent}
 		where user_nickname= #{userNickname}
 	</update>
-	<select id ="getReviewList" resultType="review">
-		select user_nickname,review_content, store_name from review join store using(store_no) where
+	
+	<select id ="getReviewList" resultMap="getReview">
+		select review_no, user_nickname,review_content, store_name, review_score from review join store using(store_no) where
 		<choose>
 			<when test="type.equals('store')">
 				store_no = #{parameter}
@@ -26,6 +28,13 @@
 			</when>
 		</choose>
 		<!-- 첨부 파일 만들면 selectkey 이용해서 첨부파일 가져오기 -->
+	</select>
+
+	<resultMap id="getReview" type="review">
+		<collection property="filepathList" ofType="reviewImage" column="review_no" javaType="java.util.List" select="selectReviewImage"></collection>
+	</resultMap>
+	<select id="selectReviewImage" resultType="reviewImage">
+		select review_image_no, review_image_filepath from review_image_file where review_no = #{reviewNo}
 	</select>
     <update id="insertReviewAnswer">
     	update review set review_answer=#{reviewAnswer}, review_answer_date=sysdate where review_no = #{reviewNo}

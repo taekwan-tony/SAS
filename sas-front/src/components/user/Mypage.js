@@ -1,5 +1,5 @@
-import ReactQuill from "react-quill";
-import { useState, useEffect } from "react";
+import ReactQuill, { Quill } from "react-quill";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
@@ -26,6 +26,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { switchClasses } from "@mui/material";
 import { MenuReview } from "../menu/MenuView";
+import ImageResize from "@looop/quill-image-resize-module-react";
+import QuillEditor from "../utils/QuillEditor";
 
 const Mypage = () => {
   return (
@@ -230,6 +232,7 @@ const ReviewWrite = () => {
     reserveNo: null,
   });
   const setContent = (content) => {
+    console.log(content);
     setReview({ ...review, reviewContent: content });
   };
   console.log(review.reviewContent);
@@ -242,6 +245,7 @@ const ReviewWrite = () => {
   };
   // const [ratingValue, setRatingValue] = useState(2);
   const [hover, setHover] = useState(-1);
+
   const handleSubmit = () => {
     axios
       .post(`${backServer}/review/usermain/mypage/myreview`, review)
@@ -261,6 +265,29 @@ const ReviewWrite = () => {
         console.log(err);
       });
   };
+
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          ["image"],
+          [{ size: ["small", false, "large", "huge"] }],
+          [{ align: [] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [
+            {
+              color: [],
+            },
+            { background: [] },
+          ],
+        ],
+      },
+      ImageResize: {
+        parchment: Quill.import("parchment"),
+      },
+    };
+  }, []);
   return (
     <div className="review-container">
       <label htmlFor="message" className="label1">
@@ -272,16 +299,19 @@ const ReviewWrite = () => {
         hover={hover}
         setHover={setHover}
       />
-      <ReactQuill
+      <QuillEditor
         style={{ width: "450px", height: "232px", marginTop: "20px" }}
-        modules={{ toolbar: false }}
-        onChange={setContent}
+        //modules={{ toolbar: false }}
+        value={review.reviewContent || ""}
+        modules={modules}
+        noticeContent={review.reviewContent}
+        setNoticeContent={setContent}
         placeholder="레스토랑과 유저들에게 도움이 되는 따뜻한 리뷰를 작성해주세요."
       />
       <button
         type="submit"
         className="review-submit"
-        style={{ marginTop: "20px" }}
+        style={{ marginTop: "80px" }}
         onClick={handleSubmit}
       >
         등록

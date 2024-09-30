@@ -51,21 +51,21 @@ public class ReviewController {
     //소비자리뷰등록
     @PostMapping("/usermain/mypage/myreview")
     public ResponseEntity<Integer> insertReview(@RequestBody ReviewDTO review){
-    	System.out.println(review);
+    	
     	int result = reviewService.insertReview(review);
     	return ResponseEntity.ok(result);
     }
     //소비자리뷰수정
-    @PatchMapping("/usermain/mypage/myreview")
-    public ResponseEntity<Integer> modifyReview(@RequestBody ReviewDTO review){
+    @PatchMapping("/usermain/mypage/myreview/{storeNo}")
+    public ResponseEntity<Integer> modifyReview(@ModelAttribute ReviewDTO review){
     	int result = reviewService.modifyReview(review);
     	return ResponseEntity.ok(result);
     }
-    @GetMapping("/usermain/")
     @PostMapping(value="/editorImage")
     public ResponseEntity<String> editorImage(@ModelAttribute MultipartFile image){
     	String savepath = root+"/editor";
     	String filepath = fileUtil.upload(savepath, image);
+    	
     	return ResponseEntity.ok("/editor/"+filepath);
     }
     
@@ -79,6 +79,7 @@ public class ReviewController {
 	public ResponseEntity<List> getReviewList(@PathVariable String userNickname){
 		String type = "user";
 		List list = reviewService.getReviewList(userNickname, type);
+		System.out.println(list);
 		return ResponseEntity.ok(list);
 	}
  
