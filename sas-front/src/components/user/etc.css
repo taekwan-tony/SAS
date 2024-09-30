@@ -44,3 +44,9 @@ button.snackbar-btn:hover {
   color: var(--main1);
   text-decoration: underline;
 }
+.favorite-folder-modal form.addFolder {
+  display: none;
+}
+.favorite-folder-modal form.addFolder.show {
+  display: block;
+}

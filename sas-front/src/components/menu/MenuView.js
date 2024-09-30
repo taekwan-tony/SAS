@@ -183,7 +183,10 @@ const MenuView = () => {
       });
   }, [loginUserNo, checkAddFolder]);
   // 변경할 즐겨찾기 목록 정보 가져오기]
-  const [changeFolder, setChangeFolder] = useState({});
+  const [changeFolder, setChangeFolder] = useState({
+    userNo: loginUserNo,
+    favoriteFolderNo: 0,
+  });
   // 즐겨찾기 목록 폴더 이동
   const changeFavoriteFolder = () => {
     axios
@@ -208,6 +211,38 @@ const MenuView = () => {
   const changeInputVal = (e) => {
     setAddFolder({ ...addFolder, [e.target.name]: e.target.value });
   };
+  // 즐겨찾기 폴더 추가 폼
+  const favoriteRef = useRef(null);
+  const showForm = () => {
+    favoriteRef.current.classList.add("show");
+  };
+  const addFavoriteFolder = () => {
+    if (
+      addFolder.favoriteFolderName !== null &&
+      addFolder.favoriteFolderName !== ""
+    ) {
+      console.log(addFolder);
+      axios
+        .post(`${backServer}/favorite/insertFavoriteFolder`, {
+          userNo: loginUserNo,
+          favoriteFolderName: addFolder.favoriteFolderName,
+        })
+        .then((res) => {
+          if (res.data) {
+            setAddFolder({
+              favoriteFolderName: "",
+              userNo: loginUserNo,
+            });
+            setCheckAddFolder(!checkAddFolder);
+            favoriteRef.current.classList.remove("show");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <div className="menuview-bigwrap">
       <div className="menuview-wrap">
@@ -320,6 +355,7 @@ const MenuView = () => {
       {isFavoriteModalOpen ? (
         <Modal
           isOpen={true}
+          ariaHideApp={false}
           onRequestClose={() => {
             setIsFavoriteModalOpen(false);
           }}
@@ -330,7 +366,10 @@ const MenuView = () => {
             <div className="folder-content">
               {favoriteFolderList.map((folder, index) => {
                 const changeChecked = () => {
-                  setChangeFolder(folder);
+                  setChangeFolder({
+                    ...changeFolder,
+                    favoriteFolderNo: folder.favoriteFolderNo,
+                  });
                   console.log(changeFolder);
                 };
                 return (
@@ -350,10 +389,12 @@ const MenuView = () => {
                 );
               })}
               <form
+                ref={favoriteRef}
                 action=""
                 className="addFolder"
                 onSubmit={(e) => {
                   e.preventDefault();
+                  addFavoriteFolder();
                 }}
               >
                 <input
@@ -364,7 +405,9 @@ const MenuView = () => {
                 />
                 <input type="hidden" name="userNo" value={addFolder.userNo} />
               </form>
-              <button className="add-folder-btn">+ 새 목록 추가</button>
+              <button className="add-folder-btn" onClick={showForm}>
+                + 새 목록 추가
+              </button>
             </div>
             <div className="btn">
               <button className="btn-main" onClick={changeFavoriteFolder}>

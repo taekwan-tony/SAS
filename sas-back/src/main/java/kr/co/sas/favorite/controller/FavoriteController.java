@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.sas.favorite.model.dto.FavoriteDTO;
+import kr.co.sas.favorite.model.dto.FavoriteFolderDTO;
 import kr.co.sas.favorite.model.service.FavoriteService;
 
 @RestController
@@ -51,6 +52,14 @@ public class FavoriteController {
 	@PatchMapping(value="/favoriteFolderNo/{favoriteFolderNo}/changeFolder")
 	public ResponseEntity<Boolean> updateFolderNo(@PathVariable int favoriteFolderNo){
 		int result = favoriteService.updateFolderNo(favoriteFolderNo);
+		return ResponseEntity.ok(result>0);
+	}
+	
+	@Operation(summary="즐겨찾기 목록 추가", description = "즐겨찾기 목록 이름과 회원 번호를 객체로 받아 즐겨찾기 폴더 추가")
+	@PostMapping(value="/insertFavoriteFolder")
+	public ResponseEntity<Boolean> insertFavoriteFolder(@RequestBody FavoriteFolderDTO addFolder){
+		System.out.println(addFolder);
+		int result = favoriteService.insertFavoriteFolder(addFolder);
 		return ResponseEntity.ok(result>0);
 	}
 }

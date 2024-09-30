@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.sas.favorite.model.dto.FavoriteDTO;
+import kr.co.sas.favorite.model.dto.FavoriteFolderDTO;
 
 @Mapper
 public interface FavoriteDao {
@@ -18,5 +19,7 @@ public interface FavoriteDao {
 	List selectFavoriteFolder(int userNo);
 
 	int updateFolderNo(int favoriteFolderNo);
+
+	int insertFavoriteFolder(FavoriteFolderDTO addFolder);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.favorite.model.dao.FavoriteDao;
 import kr.co.sas.favorite.model.dto.FavoriteDTO;
+import kr.co.sas.favorite.model.dto.FavoriteFolderDTO;
 
 @Service
 public class FavoriteService {
@@ -34,8 +35,15 @@ public class FavoriteService {
 	}
 
 
+	@Transactional
 	public int updateFolderNo(int favoriteFolderNo) {
 		int result = favoriteDao.updateFolderNo(favoriteFolderNo);
+		return result;
+	}
+
+	@Transactional
+	public int insertFavoriteFolder(FavoriteFolderDTO addFolder) {
+		int result = favoriteDao.insertFavoriteFolder(addFolder);
 		return result;
 	}
 }
