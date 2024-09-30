@@ -1,5 +1,7 @@
 package kr.co.sas.favorite.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,5 +25,11 @@ public class FavoriteService {
 	public int insertFavorite(FavoriteDTO favorite) {
 		int result = favoriteDao.insertFavorite(favorite);
 		return result;
+	}
+
+
+	public List selectFavoriteFolder(int userNo) {
+		List list = favoriteDao.selectFavoriteFolder(userNo);
+		return list;
 	}
 }
