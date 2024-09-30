@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,5 +47,10 @@ public class FavoriteController {
 		List list = favoriteService.selectFavoriteFolder(userNo);
 		return ResponseEntity.ok(list);
 	}
-	
+	@Operation(summary = "즐겨찾기 목록 이동", description = "즐겨찾기 등록 직후 즐겨찾기 폴더를 이동시킬 경우 폴더 번호만 받아서 업데이트")
+	@PatchMapping(value="/favoriteFolderNo/{favoriteFolderNo}/changeFolder")
+	public ResponseEntity<Boolean> updateFolderNo(@PathVariable int favoriteFolderNo){
+		int result = favoriteService.updateFolderNo(favoriteFolderNo);
+		return ResponseEntity.ok(result>0);
+	}
 }

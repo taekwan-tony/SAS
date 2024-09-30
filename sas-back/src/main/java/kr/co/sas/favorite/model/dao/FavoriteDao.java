@@ -17,4 +17,6 @@ public interface FavoriteDao {
 
 	List selectFavoriteFolder(int userNo);
 
+	int updateFolderNo(int favoriteFolderNo);
+
 }

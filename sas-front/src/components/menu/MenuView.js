@@ -153,17 +153,6 @@ const MenuView = () => {
   const [isFavoriteModalOpen, setIsFavoriteModalOpen] = useState(false);
   const openChangeFFolderModal = () => {
     setIsFavoriteModalOpen(!isFavoriteModalOpen);
-    axios
-      .get(
-        `${backServer}/favorite/getFavoriteList/userNo/${loginUserNo}/getFavoriteList`
-      )
-      .then((res) => {
-        console.log(res);
-        setFavoriteFolderList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
   //버튼
   const action = (
@@ -193,6 +182,32 @@ const MenuView = () => {
         console.log(err);
       });
   }, [loginUserNo, checkAddFolder]);
+  // 변경할 즐겨찾기 목록 정보 가져오기]
+  const [changeFolder, setChangeFolder] = useState({});
+  // 즐겨찾기 목록 폴더 이동
+  const changeFavoriteFolder = () => {
+    axios
+      .patch(
+        `${backServer}/favorite/favoriteFolderNo/${changeFolder.favoriteFolderNo}/changeFolder`
+      )
+      .then((res) => {
+        if (res.data) {
+          setIsFavoriteModalOpen(false);
+          handleOpen("즐겨찾기 이동이 완료되었습니다.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // 즐겨찾기 폴더 추가
+  const [addFolder, setAddFolder] = useState({
+    favoriteFolderName: "",
+    userNo: loginUserNo,
+  });
+  const changeInputVal = (e) => {
+    setAddFolder({ ...addFolder, [e.target.name]: e.target.value });
+  };
   return (
     <div className="menuview-bigwrap">
       <div className="menuview-wrap">
@@ -310,8 +325,53 @@ const MenuView = () => {
           }}
           style={customFavoriteModal}
         >
-          <h2 className="modal-title">즐겨찾기 폴더 이동하기</h2>
-          <div className="folder-content"></div>
+          <div className="favorite-folder-modal">
+            <h2 className="modal-title">즐겨찾기 목록</h2>
+            <div className="folder-content">
+              {favoriteFolderList.map((folder, index) => {
+                const changeChecked = () => {
+                  setChangeFolder(folder);
+                  console.log(changeFolder);
+                };
+                return (
+                  <div className="folder-item-box" key={"folder" + index}>
+                    <input
+                      className="input-radio-box"
+                      type="radio"
+                      name="folder-name"
+                      id={index}
+                      value={folder.favoriteFolderName}
+                      onChange={changeChecked}
+                    />
+                    <label className="radio-box-content" htmlFor={index}>
+                      {folder.favoriteFolderName}
+                    </label>
+                  </div>
+                );
+              })}
+              <form
+                action=""
+                className="addFolder"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <input
+                  type="text"
+                  name="favoriteFolderName"
+                  value={addFolder.favoriteFolderName}
+                  onChange={changeInputVal}
+                />
+                <input type="hidden" name="userNo" value={addFolder.userNo} />
+              </form>
+              <button className="add-folder-btn">+ 새 목록 추가</button>
+            </div>
+            <div className="btn">
+              <button className="btn-main" onClick={changeFavoriteFolder}>
+                이동
+              </button>
+            </div>
+          </div>
         </Modal>
       ) : (
         ""

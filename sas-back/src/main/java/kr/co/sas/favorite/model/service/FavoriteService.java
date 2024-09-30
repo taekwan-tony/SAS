@@ -32,4 +32,10 @@ public class FavoriteService {
 		List list = favoriteDao.selectFavoriteFolder(userNo);
 		return list;
 	}
+
+
+	public int updateFolderNo(int favoriteFolderNo) {
+		int result = favoriteDao.updateFolderNo(favoriteFolderNo);
+		return result;
+	}
 }
