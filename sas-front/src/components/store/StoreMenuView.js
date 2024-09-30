@@ -31,7 +31,7 @@ const StoreMenuView = () => {
   };
 
   // 메뉴 추가 시 새로운 메뉴를 storeMenus 배열에 추가하는 함수
-  const addStoreMenu = () => {
+  const addStoreMenuDIV = () => {
     setAddMenu([...addMenu, storeMenu]);
     setStoreMenu({ menuName: "", menuInfo: "", menuPrice: "" }); // 입력칸 초기화
   };
@@ -51,7 +51,7 @@ const StoreMenuView = () => {
         <div className="storeMenuView-top-section">
           {/* infoCardVisible이 true일 때만 info-card 렌더링 */}
           {addMenu.map((menu, index) => (
-            <div className="info-card">
+            <div className="storeMenuView-info-card">
               <div className="storeMenuView-close-div">
                 {/* X 버튼 클릭 시 hideInfoCard 호출 */}
                 <img
@@ -136,8 +136,14 @@ const StoreMenuView = () => {
           ))}
         </div>
         <div className="storeMenuView-insert">
+          <div className="storeMenuView-menu-btn-zone">
+            <button className="storeMenu-menu-btn">완료</button>
+          </div>
           <div className="storeMenuView-insert-btn-zone">
-            <button className="storeMenuView-insert-btn" onClick={addStoreMenu}>
+            <button
+              className="storeMenuView-insert-btn"
+              onClick={addStoreMenuDIV}
+            >
               <img src="/image/add.png" className="storeMenuView-add"></img>
               메뉴 추가
             </button>

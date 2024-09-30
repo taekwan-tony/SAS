@@ -5,8 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.sas.seat.model.dto.SeatDTO;
+import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
+import kr.co.sas.store.model.dto.StoreMoodDTO;
 import kr.co.sas.util.PageInfo;
 
 @Mapper
@@ -39,21 +41,20 @@ public interface StoreDao {
 	StoreDTO checkPw(StoreDTO store);
 
 	StoreDTO selectOneStoreInfo(int storeNo);
+	
 	int insertStoreFrm(StoreDTO store);
 
 	int insertStoreFile(StoreFileDTO storeFile);
 
-	void deleteStoreMood(int storeNo);
-
-	void insertStoreMood(int storeNo, Integer mood);
-
-	void deleteStoreAmenities(int storeNo);
-
-	void insertStoreAmenities(int storeNo, Integer amenities);
+	int insertStoreMood(int storeNo, List<String> storeMood);
 
 	int insertSeat(SeatDTO seat);
 
 	int contractExpire(int storeNo);
+
+	int insertStoreMood(StoreMoodDTO storeMood);
+
+	int insertStoreAmenities(StoreAmenitiesDTO amenities);
 
 
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./storeView.css";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -78,21 +78,11 @@ const StoreViewFrm = () => {
         ...prevSeat,
         storeNo: storeNumber,
       }));
-      setStoreMood((prevMood) => ({
-        ...prevMood,
-        storeNo: storeNumber,
-      }));
     }
   }, [storeNumber]);
 
-  const [storeMood, setStoreMood] = useState({
-    storeNo: null,
-    mood: "",
-  });
-  const [storeAmenities, setStoreAmenities] = useState("");
-
-  const [selectedMoods, setSelectedMoods] = useState([]);
-  const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [storeMood, setStoreMood] = useState([]);
+  const [storeAmenities, setStoreAmenities] = useState([]);
 
   const [seat, setSeat] = useState({
     storeNo: null,
@@ -176,30 +166,6 @@ const StoreViewFrm = () => {
     }));
   };
 
-  const handleMoodChange = (event) => {
-    const value = event.target.value;
-    setSelectedMoods((prevSelectedMoods) => {
-      // 이미 선택된 분위기라면 제거하고, 그렇지 않다면 추가
-      if (prevSelectedMoods.includes(value)) {
-        return prevSelectedMoods.filter((mood) => mood !== value);
-      } else {
-        return [...prevSelectedMoods, value];
-      }
-    });
-  };
-
-  const handleAmenitiesChange = (event) => {
-    const value = event.target.value;
-    setSelectedAmenities((prevSelectedAmenities) => {
-      // 이미 선택된 편의시설이면 제거하고, 그렇지 않으면 추가
-      if (prevSelectedAmenities.includes(value)) {
-        return prevSelectedAmenities.filter((amenity) => amenity !== value);
-      } else {
-        return [...prevSelectedAmenities, value];
-      }
-    });
-  };
-
   const storeModify = () => {
     const form = new FormData();
 
@@ -208,12 +174,21 @@ const StoreViewFrm = () => {
       form.append("storeFile", storeFile[i]);
     }
 
-    // 매장 정보 추가 (JSON 형태로)
-    form.append("store", JSON.stringify(store)); // "store" 키로 StoreDTO 객체 추가
+    // 매장 분위기
+    for (let i = 0; i < storeMood.length; i++) {
+      form.append("storeMood", storeMood[i]);
+    }
 
-    // 데이터가 올바르게 들어가 있는지 콘솔로 확인
+    // 매장 편의시설
+    for (let i = 0; i < storeAmenities.length; i++) {
+      form.append("storeAmenities", storeAmenities[i]);
+    }
+
+    // 데이터 확인
     console.log("FormData (Store):", store);
     console.log("FormData (Files):", storeFile);
+    console.log("FormData (mood):", storeMood);
+    console.log("FormData (amenities):", storeAmenities);
 
     // 매장 정보
     axios.post(`${backServer}/store/insertStore`, store).then((res) => {
@@ -247,7 +222,54 @@ const StoreViewFrm = () => {
         console.log("좌석 에러 :", err);
       });
 
-    // 매장 사진 및 매장 정보 요청
+    // 매장 사진
+    axios
+      .post(`${backServer}/store/insertStoreImg/${store.storeNo}`, form, {
+        headers: {
+          contentType: "multipart/form-data",
+          processData: false,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // 매장 분위기
+    axios
+      .post(`${backServer}/store/insertStoreMood/${store.storeNo}`, form, {
+        headers: {
+          contentType: "multipart/form-data",
+          processData: false,
+        },
+      })
+      .then((res) => {
+        console.log("매장 분위기 등록 완료");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("매장 분위기 등록 오류");
+        console.log(err);
+      });
+
+    // 매장 편의시설
+    axios
+      .post(`${backServer}/store/insertStoreAmenities/${store.storeNo}`, form, {
+        headers: {
+          contentType: "multipart/form-data",
+          processData: false,
+        },
+      })
+      .then((res) => {
+        console.log("매장 편의시설 등록 완료");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("매장 분위기 등록 오류");
+        console.log(err);
+      });
   };
 
   const storeThumbnail = () => {
@@ -638,7 +660,7 @@ const StoreViewFrm = () => {
                   </th>
                   <td>
                     <div className="storeView-div">
-                      <StoreMoodCheckBoxMUI value={storeMood} />
+                      <StoreMoodCheckBoxMUI setStoreMood={setStoreMood} />
                     </div>
                   </td>
                 </tr>
@@ -650,7 +672,9 @@ const StoreViewFrm = () => {
                   </th>
                   <td>
                     <div className="storeView-div">
-                      <StoreAmenitiesCheckBoxMUI value={storeAmenities} />
+                      <StoreAmenitiesCheckBoxMUI
+                        setStoreAmenities={setStoreAmenities}
+                      />
                     </div>
                   </td>
                 </tr>
@@ -682,5 +706,4 @@ const StoreViewFrm = () => {
     </div>
   );
 };
-
 export default StoreViewFrm;
