@@ -6,7 +6,7 @@
   background-color: transparent;
   border: none;
   position: relative;
-  left: 35%;
+  right: 400%;
 }
 .dashboard {
   display: flex;
@@ -17,26 +17,24 @@
 }
 .dashboard-head {
   display: flex;
-  justify-content: center; /* 수평 중앙 정렬 */
+  justify-content: flex-start; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   width: 100%; /* 화면 전체 너비 */
   height: 100px; /* 헤더 높이 */
   position: absolute;
-  top: 0;
-  left: 0;
-  padding-bottom: 20px;
-  max-width: 100%;
 }
 
 .dashboard-head h1 {
-  display: inline-block;
+  flex-grow: 1; /* 공간을 최대한 차지하도록 설정 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  justify-items: center;
   font-family: Helvetica Neue;
-  border-radius: 10px;
-  position: relative;
-  left: 10%;
-  margin: 0; /* 불필요한 여백 제거 */
-  text-align: center;
+  display: flex;
   color: #e7eae7;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  left: 1%;
 }
 .owner-background {
   position: fixed; /* 배경이 스크롤에 따라 움직이지 않도록 */

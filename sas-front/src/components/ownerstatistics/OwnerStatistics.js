@@ -5,6 +5,7 @@ import { FaPersonHalfDress, FaSackDollar } from "react-icons/fa6";
 import { MdDeliveryDining } from "react-icons/md";
 import axios from "axios";
 import Chart, { chartData, chartOptions } from "../store/Chart";
+import { Link } from "react-router-dom";
 
 function Ownerstatistics() {
   const [totalReserve, setTotalReserve] = useState(0); // 이번달 예약 건수 상태
@@ -36,12 +37,12 @@ function Ownerstatistics() {
     const fetchCurrentData = async () => {
       try {
         const totalReserveResponse = await axios.get(
-          `${backServer}/reservation/totalreservation/storeNo/88`
+          `${backServer}/reservation/totalreservation/storeNo/90`
         );
         setTotalReserve(totalReserveResponse.data);
 
         const totalReservedPeopleResponse = await axios.get(
-          `${backServer}/reservation/totalreservedpeople/storeNo/88`
+          `${backServer}/reservation/totalreservedpeople/storeNo/90`
         );
         setTotalReservedPeople(totalReservedPeopleResponse.data);
       } catch (error) {
@@ -53,12 +54,12 @@ function Ownerstatistics() {
     const fetchLastMonthData = async () => {
       try {
         const lastMonthReserveResponse = await axios.get(
-          `${backServer}/reservation/lastMonthTotalReservation/storeNo/88`
+          `${backServer}/reservation/lastMonthTotalReservation/storeNo/90`
         );
         setLastMonthReserve(lastMonthReserveResponse.data);
 
         const lastMonthReservedPeopleResponse = await axios.get(
-          `${backServer}/reservation/lastMonthTotalReservedPeople/storeNo/88`
+          `${backServer}/reservation/lastMonthTotalReservedPeople/storeNo/90`
         );
         setLastMonthReservedPeople(lastMonthReservedPeopleResponse.data);
       } catch (error) {
@@ -82,7 +83,7 @@ function Ownerstatistics() {
 
   useEffect(() => {
     axios
-      .get(`${backServer}/reservation/totalreservation/storeNo/88`)
+      .get(`${backServer}/reservation/totalreservation/storeNo/90`)
       .then((response) => {
         console.log("이번달 예약 데이터:", response.data);
         setTotalReserve(response.data);
@@ -95,7 +96,7 @@ function Ownerstatistics() {
   // 예약된 총 인원수 가져오기
   useEffect(() => {
     axios
-      .get(`${backServer}/reservation/totalreservedpeople/storeNo/88`)
+      .get(`${backServer}/reservation/totalreservedpeople/storeNo/90`)
       .then((response) => {
         setTotalReservedPeople(response.data);
       })
@@ -105,7 +106,7 @@ function Ownerstatistics() {
 
     // 연령대 데이터 가져와서 차트 업데이트
     axios
-      .get(`${backServer}/reservation/agereservation/storeNo/88`)
+      .get(`${backServer}/reservation/agereservation/storeNo/90`)
       .then((response) => {
         const fetchedData = response.data;
         const ageLabels = fetchedData.map((item) => item.AGEGROUP);
@@ -138,19 +139,21 @@ function Ownerstatistics() {
   useEffect(() => {
     // 성별 데이터를 가져와 차트 업데이트
     axios
-      .get(`${backServer}/reservation/genderdata/storeNo/88`)
+      .get(`${backServer}/reservation/genderdata/storeNo/90`)
       .then((response) => {
         const genderData = response.data;
 
-        let maleCount = 0;
-        let femaleCount = 0;
-        genderData.map((item) => {
-          if (item.USER_GENDER === "male") {
-            maleCount = item.count;
-          } else if (item.USER_GENDER === "female") {
-            femaleCount = item.count;
-          }
-        });
+        let { maleCount, femaleCount } = genderData.reduce(
+          (acc, item) => {
+            if (item.USER_GENDER === "male") {
+              acc.maleCount += item.count;
+            } else if (item.USER_GENDER === "female") {
+              acc.femaleCount += item.count;
+            }
+            return acc;
+          },
+          { maleCount: 0, femaleCount: 0 }
+        );
 
         // 도넛 차트 데이터 업데이트
         setUpdatedChartData((prevData) => ({
@@ -161,7 +164,7 @@ function Ownerstatistics() {
               {
                 ...prevData.doughnutData.datasets[0],
                 label: "성별 비율",
-                data: [maleCount, femaleCount], // 성별 비율 데이터 반영
+                data: [60, 40], // 성별 비율 데이터 반영
                 backgroundColor: ["#1e90ff", "#ff1493"], // 남성, 여성 색상
                 borderColor: ["#1e90ff", "#ff1493"],
                 borderWidth: 1,
@@ -181,19 +184,21 @@ function Ownerstatistics() {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>통계관리</h1>
-          <button className="button-bell">
-            <div className="user-box-bell">
-              <div className="user-page-box">
-                <div className="bellWrapper">
-                  <i className="fas fa-bell my-bell"></i>
-                </div>
+          <Link to="/usermain">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
 
-                <div className="circle first"></div>
-                <div className="circle second"></div>
-                <div className="circle third"></div>
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
               </div>
-            </div>
-          </button>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">
