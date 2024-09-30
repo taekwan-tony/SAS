@@ -217,7 +217,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   };
 
   const storeRegistEmailCheck = () => {
-    const emailCheck = store.soEmail.trim();
+    const emailCheck = storeLogin.soEmail.trim();
 
     if (!emailCheck) {
       Swal.fire({
@@ -237,6 +237,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
         if (res.data) {
           setEmailMsg("사용 가능한 이메일입니다.");
           setIsSoEmailValid(true); // 이메일이 유효하면 true
+
+          setStore({ ...store, soEmail: storeLogin.soEmail });
         } else {
           setEmailMsg("이미 가입한 이메일입니다.");
           setIsSoEmailValid(false); // 이메일이 중복되면 false
@@ -519,8 +521,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   type="text"
                                   id="soEmail"
                                   name="soEmail"
-                                  value={store.soEmail}
-                                  onChange={changeStore}
+                                  value={storeLogin.soEmail}
+                                  onChange={changeStoreLogin}
                                 ></input>
                                 <button
                                   className="storeLogin-storeRegist-btn"
