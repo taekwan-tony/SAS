@@ -6,6 +6,7 @@ import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
 import axios from "axios";
 import Recal from "./Recal";
+import { Link } from "react-router-dom";
 
 function ManageReserved() {
   const [inputValue, setInputValue] = useState(0); // 입력 값 관리
@@ -156,19 +157,21 @@ function ManageReserved() {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>예약관리</h1>
-          <button className="button-bell">
-            <div className="user-box-bell">
-              <div className="user-page-box">
-                <div className="bellWrapper">
-                  <i className="fas fa-bell my-bell"></i>
-                </div>
+          <Link to="/usermain">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
 
-                <div className="circle first"></div>
-                <div className="circle second"></div>
-                <div className="circle third"></div>
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
               </div>
-            </div>
-          </button>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">
