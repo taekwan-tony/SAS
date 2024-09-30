@@ -225,8 +225,6 @@ public class StoreController {
 		return ResponseEntity.ok(result > 0);
 	}//insertstoreAmenities
 	
-
-	
 	
 	
 }
