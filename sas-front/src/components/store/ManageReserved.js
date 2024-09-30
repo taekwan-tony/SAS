@@ -5,7 +5,7 @@ import { FaHourglassHalf } from "react-icons/fa";
 import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
 import axios from "axios";
-import Recal from "./recal";
+import Recal from "./Recal";
 import { Link } from "react-router-dom";
 
 function ManageReserved() {
