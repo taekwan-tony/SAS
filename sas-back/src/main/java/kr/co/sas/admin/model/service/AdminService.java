@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.sas.reservation.model.dao.ReservationDao;
+import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.util.EmailSender;
@@ -28,6 +30,8 @@ public class AdminService {
 	private BCryptPasswordEncoder encoder;
 	@Autowired
 	private EmailSender email;
+	@Autowired
+	private ReservationDao reservationDao;
 	public Map selectApprovalStore(int reqPage,int storeType) {
 		int numPerPage = 12;
 		int pageNaviSize = 5;
@@ -78,6 +82,28 @@ public class AdminService {
 		email.sendMail(emailTitle, receiver, emailContent);
 		}
 		int result = storeDao.approvalStore(store);
+		return result;
+	}
+
+
+	public Map storeDetail(int storeNo) {
+		StoreDTO store = storeDao.selectOneStoreInfo(storeNo);
+		List<Map<String, Object>> ageList = reservationDao.selectAgeReservation(storeNo);
+		int totalReservedPeople = reservationDao.selectTotalReservedPeople(storeNo);
+		int totalReserved = reservationDao.selectTotalReserve(storeNo);
+		List<ReservationDTO> reservation =  reservationDao.selectReservationList(storeNo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("store", store);
+		map.put("ageList",ageList);
+		map.put("totalReservedPeople", totalReservedPeople);
+		map.put("totalReserved", totalReserved);
+		map.put("reservation", reservation);
+		return map;
+	}
+
+	@Transactional
+	public int contractExpire(int storeNo) {
+		int result = storeDao.contractExpire(storeNo);
 		return result;
 	}
 

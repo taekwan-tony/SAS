@@ -38,6 +38,7 @@ public interface StoreDao {
 	
 	StoreDTO checkPw(StoreDTO store);
 
+	StoreDTO selectOneStoreInfo(int storeNo);
 	int insertStoreFrm(StoreDTO store);
 
 	int insertStoreFile(StoreFileDTO storeFile);
@@ -51,6 +52,8 @@ public interface StoreDao {
 	void insertStoreAmenities(int storeNo, Integer amenities);
 
 	int insertSeat(SeatDTO seat);
+
+	int contractExpire(int storeNo);
 
 
 }
