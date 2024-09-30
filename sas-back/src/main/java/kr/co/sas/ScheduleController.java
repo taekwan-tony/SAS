@@ -23,7 +23,7 @@ public class ScheduleController {
 	@Autowired
 	private EmailSender emailSender;
 	
-	@Scheduled(cron="0 15 * * * *")
+	@Scheduled(cron="0 0 20 * * *")
 	public void requestPayStore() {
 		List<StoreDTO> list = storeService.selectAllPayStore();
 		int result = noticeService.storePayNotice(list);

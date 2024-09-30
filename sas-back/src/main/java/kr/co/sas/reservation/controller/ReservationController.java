@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.reservation.model.service.ReservationService;
+import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
 @CrossOrigin("*")
 @RestController
@@ -24,14 +25,14 @@ public class ReservationController {
 	@Autowired
 	private ReservationService reservationService;
 	
-	@GetMapping("/reservation")
-	public List<ReservationDTO> getAllReservation(@RequestParam("storeNo") int storeNo){
+	@GetMapping("/reservation/{storeNo}")
+	public List<ReservationDTO> getAllReservation(@PathVariable int storeNo){
+	    List<ReservationDTO> reservations = reservationService.getAllReservation(storeNo);
 		return reservationService.getAllReservation(storeNo);
 	}
 	// 이번 달 예약 건수 조회
 	@GetMapping("/totalreservation/storeNo/{storeNo}")
     public ResponseEntity<Integer> getselectTotalReserve(@PathVariable int storeNo) {
-		System.out.println(storeNo);
         return ResponseEntity.ok(reservationService.getselectTotalReserve(storeNo));
     }
 	// 이번 달 예약한 사람의 총 인원 조회
@@ -45,11 +46,17 @@ public class ReservationController {
     	List<Map<String, Object>> ageData = reservationService.getAgeReservation(storeNo);
         return ResponseEntity.ok(ageData);
     }
-    // 예약 상태를 가져오는 엔드포인트
+    // 예약 상태를 가져오는 메서드
     @GetMapping("/status/storeNo/{storeNo}")
-    public ResponseEntity<List<Map<String, Object>>> getReservationStatus(@PathVariable int storeNo) {
-        List<Map<String, Object>> reservationStatus = reservationService.getReservationStatus(storeNo);
-        return ResponseEntity.ok(reservationStatus);
+    public List<ReservationDTO> getReservationStatus(@PathVariable int storeNo){
+	    List<ReservationDTO> reservations = reservationService.getReservationStatus(storeNo);
+		return reservations;
+	}
+    //성별 정보를 가져오는 메서드
+    @GetMapping("/genderdata/storeNo/{storeNo}")
+    public ResponseEntity<List<Map<String, Object>>> getReservationGender(@PathVariable int storeNo) {
+        List<Map<String, Object>> genderData = reservationService.getReservationGender(storeNo);
+        return ResponseEntity.ok(genderData);
     }
     
     @Operation(summary = "예약 좌석 수 비교", description = "해당 날짜의 예약명단에서 시간과 좌석코드 가져와 반환")
@@ -58,4 +65,22 @@ public class ReservationController {
     	List list = reservationService.selectReservationForCount(date, storeNo);
     	return ResponseEntity.ok(list);
     }
+    // 지난달 예약 건수 조회 메서드 추가
+    @GetMapping("/lastMonthTotalReservation/storeNo/{storeNo}")
+    public ResponseEntity<Integer> getLastMonthTotalReservation(@PathVariable int storeNo) {
+        return ResponseEntity.ok(reservationService.getLastMonthTotalReservation(storeNo));
+    }
+    // 지난달 예약된 총 인원수를 조회하는 메서드
+    @GetMapping("/lastMonthTotalReservedPeople/storeNo/{storeNo}")
+    public ResponseEntity<Integer> getLastMonthTotalReservedPeople(@PathVariable int storeNo) {
+        int totalReservedPeople = reservationService.getLastMonthTotalReservedPeople(storeNo);
+        return ResponseEntity.ok(totalReservedPeople);
+    }
+    // 한 주간의 손님 수를 요일별로 조회하는 메서드
+    @GetMapping("/weekcustomer/storeNo/{storeNo}")
+    public ResponseEntity<List<WeekCustomerDTO>> getWeekCustomer(@PathVariable int storeNo) {
+        List<WeekCustomerDTO> weeklyCustomer = reservationService.getWeeklyCustomer(storeNo);
+        return ResponseEntity.ok(weeklyCustomer);
+    }
+
 }

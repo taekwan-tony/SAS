@@ -16,8 +16,10 @@ import kr.co.sas.review.model.dto.ReviewDTO;
 import kr.co.sas.seat.model.dto.SeatDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
+import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
+import kr.co.sas.store.model.dto.StoreMoodDTO;
 import kr.co.sas.util.JwtUtils;
 
 @Service
@@ -56,12 +58,13 @@ public class StoreService {
 
 
 	public Map storeLogin(StoreDTO store) {
+		int result = 2;
 	    Map map = new HashMap<String, Object>();
 	    StoreDTO loginStore = storeDao.searchStoreOwner(store.getSoEmail());
 	    if (loginStore != null) {
 	        if (encoder.matches(store.getSoPw(), loginStore.getSoPw())) {
 	        	// 비밀번호 일치: 로그인 성공
-	            map.put("result", 0); // 로그인 성공 상태
+	        	result = 1;
 	            loginStore.setSoPw(null); // 비밀번호는 null로 반환
 	            map.put("loginSoEmail", loginStore.getSoEmail());
 	            map.put("storeType", loginStore.getType());
@@ -70,14 +73,11 @@ public class StoreService {
 	            map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo()));
 	        } else {
 	        	// 비밀번호 불일치
-	            map.put("result", 1); // 로그인 실패 상태
+	            result = 3;
 	        } //else
-	    } else {
-	    	// 이메일 없음: 로그인 실패
-	        map.put("result", 1); // 로그인 실패 상태
 	    } //else
-	    
-	    System.out.println(map);
+	    map.put("result", result);
+	    System.out.println("로그인 : " + map);
 	    return map;
 	}//storeLogin
 
@@ -164,10 +164,10 @@ public class StoreService {
 
 
 	@Transactional
-	public int insertStoreImg(StoreDTO store, List<StoreFileDTO> storeFileList) {
+	public int insertStoreImg(int storeNo, List<StoreFileDTO> storeFileList) {
 		int result = 0;
 		for(StoreFileDTO storeFile : storeFileList) {
-			storeFile.setStoreNo(store.getStoreNo());
+			storeFile.setStoreNo(storeNo);
 			result += storeDao.insertStoreFile(storeFile);
 		}//for
 		return result;
@@ -175,9 +175,30 @@ public class StoreService {
 
 
 	public StoreDTO getStoreReserveInfo(int storeNo) {
-		StoreDTO store=storeDao.getStoreReserveInfo(storeNo);
+		StoreDTO store = storeDao.getStoreReserveInfo(storeNo);
 		return store;
 	}
+	
+	@Transactional
+	public int insertStoreMood(int storeNo, List<StoreMoodDTO> storeMoodList) {
+		int result = 0;
+		for(StoreMoodDTO mood : storeMoodList) {
+			mood.setStoreNo(storeNo);
+			result += storeDao.insertStoreMood(mood);
+		}//for
+		return result;
+	}//insertStoreMood
+
+
+	@Transactional
+	public int insertStoreAmenities(int storeNo, List<StoreAmenitiesDTO> storeAMList) {
+		int result = 0;
+		for(StoreAmenitiesDTO amenities : storeAMList) {
+			amenities.setStoreNo(storeNo);
+			result += storeDao.insertStoreAmenities(amenities);
+		}//for
+		return result;
+	}//insertStoreAmenities
 
 
 }

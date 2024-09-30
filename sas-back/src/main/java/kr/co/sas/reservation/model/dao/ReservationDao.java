@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import kr.co.sas.reservation.model.dto.ReservationDTO;
+import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
 @Mapper
 public interface ReservationDao {
@@ -19,10 +20,19 @@ public interface ReservationDao {
 
     List<Map<String, Object>> selectAgeReservation(int storeNo);
     
-    List<Map<String, Object>> selectReservationStatus(int storeNo);
+    List<ReservationDTO> selectReservationStatus(int storeNo);
+    
+    List<Map<String, Object>> selectReservationGender(int storeNo);
+ 
+    int selectLastMonthTotalReservation(int storeNo);
+    
+    int selectLastMonthTotalReservedPeople(@Param("storeNo") int storeNo);
+
+	
 
 	List<ReservationDTO> selectReservationList(int storeNo);
 
 	List<ReservationDTO> selectReservationForCount(String date, int storeNo);
 
+	List<WeekCustomerDTO> selectWeekCustomer(int storeNo);
 }

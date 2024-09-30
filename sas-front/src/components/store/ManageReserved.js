@@ -6,6 +6,7 @@ import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
 import axios from "axios";
 import Recal from "./Recal";
+import { Link } from "react-router-dom";
 
 function ManageReserved() {
   const [inputValue, setInputValue] = useState(0); // 입력 값 관리
@@ -14,17 +15,107 @@ function ManageReserved() {
   const maxValue = 20; // 최대 값 설정
 
   const [reservations, setReservations] = useState([]);
-  const [storeNo, setStoreNo] = useState(1);
+  const [weekReservations, setWeekReservations] = useState([]);
+  const [storeNo, setStoreNo] = useState();
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+
+  // 입금 상태별 예약 건수 상태
+  const [pendingCount, setPendingCount] = useState(0); // 입금 대기
+  const [completedCount, setCompletedCount] = useState(0); // 결제 완료
+  const [cancelledCount, setCancelledCount] = useState(0); // 취소 대기
+  const [calendarEvents, setCalendarEvents] = useState([]);
+
   useEffect(() => {
     axios
-      .get(`/api/reservations?storeNo=${storeNo}`)
+      .get(`${backServer}/reservation/reservation/90`)
       .then((response) => {
         setReservations(response.data);
+
+        // 예약 데이터를 달력 형식으로 변환 (필터링 제거)
+        const events = response.data.map((reservation) => {
+          let backgroundColor;
+          let borderColor;
+          // 상태에 따른 색상 지정
+          if (reservation.reservePayStatus === 0) {
+            backgroundColor = "#ffc107"; // 입금 대기 (노란색)
+            borderColor = "#e0a800";
+          } else if (reservation.reservePayStatus === 1) {
+            backgroundColor = "#28a745"; // 결제 완료 (초록색)
+            borderColor = "#218838";
+          } else if (reservation.reservePayStatus === 2) {
+            backgroundColor = "#dc3545"; // 입금 취소 (빨간색)
+            borderColor = "#c82333";
+          }
+
+          return {
+            title: `${reservation.reservePeople}명 예약`,
+            date: new Date(reservation.reserveDate).toLocaleDateString("en-CA"),
+            backgroundColor, // 상태에 따라 배경색 변경
+            borderColor, // 상태에 따라 경계선 색 변경
+            extendedProps: {
+              reserveNo: reservation.reserveNo,
+              seatNo: reservation.seatNo,
+              userId: reservation.userId,
+            },
+          };
+        });
+
+        setCalendarEvents(events); // 모든 예약 데이터를 상태로 설정
       })
       .catch((error) => {
-        console.error("Error fetching reservation data:", error);
+        console.error("예약 데이터를 가져오는 중 오류 발생:", error);
       });
-  }, [storeNo]);
+  }, [storeNo, backServer]);
+  // 예약 데이터를 서버에서 가져옴
+  useEffect(() => {
+    axios
+      .get(`${backServer}/reservation/status/storeNo/90`)
+      .then((response) => {
+        // 입금 상태별로 필터링하여 카운트 계산
+        const pending = response.data.filter(
+          (reservation) => reservation.RESERVESTATUS === "입금대기"
+        ).length;
+        const completed = response.data.filter(
+          (reservation) => reservation.RESERVESTATUS === "결제완료"
+        ).length;
+        const cancelled = response.data.filter(
+          (reservation) => reservation.RESERVESTATUS === "취소"
+        ).length;
+        console.log(response.data);
+        // 상태별 카운트 설정
+        setPendingCount(pending);
+        setCompletedCount(completed);
+        setCancelledCount(cancelled);
+        setWeekReservations(response.data);
+      })
+      .catch((error) => {
+        console.error("예약 데이터를 가져오는 중 오류 발생:", error);
+      });
+  }, [storeNo, backServer]);
+  // 입금 상태에 따라 뱃지를 보여주는 함수
+  const getPayStatusBadge = (payStatus) => {
+    console.log("입금 상태:", payStatus); // 상태 확인을 위한 로그
+    switch (payStatus) {
+      case "입금대기":
+        return <span className="badge bg-warning">입금대기</span>;
+      case "결제완료":
+        return <span className="badge bg-success">입금완료</span>;
+      case "취소":
+        return <span className="badge bg-danger">입금취소</span>;
+      default:
+        return <span className="badge bg-secondary">상태 미확인</span>;
+    }
+  };
+  // 예약 상태와 입금 상태를 결합하여 상태를 계산하는 함수
+  const calReservationStatus = (payStatus) => {
+    if (payStatus == "입금대기") {
+      return "예약대기"; // 입금 완료이면 예약완료로 설정
+    } else if (payStatus == "결제완료") {
+      return "예약완료"; // 입금 대기일 경우 예약대기로 설정
+    } else if (payStatus == "취소") {
+      return "예약취소"; // 입금 취소일 경우 예약취소로 설정
+    }
+  };
 
   useEffect(() => {
     console.log("Total Value:", totalValue);
@@ -62,24 +153,26 @@ function ManageReserved() {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
-  // 입금 상태 표시용 함수
-  const getPayStatusBadge = (payStatus) => {
-    switch (payStatus) {
-      case 0:
-        return <span className="badge bg-danger">입금취소</span>;
-      case 1:
-        return <span className="badge bg-warning">입금대기</span>;
-      case 2:
-        return <span className="badge bg-success">입금완료</span>;
-      default:
-        return <span className="badge bg-secondary">상태 미확인</span>;
-    }
-  };
   return (
     <>
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>예약관리</h1>
+          <Link to="/usermain">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
+
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
+              </div>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">
@@ -91,9 +184,7 @@ function ManageReserved() {
           <div className="info-card">
             <div className="info-text">
               <h3>입금 대기</h3>
-              <h2>
-                5건 <span className="positive">+55%</span>
-              </h2>
+              <h2>{pendingCount}건</h2>
             </div>
             <div className="info-card-icon-bg">
               <FaHourglassHalf />
@@ -103,9 +194,7 @@ function ManageReserved() {
           <div className="info-card">
             <div className="info-text">
               <h3>결제 완료</h3>
-              <h2>
-                2건 <span className="positive">+3%</span>
-              </h2>
+              <h2>{completedCount}건</h2>
             </div>
             <div className="info-card-icon-bg">
               <FaCircleDollarToSlot />
@@ -115,9 +204,7 @@ function ManageReserved() {
           <div className="info-card">
             <div className="info-text">
               <h3>취소 대기</h3>
-              <h2>
-                1건 <span className="negative">-2%</span>
-              </h2>
+              <h2>{cancelledCount}건</h2>
             </div>
             <div className="info-card-icon-bg">
               <MdCancel />
@@ -126,10 +213,8 @@ function ManageReserved() {
 
           <div className="info-card">
             <div className="info-text">
-              <h3>금일 총 예약수</h3>
-              <h2>
-                10건 <span className="positive">+5%</span>
-              </h2>
+              <h3>금번주 총 예약수</h3>
+              <h2>{weekReservations.length}건</h2>
             </div>
             <div className="info-card-icon-bg">
               <RiReservedFill />
@@ -141,7 +226,7 @@ function ManageReserved() {
         <div className="middle-section">
           <div className="calendar-placeholder">
             <h2>예약 달력</h2>
-            <Recal /> {/* Recal 컴포넌트 불러오기 */}
+            <Recal events={calendarEvents} />
           </div>
 
           <div className="reservation-section">
@@ -221,21 +306,21 @@ function ManageReserved() {
               </tr>
             </thead>
             <tbody>
-              {reservations.map((reservation, index) => (
-                <tr key={reservation.reserveNo}>
-                  <td>#{index + 1}</td>
-                  <td>
-                    {new Date(reservation.reserveDate).toLocaleDateString()}
-                  </td>
-                  <td>{getPayStatusBadge(reservation.reservePayStatus)}</td>
-                  <td>
-                    {reservation.reserveStatus === 1 ? "예약완료" : "예약대기"}
-                  </td>
-                  <td>{reservation.reservePeople}</td>
-                  <td>{reservation.seatNo}</td>
-                  <td>{reservation.userId}</td>
-                </tr>
-              ))}
+              {weekReservations.map((reservation, index) => {
+                return (
+                  <tr key={reservation.RESERVE_NO}>
+                    <td> {index + 1}</td>
+                    <td>
+                      {new Date(reservation.RESERVE_DATE).toLocaleDateString()}
+                    </td>
+                    <td>{getPayStatusBadge(reservation.RESERVESTATUS)}</td>
+                    <td>{calReservationStatus(reservation.RESERVESTATUS)}</td>
+                    <td>{reservation.RESERVE_PEOPLE}</td>
+                    <td>{reservation.SEAT_NO}</td>
+                    <td>{reservation.USER_ID}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

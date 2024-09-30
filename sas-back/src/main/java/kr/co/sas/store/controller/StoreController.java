@@ -28,8 +28,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import kr.co.sas.seat.model.dto.SeatDTO;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
+import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
+import kr.co.sas.store.model.dto.StoreMoodDTO;
 import kr.co.sas.store.model.service.StoreService;
 import kr.co.sas.util.FileUtils;
 
@@ -165,14 +167,10 @@ public class StoreController {
 	
 	
 	@Operation(summary = "매장 사진")
-	@PostMapping(value = "/insertStoreImg")
+	@PostMapping(value = "/insertStoreImg/{storeNo}")
 	public ResponseEntity<Boolean> insertStoreImg(
-	        @RequestPart("storeFile") MultipartFile[] storeFile, 
-	        @RequestPart("store") StoreDTO store) {
-		
-	    // 데이터 로그
-	    System.out.println("StoreFileDTO : " + Arrays.toString(storeFile));
-		
+	        @ModelAttribute MultipartFile[] storeFile, @PathVariable int storeNo) {
+
 		List<StoreFileDTO> storeFileList = new ArrayList<StoreFileDTO>();
 		if(storeFile != null) {
 			String savepath = root + "/store/";
@@ -182,14 +180,50 @@ public class StoreController {
 				String filepath = fileUtil.upload(savepath, file);
 				storeFileDTO.setSiFileName(filename);
 				storeFileDTO.setSiFilepath(filepath);
-				storeFileDTO.setStoreNo(store.getStoreNo());
+				storeFileDTO.setStoreNo(storeNo);
 				storeFileList.add(storeFileDTO);
 			}//for
 		}//if
-		int result = storeService.insertStoreImg(store, storeFileList);
+		int result = storeService.insertStoreImg(storeNo, storeFileList);
 		return ResponseEntity.ok(result == 1 + storeFileList.size());
 	}//insertStoreImg
-
+	
+	
+	@Operation(summary = "매장 분위기")
+	@PostMapping(value = "insertStoreMood/{storeNo}")
+	public ResponseEntity<Boolean> insertStoreMood(@PathVariable int storeNo, @RequestParam List<String> storeMood) {
+		System.out.println("매장 분위기 " + storeMood.toString());
+		System.out.println(storeNo);
+		
+		List<StoreMoodDTO> storeMoodList = new ArrayList<StoreMoodDTO>();
+		if(storeMoodList != null) {
+			for(String mood : storeMood) {
+				StoreMoodDTO st = new StoreMoodDTO();
+				st.setMood(mood);
+				storeMoodList.add(st);
+			}//for
+		}//if
+		int result = storeService.insertStoreMood(storeNo, storeMoodList);
+		return ResponseEntity.ok(result > 0);
+	}//insertStoreMood
+	
+	
+	@Operation(summary = "매장 편의시설")
+	@PostMapping(value = "insertStoreAmenities/{storeNo}")
+	public ResponseEntity<Boolean> insertStoreAmenities(@PathVariable int storeNo, @RequestParam List<String> storeAmenities) {
+		System.out.println("매장 편의시설" + storeAmenities.toString());
+		
+		List<StoreAmenitiesDTO> storeAMList = new ArrayList<StoreAmenitiesDTO>();
+		if(storeAMList != null) {
+			for(String amenities : storeAmenities) {
+				StoreAmenitiesDTO sa = new StoreAmenitiesDTO();
+				sa.setAmenities(amenities);
+				storeAMList.add(sa);
+			}//for
+		}//if
+		int result = storeService.insertStoreAmenities(storeNo, storeAMList);
+		return ResponseEntity.ok(result > 0);
+	}//insertstoreAmenities
 	
 	@Operation(summary = "매장 정보 가져오기", description = "매장 번호를 받아 예약등록에 필요한 매장 정보(예약금/ 예약시작시간/ 예약 마감시간/ 브레이크 타임 시작/마감/좌석수  가져오기 )")
 	@GetMapping(value="/storeNo/{storeNo}/getReserveInfo")

@@ -4,6 +4,7 @@ import axios from "axios";
 import { Rating, Stack } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { loginStoreIdState } from "../utils/RecoilData";
+import { Link } from "react-router-dom";
 
 function ManageReview({ comments }) {
   const [review, setReview] = useState([]);
@@ -52,6 +53,21 @@ function ManageReview({ comments }) {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>리뷰관리</h1>
+          <Link to="/usermain">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
+
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
+              </div>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">

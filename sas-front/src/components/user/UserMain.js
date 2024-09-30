@@ -24,6 +24,8 @@ import { MenuView } from "../menu/MenuView";
 import "../menu/menuview.css";
 import SearchList from "../menu/SearchList";
 import ReservationMain from "../reservation/ReservationMain";
+import UserNoticeList from "./UserNoticeList";
+import UserNoticeDetail from "./UserNoticeDetail";
 
 function UserMain() {
   // 일반회원 로그인 지속 구현-수진(문제 생기면 말씀해주세요..)
@@ -182,15 +184,17 @@ function UserMain() {
         </div>
 
         <div className="user-box-bell">
-          <div className="user-page-box">
-            <div className="bellWrapper">
-              <i className="fas fa-bell my-bell"></i>
-            </div>
+          <Link to="noticeList">
+            <div className="user-page-box">
+              <div className="bellWrapper">
+                <i className="fas fa-bell my-bell"></i>
+              </div>
 
-            <div className="circle first"></div>
-            <div className="circle second"></div>
-            <div className="circle third"></div>
-          </div>
+              <div className="circle first"></div>
+              <div className="circle second"></div>
+              <div className="circle third"></div>
+            </div>
+          </Link>
         </div>
       </div>
 
@@ -283,6 +287,8 @@ function UserMain() {
         <Route path="mypage/*" element={<Mypage />}></Route>
         <Route path="menuview/:storeNo/*" element={<MenuView />} />
         <Route path="searchlist/:searchItem" element={<SearchList />} />
+        <Route path="noticeList" element={<UserNoticeList />} />
+        <Route path="noticeDetail/:noticeNo" element={<UserNoticeDetail />} />
         <Route
           path=""
           element={

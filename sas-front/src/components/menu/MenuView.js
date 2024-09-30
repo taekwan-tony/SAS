@@ -525,6 +525,7 @@ const MenuReview = (props) => {
   );
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [reviewList, setReviewList] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(
@@ -545,106 +546,85 @@ const MenuReview = (props) => {
       });
   }, []);
 
-  const ReviewModify = (props) => {
-    const Review = props.Review;
-    const [loginId, setLoginId] = useRecoilState(loginUserIdState);
-    const backServer = process.env.REACT_APP_BACK_SERVER;
-    const params = useParams();
-    const storeNo = params.storeNo;
-    const [reviewScore, setReviewScore] = useState("");
-    const [reviewContent, setReviewContent] = useState("");
-    const [filePath, setFilePath] = useState("");
-    const navigate = useNavigate();
-    useEffect(() => {
-      axios
-        .get(`${backServer}/review/usermain/mypage/myreview/${storeNo}`)
-        .then((res) => {
-          console.log(res);
-          setReviewScore(res.data.reviewScore);
-          setReviewContent(res.data.reviewContent);
-          setFilePath(res.data.filePath);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, []);
-    const updateReview = () => {
-      const form = new FormData();
-      form.append("reviewScore", reviewScore);
-      form.append("reviewContent", reviewContent);
-      form.append("filepath", filePath);
-      axios
-        .patch(`${backServer}/review/update`, form)
-        .then((res) => {
-          console.log(res);
-          if (res.data > 0) {
-            Swal.fire({
-              title: "리뷰 수정 완료",
-              text: "리뷰를 수정했습니다",
-              icon: "success",
-            }).then(() => {
-              navigate(`/usermain/mypage/myreview`);
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+  return (
+    <div className="menu-review">
+      {reviewList
+        ? reviewList.map((review, index) => {
+            // const [isExpanded, setIsExpanded] = useState(false);
+            // review.isExpanded = false;
 
-    return (
-      <div className="menu-review">
-        {reviewList
-          ? reviewList.map((review, index) => {
-              // const [isExpanded, setIsExpanded] = useState(false);
-              // review.isExpanded = false;
+            // const isExpanded = false;
+            const setIsExpanded = (param) => {
+              console.log(param);
+              review.isExpanded = param;
+              console.log(review.isExpanded);
+              // console.log(reviewList);
+              setReviewList([...reviewList]);
+            };
+            const handleToggle = () => {
+              console.log(review.isExpanded);
+              setIsExpanded(!review.isExpanded);
+              // setReviewList([...]);
+            };
+            const regExp = /[</p>]/;
 
-              // const isExpanded = false;
-              const setIsExpanded = (param) => {
-                console.log(param);
-                review.isExpanded = param;
-                console.log(review.isExpanded);
-                // console.log(reviewList);
-                setReviewList([...reviewList]);
-              };
-              const handleToggle = () => {
-                console.log(review.isExpanded);
-                setIsExpanded(!review.isExpanded);
-                // setReviewList([...]);
-              };
-              const regExp = /[</p>]/;
-              const displayText =
-                review.isExpanded || review.reviewContent.length <= 50
-                  ? review.reviewContent
-                  : `${review.reviewContent.slice(0, 50)}</p>`;
-              return (
-                <section className="review-box-container">
-                  <div className="review-content">
-                    <p>{review.userNickname}</p>
-                    <p></p>
-                    <p>
-                      <p
-                        dangerouslySetInnerHTML={{ __html: displayText }}
-                        className="reviewContent-text"
-                      ></p>
-                      {review.reviewContent.length > 50 && (
-                        <span className="toggle-button" onClick={handleToggle}>
-                          {review.isExpanded ? "접기" : "더보기"}
-                        </span>
-                      )}
-                    </p>
-                    <button className="review-manager" onClick={updateReview}>
-                      수정
-                    </button>
-                    <button className="review-manager">삭제</button>
-                  </div>
-                </section>
-              );
-            })
-          : ""}
-      </div>
-    );
-  };
+            //리뷰 수정
+            const updateReview = (props) => {
+              const review = props.review;
+              const reviewNo = props.reviewNo;
+              const reviewScore = props.reviewScore;
+              const reviewContent = props.reviewContent;
+              const filePath = props.filePath;
+
+              const form = new FormData();
+              form.append("reviewNo", reviewNo);
+              form.append("reviewScore", reviewScore);
+              form.append("reviewContent", reviewContent);
+              form.append("filepath", filePath);
+
+              axios
+                .patch(
+                  `${backServer}/review/usermain/mypage/myreview/${review.reviewNo}`,
+                  form
+                )
+                .then((res) => {
+                  console.log(res);
+                  if (res.data > 0) {
+                    Swal.fire({
+                      title: "리뷰 수정 완료",
+                      text: "리뷰를 수정했습니다",
+                      icon: "success",
+                    }).then(() => {
+                      navigate(`/usermain/mypage/myreview`);
+                    });
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            };
+            return (
+              <section className="review-box-container">
+                <div className="review-content">
+                  <p>{review.userNickname}</p>
+
+                  <p>
+                    <p
+                      dangerouslySetInnerHTML={{ __html: review.reviewContent }}
+                      className="reviewContent-text"
+                    ></p>
+                  </p>
+                  <button className="review-manager" onClick={updateReview}>
+                    수정
+                  </button>
+                  <button className="review-manager">삭제</button>
+                </div>
+              </section>
+            );
+          })
+        : ""}
+    </div>
+  );
 };
 
 const Menuinfo = (props) => {

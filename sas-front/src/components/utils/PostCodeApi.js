@@ -27,12 +27,12 @@ const PostCodeApi = ({ setStore, setIsModalOpen }) => {
 
   const completeHandler = (data) => {
     const fullAddress = data.address;
-    const zonecode = data.zonecode;
+    console.log(data);
 
     // 선택된 주소를 StorePartnership으로 전달
     setStore((prevStore) => ({
       ...prevStore,
-      storeAddr: `${zonecode} ${fullAddress}`,
+      storeAddr: `${fullAddress}`,
     }));
 
     // 모달 닫기

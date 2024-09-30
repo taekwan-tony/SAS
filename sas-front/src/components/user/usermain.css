@@ -909,7 +909,7 @@ footer {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  padding: 150px;
+  padding: 0;
 }
 .bellWrapper {
   font-size: 25px;
@@ -973,4 +973,8 @@ footer {
     height: 250px;
     opacity: 0;
   }
+}
+
+.all-page-wrap > .notice-list-wrap {
+  margin-top: 50px;
 }
