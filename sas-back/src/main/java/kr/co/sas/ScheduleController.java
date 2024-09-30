@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
+import kr.co.sas.notice.model.service.NoticeService;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.service.StoreService;
 import kr.co.sas.util.EmailSender;
@@ -17,13 +18,15 @@ public class ScheduleController {
 	
 	@Autowired
 	private StoreService storeService;
-	
+	@Autowired
+	private NoticeService noticeService;
 	@Autowired
 	private EmailSender emailSender;
 	
 	@Scheduled(cron="0 15 * * * *")
 	public void requestPayStore() {
-//		List<StoreDTO> list = storeService.selectAllPayStore();
+		List<StoreDTO> list = storeService.selectAllPayStore();
+		int result = noticeService.storePayNotice(list);
 //		for(StoreDTO store : list) {
 //			String emailTitle = "Spoon&Smiles 결제 안내 메일입니다.";
 //					String emailContent = "<h1>안녕하세요. Spoon & Smiles 입니다. </h1>"

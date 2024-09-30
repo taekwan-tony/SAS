@@ -22,4 +22,6 @@ public class ReservationDTO {
 	private String storeName;
 	private int seatNo;
 	private String userId;
+	private String reserveEnrollDate;
+	private String userName;
 }

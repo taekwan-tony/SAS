@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.sas.notice.model.dao.NoticeDao;
 import kr.co.sas.notice.model.dto.NoticeBothDTO;
 import kr.co.sas.notice.model.dto.NoticeDTO;
+import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.util.PageInfo;
 import kr.co.sas.util.PageUtil;
 
@@ -65,6 +66,19 @@ public class NoticeService {
 	@Transactional
 	public int updateNotice(NoticeDTO notice) {
 		int result = noticeDao.updateNotice(notice);
+		return result;
+	}
+	@Transactional
+	public int storePayNotice(List<StoreDTO> list) {
+		int result = 0;
+		for(StoreDTO store : list) {
+			NoticeDTO notice = new NoticeDTO();
+			notice.setNoticeTitle("[결제 알림]이번달 결제 요청드립니다.");
+			notice.setSoEmail(store.getSoEmail());
+			notice.setNoticeContent("<h1>안녕하세요. Spoon & Smiles 입니다. </h1>"
+							+"<h3> <span style='color:red;'>사이트에 결제 내용 참고 바라며, 결제일 5일 이후 미결제시 계약 종료 예정입니다.</span> </h3>");
+			result += noticeDao.insertNotice(notice);
+		}
 		return result;
 	}
 }

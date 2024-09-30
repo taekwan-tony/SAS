@@ -69,5 +69,19 @@
     	FROM reservation
     	WHERE store_no = #{storeNo}
 	</select>
-    
+    <select id="selectReservationList" resultType="reservation">
+    	select * from
+			(select rownum as rnum, r.* from(
+			    select
+			        reserve_no,
+			        to_char(reserve_date,'yyyy-mm-dd') as reserve_enroll_date,
+			        reserve_people,
+			        reserve_pay_status,
+			        user_tbl.user_name
+			    from reservation
+			    join user_tbl on (reservation.user_id=user_tbl.user_id)
+			     where store_no=#{storeNo}
+			     order by reserve_date desc)r)
+			where rnum between 1 and 5
+    </select>
 </mapper>
