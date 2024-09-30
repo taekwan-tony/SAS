@@ -1,4 +1,4 @@
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { Link, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import "./menuview.css";
 import { Map } from "react-kakao-maps-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -8,6 +8,7 @@ import axios from "axios";
 import KaKao from "../utils/Kakao";
 import { loginUserNicknameState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
+import Swal from "sweetalert2";
 const { kakao } = window;
 
 const MenuView = () => {
@@ -227,6 +228,56 @@ const MenuReview = (props) => {
       });
   }, []);
 
+  const ReviewModify = (props) => {
+    const Review = props.Review;
+    const [loginId, setLoginId] = useRecoilState(loginUserIdState);
+    const backServer = process.env.REACT_APP_BACK_SERVER;
+    const params = useParams();
+    const storeNo = params.storeNo;
+    const [reviewScore, setReviewScore] = useState("");
+    const [reviewContent, setReviewContent] = useState("");
+    const [filePath, setFilePath] = useState("");
+
+    useEffect(() => {
+      axios
+        .get(`${backServer}/review/usermain/mypage/myreview/${storeNo}`)
+        .then((res) => {
+          console.log(res);
+          setReviewScore(res.data.reviewScore);
+          setReviewContent(res.data.reviewContent);
+          setFilePath(res.data.filePath);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, []);
+  };
+
+  const updateReview = () => {
+    const backServer = process.env.REACT_APP_BACK_SERVER;
+    const form = new FormData();
+    form.append("reviewScore", reviewScore);
+    form.append("reviewContent", reviewContent);
+    form.append("filepath", filePath);
+    axios
+      .patch(`${backServer}/review/update`, form)
+      .then((res) => {
+        console.log(res);
+        if (res.data > 0) {
+          Swal.fire({
+            title: "리뷰 수정 완료",
+            text: "리뷰를 수정했습니다",
+            icon: "success",
+          }).then(() => {
+            navigate(`/usermain/mypage/myreview`);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="menu-review">
       {reviewList
@@ -256,7 +307,7 @@ const MenuReview = (props) => {
               <section className="review-box-container">
                 <div className="review-content">
                   <p>{review.userNickname}</p>
-                  <p>이미지파일</p>
+                  <p></p>
                   <p>
                     <p
                       dangerouslySetInnerHTML={{ __html: displayText }}
@@ -268,7 +319,7 @@ const MenuReview = (props) => {
                       </span>
                     )}
                   </p>
-                  <button className="review-manager" onClick={ReviewModify}>
+                  <button className="review-manager" onClick={updateReview}>
                     수정
                   </button>
                   <button className="review-manager">삭제</button>
@@ -279,21 +330,6 @@ const MenuReview = (props) => {
         : ""}
     </div>
   );
-};
-const ReviewModify = (props) => {
-  const setReview = props.setReview;
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  useEffect(() => {
-    axios
-      .get(`${backServer}/review/usermain/mypage/myrview`)
-      .then((res) => {
-        console.log(res);
-        setReview(res.data.reviewContent);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
 };
 
 const Menuinfo = (props) => {
