@@ -22,6 +22,16 @@ function Ownerstatistics() {
       labels: [],
       datasets: [{ data: [] }],
     },
+    barData: {
+      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      datasets: [
+        {
+          label: "손님수",
+          data: [],
+          backgroundColor: "rgba(75, 192, 192, 0.5)",
+        },
+      ],
+    },
   });
 
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -113,7 +123,6 @@ function Ownerstatistics() {
         const ageCounts = fetchedData.map((item) => item.TOTALPEOPLE);
 
         if (ageLabels.length > 0 && ageCounts.length > 0) {
-          console.log(1);
           setUpdatedChartData((prevData) => ({
             ...prevData,
             agedata: {
@@ -129,7 +138,6 @@ function Ownerstatistics() {
               ],
             },
           }));
-          console.log(response);
         }
       })
       .catch((error) => {
@@ -142,29 +150,28 @@ function Ownerstatistics() {
       .get(`${backServer}/reservation/genderdata/storeNo/90`)
       .then((response) => {
         const genderData = response.data;
+        let maleCount = 0;
+        let femaleCount = 0;
 
-        let { maleCount, femaleCount } = genderData.reduce(
-          (acc, item) => {
-            if (item.USER_GENDER === "male") {
-              acc.maleCount += item.count;
-            } else if (item.USER_GENDER === "female") {
-              acc.femaleCount += item.count;
-            }
-            return acc;
-          },
-          { maleCount: 0, femaleCount: 0 }
-        );
+        // genderData를 반복하면서 성별에 따라 카운트 추가
+        genderData.forEach((item) => {
+          if (item.USER_GENDER === "남") {
+            maleCount += item.COUNT;
+          } else if (item.USER_GENDER === "여") {
+            femaleCount += item.COUNT;
+          }
+        });
 
         // 도넛 차트 데이터 업데이트
         setUpdatedChartData((prevData) => ({
           ...prevData,
           doughnutData: {
-            ...prevData.doughnutData,
+            labels: ["남자", "여자"],
             datasets: [
               {
                 ...prevData.doughnutData.datasets[0],
                 label: "성별 비율",
-                data: [60, 40], // 성별 비율 데이터 반영
+                data: [maleCount, femaleCount], // 성별 비율 데이터 반영
                 backgroundColor: ["#1e90ff", "#ff1493"], // 남성, 여성 색상
                 borderColor: ["#1e90ff", "#ff1493"],
                 borderWidth: 1,
@@ -172,12 +179,65 @@ function Ownerstatistics() {
             ],
           },
         }));
-
-        console.log("Updated Chart Data: ", updatedChartData.doughnutData);
       })
       .catch((error) => {
         console.error("성별 데이터 가져오기 실패:", error);
       });
+  }, [backServer]);
+
+  // 이번주 손님 수 가져오기
+  useEffect(() => {
+    const WeekCustomer = async () => {
+      try {
+        const response = await axios.get(
+          `${backServer}/reservation/weekcustomer/storeNo/90`
+        );
+        const visitorsData = response.data;
+
+        // 요일별 데이터를 차트에 반영
+        const daysOfWeekMap = {
+          월요일: "Mon",
+          화요일: "Tue",
+          수요일: "Wed",
+          목요일: "Thu",
+          금요일: "Fri",
+          토요일: "Sat",
+          일요일: "Sun",
+        };
+        const visitorsPerDay = [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat",
+          "Sun",
+        ].map((day) => {
+          const dayData = visitorsData.find(
+            (item) => daysOfWeekMap[item.DAYOFWEEK] === day
+          );
+          return dayData ? dayData.CUSTOMERCOUNT : 0;
+        });
+
+        // 차트 데이터 업데이트
+        setUpdatedChartData((prevData) => ({
+          ...prevData,
+          barData: {
+            ...prevData.barData,
+            datasets: [
+              {
+                ...prevData.barData.datasets[0],
+                data: visitorsPerDay, // 백엔드에서 받아온 요일별 손님 수 반영
+              },
+            ],
+          },
+        }));
+      } catch (error) {
+        console.error("이번주 손님 수 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
+
+    WeekCustomer();
   }, [backServer]);
   return (
     <>
@@ -348,7 +408,11 @@ function Ownerstatistics() {
 
           <div className="chart-container">
             <h3>이번주 손님 수</h3>
-            <Chart type="bar" data={chartData.barData} />
+            <Chart
+              type="bar"
+              data={updatedChartData.barData}
+              options={chartOptions.generalOptions}
+            />
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.reservation.model.service.ReservationService;
+import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
 @CrossOrigin("*")
 @RestController
@@ -24,15 +25,12 @@ public class ReservationController {
 	
 	@GetMapping("/reservation/{storeNo}")
 	public List<ReservationDTO> getAllReservation(@PathVariable int storeNo){
-		
 	    List<ReservationDTO> reservations = reservationService.getAllReservation(storeNo);
-	    
 		return reservationService.getAllReservation(storeNo);
 	}
 	// 이번 달 예약 건수 조회
 	@GetMapping("/totalreservation/storeNo/{storeNo}")
     public ResponseEntity<Integer> getselectTotalReserve(@PathVariable int storeNo) {
-		System.out.println(storeNo);
         return ResponseEntity.ok(reservationService.getselectTotalReserve(storeNo));
     }
 	// 이번 달 예약한 사람의 총 인원 조회
@@ -69,6 +67,12 @@ public class ReservationController {
     public ResponseEntity<Integer> getLastMonthTotalReservedPeople(@PathVariable int storeNo) {
         int totalReservedPeople = reservationService.getLastMonthTotalReservedPeople(storeNo);
         return ResponseEntity.ok(totalReservedPeople);
+    }
+    // 한 주간의 손님 수를 요일별로 조회하는 메서드
+    @GetMapping("/weekcustomer/storeNo/{storeNo}")
+    public ResponseEntity<List<WeekCustomerDTO>> getWeekCustomer(@PathVariable int storeNo) {
+        List<WeekCustomerDTO> weeklyCustomer = reservationService.getWeeklyCustomer(storeNo);
+        return ResponseEntity.ok(weeklyCustomer);
     }
 
 }
