@@ -1,0 +1,13 @@
+/* 스낵바 컴포넌트 css */
+div.MuiSnackbar-root > div {
+  background-color: #fff;
+}
+button.snackbar-btn {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: var(--main1);
+}
+button.snackbar-btn:hover {
+  text-decoration: underline;
+}

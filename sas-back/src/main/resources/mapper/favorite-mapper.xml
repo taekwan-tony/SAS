@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.sas.favorite.model.dao.FavoriteDao">
+	<delete id="deleteFavorite">
+		delete from favorite f 
+		where exists (select * from favorite_folder ff where f.favorite_folder_no = ff.favorite_folder_no and ff.user_no = #{userNo}) and store_no=#{storeNo} 
+	</delete>
+
+	<insert id="insertStandardFavorieFolder">
+		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
+			select max(user_no) from user_tbl
+		</selectKey>
+		insert into favorite_folder values(favorite_folder_seq.nextval, #{userNo}, '기본 폴더')
+	</insert>
+	
+	<insert id="insertFavorite">
+		<selectKey keyProperty="favoriteFolderNo" resultType="int" order="BEFORE">
+			select min(favorite_folder_no) from favorite_folder where user_no = #{userNo} and favorite_folder_name='기본폴더'
+		</selectKey>
+		insert into favorite values(favorite_seq.nextval, #{favoriteFolderNo}, #{storeNo})
+	</insert>
+	
+	<select id="selectFavoriteFolder" resultType="favoriteFolder">
+		select favorite_folder_no, favorite_folder_name from favorite_folder where user_no = #{userNo}
+	</select>
+</mapper>

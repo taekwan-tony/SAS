@@ -157,3 +157,39 @@
   top: 42px;
   right: 10px;
 }
+/* 모달 */
+div.modal-agreeModal {
+  height: 100%;
+}
+div.modal-agreeModal div.modal-wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+div.modal-agreeModal div.agreeTitle > h2 {
+  color: var(--main1);
+  font: bold 30px var(--defaultFont);
+  text-align: center;
+  padding: 10px;
+}
+div.modal-agreeModal div.text {
+  width: 90%;
+  height: 500px;
+  overflow: auto;
+  margin: 0 auto;
+  border: 1px solid var(--font3);
+  flex: 1;
+}
+div.modal-agreeModal div.text * {
+  font-family: ns-r;
+}
+div.modal-agreeModal div.modal-btn {
+  text-align: center;
+  padding: 10px;
+}
+div.modal-agreeModal div.modal-btn > button {
+  width: 80%;
+  height: 40px;
+  outline: none;
+}

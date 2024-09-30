@@ -34,5 +34,17 @@ public class AdminController {
 		int result = adminService.approvalStore(store);
 		return ResponseEntity.ok(result);
 	}
+	
+	@GetMapping(value = "/storeDetail/{storeNo}")
+	public ResponseEntity<Map> storeDetail(@PathVariable int storeNo){
+		Map map = adminService.storeDetail(storeNo);
+		return ResponseEntity.ok(map);
+	}
+	
+	@PatchMapping(value="/contractExpire/{storeNo}")
+	public ResponseEntity<Integer> contractExpire(@PathVariable int storeNo){
+		int result = adminService.contractExpire(storeNo);
+		return ResponseEntity.ok(result);
+	}
 
 }

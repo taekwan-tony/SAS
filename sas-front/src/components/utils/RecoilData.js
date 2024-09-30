@@ -10,7 +10,10 @@ const userTypeState = atom({
   key: "userTypeState",
   default: 0,
 });
-
+const loginUserNicknameState = atom({
+  key: "loginUserNicknameState",
+  default: "",
+});
 const loginUserNoState = atom({
   key: "loginUserNoState",
   default: 0,
@@ -22,7 +25,13 @@ const isUserLoginState = selector({
     const loginUserId = state.get(loginUserIdState);
     const userType = state.get(userTypeState);
     const loginUserNo = state.get(loginUserNoState);
-    return loginUserId !== "" && userType !== 0 && loginUserNo !== 0;
+    const loginUserNickname = state.get(loginUserNicknameState);
+    return (
+      loginUserId !== "" &&
+      userType !== 0 &&
+      loginUserNo !== 0 &&
+      loginUserNickname !== ""
+    );
   },
 });
 
@@ -37,29 +46,29 @@ const storeTypeState = atom({
   default: 0,
 });
 
-/*
 const loginStoreNoState = atom({
   key: "loginStoreNoState",
   default: 0,
 });
-*/
 
 const isStoreLoginState = selector({
   key: "isStoreLoginState",
   get: (state) => {
     const loginStoreId = state.get(loginStoreIdState);
     const storeType = state.get(storeTypeState);
-    //const loginStoreNo = state.get(loginStoreNoState);
-    return loginStoreId !== "" && storeType !== 0;
+    const loginStoreNo = state.get(loginStoreNoState);
+    return loginStoreId !== "" && storeType !== 0 && loginStoreNo !== 0;
   },
 });
 
 export {
   loginStoreIdState,
   loginUserIdState,
+  loginUserNicknameState,
   userTypeState,
   loginUserNoState,
   storeTypeState,
   isStoreLoginState,
   isUserLoginState,
+  loginStoreNoState,
 };

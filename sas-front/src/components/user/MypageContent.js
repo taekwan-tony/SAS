@@ -25,20 +25,54 @@ const Profile = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const user = props.user;
   const setUser = props.setUser;
+  // const [userImage, setUserImage] = useState(null); ==>최종적으로 필요없으면 지울거임
+  const changeUserPhoto = (e) => {
+    const files = e.currentTarget.files;
+    // console.log(files);
+    console.log(files[0]);
+    if (files.length !== 0 && files[0] !== 0) {
+      const form = new FormData();
+      form.append("userImageFile", files[0]);
+      form.append("userNo", user.userNo);
+      axios
+        .patch(`${backServer}/user/updateUserPhoto`, form, {
+          // ajax 와 비슷한 속성들..
+          contentType: "multipart/form-data", //보내는 데이터 유형 명시
+          processData: false, //보내는 데이터를 쿼리 문자열로 처리할건지 여부(default=true)
+        })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.result) {
+            setUser({ ...user, userPhoto: res.data.userPhoto });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   return (
     <section className="profile-wrap">
       <div className="img">
         <img
           src={
             user.userPhoto
-              ? `${backServer}/${user.userPhoto}`
+              ? `${backServer}/userProfile/${user.userPhoto}`
               : "/image/프로필 기본.png"
           }
           alt=""
         />
-        <button>
+        <label htmlFor="userImage">
           <span class="material-icons">edit</span>
-        </button>
+        </label>
+        <input
+          type="file"
+          name=""
+          id="userImage"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={changeUserPhoto}
+        />
       </div>
       <div className="user-info">
         <h2 className="user-nickName">{user.userNickname}</h2>

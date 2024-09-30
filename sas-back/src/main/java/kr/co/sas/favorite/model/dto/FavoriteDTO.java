@@ -19,4 +19,6 @@ public class FavoriteDTO {
 	private int favoriteFolderNo;
 	@Schema(description="매장 번호", type="int")
 	private int storeNo;
+	@Schema(description = "유저 번호", type="int")
+	private int userNo;
 }

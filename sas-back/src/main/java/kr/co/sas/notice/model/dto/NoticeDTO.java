@@ -16,5 +16,5 @@ public class NoticeDTO {
 	private String noticeEnrollDate;
 	private String noticeContent;
 	private int noticeType;
-	private String so_email;
+	private String soEmail;
 }

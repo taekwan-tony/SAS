@@ -7,6 +7,8 @@ import { styled } from "@mui/material/styles";
 import { Link, Route, Routes } from "react-router-dom";
 import "../menu/menuview.css";
 import "./mypage.css";
+import Swal, { swal } from "sweetalert2";
+
 import {
   EmptyBox,
   MypageFavorite,
@@ -14,10 +16,16 @@ import {
   ReserveContent,
   ReviewContent,
 } from "./MypageContent";
-import { loginUserIdState, loginUserNoState } from "../utils/RecoilData";
+import {
+  loginUserIdState,
+  loginUserNicknameState,
+  loginUserNoState,
+} from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { switchClasses } from "@mui/material";
+import { MenuReview } from "../menu/MenuView";
 
 const Mypage = () => {
   return (
@@ -25,7 +33,8 @@ const Mypage = () => {
       <Routes>
         <Route path="" element={<MypageMain />}></Route>
         <Route path="resview" element={<ReservationView />}></Route>
-        <Route path="myreview" element={<ReviewWrite />} />
+        <Route path="reviewWrite" element={<ReviewWrite />} />
+        <Route path="myreview" element={<MenuReview />} />
       </Routes>
     </div>
   );
@@ -36,11 +45,11 @@ const MypageMain = () => {
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const [user, setUser] = useState({});
   useEffect(() => {
-    console.log(loginUserId);
+    // console.log(loginUserId);
     axios
       .get(`${backServer}/user/userNo/${loginUserNo}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setUser(res.data);
       })
       .catch((err) => {
@@ -51,7 +60,7 @@ const MypageMain = () => {
     <>
       <Profile user={user} setUser={setUser} />
       <section className="reserve-list mypage-list-wrap">
-        <Link to="#">더보기</Link>
+        <Link to="resview">더보기</Link>
         <h3 className="title">
           나의 예약{" "}
           <span className="count">
@@ -61,16 +70,16 @@ const MypageMain = () => {
 
         {user.reservationList ? (
           user.reservationList.length === 0 ? (
-            <EmptyBox text={"예약 내역이 존재하지 않습니다"} />
+            <EmptyBox text={"진행중인 예약이 존재하지 않습니다"} />
           ) : (
             <div className="reserve-content-wrap list-content">
-              {user.reservation.map((reserve, index) => {
-                return <ReserveContent />;
+              {user.reservationList.map((reserve, index) => {
+                return <ReserveContent key={"reserveContent" + index} />;
               })}
             </div>
           )
         ) : (
-          <EmptyBox text={"예약 내역이 존재하지 않습니다"} />
+          <EmptyBox text={"진행중인 예약이 존재하지 않습니다"} />
         )}
       </section>
       <section className="mypage-list-wrap favorite-list">
@@ -100,6 +109,7 @@ const MypageMain = () => {
 };
 
 const ReservationView = () => {
+  const navigate = useNavigate();
   return (
     <div className="res-view">
       <section>
@@ -118,7 +128,14 @@ const ReservationView = () => {
             >
               방문완료
             </button>
-            <button className="btn-main">리뷰쓰기</button>
+            <button
+              className="btn-main"
+              onClick={() => {
+                navigate("/usermain/mypage/reviewWrite");
+              }}
+            >
+              리뷰쓰기
+            </button>
           </div>
           <div className="res-content">
             <img
@@ -190,38 +207,68 @@ const HoverRating = ({ value, setValue, hover, setHover }) => {
   );
 };
 const ReviewWrite = () => {
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [content, setContent] = useState("");
-  console.log(content);
-  const [title, setTitle] = useState("");
+  const navigate = useNavigate();
   const [loginId, setLoginId] = useRecoilState(loginUserIdState);
-  const [userNickName, setUserNickName] = useState("");
-  const [reviewContent, setreviewContent] = useState("");
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  useEffect(() => {
+    axios
+      .get(`${backServer}/user/userId/${loginId}/getUserNickname`)
+      .then((res) => {
+        console.log(res.data);
+        setReview({ ...review, userNickname: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [loginId]);
+  const [review, setReview] = useState({
+    reviewContent: "",
+    reviewScore: 2,
+    userNickname: "",
+    // 여기는 예약구현후에 넣는 방법 생각해보겠음
+    storeNo: 73,
+    reserveNo: null,
+  });
+  const setContent = (content) => {
+    setReview({ ...review, reviewContent: content });
+  };
+  console.log(review.reviewContent);
+  const [title, setTitle] = useState("");
   const handleTitleChange = (e) => {
     setTitle(e.currentTarget.value);
   };
-
-  const [ratingValue, setRatingValue] = useState(2);
+  const changeStarRating = (star) => {
+    setReview({ ...review, reviewScore: star });
+  };
+  // const [ratingValue, setRatingValue] = useState(2);
   const [hover, setHover] = useState(-1);
   const handleSubmit = () => {
     axios
-      .post(`${backServer}/usermain/mypage/myreview`)
+      .post(`${backServer}/review/usermain/mypage/myreview`, review)
       .then((res) => {
         console.log(res);
+        if (res.data > 0) {
+          Swal.fire({
+            title: "감사합니다",
+            text: "다음에 또 이용해주세요",
+            icon: "success",
+          }).then(() => {
+            navigate("usermain/mypage/myreview");
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
   return (
     <div className="review-container">
       <label htmlFor="message" className="label1">
         이용하신 매장은 어떠셨나요? 평점을 남겨주세요
       </label>
       <HoverRating
-        value={ratingValue}
-        setValue={setRatingValue}
+        value={review.reviewScore}
+        setValue={changeStarRating}
         hover={hover}
         setHover={setHover}
       />
@@ -242,4 +289,5 @@ const ReviewWrite = () => {
     </div>
   );
 };
+
 export default Mypage;

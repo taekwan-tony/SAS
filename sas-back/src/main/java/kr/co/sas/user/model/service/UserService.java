@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.sas.favorite.model.dao.FavoriteDao;
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.menu.model.dto.MenuDTO;
 import kr.co.sas.review.model.dao.ReviewDao;
@@ -34,14 +35,18 @@ public class UserService {
 	private BCryptPasswordEncoder encoder;
 	@Autowired
 	private JwtUtils jwtUtils;
-	
+	@Autowired
+	private FavoriteDao favoriteDao;
 	
 	@Transactional
 	public int insertUser(UserDTO user) {
-		System.out.println(user.getUserPw());
+//		System.out.println(user.getUserPw());
 		user.setUserPw(encoder.encode(user.getUserPw()));
-		System.out.println(user.getUserPw());
+//		System.out.println(user.getUserPw());
 		int result = userDao.insertUser(user);
+		if(result>0) {
+			result = favoriteDao.insertStandardFavorieFolder();
+		}
 		return result;
 	}
 
@@ -61,8 +66,9 @@ public class UserService {
 				map.put("loginId", loginUser.getUserId());
 				map.put("userType", loginUser.getLoginType());
 				map.put("userNo", loginUser.getUserNo());
-				map.put("accessToken", jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo()));
-				map.put("refreshToken", jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo()));
+				map.put("userNickname", loginUser.getUserNickname());
+				map.put("accessToken", jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));
+				map.put("refreshToken", jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));
 			}else {
 				result=3;
 			}
@@ -74,8 +80,8 @@ public class UserService {
 	public LoginUserDTO refresh(String token) {
 		try {
 			LoginUserDTO loginUser = jwtUtils.checkToken(token);
-			String accessToken = jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo());
-			String refreshToken = jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo());
+			String accessToken = jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname());
+			String refreshToken = jwtUtils.createRefreshToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname());
 			loginUser.setAccessToken(accessToken);
 			loginUser.setRefreshToken(refreshToken);;
 			return loginUser;
@@ -106,26 +112,24 @@ public class UserService {
 		return result;
 	}
 
-	public StoreDTO getStoreinfo(int storeNo) {
-		StoreDTO getStoreinfo = storeDao.getStoreinfo(storeNo);
-		return getStoreinfo;
-			
-		}
 
-	public List getMenuinfo(int storeNo) {
-		List getMenuinfo = menuDao.getMenuinfo(storeNo);
-		return getMenuinfo;
-	}
-
-	public List<ReviewDTO> getReviewinfo(int storeNo) {
-	    List<ReviewDTO> getReviewinfo = reviewDao.getReviewsByStoreNo(storeNo); 
-	    return getReviewinfo;
-	}
 
 	public UserDTO selectOneUser(int userNo) {
 		UserDTO user = userDao.selectOneUser(userNo);
 		System.out.println(user);
 		return user;
+	}
+
+	public String getUserNickname(String loginId) {
+		UserDTO userDTO = userDao.searchUser(loginId);
+		return userDTO.getUserNickname();
+		//반환타입,void는 반환할게없다 string이면 스트링타입을 반환
+	}
+	
+	@Transactional
+	public int updateUserPhoto(UserDTO user) {
+		int result = userDao.updateUserPhoto(user);
+		return result;
 	}
 	
 }

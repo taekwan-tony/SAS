@@ -31,6 +31,22 @@
 		BETWEEN TO_CHAR(TRUNC(SYSDATE, 'MM'), 'YYYYMMDD')
 		AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
 	</select>
+    <select id="selectReservationList" resultType="reservation">
+    	select * from
+			(select rownum as rnum, r.* from(
+			    select
+			        reserve_no,
+			        to_char(reserve_date,'yyyy-mm-dd') as reserve_enroll_date,
+			        reserve_people,
+			        reserve_pay_status,
+			        user_tbl.user_name
+			    from reservation
+			    join user_tbl on (reservation.user_id=user_tbl.user_id)
+			     where store_no=#{storeNo}
+			     order by reserve_date desc)r)
+			where rnum between 1 and 5
+    </select>
+	
 
 	<!-- 연령대별 예약 손님 수 조회 -->
 	<select id="selectAgeReservation" resultType="map">

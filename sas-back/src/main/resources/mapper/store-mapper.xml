@@ -59,14 +59,23 @@
 			        store_request_date,
 			        so_email,
 			        so_phone,
-			        so_name
+			        so_name,
+			        to_char(store_enroll_date,'yyyy-mm-dd') as store_enroll_date
 			    from store 
-		 		where regist_type = #{storeType}
+		 		where regist_type = #{storeType} and type=1
 			     order by store_no desc)s)
 			where rnum between #{pi.start} and #{pi.end}
 	</select>
 	<select id="getStoreinfo" resultType="store">
 		select store_no, store_name, store_addr, store_introduce, store_time
+		<if test="userNo!=0">
+		, (select count(*) from favorite join favorite_folder using(favorite_folder_no) where store_no=#{storeNo} and user_no = #{userNo}) is_favorite
+		</if>
+		from store 
+		where store_no = #{storeNo}
+	</select>
+	<select id="selectOneStoreInfo" resultType="store">
+		select store_no, store_name, store_addr, store_phone, store_time,business_number,so_name,so_phone,map_x,map_y
 		from store 
 		where store_no = #{storeNo}
 	</select>
@@ -97,9 +106,60 @@
 	<select id="selectAllPayStore" resultType="store">
 		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
-	
+	<select id ="selectAllstore" resultType="store">
+		<!-- 
+			이미지 업로드까지 되면 다시 할 예정		
+		<selectKey order="BEFORE" resultType="int" keyProperty="si_file_no">
+			select min(si_file_no) from store_image_file where store_no=#{storeNo}
+		</selectKey>
+		 -->
+		select store_no,store_name,store_time,store_introduce,store_addr from store
+	</select>
 	
 	<select id="checkPw" resultType="store">
 		select * from store where so_email=#{soEmail} and so_pw=#{soPw}
 	</select>
+	
+	
+	<update id="insertStoreFrm">
+		update store set
+			store_name=#{storeName},
+			store_phone=#{storePhone},
+			store_introduce=#{storeIntroduce},
+			store_addr=#{storeAddr},
+			store_re_start=#{storeReStart},
+			store_re_end=#{storeReEnd},
+			break_time_start=#{breakTimeStart},
+			break_time_end=#{breakTimeEnd},
+			deposit=#{deposit},
+			store_class=#{storeClass}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<insert id="insertStoreFile">
+		insert into store_image_file values(store_image_file_seq.nextval, #{siFileName}, #{siFilepath},#{storeNo})
+	</insert>
+	
+	
+	
+	<insert id="insertSeat">
+		insert into seat values(seat_seq.nextval, #{seatCapacity}, #{seatAmount}, #{storeNo})
+	</insert>
+	
+	<update id="contractExpire">
+		update store set regist_type=3 where store_no = #{storeNo}
+	</update>
+	
+	
+	<insert id="insertStoreMood">
+	  insert into store_mood values
+	    (store_mood_seq.nextval, #{mood}, #{storeNo})
+	</insert>
+	
+	
+	<insert id="insertStoreAmenities">
+		insert into store_amenities values (store_amenities_seq.nextval, #{amenities}, #{storeNo})
+	</insert>
+
 </mapper>

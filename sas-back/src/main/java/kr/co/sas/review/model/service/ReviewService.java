@@ -22,6 +22,24 @@ public class ReviewService {
         	return null;    
         }
     }
+    
+    //리뷰등록
+    @Transactional
+	public int insertReview(ReviewDTO review) {
+		int result = reviewDao.insertReview(review);
+		return result;
+	}
+    //리뷰수정
+    @Transactional
+	public int modifyReview(ReviewDTO review) {
+		int result = reviewDao.modifyReview(review);
+		return result;
+	}
+
+	public List getReviewList(Object parameter, String type) {
+		List list = reviewDao.getReviewList(parameter, type);
+		return list;
+	}
 
 
     @Transactional

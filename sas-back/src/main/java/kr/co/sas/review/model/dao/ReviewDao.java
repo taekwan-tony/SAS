@@ -17,6 +17,13 @@ public interface ReviewDao {
 	List getReviewinfo(int storeNo);
 
 	List<ReviewDTO> getReviewsByStoreNo(int storeNo);
+
+	int insertReview(ReviewDTO review);
+
+	int modifyReview(ReviewDTO review);
+
+	List getReviewList(Object parameter, String type);
+	
 	int insertReviewAnswer(ReviewDTO review);
 	
 }
