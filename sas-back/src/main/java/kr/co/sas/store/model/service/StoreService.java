@@ -56,12 +56,13 @@ public class StoreService {
 
 
 	public Map storeLogin(StoreDTO store) {
+		int result = 2;
 	    Map map = new HashMap<String, Object>();
 	    StoreDTO loginStore = storeDao.searchStoreOwner(store.getSoEmail());
 	    if (loginStore != null) {
 	        if (encoder.matches(store.getSoPw(), loginStore.getSoPw())) {
 	        	// 비밀번호 일치: 로그인 성공
-	            map.put("result", 0); // 로그인 성공 상태
+	        	result = 1;
 	            loginStore.setSoPw(null); // 비밀번호는 null로 반환
 	            map.put("loginSoEmail", loginStore.getSoEmail());
 	            map.put("storeType", loginStore.getType());
@@ -70,14 +71,11 @@ public class StoreService {
 	            map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo()));
 	        } else {
 	        	// 비밀번호 불일치
-	            map.put("result", 1); // 로그인 실패 상태
+	            result = 3;
 	        } //else
-	    } else {
-	    	// 이메일 없음: 로그인 실패
-	        map.put("result", 1); // 로그인 실패 상태
 	    } //else
-	    
-	    System.out.println(map);
+	    map.put("result", result);
+	    System.out.println("로그인 : " + map);
 	    return map;
 	}//storeLogin
 
