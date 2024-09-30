@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import Modal from "react-modal";
 import "../user/etc.css";
 import "../reservation/reservationModal.css";
+import Swal from "sweetalert2";
 // 끝
 import { Link, Route, Routes, useParams, useNavigate } from "react-router-dom";
 import "./menuview.css";
@@ -27,7 +28,6 @@ import {
 } from "../reservation/ReservationMain";
 import { he } from "date-fns/locale";
 const { kakao } = window;
-import Swal from "sweetalert2";
 
 const MenuView = () => {
   const params = useParams();
@@ -455,7 +455,7 @@ const MenuReview = (props) => {
     const [reviewScore, setReviewScore] = useState("");
     const [reviewContent, setReviewContent] = useState("");
     const [filePath, setFilePath] = useState("");
-
+    const navigate = useNavigate();
     useEffect(() => {
       axios
         .get(`${backServer}/review/usermain/mypage/myreview/${storeNo}`)
@@ -469,85 +469,83 @@ const MenuReview = (props) => {
           console.log(err);
         });
     }, []);
+    const updateReview = () => {
+      const form = new FormData();
+      form.append("reviewScore", reviewScore);
+      form.append("reviewContent", reviewContent);
+      form.append("filepath", filePath);
+      axios
+        .patch(`${backServer}/review/update`, form)
+        .then((res) => {
+          console.log(res);
+          if (res.data > 0) {
+            Swal.fire({
+              title: "리뷰 수정 완료",
+              text: "리뷰를 수정했습니다",
+              icon: "success",
+            }).then(() => {
+              navigate(`/usermain/mypage/myreview`);
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    return (
+      <div className="menu-review">
+        {reviewList
+          ? reviewList.map((review, index) => {
+              // const [isExpanded, setIsExpanded] = useState(false);
+              // review.isExpanded = false;
+
+              // const isExpanded = false;
+              const setIsExpanded = (param) => {
+                console.log(param);
+                review.isExpanded = param;
+                console.log(review.isExpanded);
+                // console.log(reviewList);
+                setReviewList([...reviewList]);
+              };
+              const handleToggle = () => {
+                console.log(review.isExpanded);
+                setIsExpanded(!review.isExpanded);
+                // setReviewList([...]);
+              };
+              const regExp = /[</p>]/;
+              const displayText =
+                review.isExpanded || review.reviewContent.length <= 50
+                  ? review.reviewContent
+                  : `${review.reviewContent.slice(0, 50)}</p>`;
+              return (
+                <section className="review-box-container">
+                  <div className="review-content">
+                    <p>{review.userNickname}</p>
+                    <p></p>
+                    <p>
+                      <p
+                        dangerouslySetInnerHTML={{ __html: displayText }}
+                        className="reviewContent-text"
+                      ></p>
+                      {review.reviewContent.length > 50 && (
+                        <span className="toggle-button" onClick={handleToggle}>
+                          {review.isExpanded ? "접기" : "더보기"}
+                        </span>
+                      )}
+                    </p>
+                    <button className="review-manager" onClick={updateReview}>
+                      수정
+                    </button>
+                    <button className="review-manager">삭제</button>
+                  </div>
+                </section>
+              );
+            })
+          : ""}
+      </div>
+    );
   };
-
-  const updateReview = () => {
-    const backServer = process.env.REACT_APP_BACK_SERVER;
-    const form = new FormData();
-    form.append("reviewScore", reviewScore);
-    form.append("reviewContent", reviewContent);
-    form.append("filepath", filePath);
-    axios
-      .patch(`${backServer}/review/update`, form)
-      .then((res) => {
-        console.log(res);
-        if (res.data > 0) {
-          Swal.fire({
-            title: "리뷰 수정 완료",
-            text: "리뷰를 수정했습니다",
-            icon: "success",
-          }).then(() => {
-            navigate(`/usermain/mypage/myreview`);
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  return (
-    <div className="menu-review">
-      {reviewList
-        ? reviewList.map((review, index) => {
-            // const [isExpanded, setIsExpanded] = useState(false);
-            // review.isExpanded = false;
-
-            // const isExpanded = false;
-            const setIsExpanded = (param) => {
-              console.log(param);
-              review.isExpanded = param;
-              console.log(review.isExpanded);
-              // console.log(reviewList);
-              setReviewList([...reviewList]);
-            };
-            const handleToggle = () => {
-              console.log(review.isExpanded);
-              setIsExpanded(!review.isExpanded);
-              // setReviewList([...]);
-            };
-            const regExp = /[</p>]/;
-            const displayText =
-              review.isExpanded || review.reviewContent.length <= 50
-                ? review.reviewContent
-                : `${review.reviewContent.slice(0, 50)}</p>`;
-            return (
-              <section className="review-box-container">
-                <div className="review-content">
-                  <p>{review.userNickname}</p>
-                  <p></p>
-                  <p>
-                    <p
-                      dangerouslySetInnerHTML={{ __html: displayText }}
-                      className="reviewContent-text"
-                    ></p>
-                    {review.reviewContent.length > 50 && (
-                      <span className="toggle-button" onClick={handleToggle}>
-                        {review.isExpanded ? "접기" : "더보기"}
-                      </span>
-                    )}
-                  </p>
-                  <button className="review-manager" onClick={updateReview}>
-                    수정
-                  </button>
-                  <button className="review-manager">삭제</button>
-                </div>
-              </section>
-            );
-          })
-        : ""}
-    </div>
-  );
 };
 
 const Menuinfo = (props) => {
