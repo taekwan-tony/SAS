@@ -19,13 +19,15 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
   const [checkSoPwRe, setCheckSoPwRe] = useState(false);
   const [checkNewSoPwRe, setCheckNewSoPwRe] = useState(false);
 
+  const [newSoPw, setNewSoPw] = useState("");
+  const [newSoPwRe, setNewSoPwRe] = useState("");
+
   const [store, setStore] = useState({
     soEmail: "",
     soPw: "",
   });
 
-  const [newSoPw, setNewSoPw] = useState("");
-  const [newSoPwRe, setNewSoPwRe] = useState("");
+  const [soPw, setSoPw] = useState("");
 
   const changeStorePw = () => {
     if (newSoPw === newSoPwRe) {
@@ -39,7 +41,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
             confirmButtonColor: "#5e9960",
           })
             .then(() => {
-              navigate("/storeLogin");
+              navigate("/");
             })
             .catch((err) => {
               console.log(err);
