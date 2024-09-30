@@ -53,5 +53,7 @@ public interface StoreDao {
 
 	int insertSeat(SeatDTO seat);
 
+	int contractExpire(int storeNo);
+
 
 }

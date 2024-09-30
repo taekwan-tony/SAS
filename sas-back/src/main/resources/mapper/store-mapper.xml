@@ -146,4 +146,8 @@
 	<insert id="insertSeat">
 		insert into seat values(seat_seq.nextval, #{seatCapacity}, #{seatAmount}, #{storeNo})
 	</insert>
+	
+	<update id="contractExpire">
+		update store set regist_type=3 where store_no = #{storeNo}
+	</update>
 </mapper>

@@ -21,4 +21,6 @@ public interface ReservationDao {
     
     List<Map<String, Object>> selectReservationStatus(int storeNo);
 
+	List<ReservationDTO> selectReservationList(int storeNo);
+
 }
