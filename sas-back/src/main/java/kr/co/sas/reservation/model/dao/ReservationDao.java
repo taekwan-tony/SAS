@@ -19,6 +19,14 @@ public interface ReservationDao {
 
     List<Map<String, Object>> selectAgeReservation(int storeNo);
     
-    List<Map<String, Object>> selectReservationStatus(int storeNo);
+    List<ReservationDTO> selectReservationStatus(int storeNo);
+    
+    List<Map<String, Object>> selectReservationGender(int storeNo);
+ 
+    int selectLastMonthTotalReservation(int storeNo);
+    
+    int selectLastMonthTotalReservedPeople(@Param("storeNo") int storeNo);
+
+	
 
 }

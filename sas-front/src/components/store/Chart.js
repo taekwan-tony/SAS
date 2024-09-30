@@ -44,7 +44,7 @@ export const chartData = {
     ],
     datasets: [
       {
-        label: "이번달 손님",
+        label: "이번달 매출",
         data: [200, 300, 400, 500, 400, 350, 450, 500, 350, 450, 250, 330],
         borderColor: "#1e90ff",
         backgroundColor: "rgba(30, 144, 255, 0.2)",
@@ -52,7 +52,7 @@ export const chartData = {
         tension: 0.4,
       },
       {
-        label: "지난달 손님",
+        label: "지난달 매출",
         data: [150, 250, 350, 450, 300, 320, 400, 470, 300, 400, 280, 320],
         borderColor: "#20c997",
         backgroundColor: "rgba(32, 201, 151, 0.2)",
@@ -61,17 +61,7 @@ export const chartData = {
       },
     ],
   },
-  // 연령대 차트 데이터 추가
-  agedata: {
-    labels: ["10대", "20대", "30대", "40대", "50대", "60대", "70대"],
-    datasets: [
-      {
-        label: "연령별 손님",
-        data: [15, 25, 35, 40, 45, 60, 80],
-        backgroundColor: "rgba(54, 162, 235, 0.5)",
-      },
-    ],
-  },
+
   //이번주 손님
   barData: {
     labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
