@@ -65,6 +65,8 @@ const StoreViewFrm = () => {
     breakTimeEnd: "",
     deposit: "",
     storeIntroduce: "",
+    mapX: "",
+    mapY: "",
   });
 
   // storeNumber가 업데이트될 때마다 실행

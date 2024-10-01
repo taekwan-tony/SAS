@@ -132,7 +132,9 @@
 			break_time_start=#{breakTimeStart},
 			break_time_end=#{breakTimeEnd},
 			deposit=#{deposit},
-			store_class=#{storeClass}
+			store_class=#{storeClass},
+			map_x = #{mapX},
+			map_y = #{mapY}
 		where store_no=#{storeNo}
 	</update>
 	

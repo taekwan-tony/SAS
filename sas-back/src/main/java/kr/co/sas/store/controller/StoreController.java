@@ -69,6 +69,7 @@ public class StoreController {
 	@Operation(summary = "매장 등록", description = "매장 상호명, 매장 전화번호, 매장 위치, 영업 시간, 매장 유형을 받아서 등록")
 	@GetMapping
 	public ResponseEntity<Boolean> insertStore(@RequestBody StoreDTO store) {
+		System.out.println("매장테스트 : "+store);
 		int result = storeService.insertStore(store);
 		return ResponseEntity.ok(result > 0);
 	}//insertStore
