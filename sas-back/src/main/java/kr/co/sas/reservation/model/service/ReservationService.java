@@ -57,5 +57,10 @@ public class ReservationService {
 	    public List<WeekCustomerDTO> getWeeklyCustomer(int storeNo) {
 	        return reservationDao.selectWeekCustomer(storeNo);
 	    }
+
+		public List selectReservationForCount(String date, int storeNo) {
+			List<ReservationDTO> list = reservationDao.selectReservationForCount(date, storeNo);
+			return list;
+		}
 }
 

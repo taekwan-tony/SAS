@@ -1,9 +1,12 @@
 package kr.co.sas.reservation.model.dto;
 
-import java.util.Date;
+
+
+import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,4 +27,8 @@ public class ReservationDTO {
 	private String userId;
 	private String reserveEnrollDate;
 	private String userName;
+	@Schema(description = "예약일정일 문자열변환", type="string")
+	private String reserveDateString;
+	@Schema(description = "예약 시간", type="string")
+	private String reserveTime;
 }

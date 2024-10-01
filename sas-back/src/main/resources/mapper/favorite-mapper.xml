@@ -15,7 +15,7 @@
 	
 	<insert id="insertFavorite">
 		<selectKey keyProperty="favoriteFolderNo" resultType="int" order="BEFORE">
-			select min(favorite_folder_no) from favorite_folder where user_no = #{userNo} and favorite_folder_name='기본폴더'
+			select min(favorite_folder_no) favorite_folder_no from favorite_folder where user_no = #{userNo} and favorite_folder_name='기본폴더'
 		</selectKey>
 		insert into favorite values(favorite_seq.nextval, #{favoriteFolderNo}, #{storeNo})
 	</insert>
@@ -23,4 +23,13 @@
 	<select id="selectFavoriteFolder" resultType="favoriteFolder">
 		select favorite_folder_no, favorite_folder_name from favorite_folder where user_no = #{userNo}
 	</select>
+	<select id="getFavoriteNo" resultType="int">
+		select max(favorite_no) from favorite where favorite_folder_no=(select min(favorite_folder_no) from favorite_folder where user_no=#{userNo})
+	</select>
+	<update id="updateFolderNo">
+		update favorite set favorite_folder_no = #{favoriteFolderNo} where favorite_no=#{favoriteNo}
+	</update>
+	<insert id="insertFavoriteFolder">
+		insert into favorite_folder values(favorite_folder_seq.nextval, #{userNo}, #{favoriteFolderName})
+	</insert>
 </mapper>

@@ -11,3 +11,42 @@ button.snackbar-btn {
 button.snackbar-btn:hover {
   text-decoration: underline;
 }
+
+/* 즐겨찾기 모달창 */
+.favorite-folder-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.favorite-folder-modal > h2.modal-title {
+  color: var(--main1);
+  font-family: var(--pointFont);
+  text-align: center;
+  font-weight: bold;
+}
+
+.favorite-folder-modal > .folder-content {
+  border: 1px solid black;
+  height: 270px;
+  padding: 5px;
+  overflow: auto;
+}
+.favorite-folder-modal label.radio-box-content {
+  padding-left: 10px;
+}
+.favorite-folder-modal button.add-folder-btn {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.favorite-folder-modal button.add-folder-btn:hover {
+  color: var(--main1);
+  text-decoration: underline;
+}
+.favorite-folder-modal form.addFolder {
+  display: none;
+}
+.favorite-folder-modal form.addFolder.show {
+  display: block;
+}

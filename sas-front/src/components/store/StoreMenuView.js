@@ -1,12 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./storeMenuView.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
 
 const StoreMenuView = () => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const navigate = useNavigate();
+  const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
+  const [storeType, setStoreType] = useRecoilState(storeTypeState);
+  const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
+
+  useEffect(() => {
+    storeRefreshLogin();
+    const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 정리
+  }, []);
+
+  const storeRefreshLogin = () => {
+    const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
+    if (storeRefreshToken != null) {
+      axios.defaults.headers.common["Authorization"] = storeRefreshToken;
+      axios
+        .post(`${backServer}/store/storeRefresh`)
+        .then((res) => {
+          setLoginSoEmail(res.data.soEmail);
+          setStoreType(res.data.storeType);
+          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
+          setStoreNumber(res.data.storeNo); // storeNumber 상태 업데이트
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
+          window.localStorage.setItem(
+            "storeRefreshToken",
+            res.data.refreshToken
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoginSoEmail("");
+          setStoreType(2);
+          delete axios.defaults.headers.common["Authorization"];
+          window.localStorage.removeItem("storeRefreshToken");
+        });
+    }
+  };
   const [storeMenu, setStoreMenu] = useState({
     menuName: "",
     menuInfo: "",
     menuPrice: "",
+    storeNo: null,
   });
+
+  useEffect(() => {
+    if (storeNumber !== null) {
+      setStoreMenu((prevStoreMenu) => ({
+        ...prevStoreMenu,
+        storeNo: storeNumber, // storeNumber가 바뀔 때 storeNo 업데이트
+      }));
+    }
+  }, [storeNumber]);
+
+  const [menuThumbnail, setMenuThumbnail] = useState(null); // 메뉴 사진
+
+  console.log("매장 번호  : ", storeMenu.storeNo);
+  console.log("메뉴 사진  : ", storeMenu.menuPhoto);
 
   const [addMenu, setAddMenu] = useState([
     { menuName: "", menuInfo: "", menuPrice: "" }, // 기본적으로 하나의 빈 메뉴를 추가
@@ -17,9 +75,32 @@ const StoreMenuView = () => {
     setStoreMenu({ ...storeMenu, [name]: e.target.value });
   };
 
-  const [storeThumb, setStoreThumb] = useState("");
   //미리보기
   const [storeMenuImage, setStoreMenuImage] = useState(null);
+
+  //메뉴 썸네일 이미지 첨부파일 변경 시 동작 함수
+  const changeStoreThumbnail = (e) => {
+    const files = e.currentTarget.files;
+    const { value } = e.target;
+    setStoreMenu((prevStoreMenu) => ({
+      ...prevStoreMenu,
+      menuPhoto: value,
+    }));
+
+    if (files.length !== 0 && files[0] !== 0) {
+      setMenuThumbnail(files[0]);
+
+      // 미리보기
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onloadend = () => {
+        setStoreMenuImage(reader.result);
+      };
+    } else {
+      setMenuThumbnail(null);
+      setStoreMenuImage(null);
+    }
+  };
 
   // info-card 가 보이는지 여부를 관리하는 상태
   const [infoCardVisible, setInfoCardVisible] = useState(true);
@@ -33,7 +114,36 @@ const StoreMenuView = () => {
   // 메뉴 추가 시 새로운 메뉴를 storeMenus 배열에 추가하는 함수
   const addStoreMenuDIV = () => {
     setAddMenu([...addMenu, storeMenu]);
-    setStoreMenu({ menuName: "", menuInfo: "", menuPrice: "" }); // 입력칸 초기화
+    setStoreMenu({
+      menuName: "",
+      menuInfo: "",
+      menuPrice: "",
+    }); // 입력칸 초기화
+  };
+
+  //메뉴 추가
+  const addStoreMenu = () => {
+    const form = new FormData();
+    form.append("menuName", storeMenu.menuName);
+    form.append("menuInfo", storeMenu.menuInfo);
+    form.append("menuPrice", storeMenu.menuPrice);
+    form.append("menuThumbnail", menuThumbnail); // 파일은 menuThumbnail로 추가
+
+    axios
+      .post(`${backServer}/menu/insertStoreMenu/${storeMenu.storeNo}`, form, {
+        headers: {
+          contentType: "multipart/form-data",
+          processData: false,
+        },
+      })
+      .then((res) => {
+        console.log("메뉴 추가 완료");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("메뉴 추가 실패");
+        console.log(err);
+      });
   };
 
   return (
@@ -85,10 +195,17 @@ const StoreMenuView = () => {
                         </div>
                       </div>
                       <div className="storeMenuView-btn-zone">
-                        <button className="storeMenuView-storeMenuImg-btn">
-                          메뉴 사진 등록
-                        </button>
+                        <input
+                          className="storeMenuView-inputBox"
+                          type="file"
+                          id="menuPhoto"
+                          name="menuPhoto"
+                          value={storeMenu.menuPhoto}
+                          onChange={changeStoreThumbnail}
+                          accept="image/*"
+                        ></input>
                       </div>
+                      <div className="storeMenuView-div"></div>
                     </td>
                   </tr>
                   <tr className="storeMenuView-tr">
@@ -137,7 +254,9 @@ const StoreMenuView = () => {
         </div>
         <div className="storeMenuView-insert">
           <div className="storeMenuView-menu-btn-zone">
-            <button className="storeMenu-menu-btn">완료</button>
+            <button className="storeMenu-menu-btn" onClick={addStoreMenu}>
+              완료
+            </button>
           </div>
           <div className="storeMenuView-insert-btn-zone">
             <button

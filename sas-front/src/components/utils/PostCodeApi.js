@@ -26,14 +26,25 @@ const PostCodeApi = ({ setStore, setIsModalOpen }) => {
   };
 
   const completeHandler = (data) => {
+    const { kakao } = window;
     const fullAddress = data.address;
     console.log(data);
 
+    const geocoder = new kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(fullAddress, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        setStore((prevStore) => ({
+          ...prevStore,
+          storeAddr: `${fullAddress}`,
+          mapX: `${result[0].x}`,
+          mapY: `${result[0].y}`,
+        }));
+      } else {
+      }
+    });
+
     // 선택된 주소를 StorePartnership으로 전달
-    setStore((prevStore) => ({
-      ...prevStore,
-      storeAddr: `${fullAddress}`,
-    }));
 
     // 모달 닫기
     setIsModalOpen(false);

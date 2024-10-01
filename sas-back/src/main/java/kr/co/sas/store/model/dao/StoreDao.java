@@ -52,6 +52,8 @@ public interface StoreDao {
 
 	int contractExpire(int storeNo);
 
+	StoreDTO getStoreReserveInfo(int storeNo);
+	
 	int insertStoreMood(StoreMoodDTO storeMood);
 
 	int insertStoreAmenities(StoreAmenitiesDTO amenities);

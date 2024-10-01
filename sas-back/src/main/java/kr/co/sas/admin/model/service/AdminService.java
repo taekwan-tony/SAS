@@ -76,9 +76,11 @@ public class AdminService {
 		String encPw = encoder.encode(sb.toString());
 		store.setSoPw(encPw);
 		String emailContent = "<h1>안녕하세요. Spoon & Smiles 입니다 </h1>"
-				+"<h3>인증번호는 [<span style='color:red;'>"
+				+"<h3>매장 제휴 신청이 승인되었습니다.</h3>"
+				+"<h3>임시비밀번호는 [<span style='color:red;'>"
 				+sb.toString()
-				+"</span>]입니다. </h3>";
+				+"</span>]입니다. </h3>"
+				+"<h3>아이디는 이메일을 사용부탁드리며, 비밀번호는 바로 수정 부탁드립니다.</h3>";
 		email.sendMail(emailTitle, receiver, emailContent);
 		}
 		int result = storeDao.approvalStore(store);

@@ -46,6 +46,9 @@
 			     order by reserve_date desc)r)
 			where rnum between 1 and 5
     </select>
+    <select id="selectReservationForCount" resultType="reservation">
+    	select to_char(reserve_date, 'HH24:MI')reserve_time, seat_no from reservation where store_no=#{storeNo} and reserve_date between to_date(#{date}, 'yy-mm-dd') and (to_date(#{date}, 'yy-mm-dd')+interval'1'day)
+    </select>
 	
 
 	<!-- 연령대별 예약 손님 수 조회 -->
