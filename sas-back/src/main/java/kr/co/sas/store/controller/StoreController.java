@@ -227,6 +227,7 @@ public class StoreController {
 		return ResponseEntity.ok(result > 0);
 	}//insertstoreAmenities
 	
+	
 	@Operation(summary = "매장 정보 가져오기", description = "매장 번호를 받아 예약등록에 필요한 매장 정보(예약금/ 예약시작시간/ 예약 마감시간/ 브레이크 타임 시작/마감/좌석수  가져오기 )")
 	@GetMapping(value="/storeNo/{storeNo}/getReserveInfo")
 	public ResponseEntity<StoreDTO> getStoreReserveInfo(@PathVariable int storeNo){
@@ -234,6 +235,13 @@ public class StoreController {
 		return ResponseEntity.ok(store);
 	}
 	
+	
+	@Operation(summary = "사업자 등록 번호 중복 확인")
+	@GetMapping(value = "/businessNumber/{businessNumber}/checkBusinessNumber")
+	public ResponseEntity<Boolean> checkBusinessNumber(@PathVariable int businessNumber) {
+		boolean result = storeService.checkBusinessNumber(businessNumber);
+		return ResponseEntity.ok(result);
+	}//checkBusinessNumber
 	
 	
 }
