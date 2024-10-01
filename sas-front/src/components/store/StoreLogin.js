@@ -39,6 +39,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   //이메일 중복 확인
   const [isSoEmailValid, setIsSoEmailValid] = useState(false);
 
+  //사업자 번호 중복 확인
+  const [isBusinessNumber, setIsBusinessNumber] = useState(false);
+
   {
     /* 비밀번호 찾기 / 변경 창 Modal */
   }
@@ -178,6 +181,23 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     const data = {
       b_no: [reg_num],
     };
+
+    // 사업자 등록 번호 중복 확인
+    axios
+      .get(
+        `${backServer}/store/businessNumber/${store.businessNumber}/checkBusinessNumber`
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          console.log("사용 가능한 사업자 번호");
+        } else {
+          console.log("이미 가입된 사업자 번호");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // Fetch API를 사용하여 POST 요청 보내기
     fetch(

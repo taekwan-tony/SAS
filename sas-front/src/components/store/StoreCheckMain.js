@@ -10,6 +10,7 @@ import StoreViewFrm from "./StoreViewFrm";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
+import StorePayment from "./StorePayment";
 
 const StoreCheckMain = () => {
   // 로그인 지속
@@ -75,7 +76,11 @@ const StoreCheckMain = () => {
       icon: "fas fa-utensils",
       to: "/storecheck/StoreMenuView",
     },
-    { text: "제휴결제", icon: "fas fa-money-check-alt", to: "/payment" },
+    {
+      text: "제휴결제",
+      icon: "fas fa-money-check-alt",
+      to: "/storecheck/storePayment",
+    },
     {
       text: "리뷰관리",
       icon: "fa-regular fa-comment-dots",
@@ -101,6 +106,7 @@ const StoreCheckMain = () => {
         <Route path="managereview" element={<ManageReview />} />
         <Route path="StorePartnership" element={<StorePartnership />} />
         <Route path="StoreMenuView" element={<StoreMenuView />} />
+        <Route path="StorePayment" element={<StorePayment />} />
       </Routes>
       <div className="owner-navi">
         <div className="navigation">

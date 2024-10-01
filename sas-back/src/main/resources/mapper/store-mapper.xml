@@ -178,5 +178,10 @@
 	<insert id="insertStoreAmenities">
 		insert into store_amenities values (store_amenities_seq.nextval, #{amenities}, #{storeNo})
 	</insert>
+	
+	
+	<select id="checkBusinessNumber" resultType="store">
+		select * from store where businessNumber=#{businessNumber}
+	</select>
 
 </mapper>

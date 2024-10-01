@@ -202,4 +202,10 @@ public class StoreService {
 	}//insertStoreAmenities
 
 
+	public boolean checkBusinessNumber(int businessNumber) {
+		StoreDTO store = storeDao.checkBusinessNumber(businessNumber);
+		return (store == null);
+	}//checkBusinessNumber
+
+
 }
