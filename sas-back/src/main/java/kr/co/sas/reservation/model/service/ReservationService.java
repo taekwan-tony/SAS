@@ -57,5 +57,9 @@ public class ReservationService {
 	    public List<WeekCustomerDTO> getWeeklyCustomer(int storeNo) {
 	        return reservationDao.selectWeekCustomer(storeNo);
 	    }
+	    
+	    public int deleteReservation(int reserveNo) {
+	        return reservationDao.deleteReservation(reserveNo);
+	    }
 }
 

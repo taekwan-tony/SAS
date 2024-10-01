@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +74,14 @@ public class ReservationController {
     public ResponseEntity<List<WeekCustomerDTO>> getWeekCustomer(@PathVariable int storeNo) {
         List<WeekCustomerDTO> weeklyCustomer = reservationService.getWeeklyCustomer(storeNo);
         return ResponseEntity.ok(weeklyCustomer);
+    }
+    
+    // 예약 삭제를 위한 메서드 추가
+    @DeleteMapping("/delete/{reserveNo}")
+    public ResponseEntity<String> deleteReservation(@PathVariable int reserveNo) {
+        int result = reservationService.deleteReservation(reserveNo);
+        return ResponseEntity.ok("예약 삭제 성공");
+            
     }
 
 }

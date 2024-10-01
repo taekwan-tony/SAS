@@ -108,7 +108,8 @@ label #cancle-navi {
   margin-right: 16px;
   color: #fff;
 }
-h1 {
+
+a:hover {
   text-decoration: none;
 }
 /* hover effect */

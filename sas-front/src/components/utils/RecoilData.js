@@ -51,6 +51,11 @@ const loginStoreNoState = atom({
   default: 0,
 });
 
+const loginStoreNameState = atom({
+  key: "loginStoreNameState",
+  default: "",
+});
+
 const isStoreLoginState = selector({
   key: "isStoreLoginState",
   get: (state) => {
@@ -71,4 +76,5 @@ export {
   isStoreLoginState,
   isUserLoginState,
   loginStoreNoState,
+  loginStoreNameState,
 };

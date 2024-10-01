@@ -28,9 +28,9 @@ public interface ReservationDao {
     
     int selectLastMonthTotalReservedPeople(@Param("storeNo") int storeNo);
 
-	
-
 	List<ReservationDTO> selectReservationList(int storeNo);
 
 	List<WeekCustomerDTO> selectWeekCustomer(int storeNo);
+	
+	int deleteReservation(int reserveNo);
 }
