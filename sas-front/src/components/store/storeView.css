@@ -35,8 +35,10 @@
 
 .storeView-imgDiv-zone {
   display: flex;
-  align-items: center;
   justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
 }
 
 .storeView-div {
@@ -47,23 +49,24 @@
 }
 
 .storeView-imgDiv {
-  width: 20%;
-  height: 20%;
+  width: 80%;
+  height: auto;
+  object-fit: cover;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #fff;
-  border-radius: 12px;
-  margin-bottom: 50px;
-  margin-top: 50px;
+  overflow: auto;
 }
 
 .storeView-img {
-  width: 100%;
-  height: 100%;
-  display: flex;
+  width: 300px;
+  height: 300px;
   align-items: center;
   justify-content: center;
+}
+
+.storeView-img-zone {
+  width: 90%;
 }
 
 .storeView-btn-zone {
@@ -490,4 +493,28 @@
   color: #518142;
   background-color: #fff;
   font-weight: 900;
+}
+
+.storeView-imgContainer {
+  position: relative; /* 버튼을 이미지 위에 배치하기 위한 설정 */
+  display: inline-block;
+  border: 2px solid #fff;
+  border-radius: 12px;
+}
+
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #518142;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
