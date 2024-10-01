@@ -78,6 +78,7 @@ public class StoreController {
 	@Operation(summary = "매장 로그인", description = "이메일, 비밀번호를 객체로 가져와서 로그인")
 	@PostMapping(value = "/storeLogin")
 	public ResponseEntity<Map> storeLogin(@RequestBody StoreDTO store) {
+		System.out.println("로그인 정보 : " + store);
 		Map map = storeService.storeLogin(store);
 		return ResponseEntity.ok(map);
 	}//storeLogin

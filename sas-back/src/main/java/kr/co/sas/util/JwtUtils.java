@@ -102,7 +102,7 @@ public class JwtUtils {
 		 * 
 		 * */
 		//1시간짜리 토큰생성
-		public String storeCreateAccessToken(String soEmail,int type, int storeNo) {
+		public String storeCreateAccessToken(String soEmail,int type, int storeNo, String storeName) {
 			//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 			SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 			//2. 토큰 생성시간 및 만료시간 설정
@@ -123,7 +123,7 @@ public class JwtUtils {
 		}
 		
 		//8760시간(1년)짜리 accessToken
-		public String storeCreateRefreshToken(String soEmail, int type, int storeNo) {
+		public String storeCreateRefreshToken(String soEmail, int type, int storeNo, String storeName) {
 			//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 					SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 					//2. 토큰 생성시간 및 만료시간 설정
@@ -155,10 +155,12 @@ public class JwtUtils {
 				String soEmail = (String)claims.get("soEmail");
 				int type = (int)claims.get("type");
 				int storeNo = (int)claims.get("storeNo");
+				String storeName = (String)claims.get("storeName");
 				LoginStoreDTO loginStore = new LoginStoreDTO();
 				loginStore.setSoEmail(soEmail);
 				loginStore.setType(type);
 				loginStore.setStoreNo(storeNo);
+				loginStore.setStoreName(storeName);
 				return loginStore;
 			}
 			

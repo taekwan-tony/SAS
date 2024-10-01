@@ -20,8 +20,8 @@ public class MenuService {
 	
 	
 	@Transactional
-	public int insertStoreMenu(MenuDTO menu, int storeNo) {
-		int result = menuDao.insertStoreMenu(menu, storeNo);
+	public int insertStoreMenu(MenuDTO menu) {
+		int result = menuDao.insertStoreMenu(menu);
 		return result;
 	}//insertStoreMenu
 }

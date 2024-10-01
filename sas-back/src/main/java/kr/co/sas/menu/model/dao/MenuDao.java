@@ -11,6 +11,6 @@ public interface MenuDao {
 
 	List getMenuinfo(int storeNo);
 
-	int insertStoreMenu(MenuDTO menu, int storeNo);
+	int insertStoreMenu(MenuDTO menu);
 
 }

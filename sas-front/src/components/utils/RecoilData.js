@@ -51,13 +51,24 @@ const loginStoreNoState = atom({
   default: 0,
 });
 
+const storeNameState = atom({
+  key: "storeNameState",
+  default: "",
+});
+
 const isStoreLoginState = selector({
   key: "isStoreLoginState",
   get: (state) => {
     const loginStoreId = state.get(loginStoreIdState);
     const storeType = state.get(storeTypeState);
     const loginStoreNo = state.get(loginStoreNoState);
-    return loginStoreId !== "" && storeType !== 0 && loginStoreNo !== 0;
+    const storeName = state.get(storeNameState);
+    return (
+      loginStoreId !== "" &&
+      storeType !== 0 &&
+      loginStoreNo !== 0 &&
+      storeName !== ""
+    );
   },
 });
 
@@ -71,4 +82,5 @@ export {
   isStoreLoginState,
   isUserLoginState,
   loginStoreNoState,
+  storeNameState,
 };
