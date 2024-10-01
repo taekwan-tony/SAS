@@ -1,6 +1,7 @@
 import { Map, MapMarker, MarkerClusterer } from "react-kakao-maps-sdk";
 
-const KakaoCluster = () => {
+const KakaoCluster = (props) => {
+  const positions = props.positions;
   return (
     <Map // 지도를 표시할 Container
       center={{
