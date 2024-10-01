@@ -38,6 +38,7 @@ public class ReviewService {
 
 	public List getReviewList(Object parameter, String type) {
 		List list = reviewDao.getReviewList(parameter, type);
+		System.out.println(list);
 		return list;
 	}
 
@@ -52,4 +53,19 @@ public class ReviewService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public ReviewDTO selectOneReview(int reviewNo) {
+		ReviewDTO selectReview = reviewDao.selectOneReview(reviewNo);
+		return selectReview;
+	}
+	//리뷰삭제
+	@Transactional
+	public boolean deleteReview(int reviewNo) {
+		int  result = reviewDao.deleteReview(reviewNo);
+		return result == 1;
+		
+	}
+	
+	
+
 }

@@ -25,5 +25,9 @@ public interface ReviewDao {
 	List getReviewList(Object parameter, String type);
 	
 	int insertReviewAnswer(ReviewDTO review);
+
+	ReviewDTO selectOneReview(int reviewNo);
+
+	int deleteReview(int reviewNo);
 	
 }

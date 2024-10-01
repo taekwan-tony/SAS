@@ -1,5 +1,6 @@
 import ImageResize from "@looop/quill-image-resize-module-react";
 import axios from "axios";
+import { set } from "date-fns";
 import React, { useMemo, useRef } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -8,6 +9,7 @@ Quill.register("modules/ImageResize", ImageResize);
 const QuillEditor = (props) => {
   const noticeContent = props.noticeContent;
   const setNoticeContent = props.setNoticeContent;
+
   const quillRef = useRef(null);
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const imageHandler = () => {
@@ -88,7 +90,7 @@ const QuillEditor = (props) => {
       ref={quillRef}
       modules={modules}
       formats={formats}
-      style={{ height: "450px", width: "100%" }}
+      style={{ height: "200px", width: "100%" }}
       value={noticeContent || ""}
       onChange={setNoticeContent}
       placeholder="내용을 입력해주세요"
