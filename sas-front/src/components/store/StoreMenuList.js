@@ -3,7 +3,6 @@ import { useState } from "react";
 
 const StoreMenuList = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [isInfoDiv, setIsInfoDiv] = useState(true);
   const menu = props.menu;
   const index = props.index;
   const storeMenu = props.storeMenu;
@@ -27,9 +26,6 @@ const StoreMenuList = (props) => {
         console.log(err);
       });
   };
-
-  // info-card가 보이는 상태인지 확인
-  if (!isInfoDiv) return null;
 
   return (
     <div className="storeMenuView-info-card">
