@@ -73,16 +73,16 @@
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  z-index: 9999;
+  color: #fff;
 }
 
 .submit-reply-btn {
   background: linear-gradient(290deg, #3b5f47 10%, #29482a47 80%);
-  color: white;
 }
 
 .cancel-reply-btn {
   background: linear-gradient(290deg, #291a1a 10%, #f7080847 80%);
-  color: white;
 }
 /* 모달 오버레이 스타일 */
 .report-modal-overlay {

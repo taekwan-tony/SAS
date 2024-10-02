@@ -4,25 +4,28 @@
 
 
 	<!-- 모든 리뷰 조회 -->
-    <select id="getAllReview" resultType="review">
-        select * from review where store_no = (select store_no from store where so_email=#{storeId})
-    </select>
+	<select id="getAllReview" resultType="review">
+		select * from review where store_no = (select store_no from store where
+		so_email=#{storeId})
+	</select>
 	<insert id="insertReview">
-		insert into review values(review_seq.nextval,#{reviewContent},sysdate,#{reviewScore},#{userNickname},#{storeNo},null,null,null,1,null)	
+		insert into review
+		values(review_seq.nextval,#{reviewContent},sysdate,#{reviewScore},#{userNickname},#{storeNo},null,null,null,1,null)
 	</insert>
-	
-	
+
+
 	<update id="modifyReview">
 		update review set review_content=#{reviewContent}
 		where review_no= #{reviewNo}
 	</update>
-	
-	<delete id = "deleteReview">
-			delete from review where review_no=#{reviewNo}
+
+	<delete id="deleteReview">
+		delete from review where review_no=#{reviewNo}
 	</delete>
-	
-	<select id ="getReviewList" resultMap="getReview">
-		select review_no, user_nickname,review_content, store_name, review_score from review join store using(store_no) where
+
+	<select id="getReviewList" resultMap="getReview">
+		select review_no, user_nickname,review_content, store_name,
+		review_score from review join store using(store_no) where
 		<choose>
 			<when test="type.equals('store')">
 				store_no = #{parameter}
@@ -35,35 +38,47 @@
 	</select>
 	<!-- 수정하기전에 리스트 리뷰 상세보기 -->
 	<select id="selectReview" resultType="review">
-		select * from review where review_no=#{reviewNo}
+		select * from review where
+		review_no=#{reviewNo}
 	</select>
-	
-	
+
+
 	<resultMap id="getReview" type="review">
 		<result column="review_no" property="reviewNo"></result>
-		<collection property="filepathList" ofType="reviewImage" column="review_no" javaType="java.util.List" select="selectReviewImage"></collection>
+		<collection property="filepathList" ofType="reviewImage"
+			column="review_no" javaType="java.util.List"
+			select="selectReviewImage"></collection>
 	</resultMap>
 	<select id="selectReviewImage" resultType="reviewImage">
-		select review_image_no, review_image_filepath from review_image_file where review_no = #{reviewNo}
+		select
+		review_image_no, review_image_filepath from review_image_file where
+		review_no = #{reviewNo}
 	</select>
-    <update id="insertReviewAnswer">
-    	update review set review_answer=#{reviewAnswer}, review_answer_date=sysdate where review_no = #{reviewNo}
-    </update>
- 
- 	<!-- 리뷰 신고 처리: review_type을 2로 변경 -->
-    <update id="updateReviewReport">
-        UPDATE review
-        SET review_type = 2
-        WHERE review_no = #{reviewNo}
-    </update>
+	<update id="insertReviewAnswer">
+		update review set review_answer=#{reviewAnswer}, review_answer_date=sysdate
+		where review_no = #{reviewNo}
+	</update>
 
-    <!-- 리뷰 신고 처리: review_report_content에 신고 사유 저장 -->
-    <update id="updateReviewReportContent">
-        UPDATE review
-        SET review_report_content = #{reviewReportContent}
-        WHERE review_no = #{reviewNo}
-    </update>
- 
- 
- 
+	<!-- 리뷰 신고 처리: review_type을 2로 변경 -->
+	<update id="updateReviewReport">
+		UPDATE review
+		SET review_type = 2
+		WHERE review_no = #{reviewNo}
+	</update>
+	<!-- 리뷰 신고 처리: review_type을 3으로 변경 (관리자가 블러 처리한 경우) -->
+	<update id="updateReviewReportAdmin">
+		UPDATE review
+		SET review_type = 3
+		WHERE review_no = #{reviewNo}
+	</update>
+
+	<!-- 리뷰 신고 처리: review_report_content에 신고 사유 저장 -->
+	<update id="updateReviewReportContent">
+		UPDATE review
+		SET review_report_content = #{reviewReportContent}
+		WHERE review_no = #{reviewNo}
+	</update>
+
+
+
 </mapper>
