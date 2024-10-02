@@ -34,17 +34,29 @@ public class MenuController {
 	@Value("${file.root}")
 	public String root;
 	
+	@Operation(summary = "매장 메뉴 등록 리스트")
+	@GetMapping(value = "/allMenuList/{loginStoreNo}")
+	public ResponseEntity<List> allMenuList(@PathVariable int loginStoreNo){
+		List list = menuService.allMenuList(loginStoreNo);
+		return ResponseEntity.ok(list);
+	}
 	
 	@Operation(summary = "매장 메뉴 등록")
 	@PostMapping(value = "insertStoreMenu/{storeNo}")
 	public ResponseEntity<Boolean> insertStoreMenu (@ModelAttribute MenuDTO storeMenu, @ModelAttribute MultipartFile menuThumbnail) {
+		
+		System.out.println(storeMenu);
+		System.out.println(menuThumbnail);
 		
 		if(menuThumbnail != null) {
 			String savepath = root + "/store/storeMenu/";
 			String filepath = fileUtil.upload(savepath, menuThumbnail);
 			storeMenu.setMenuPhoto(filepath);
 		}//if
-				
+		
+		System.out.println(storeMenu);
+		System.out.println(menuThumbnail);
+		
 		int result = menuService.insertStoreMenu(storeMenu);
 		return ResponseEntity.ok(result > 0);
 	}//insertStoreMenu
