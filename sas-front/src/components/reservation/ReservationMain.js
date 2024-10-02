@@ -249,6 +249,8 @@ const ReservationModalFirst = (props) => {
       .catch((err) => {
         console.log(err);
       });
+  }, [reservation]);
+  useEffect(() => {
     msgRef.current.style.setProperty("display", "none");
     let peopleCapacity = 0;
     reservationStore.seatList.forEach((seat) => {
@@ -259,7 +261,7 @@ const ReservationModalFirst = (props) => {
     if (reservation.reservePeople > peopleCapacity) {
       msgRef.current.style.setProperty("display", "block");
     }
-  }, [reservation]);
+  }, [reservationStore, reservation]);
   //메세지 ref
   const msgRef = useRef(null);
   return (
@@ -323,7 +325,6 @@ const ReservationModalFirst = (props) => {
                 people={reservation.reservePeople}
                 setReservation={setReservation}
                 reservation={reservation}
-                // msgRef={msgRef}
                 reserveCheck={reserveCheck}
                 setReserveCheck={setReserveCheck}
                 timeBoxSeatList={timeBoxSeatList}
