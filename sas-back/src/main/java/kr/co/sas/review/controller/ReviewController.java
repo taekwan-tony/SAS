@@ -1,6 +1,7 @@
 package kr.co.sas.review.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -98,6 +99,19 @@ public class ReviewController {
 		System.out.println("스토어이름찾기"+list);
 		return ResponseEntity.ok(list);
 	}
+	
+	@GetMapping(value="/reviewReportList/{reqPage}")
+	public ResponseEntity<Map> reviewReportList(@PathVariable int reqPage){
+		Map map = reviewService.reviewReportList(reqPage);
+		return ResponseEntity.ok(map);
+	}
+	
+	@PatchMapping(value="/reviewReportComp")
+	public ResponseEntity<Integer> reviewReportComp(@RequestBody ReviewDTO review){
+		int result = reviewService.reviewReportComp(review);
+		return ResponseEntity.ok(result);
+	}
+ 
 	// 리뷰 신고 처리
 	@PatchMapping("/report")
     public ResponseEntity<String> reportReview(@RequestBody ReviewDTO review) {
@@ -108,5 +122,15 @@ public class ReviewController {
             return ResponseEntity.status(500).body("리뷰 신고 처리 중 오류가 발생했습니다.");
         }
     }
+	@PatchMapping("/adminReport")
+	public ResponseEntity<String> reportReviewAdmin(@RequestBody ReviewDTO review) {
+	    int result = reviewService.reportReviewAdmin(review);
+	    if (result > 0) {
+	        return ResponseEntity.ok("관리자 리뷰를 블러 처리했습니다.");
+	    } else {
+	        return ResponseEntity.status(500).body("리뷰 블러 처리 중 오류가 발생했습니다.");
+	    }
+	}
+
 }
 

@@ -13,4 +13,6 @@ public interface MenuDao {
 
 	int insertStoreMenu(MenuDTO menu);
 
+	List allMenuList(int loginStoreNo);
+
 }

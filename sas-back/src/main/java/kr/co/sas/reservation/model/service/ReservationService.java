@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.reservation.model.dao.ReservationDao;
+import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
@@ -64,17 +65,32 @@ public class ReservationService {
 			List<ReservationDTO> list = reservationDao.selectReservationForCount(date, storeNo);
 			return list;
 		}
+//		예약 -수진
 		@Transactional
-		public int insertReservation(ReservationDTO reservation) {
-			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-			reservation.setReserveDateString(fmt.format(reservation.getReserveDate())+" "+reservation.getReserveTime());
-			System.out.println(reservation.getReserveDateString());
+		public Map insertReservation(ReservationDTO reservation) {
+//			System.out.println(reservation.getReserveDateString());
 			int result = reservationDao.insertReservation(reservation);
+			Map map = new HashMap<String, Object>();
+			map.put("result", result>0);
+			map.put("reserveNo", reservation.getReserveNo());
+			System.out.println(reservation.getReserveNo());
+			return map;
+		}
+		public boolean isAlreadyReserved(ReservationDTO reservation) {
+			int isExist = reservationDao.countSameReserve(reservation);
+			System.out.println("개수 :"+isExist+(isExist>0));
+			return isExist>0;
+		}
+		@Transactional
+		public int insertPayment(PaymentDTO pay) {
+			int result = reservationDao.insertPay(pay);
 			return result;
 		}
-	    
+//		예약-수진-끝
 	    public int deleteReservation(int reserveNo) {
 	        return reservationDao.deleteReservation(reserveNo);
 	    }
+
+
 }
 

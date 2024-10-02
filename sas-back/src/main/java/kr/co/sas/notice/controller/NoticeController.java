@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.sas.notice.model.dto.NoticeDTO;
 import kr.co.sas.notice.model.service.NoticeService;
+import kr.co.sas.user.model.dto.LoginUserDTO;
+import kr.co.sas.user.model.service.UserService;
 import kr.co.sas.util.FileUtils;
 
 @CrossOrigin("*")
@@ -27,7 +30,7 @@ import kr.co.sas.util.FileUtils;
 public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
-	
+	@Autowired UserService userService;
 	@Value("${file.root}")
 	private String root;
 	
@@ -37,6 +40,11 @@ public class NoticeController {
 	@GetMapping(value="/list/{reqPage}/{noticeType}")
 	public ResponseEntity<Map> list(@PathVariable int reqPage, @PathVariable int noticeType){
 		Map map = noticeService.selectNoticeList(reqPage,noticeType);
+		return ResponseEntity.ok(map);
+	}
+	@GetMapping(value="/userList/{reqPage}/{noticeType}/{loginNickname}")
+	public ResponseEntity<Map> list(@PathVariable int reqPage, @PathVariable int noticeType,@PathVariable String loginNickname){
+		Map map = noticeService.selectNoticeList(reqPage,noticeType,loginNickname);
 		return ResponseEntity.ok(map);
 	}
 	
@@ -57,6 +65,14 @@ public class NoticeController {
 	@GetMapping(value="/detail/{noticeNo}/{noticeType}")
 	public ResponseEntity<Map> view(@PathVariable int noticeNo,@PathVariable int noticeType){
 		Map map = noticeService.selectOneNotice(noticeNo,noticeType);
+		System.out.println(map);
+		return ResponseEntity.ok(map);
+	}
+	@GetMapping(value="/userDetail/{noticeNo}/{noticeType}/{userNickname}")
+	public ResponseEntity<Map> userView(@PathVariable int noticeNo,@PathVariable int noticeType,@PathVariable String userNickname){
+		
+		Map map = noticeService.selectOneNotice(noticeNo,noticeType,userNickname);
+		System.out.println(map);
 		return ResponseEntity.ok(map);
 	}
 	

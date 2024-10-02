@@ -202,8 +202,19 @@
     </select>
 	<insert id="insertReservation">
 		insert into reservation values(reservation_seq.nextval, to_date(#{reserveDateString}, 'yyyy-MM-dd hh24:mi'), #{reservePayStatus}, 0, #{reservePeople}, #{storeNo}, #{seatNo}, #{userId}, sysdate)
+		<selectKey order="AFTER" resultType="int" keyProperty="reserveNo" >
+			select max(reserve_no) from reservation
+		</selectKey>
 	</insert>
-<!-- 수진 -->
+	
+	<select id="countSameReserve" resultType="int">
+		select count(*) from reservation where user_id=#{userId} and store_no=#{storeNo} and reserve_date = to_date(#{reserveDateString}, 'yyyy-MM-dd hh24:mi')
+	</select>
+	
+	<insert id="insertPay">
+		insert into payment values(payment_seq.nextval, sysdate, #{payMethod}, #{reserveNo}, #{payCode}, #{payPrice})
+	</insert>
+<!-- 수진 끝 -->
 	<select id="selectWeekCustomer" resultType="map">
 		SELECT
 		TO_CHAR(reserve_date, 'DAY') AS dayOfWeek,

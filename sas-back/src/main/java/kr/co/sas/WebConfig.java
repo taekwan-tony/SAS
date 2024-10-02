@@ -31,6 +31,9 @@ public class WebConfig implements WebMvcConfigurer{
 		registry
 			.addResourceHandler("/userProfile/**")
 			.addResourceLocations("file:///"+root+"/userProfile/");
+		registry
+			.addResourceHandler("/store/storeMenu/**")
+			.addResourceLocations("file:///"+root+"/store/storeMenu/");
 	}
 	
 }

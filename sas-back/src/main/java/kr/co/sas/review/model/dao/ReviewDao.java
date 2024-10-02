@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import kr.co.sas.review.model.dto.ReviewDTO;
+import kr.co.sas.util.PageInfo;
 
 @Mapper
 public interface ReviewDao {
@@ -26,6 +27,11 @@ public interface ReviewDao {
 	
 	int insertReviewAnswer(ReviewDTO review);
 
+	int totalCount();
+
+	List reviewReportList(PageInfo pi);
+
+	int reviewReportComp(ReviewDTO review);
 	ReviewDTO selectOneReview(int reviewNo);
 
 	int deleteReview(int reviewNo);
@@ -34,5 +40,5 @@ public interface ReviewDao {
 
 	int updateReviewReportContent(ReviewDTO review);
 	
-
+	int updateReviewReportAdmin(int reviewNo);
 }

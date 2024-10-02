@@ -24,4 +24,10 @@ public class MenuService {
 		int result = menuDao.insertStoreMenu(menu);
 		return result;
 	}//insertStoreMenu
+
+
+	public List allMenuList(int loginStoreNo) {
+		List list = menuDao.allMenuList(loginStoreNo);
+		return list;
+	}
 }
