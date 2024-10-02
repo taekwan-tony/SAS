@@ -98,6 +98,7 @@ public class StoreController {
 	@GetMapping(value="/storeList")
 	public ResponseEntity<List> selectAllstore (){
 		List storeList = storeService.selectAllstore();
+		System.out.println("매장이미지보려고"+storeList);
 		return ResponseEntity.ok(storeList);
 	}
 	

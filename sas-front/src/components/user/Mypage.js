@@ -146,7 +146,7 @@ const ReservationView = () => {
               className="profile-image"
             />
             <div className="res-menu">
-              <h2>매장이름</h2>
+              <h2>가게이르므</h2>
               <h2>결제정보</h2>
               <p>인원수</p>
               <p>예약시간</p>

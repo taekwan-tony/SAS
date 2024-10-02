@@ -124,7 +124,7 @@ function UserMain() {
     };
   }, []);
 
-  // 검색창 구현중..
+  // 검색창 구현중.. 여기서부터 시작해야하나 ?
   const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
   const changeInputVal = (e) => {
@@ -213,70 +213,84 @@ function UserMain() {
             ></i>
           </label>
           <div className="user-sidebar">
-            <header className="header-user">
-              <img src="/image/IMG_3238.jpg" alt="User" />
-              <p>{loginUserId}</p>
-            </header>
-            <div className="sidebar-user-page">
-              <ul>
-                <li className={`has-submenu ${submenuOpen ? "open" : ""}`}>
-                  <Link
-                    to="mypage"
-                    className="toggle-submenu"
-                    onClick={toggleSubmenu}
-                  >
-                    <i className="fa-solid fa-image-portrait"></i>마이페이지
-                  </Link>
-                  <ul className="user-navi-submenu">
+            {isUserLogin ? (
+              <>
+                <header className="header-user">
+                  <img src="/image/IMG_3238.jpg" alt="User" />
+                  <p>{loginUserId}</p>
+                </header>
+                <div className="sidebar-user-page">
+                  <ul>
+                    <li className={`has-submenu ${submenuOpen ? "open" : ""}`}>
+                      <Link
+                        to="mypage"
+                        className="toggle-submenu"
+                        onClick={toggleSubmenu}
+                      >
+                        <i className="fa-solid fa-image-portrait"></i>마이페이지
+                      </Link>
+                      <ul className="user-navi-submenu">
+                        <li>
+                          <a href="#">
+                            <i className="fa-solid fa-user-pen"></i>내 정보 수정
+                          </a>
+                        </li>
+                        <li>
+                          <Link to="mypage/myreview">
+                            <i className="fa-solid fa-comment"></i>나의 리뷰
+                          </Link>
+                        </li>
+                      </ul>
+                    </li>
                     <li>
                       <a href="#">
-                        <i className="fa-solid fa-user-pen"></i>내 정보 수정
+                        <i className="fa-solid fa-magnifying-glass"></i>검색하기
                       </a>
                     </li>
                     <li>
-                      <Link to="mypage/myreview">
-                        <i className="fa-solid fa-comment"></i>나의 리뷰
+                      <Link to="mypage/resview">
+                        <i className="fa-solid fa-calendar-week"></i>예약보기
                       </Link>
                     </li>
+                    <li>
+                      <a href="#">
+                        <i className="fa-solid fa-bookmark"></i>즐겨찾기
+                      </a>
+                    </li>
                   </ul>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="fa-solid fa-magnifying-glass"></i>검색하기
+                </div>
+                <div className="user-social-links">
+                  <a href="#" className="twitter">
+                    <i className="fa-brands fa-twitter"></i>
                   </a>
-                </li>
-                <li>
-                  <Link to="mypage/resview">
-                    <i className="fa-solid fa-calendar-week"></i>예약보기
-                  </Link>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="fa-solid fa-bookmark"></i>즐겨찾기
+                  <a href="#" className="facebook">
+                    <i className="fa-brands fa-facebook"></i>
                   </a>
-                </li>
-              </ul>
-            </div>
-            <div className="user-social-links">
-              <a href="#" className="twitter">
-                <i className="fa-brands fa-twitter"></i>
-              </a>
-              <a href="#" className="facebook">
-                <i className="fa-brands fa-facebook"></i>
-              </a>
-              <a href="#" className="instagram">
-                <i className="fa-brands fa-instagram"></i>
-              </a>
-              <a href="#" className="google-plus">
-                <i className="fa-brands fa-youtube"></i>
-              </a>
-            </div>
-            {/* 로그아웃 버튼 */}
-            <div className="user-navi-logout-button">
-              <a href="#">
-                <i className="fa fa-sign-out"></i>Logout
-              </a>
-            </div>
+                  <a href="#" className="instagram">
+                    <i className="fa-brands fa-instagram"></i>
+                  </a>
+                  <a href="#" className="google-plus">
+                    <i className="fa-brands fa-youtube"></i>
+                  </a>
+                </div>
+                {/* 로그아웃 버튼 */}
+                <div className="user-navi-logout-button">
+                  <a href="#">
+                    <i className="fa fa-sign-out"></i>Logout
+                  </a>
+                </div>
+              </>
+            ) : (
+              <div
+                className="sidebar-user-page"
+                style={{ textAlign: "center" }}
+                onClick={() => {
+                  navigate("login");
+                }}
+              >
+                <button className="btn-main">로그인</button>
+              </div>
+            )}
           </div>
           <section></section>
         </div>

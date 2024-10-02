@@ -51,8 +51,11 @@ const MenuView = () => {
       .catch((err) => {});
   }, [loginUserNo, isFavoriteChange]);
   const changeFavorite = () => {
+    console.log(loginUserNo);
     if (loginUserNo !== 0) {
+      console.log(1);
       if (store.favorite) {
+        console.log(2);
         axios
           .delete(
             `${backServer}/favorite/storeNo/${store.storeNo}/userNo/${loginUserNo}`
@@ -68,7 +71,9 @@ const MenuView = () => {
           .catch((err) => {
             console.log(err);
           });
+        console.log(4);
       } else {
+        console.log(3);
         axios
           .post(`${backServer}/favorite`, {
             storeNo: store.storeNo,
@@ -506,14 +511,21 @@ const Menu = () => {
     </div>
   );
 };
-
+//스토어할때 모든걸 다 갖고와 . !!
 const MenuPhoto = () => {
+  const params = useParams();
+  const storeNo = params.storeNo;
+  const [store, setStore] = useState({ storeNo: storeNo });
   return (
     <div className="menu-photo">
       <h2>사진</h2>
       <div className="menu-image2">
-        <img src="" alt="가게 로고" />
-        <img src="/image/youtube.png" alt="가게 로고" />
+        <img
+          src=""
+          alt="메뉴사진 ?
+        "
+        />
+        <img src={store.storePhoto} alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />
