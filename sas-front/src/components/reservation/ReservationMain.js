@@ -183,8 +183,7 @@ const ReservationModalFirst = (props) => {
       reservation.reservePeople !== 0 &&
       reservation.reservePeople !== "" &&
       reservation.reserveDate !== "" &&
-      reservation.reserveTime !== "" &&
-      reserveCheck.check
+      (reservation.reserveTime !== "" || reserveCheck.check)
     ) {
       setReservationPage(2);
     }
@@ -234,6 +233,16 @@ const ReservationModalFirst = (props) => {
       .catch((err) => {
         console.log(err);
       });
+    msgRef.current.style.setProperty("display", "none");
+    let peopleCapacity = 0;
+    reservationStore.seatList.forEach((seat) => {
+      if (seat.seatCapacity > peopleCapacity) {
+        peopleCapacity = seat.seatCapacity;
+      }
+    });
+    if (reservation.reservePeople > peopleCapacity) {
+      msgRef.current.style.setProperty("display", "block");
+    }
   }, [reservation]);
   //메세지 ref
   const msgRef = useRef(null);
@@ -279,9 +288,9 @@ const ReservationModalFirst = (props) => {
           {timeBox.map((time, index) => {
             const timeBoxSeatList = [...seatList];
 
-            const countSeat = countReserve.filter((count, index) => {
-              return count.reserveTime === time.realTime;
-            });
+            // const countSeat = countReserve.filter((count, index) => {
+            //   return count.reserveTime === time.realTime;
+            // });
 
             // console.log("realTime:", time.realTime, "countSeat:", countSeat);
             return (
@@ -436,7 +445,7 @@ const ReserveTimeBox = (props) => {
     today,
     selected,
     idName,
-    seatList,
+    // seatList,
     countReserve,
     people,
     setReservation,
@@ -472,7 +481,9 @@ const ReserveTimeBox = (props) => {
     const countReserveFilter = countReserve.filter((count, index) => {
       return count.reserveTime === timeValue;
     });
-
+    //countSeat 초기화
+    countSeat.splice(0, countSeat.length);
+    // console.log("지워져야함", selected, timeValue, countSeat);
     let amountCount = 0;
     // const countSeatAvailable = () => {
     // console.log(timeBoxSeatList);
@@ -506,11 +517,12 @@ const ReserveTimeBox = (props) => {
     // setCountCheck(!countCheck);
   }, [reservation, countReserve]); //날짜, 인원수가 바뀔때마다
   const [isAble, setIsAble] = useState(false);
+  const [available, setavailable] = useState(false);
   useEffect(() => {
+    setReserveCheck({ ...reserveCheck, check: true });
+    // isAble
     setIsAble((today < selected || isLate(timeNow, timeValue)) && amount > 0);
-    //available 용
-    // console.log(timeBoxSeatList);
-    // console.log(people);
+    //available
     let seatNo = 0;
     let seatCapacity = 0;
     // console.log(countSeat);
@@ -523,12 +535,9 @@ const ReserveTimeBox = (props) => {
       }
     });
     if (seatNo == 0) {
-      msgRef.current.style.setProperty("display", "block");
       setavailable(true);
       setReserveCheck({ ...reserveCheck, check: false });
     } else {
-      msgRef.current.style.setProperty("display", "none");
-      setReserveCheck({ ...reserveCheck, check: true });
       setavailable(false);
       setReserveSeatNo(seatNo);
     }
@@ -544,13 +553,12 @@ const ReserveTimeBox = (props) => {
     //   "available : ",
     //   seatNo === 0
     // );
-  }, [amount, reservation, countReserve, countSeat]); //people, selected 모두 결국 reservation 안의 value 이므로
+  }, [amount, countSeat]); //people, selected 모두 결국 reservation 안의 value 이므로>>어차피 그 둘 바뀌면 앞에서 amount, countSeat 바뀔거니까
   // console.log(isAble);
   // console.log(countSeatAvailable());
   // 체크할시에 가져올 seatNo 값;
   const [reserveSeatNo, setReserveSeatNo] = useState(0);
   // 인원수 바뀔때마다 자리 앉을 수 있는지 여부 체크
-  const [available, setavailable] = useState(false);
   // console.log(available, isAble);
   return (
     <div className="time-btn-box">
@@ -571,7 +579,7 @@ const ReserveTimeBox = (props) => {
             seatNo: reserveSeatNo,
             // reserveDate: selected,
           });
-          setReserveCheck({ ...reserveCheck, time: time });
+          setReserveCheck({ ...reserveCheck, time: time, check: true });
         }}
       />
       <label
