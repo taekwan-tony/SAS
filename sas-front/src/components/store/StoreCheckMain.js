@@ -15,10 +15,11 @@ import {
   storeTypeState,
 } from "../utils/RecoilData";
 import StorePayment from "./StorePayment";
+import { storeNameState } from "../utils/RecoilData";
 
 const StoreCheckMain = () => {
   // 로그인 지속
-
+  const [storeName, setStoreName] = useRecoilState(storeNameState);
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
@@ -40,6 +41,7 @@ const StoreCheckMain = () => {
           setLoginSoEmail(res.data.soEmail);
           setStoreType(res.data.storeType);
           setLoginStoreNo(res.data.storeNo);
+          setStoreName(res.data.storeName); // storeName 설정
           console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
@@ -51,6 +53,7 @@ const StoreCheckMain = () => {
           console.log(err);
           setLoginSoEmail("");
           setStoreType(2);
+          setStoreName(""); // 오류 시 storeName 초기화
           delete axios.defaults.headers.common["Authorization"];
           window.localStorage.removeItem("storeRefreshToken");
         });

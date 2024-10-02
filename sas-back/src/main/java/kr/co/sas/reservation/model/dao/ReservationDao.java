@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
@@ -37,5 +38,9 @@ public interface ReservationDao {
 	int insertReservation(ReservationDTO reservation);
 
 	int deleteReservation(int reserveNo);
+
+	int countSameReserve(ReservationDTO reservation);
+
+	int insertPay(PaymentDTO pay);
 
 }

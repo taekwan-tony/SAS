@@ -1,6 +1,8 @@
 package kr.co.sas.reservation.controller;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.reservation.model.service.ReservationService;
 import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
@@ -72,9 +75,24 @@ public class ReservationController {
     
     @Operation(summary="예약 등록", description="예약날짜, 예약 시간, 결제 여부, 인원수, 매장 번호, 좌석 번호, 유저 아이디를 예약 객체로 받아 등록")
     @PostMapping
-    public ResponseEntity<Boolean> insertReservation(@RequestBody ReservationDTO reservation){
-    	System.out.println(reservation);
-    	int result = reservationService.insertReservation(reservation);
+    public ResponseEntity<Map> insertReservation(@RequestBody ReservationDTO reservation){
+//    	System.out.println(reservation);
+    	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		reservation.setReserveDateString(fmt.format(reservation.getReserveDate())+" "+reservation.getReserveTime());
+    	boolean isExist = reservationService.isAlreadyReserved(reservation);
+    	Map map = new HashMap<String, Object>();
+    	if(!isExist) {    		
+    		map = reservationService.insertReservation(reservation);		
+    	}else {
+    		map.put("result", false);
+    	}
+    	return ResponseEntity.ok(map);
+    }
+    
+    @Operation(summary="예약등록시 결제", description="결제 완료시 결제수단, 예약번호, 결제코드, 가격을 객체로 받아 등록")
+    @PostMapping(value="/pay")
+    public ResponseEntity<Boolean> insertPayment(@RequestBody PaymentDTO pay){
+    	int result = reservationService.insertPayment(pay);
     	return ResponseEntity.ok(result>0);
     }
 //   수진-예약 -끝
@@ -103,5 +121,7 @@ public class ReservationController {
         return ResponseEntity.ok("예약 삭제 성공");
             
     }
-
+    
+    
+    
 }

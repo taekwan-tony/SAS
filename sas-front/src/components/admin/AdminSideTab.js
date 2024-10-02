@@ -38,6 +38,9 @@ const AdminSideTab = () => {
             <li>
               <Link to="/admin/store/storeList">제휴매장 리스트</Link>
             </li>
+            <li>
+              <Link to="/admin/store/storeReview">리뷰 신고 리스트</Link>
+            </li>
           </ul>
         </li>
         <li>

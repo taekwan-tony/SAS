@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
   loginStoreIdState,
+  loginStoreNameState,
   loginStoreNoState,
+  storeNameState,
   storeTypeState,
 } from "../utils/RecoilData";
 import axios from "axios";
@@ -15,6 +17,7 @@ function StoreMain() {
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
+  const [storeName, setStoreName] = useRecoilState(loginStoreNameState);
 
   useEffect(() => {
     storeRefreshLogin();
@@ -32,6 +35,8 @@ function StoreMain() {
           setLoginSoEmail(res.data.soEmail);
           setStoreType(res.data.storeType);
           setLoginStoreNo(res.data.storeNo);
+          setStoreName(res.data.storeName);
+
           console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
