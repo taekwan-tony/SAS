@@ -95,7 +95,7 @@ public class ReviewController {
 	public ResponseEntity<List> getReviewList(@PathVariable String userNickname){
 		String type = "user";
 		List list = reviewService.getReviewList(userNickname, type);
-		System.out.println(list);
+		System.out.println("스토어이름찾기"+list);
 		return ResponseEntity.ok(list);
 	}
  

@@ -22,6 +22,7 @@ public class ReviewDTO {
 	private int reviewScore;
 	private String userNickname;
 	private int storeNo;
+	private String storeName;
 	private String reviewAnswer;
 	private String reviewAnswerDate;
 	private int reserveNo;

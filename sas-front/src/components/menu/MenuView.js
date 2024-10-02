@@ -520,7 +520,7 @@ const MenuPhoto = () => {
   );
 };
 
-//리뷰 수정
+//리뷰 내역
 const MenuReview = (props) => {
   const review = props.review;
   const store = props.store;
@@ -573,11 +573,16 @@ const MenuReview = (props) => {
     </div>
   );
 };
-
+//리뷰수정
 const ModifyReview = (props) => {
   const review = props.review;
-
+  const store = props.store;
   const { changedReview, setChangedReview } = props;
+  const [userNickname, setUserNickname] = useRecoilState(
+    loginUserNicknameState
+  );
+  const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
+  const update = userNickname === review.userNickname;
 
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
@@ -595,25 +600,37 @@ const ModifyReview = (props) => {
   //   // setReviewList([...]);
   // };
   const regExp = /[</p>]/;
-  //리뷰 수정
 
+  //리뷰삭제
   const deleteReview = () => {
-    axios
-      .delete(`${backServer}/review/${review.reviewNo}`)
-      .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            title: "리뷰 삭제 완료",
-            text: "리뷰를 삭제했습니다",
-            icon: "success",
+    Swal.fire({
+      title: "리뷰를 삭제하시겠습니까 ?",
+      icon: "question",
+      showCancelButton: true,
+      cancelButtonText: "취소",
+      confirmButtonText: "삭제",
+    }).then((result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        axios
+          .delete(`${backServer}/review/${review.reviewNo}`)
+          .then((res) => {
+            console.log(res);
+            if (res.data) {
+              Swal.fire({
+                title: "삭제가 완료되었습니다.",
+                text: "리뷰를 삭제했습니다",
+                icon: "success",
+              });
+
+              setChangedReview(!changedReview);
+            }
+          })
+          .catch((err) => {
+            console.error(err);
           });
-          setChangedReview(!changedReview);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      }
+    });
   };
   //의존성배열안에있는 값이 변하면 다시 유즈이펙트가 돈다 .
   const updateReview = () => {
@@ -649,15 +666,25 @@ const ModifyReview = (props) => {
 
   const [editContent, setEditContent] = useState(review.reviewContent);
 
-  // useEffect(() => {
-  //   setEditContent(review.reviewContent);
-  // }, []);
-
   return (
     <section className="review-box-container">
       <div className="review-content">
-        <p>{review.userNickname}</p>
-
+        <div className="review-header">
+          <p>{review.userNickname}</p>
+          {update ? (
+            <div className="review-manager-container">
+              <button className="review-manager-update" onClick={updateReview}>
+                수정
+              </button>
+              <button className="review-manager-delete" onClick={deleteReview}>
+                삭제
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+        <p>{review.storeName}</p>
         <Stack spacing={1}>
           <Rating
             name="half-rating-read"
@@ -682,12 +709,6 @@ const ModifyReview = (props) => {
             />
           )}
         </p>
-        <button className="review-manager" onClick={updateReview}>
-          수정
-        </button>
-        <button className="review-manager" onClick={deleteReview}>
-          삭제
-        </button>
       </div>
     </section>
   );
