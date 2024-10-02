@@ -6,10 +6,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil"; // Recoil 상태를 업데이트할 수 있는 hook
 import {
   loginStoreIdState,
   loginStoreNoState,
+  storeNameState,
   storeTypeState,
+  loginStoreNameState,
 } from "../utils/RecoilData";
 import StoreChangePw from "./StoreChangePw";
 import StoreCheckPw from "./StoreCheckPw";
@@ -32,10 +35,14 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     soEmail: "",
     soPw: "",
     storeNo: storeNo,
+    storeName: "",
   });
 
   //이메일 중복 확인
   const [isSoEmailValid, setIsSoEmailValid] = useState(false);
+
+  //사업자 번호 중복 확인
+  const [isBusinessNumber, setIsBusinessNumber] = useState(false);
 
   {
     /* 비밀번호 찾기 / 변경 창 Modal */
@@ -67,11 +74,14 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const [loginSoEmail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
+  const [storeName, setStoreName] = useRecoilState(storeNameState);
+  const setSoName = useSetRecoilState(loginStoreNameState);
 
   const soEmailRef = useRef(null);
   const soPwRef = useRef(null);
 
   const login = () => {
+    console.log(login);
     soEmailRef.current.innerText = "";
     soPwRef.current.innerText = "";
     if (store.soEmail === "" || store.soPw === "") {
@@ -80,19 +90,29 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       axios
         .post(`${backServer}/store/storeLogin`, store)
         .then((res) => {
+          console.log("로그인 응답 데이터:", res.data);
           const {
             result,
             storeType,
             loginSoEmail,
             storeNo,
+            soName, //서버에서 받은 점주 이름
             accessToken,
             refreshToken,
+            storeName,
           } = res.data;
+          console.log("매장 로그인 정보 : ", res.data);
+
+          console.log("서버로부터 받은 soName 값:", soName); // 여기서 soName 확인
+
           switch (res.data.result) {
             case 1:
               setLoginSoEmail(res.data.soEmail);
               setStoreType(res.data.storeType);
               setLoginStoreNo(res.data.storeNo);
+              setStoreName(soName); // 점주 이름 저장
+
+              console.log("저장된 storeName 값:", soName);
 
               axios.defaults.headers.common["Authorization"] =
                 res.data.accessToken;
@@ -107,7 +127,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                   title: "로그인 성공",
                   icon: "success",
                   confirmButtonColor: "#5e9960",
-                }).then((res) => {
+                }).then(() => {
                   navigate("/storeMain");
                 });
               } else if (storeType === 0) {
@@ -116,7 +136,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                   title: "로그인 성공",
                   icon: "success",
                   confirmButtonColor: "#5e9960",
-                }).then((res) => {
+                }).then(() => {
                   navigate("/admin/adminMain");
                 });
               } // else
@@ -173,6 +193,23 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     const data = {
       b_no: [reg_num],
     };
+
+    // 사업자 등록 번호 중복 확인
+    axios
+      .get(
+        `${backServer}/store/businessNumber/${store.businessNumber}/checkBusinessNumber`
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          console.log("사용 가능한 사업자 번호");
+        } else {
+          console.log("이미 가입된 사업자 번호");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // Fetch API를 사용하여 POST 요청 보내기
     fetch(
@@ -290,12 +327,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   if (!isModalOpen) {
     return null; // 모달이 열리지 않았을 경우 null을 반환하여 아무것도 렌더링하지 않음
   }
-
-  // 비밀번호 변경
-  const storeChangePw = () => {
-    console.log("비밀번호 변경 버튼");
-    navigate("/storeChangePw");
-  };
 
   return (
     <>

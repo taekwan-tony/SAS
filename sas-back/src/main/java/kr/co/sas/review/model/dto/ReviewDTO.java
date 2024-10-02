@@ -1,7 +1,5 @@
 package kr.co.sas.review.model.dto;
 
-
-
 import java.sql.Date;
 import java.util.List;
 
@@ -30,4 +28,6 @@ public class ReviewDTO {
 	private String storeName;
 	private String soName;
 	private List<String> filepathList;
+	private int reviewType;
+	private String reviewReportContent;
 }

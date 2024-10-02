@@ -32,5 +32,13 @@ public interface ReviewDao {
 	List reviewReportList(PageInfo pi);
 
 	int reviewReportComp(ReviewDTO review);
+	ReviewDTO selectOneReview(int reviewNo);
+
+	int deleteReview(int reviewNo);
+
+	int updateReviewReport(int reviewNo);
+
+	int updateReviewReportContent(ReviewDTO review);
 	
+
 }

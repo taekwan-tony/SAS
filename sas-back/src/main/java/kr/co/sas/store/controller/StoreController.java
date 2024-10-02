@@ -78,6 +78,7 @@ public class StoreController {
 	@Operation(summary = "매장 로그인", description = "이메일, 비밀번호를 객체로 가져와서 로그인")
 	@PostMapping(value = "/storeLogin")
 	public ResponseEntity<Map> storeLogin(@RequestBody StoreDTO store) {
+		System.out.println("로그인 정보 : " + store);
 		Map map = storeService.storeLogin(store);
 		return ResponseEntity.ok(map);
 	}//storeLogin
@@ -226,6 +227,7 @@ public class StoreController {
 		return ResponseEntity.ok(result > 0);
 	}//insertstoreAmenities
 	
+	
 	@Operation(summary = "매장 정보 가져오기", description = "매장 번호를 받아 예약등록에 필요한 매장 정보(예약금/ 예약시작시간/ 예약 마감시간/ 브레이크 타임 시작/마감/좌석수  가져오기 )")
 	@GetMapping(value="/storeNo/{storeNo}/getReserveInfo")
 	public ResponseEntity<StoreDTO> getStoreReserveInfo(@PathVariable int storeNo){
@@ -233,6 +235,13 @@ public class StoreController {
 		return ResponseEntity.ok(store);
 	}
 	
+	
+	@Operation(summary = "사업자 등록 번호 중복 확인")
+	@GetMapping(value = "/businessNumber/{businessNumber}/checkBusinessNumber")
+	public ResponseEntity<Boolean> checkBusinessNumber(@PathVariable int businessNumber) {
+		boolean result = storeService.checkBusinessNumber(businessNumber);
+		return ResponseEntity.ok(result);
+	}//checkBusinessNumber
 	
 	
 }

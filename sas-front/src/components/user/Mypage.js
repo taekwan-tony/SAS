@@ -228,7 +228,7 @@ const ReviewWrite = () => {
     reviewScore: 2,
     userNickname: "",
     // 여기는 예약구현후에 넣는 방법 생각해보겠음
-    storeNo: 73,
+    storeNo: 93,
     reserveNo: null,
   });
   const setContent = (content) => {

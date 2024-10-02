@@ -7,8 +7,11 @@ import { MdCancel } from "react-icons/md";
 import axios from "axios";
 import Recal from "./Recal";
 import { Link } from "react-router-dom";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { loginStoreNoState, reservationState } from "../utils/RecoilData";
 
-function ManageReserved() {
+function ManageReserved(props) {
+  const setActiveIndex = props.setActiveIndex;
   const [inputValue, setInputValue] = useState(0); // 입력 값 관리
   const [totalValue, setTotalValue] = useState(0); // 누적 값 관리
   const [warningVisible, setWarningVisible] = useState(false); // 경고 메시지 상태
@@ -16,7 +19,7 @@ function ManageReserved() {
 
   const [reservations, setReservations] = useState([]);
   const [weekReservations, setWeekReservations] = useState([]);
-  const [storeNo, setStoreNo] = useState();
+  const storeNo = useRecoilValue(loginStoreNoState);
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
   // 입금 상태별 예약 건수 상태
@@ -26,71 +29,78 @@ function ManageReserved() {
   const [calendarEvents, setCalendarEvents] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${backServer}/reservation/reservation/90`)
-      .then((response) => {
-        setReservations(response.data);
+    setActiveIndex(6);
+    if (storeNo !== 0) {
+      axios
+        .get(`${backServer}/reservation/reservation/${storeNo}`)
+        .then((response) => {
+          setReservations(response.data);
 
-        // 예약 데이터를 달력 형식으로 변환 (필터링 제거)
-        const events = response.data.map((reservation) => {
-          let backgroundColor;
-          let borderColor;
-          // 상태에 따른 색상 지정
-          if (reservation.reservePayStatus === 0) {
-            backgroundColor = "#ffc107"; // 입금 대기 (노란색)
-            borderColor = "#e0a800";
-          } else if (reservation.reservePayStatus === 1) {
-            backgroundColor = "#28a745"; // 결제 완료 (초록색)
-            borderColor = "#218838";
-          } else if (reservation.reservePayStatus === 2) {
-            backgroundColor = "#dc3545"; // 입금 취소 (빨간색)
-            borderColor = "#c82333";
-          }
+          // 예약 데이터를 달력 형식으로 변환 (필터링 제거)
+          const events = response.data.map((reservation) => {
+            let backgroundColor;
+            let borderColor;
+            // 상태에 따른 색상 지정
+            if (reservation.reservePayStatus === 0) {
+              backgroundColor = "#ffc107"; // 입금 대기 (노란색)
+              borderColor = "#e0a800";
+            } else if (reservation.reservePayStatus === 1) {
+              backgroundColor = "#28a745"; // 결제 완료 (초록색)
+              borderColor = "#218838";
+            } else if (reservation.reservePayStatus === 2) {
+              backgroundColor = "#dc3545"; // 입금 취소 (빨간색)
+              borderColor = "#c82333";
+            }
 
-          return {
-            title: `${reservation.reservePeople}명 예약`,
-            date: new Date(reservation.reserveDate).toLocaleDateString("en-CA"),
-            backgroundColor, // 상태에 따라 배경색 변경
-            borderColor, // 상태에 따라 경계선 색 변경
-            extendedProps: {
-              reserveNo: reservation.reserveNo,
-              seatNo: reservation.seatNo,
-              userId: reservation.userId,
-            },
-          };
+            return {
+              title: `${reservation.reservePeople}명 예약`,
+              date: new Date(reservation.reserveDate).toLocaleDateString(
+                "en-CA"
+              ),
+              backgroundColor, // 상태에 따라 배경색 변경
+              borderColor, // 상태에 따라 경계선 색 변경
+              extendedProps: {
+                reserveNo: reservation.reserveNo,
+                seatNo: reservation.seatNo,
+                userId: reservation.userId,
+              },
+            };
+          });
+
+          setCalendarEvents(events); // 모든 예약 데이터를 상태로 설정
+        })
+        .catch((error) => {
+          console.error("예약 데이터를 가져오는 중 오류 발생:", error);
         });
-
-        setCalendarEvents(events); // 모든 예약 데이터를 상태로 설정
-      })
-      .catch((error) => {
-        console.error("예약 데이터를 가져오는 중 오류 발생:", error);
-      });
+    }
   }, [storeNo, backServer]);
   // 예약 데이터를 서버에서 가져옴
   useEffect(() => {
-    axios
-      .get(`${backServer}/reservation/status/storeNo/90`)
-      .then((response) => {
-        // 입금 상태별로 필터링하여 카운트 계산
-        const pending = response.data.filter(
-          (reservation) => reservation.RESERVESTATUS === "입금대기"
-        ).length;
-        const completed = response.data.filter(
-          (reservation) => reservation.RESERVESTATUS === "결제완료"
-        ).length;
-        const cancelled = response.data.filter(
-          (reservation) => reservation.RESERVESTATUS === "취소"
-        ).length;
-        console.log(response.data);
-        // 상태별 카운트 설정
-        setPendingCount(pending);
-        setCompletedCount(completed);
-        setCancelledCount(cancelled);
-        setWeekReservations(response.data);
-      })
-      .catch((error) => {
-        console.error("예약 데이터를 가져오는 중 오류 발생:", error);
-      });
+    if (storeNo !== 0) {
+      axios
+        .get(`${backServer}/reservation/status/storeNo/${storeNo}`)
+        .then((response) => {
+          // 입금 상태별로 필터링하여 카운트 계산
+          const pending = response.data.filter(
+            (reservation) => reservation.RESERVESTATUS === "입금대기"
+          ).length;
+          const completed = response.data.filter(
+            (reservation) => reservation.RESERVESTATUS === "결제완료"
+          ).length;
+          const cancelled = response.data.filter(
+            (reservation) => reservation.RESERVESTATUS === "취소"
+          ).length;
+          console.log(response.data);
+          // 상태별 카운트 설정
+          setPendingCount(pending);
+          setCompletedCount(completed);
+          setCancelledCount(cancelled);
+          setWeekReservations(response.data);
+        })
+        .catch((error) => {
+          console.error("예약 데이터를 가져오는 중 오류 발생:", error);
+        });
+    }
   }, [storeNo, backServer]);
   // 입금 상태에 따라 뱃지를 보여주는 함수
   const getPayStatusBadge = (payStatus) => {
@@ -153,11 +163,30 @@ function ManageReserved() {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
+  const deleteReserve = (reserveNo) => {
+    if (window.confirm("정말 이 예약을 삭제하시겠습니까?")) {
+      axios
+        .delete(`${backServer}/reservation/delete/${reserveNo}`)
+        .then((response) => {
+          alert(response.data);
+          // 삭제 후 예약 목록 다시 불러오기
+          setWeekReservations((prevReservations) =>
+            prevReservations.filter(
+              (reservation) => reservation.RESERVE_NO !== reserveNo
+            )
+          );
+        })
+        .catch((error) => {
+          console.error("예약 삭제 중 오류 발생:", error);
+        });
+    }
+  };
   return (
     <>
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>예약관리</h1>
+
           <Link to="/usermain">
             <button className="button-bell">
               <div className="user-box-bell">
@@ -307,6 +336,7 @@ function ManageReserved() {
             </thead>
             <tbody>
               {weekReservations.map((reservation, index) => {
+                console.log(reservation.RESERVESTATUS);
                 return (
                   <tr key={reservation.RESERVE_NO}>
                     <td> {index + 1}</td>
@@ -318,6 +348,16 @@ function ManageReserved() {
                     <td>{reservation.RESERVE_PEOPLE}</td>
                     <td>{reservation.SEAT_NO}</td>
                     <td>{reservation.USER_ID}</td>
+                    <td>
+                      {reservation.RESERVESTATUS === "취소" && (
+                        <button
+                          className="reserve-del-button"
+                          onClick={() => deleteReserve(reservation.RESERVE_NO)}
+                        >
+                          삭제
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 );
               })}

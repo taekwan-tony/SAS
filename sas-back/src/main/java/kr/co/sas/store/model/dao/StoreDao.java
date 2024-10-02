@@ -58,5 +58,7 @@ public interface StoreDao {
 
 	int insertStoreAmenities(StoreAmenitiesDTO amenities);
 
+	StoreDTO checkBusinessNumber(int businessNumber);
+
 
 }

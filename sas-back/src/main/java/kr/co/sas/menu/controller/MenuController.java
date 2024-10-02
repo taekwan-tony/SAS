@@ -37,18 +37,15 @@ public class MenuController {
 	
 	@Operation(summary = "매장 메뉴 등록")
 	@PostMapping(value = "insertStoreMenu/{storeNo}")
-	public ResponseEntity<Boolean> insertStoreMenu (@ModelAttribute MenuDTO menu, @PathVariable int storeNo, @ModelAttribute MultipartFile storeMenuImg) {
+	public ResponseEntity<Boolean> insertStoreMenu (@ModelAttribute MenuDTO storeMenu, @ModelAttribute MultipartFile menuThumbnail) {
 		
-		if(storeMenuImg != null) {
+		if(menuThumbnail != null) {
 			String savepath = root + "/store/storeMenu/";
-			String filepath = fileUtil.upload(savepath, storeMenuImg);
-			menu.setMenuPhoto(filepath);
+			String filepath = fileUtil.upload(savepath, menuThumbnail);
+			storeMenu.setMenuPhoto(filepath);
 		}//if
-		
-		//데이터 로그
-		System.out.println("메뉴 : " + menu.toString());
-		
-		int result = menuService.insertStoreMenu(menu, storeNo);
+				
+		int result = menuService.insertStoreMenu(storeMenu);
 		return ResponseEntity.ok(result > 0);
 	}//insertStoreMenu
 

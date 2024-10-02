@@ -7,8 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,13 +61,23 @@ public class ReservationController {
         List<Map<String, Object>> genderData = reservationService.getReservationGender(storeNo);
         return ResponseEntity.ok(genderData);
     }
-    
+//    수진-예약-시작
     @Operation(summary = "예약 좌석 수 비교", description = "해당 날짜의 예약명단에서 시간과 좌석코드 가져와 반환")
     @GetMapping(value="/reserveDate/{date}/storeNo/{storeNo}/selectReservationForCount")
     public ResponseEntity<List> selectReservationForCount(@PathVariable String date, @PathVariable int storeNo){
+    	System.out.println(date);
     	List list = reservationService.selectReservationForCount(date, storeNo);
     	return ResponseEntity.ok(list);
     }
+    
+    @Operation(summary="예약 등록", description="예약날짜, 예약 시간, 결제 여부, 인원수, 매장 번호, 좌석 번호, 유저 아이디를 예약 객체로 받아 등록")
+    @PostMapping
+    public ResponseEntity<Boolean> insertReservation(@RequestBody ReservationDTO reservation){
+    	System.out.println(reservation);
+    	int result = reservationService.insertReservation(reservation);
+    	return ResponseEntity.ok(result>0);
+    }
+//   수진-예약 -끝
     // 지난달 예약 건수 조회 메서드 추가
     @GetMapping("/lastMonthTotalReservation/storeNo/{storeNo}")
     public ResponseEntity<Integer> getLastMonthTotalReservation(@PathVariable int storeNo) {
@@ -81,6 +94,14 @@ public class ReservationController {
     public ResponseEntity<List<WeekCustomerDTO>> getWeekCustomer(@PathVariable int storeNo) {
         List<WeekCustomerDTO> weeklyCustomer = reservationService.getWeeklyCustomer(storeNo);
         return ResponseEntity.ok(weeklyCustomer);
+    }
+    
+    // 예약 삭제를 위한 메서드 추가
+    @DeleteMapping("/delete/{reserveNo}")
+    public ResponseEntity<String> deleteReservation(@PathVariable int reserveNo) {
+        int result = reservationService.deleteReservation(reserveNo);
+        return ResponseEntity.ok("예약 삭제 성공");
+            
     }
 
 }
