@@ -183,8 +183,7 @@ const ReservationModalFirst = (props) => {
       reservation.reservePeople !== 0 &&
       reservation.reservePeople !== "" &&
       reservation.reserveDate !== "" &&
-      reservation.reserveTime !== "" &&
-      reserveCheck.check
+      (reservation.reserveTime !== "" || reserveCheck.check)
     ) {
       setReservationPage(2);
     }
@@ -234,6 +233,16 @@ const ReservationModalFirst = (props) => {
       .catch((err) => {
         console.log(err);
       });
+    msgRef.current.style.setProperty("display", "none");
+    let peopleCapacity = 0;
+    reservationStore.seatList.forEach((seat) => {
+      if (seat.seatCapacity > peopleCapacity) {
+        peopleCapacity = seat.seatCapacity;
+      }
+    });
+    if (reservation.reservePeople > peopleCapacity) {
+      msgRef.current.style.setProperty("display", "block");
+    }
   }, [reservation]);
   //메세지 ref
   const msgRef = useRef(null);
@@ -279,9 +288,9 @@ const ReservationModalFirst = (props) => {
           {timeBox.map((time, index) => {
             const timeBoxSeatList = [...seatList];
 
-            const countSeat = countReserve.filter((count, index) => {
-              return count.reserveTime === time.realTime;
-            });
+            // const countSeat = countReserve.filter((count, index) => {
+            //   return count.reserveTime === time.realTime;
+            // });
 
             // console.log("realTime:", time.realTime, "countSeat:", countSeat);
             return (
@@ -436,7 +445,7 @@ const ReserveTimeBox = (props) => {
     today,
     selected,
     idName,
-    seatList,
+    // seatList,
     countReserve,
     people,
     setReservation,
@@ -464,14 +473,17 @@ const ReserveTimeBox = (props) => {
   // 좌석수 계산해서 자리 있는지 계산하는 함수=>굳이 함수여야 할 이유가 있는지 생각하기(애는 이 컴포넌트에서 이번 한번만 돌아가는데 굳이 함수일 필요가 있을까?)
   //too many re-renders : 리엑트의 한계에 도달할 정도로 리렌더링이 너무 많이 돌아감->주로 잘못된 setState 사용(setState는 컴포넌트의 바디에 직접적으로 사용하지 말고 useEffect 나 이벤트 핸들러에서만 사용할것)
 
-  const countReserveFilter = countReserve.filter((count, index) => {
-    return count.reserveTime === timeValue;
-  });
-
   const [countSeat, setCountSeat] = useState([]);
   const [amount, setAmount] = useState(0);
   // const [countCheck, setCountCheck] = useState(false);
   useEffect(() => {
+    // 시간대로 자름
+    const countReserveFilter = countReserve.filter((count, index) => {
+      return count.reserveTime === timeValue;
+    });
+    //countSeat 초기화
+    countSeat.splice(0, countSeat.length);
+    // console.log("지워져야함", selected, timeValue, countSeat);
     let amountCount = 0;
     // const countSeatAvailable = () => {
     // console.log(timeBoxSeatList);
@@ -481,6 +493,7 @@ const ReserveTimeBox = (props) => {
       let isExist = false;
       countReserveFilter.forEach((count, j) => {
         if (count.seatNo === seat.seatNo) {
+          //예약내역이 있으면 사용한 좌석수만큼 개수가 빠진 값이 들어감
           countSeat.push({
             seatNo: seat.seatNo,
             seatCapacity: seat.seatCapacity,
@@ -492,6 +505,7 @@ const ReserveTimeBox = (props) => {
         }
       });
       if (!isExist) {
+        //예약내역이 없으면 기존 값으로 들어감
         // console.log(timeValue, seat.seatNo);
         countSeat.push(seat);
         amountCount += amount + seat.seatAmount;
@@ -501,13 +515,14 @@ const ReserveTimeBox = (props) => {
     setCountSeat([...countSeat]);
     setAmount(amountCount);
     // setCountCheck(!countCheck);
-  }, [reservation]);
+  }, [reservation, countReserve]); //날짜, 인원수가 바뀔때마다
   const [isAble, setIsAble] = useState(false);
+  const [available, setavailable] = useState(false);
   useEffect(() => {
+    setReserveCheck({ ...reserveCheck, check: true });
+    // isAble
     setIsAble((today < selected || isLate(timeNow, timeValue)) && amount > 0);
-    //available 용
-    // console.log(timeBoxSeatList);
-    // console.log(people);
+    //available
     let seatNo = 0;
     let seatCapacity = 0;
     // console.log(countSeat);
@@ -520,12 +535,9 @@ const ReserveTimeBox = (props) => {
       }
     });
     if (seatNo == 0) {
-      msgRef.current.style.setProperty("display", "block");
       setavailable(true);
       setReserveCheck({ ...reserveCheck, check: false });
     } else {
-      msgRef.current.style.setProperty("display", "none");
-      setReserveCheck({ ...reserveCheck, check: true });
       setavailable(false);
       setReserveSeatNo(seatNo);
     }
@@ -541,13 +553,12 @@ const ReserveTimeBox = (props) => {
     //   "available : ",
     //   seatNo === 0
     // );
-  }, [amount, reservation, countReserve, countSeat]); //people, selected 모두 결국 reservation 안의 value 이므로
+  }, [amount, countSeat]); //people, selected 모두 결국 reservation 안의 value 이므로>>어차피 그 둘 바뀌면 앞에서 amount, countSeat 바뀔거니까
   // console.log(isAble);
   // console.log(countSeatAvailable());
   // 체크할시에 가져올 seatNo 값;
   const [reserveSeatNo, setReserveSeatNo] = useState(0);
   // 인원수 바뀔때마다 자리 앉을 수 있는지 여부 체크
-  const [available, setavailable] = useState(false);
   // console.log(available, isAble);
   return (
     <div className="time-btn-box">
@@ -568,7 +579,7 @@ const ReserveTimeBox = (props) => {
             seatNo: reserveSeatNo,
             // reserveDate: selected,
           });
-          setReserveCheck({ ...reserveCheck, time: time });
+          setReserveCheck({ ...reserveCheck, time: time, check: true });
         }}
       />
       <label
