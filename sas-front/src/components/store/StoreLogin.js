@@ -75,7 +75,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
   const [storeName, setStoreName] = useRecoilState(storeNameState);
-  const setStoreName = useSetRecoilState(loginStoreNameState);
+  const setSoName = useSetRecoilState(loginStoreNameState);
 
   const soEmailRef = useRef(null);
   const soPwRef = useRef(null);

@@ -53,6 +53,8 @@ const loginStoreNoState = atom({
 
 const storeNameState = atom({
   key: "storeNameState",
+  default: 0,
+});
 const loginStoreNameState = atom({
   key: "loginStoreNameState",
   default: "",
@@ -84,9 +86,6 @@ export {
   isStoreLoginState,
   isUserLoginState,
   loginStoreNoState,
-<<<<<<< HEAD
   storeNameState,
-=======
   loginStoreNameState,
->>>>>>> Testsas2
 };
