@@ -301,6 +301,8 @@ const MenuView = () => {
           <Route path="info" element={<Menuinfo store={store} />}></Route>
         </Routes>
       }
+      {/* 덮어쓰기영 */}
+      <span></span>
       <div className="reservation-button">
         <span className="material-icons page-item" onClick={changeFavorite}>
           {store.favorite ? "bookmark" : "bookmark_border"}
