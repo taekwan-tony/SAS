@@ -132,7 +132,9 @@
 			break_time_start=#{breakTimeStart},
 			break_time_end=#{breakTimeEnd},
 			deposit=#{deposit},
-			store_class=#{storeClass}
+			store_class=#{storeClass},
+			map_x = #{mapX},
+			map_y = #{mapY}
 		where store_no=#{storeNo}
 	</update>
 	
@@ -176,5 +178,10 @@
 	<insert id="insertStoreAmenities">
 		insert into store_amenities values (store_amenities_seq.nextval, #{amenities}, #{storeNo})
 	</insert>
+	
+	
+	<select id="checkBusinessNumber" resultType="store">
+		select * from store where businessNumber=#{businessNumber}
+	</select>
 
 </mapper>

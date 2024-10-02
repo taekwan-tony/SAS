@@ -65,6 +65,8 @@ const StoreViewFrm = () => {
     breakTimeEnd: "",
     deposit: "",
     storeIntroduce: "",
+    mapX: "",
+    mapY: "",
   });
 
   // storeNumber가 업데이트될 때마다 실행
@@ -90,67 +92,68 @@ const StoreViewFrm = () => {
     seatAmount: 0,
   });
 
-  const [storeThumb, setStoreThumb] = useState("");
-
-  const storeImgRef = useRef(null);
-
-  //첨부파일
-  const [fileList, setFileList] = useState([]);
-  const [storeFile, setStoreFile] = useState([]);
-  const [showStoreFile, setShowStoreFile] = useState([]);
-  const [delStoreFileNo, setDelStoreFileNo] = useState("");
-
-  const addStoreFile = (e) => {
-    const files = e.currentTarget.files;
-    const fileArr = new Array();
-    const filenameArr = new Array();
-
-    for (let i = 0; i < files.length; i++) {
-      fileArr.push(files[i]);
-      filenameArr.push(files[i].name);
-    }
-
-    setStoreFile([...storeFile, ...fileArr]);
-    setShowStoreFile([...showStoreFile, ...filenameArr]);
-
-    console.log("선택한 파일 :", fileArr); // 디버깅용 로그 추가
-  };
-
-  //미리보기
-  const [storeImage, setStoreImage] = useState(null);
-
-  //이미지 첨부파일 변경 시 동작 함수
-  const changeStoreThumbnail = (e) => {
-    const files = e.currentTarget.files;
-
-    if (files.length !== 0 && files[0] !== 0) {
-      //파일 객체 값 저장
-      setStoreThumb(files[0]);
-
-      //화면에서 미리보기
-      const reader = new FileReader();
-      reader.readAsDataURL(files[0]);
-      reader.onloadend = () => {
-        setStoreImage(reader.result);
-      };
-    } else {
-      setStoreThumb(null);
-      setStoreImage(null);
-    }
-  };
-
   const changeStore = (e) => {
     const name = e.target.name;
     setStore({ ...store, [name]: e.target.value });
     setSeat({ ...seat, [name]: e.target.value });
   };
 
+  //첨부파일
+  const [fileList, setFileList] = useState([]);
+  const [storeFile, setStoreFile] = useState([]); // 실제 업로드용 state
+  const [showStoreFile, setShowStoreFile] = useState([]); // 매장 사진 URL
+  const [delStoreFileNo, setDelStoreFileNo] = useState("");
+  const [storeThumbnail, setStoreThumbnail] = useState(null);
+  const [storeImage, setStoreImage] = useState([]); // 미리보기용
+
+  //메뉴 썸네일 이미지 첨부파일 변경 시 동작 함수
+  const changeStoreThumbnail = (e) => {
+    const files = Array.from(e.currentTarget.files);
+    let urlList = [];
+
+    if (files.length !== 0) {
+      setStoreThumbnail(files[0]);
+
+      // 파일을 state에 저장
+      setStoreFile((prevFiles) => [...prevFiles, ...files]);
+
+      // 미리보기
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          urlList.push(reader.result);
+          if (urlList.length === files.length) {
+            setStoreImage((prevImages) => [...prevImages, ...urlList]);
+          }
+        };
+      });
+    } else {
+      setStoreThumbnail(null);
+      setStoreImage([]);
+      setStoreFile([]);
+    }
+  };
+
+  // 이미지 삭제
+  const removeImage = (indexToRemove) => {
+    // storeImage와 storeFile 둘 다 삭제
+    setStoreImage((prevImages) =>
+      prevImages.filter((_, index) => index !== indexToRemove)
+    );
+    setStoreFile((prevFiles) =>
+      prevFiles.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
+  // 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleHandler = () => {
     setIsModalOpen((prevOpenState) => !prevOpenState);
   };
 
+  // 주소
   const [detailAddress, setDetailedAddress] = useState("");
 
   const inputChangeHandler = (event) => {
@@ -166,13 +169,14 @@ const StoreViewFrm = () => {
     }));
   };
 
+  // 매장 등록
   const storeModify = () => {
     const form = new FormData();
 
-    //파일 추가
-    for (let i = 0; i < storeFile.length; i++) {
-      form.append("storeFile", storeFile[i]);
-    }
+    // 파일 추가
+    storeFile.forEach((file) => {
+      form.append("storeFile", file);
+    });
 
     // 매장 분위기
     for (let i = 0; i < storeMood.length; i++) {
@@ -272,17 +276,6 @@ const StoreViewFrm = () => {
       });
   };
 
-  const storeThumbnail = () => {
-    axios
-      .post(`${backServer}/store`, storeThumb)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <div className="storeView-main">
       <div className="dashboard-body">
@@ -302,11 +295,37 @@ const StoreViewFrm = () => {
                 <tr className="storeView-tr">
                   <th className="storeView-th" colSpan={2}>
                     <div className="storeView-imgDiv-zone">
-                      <div className="storeView-imgDiv">
-                        <img
-                          className="storeView-img"
-                          src="/image/s&s로고.png"
-                        ></img>
+                      <div className="storeView-img-zone">
+                        {/* 이미지 미리보기 */}
+                        {storeImage.length > 0 ? (
+                          <div className="storeView-imgDiv">
+                            {storeImage.map((image, index) => (
+                              <div
+                                key={index}
+                                className="storeView-imgContainer"
+                              >
+                                <img
+                                  key={index}
+                                  className="storeView-img"
+                                  src={image}
+                                  alt={`Preview ${index}`}
+                                />
+                                <button
+                                  className="remove-button"
+                                  onClick={() => removeImage(index)}
+                                >
+                                  X
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <img
+                            className="storeView-img"
+                            src="/image/s&s로고.png"
+                            alt="Default"
+                          />
+                        )}
                       </div>
                     </div>
                     <div className="storeView-div">
@@ -316,75 +335,11 @@ const StoreViewFrm = () => {
                       <input
                         type="file"
                         id="storeFile"
-                        onChange={addStoreFile}
+                        onChange={changeStoreThumbnail}
                         multiple
+                        accept="image/*"
+                        style={{ display: "none" }} //input 숨김
                       ></input>
-                    </div>
-                    <div className="storeView-div">
-                      <label
-                        htmlFor="storeFileList"
-                        className="storeView-label"
-                      >
-                        파일 목록
-                      </label>
-                      {fileList
-                        ? fileList.map((storeFile, i) => {
-                            const deleteFile = () => {
-                              const newFileList = fileList.filter((item) => {
-                                return item !== storeFile;
-                              });
-                              setFileList(newFileList);
-
-                              setDelStoreFileNo([
-                                ...delStoreFileNo,
-                                storeFile.storeFileNo,
-                              ]);
-                            };
-
-                            return (
-                              <p key={"oldFile-" + i}>
-                                <span className="filename">
-                                  {storeFile.filename}
-                                </span>
-                                <span
-                                  className="material-icons del-file-icon"
-                                  onClick={deleteFile}
-                                >
-                                  delete
-                                </span>
-                              </p>
-                            );
-                          })
-                        : ""}
-
-                      {showStoreFile.map((filename, i) => {
-                        const deleteFile = () => {
-                          storeFile.splice(i, 1);
-                          setStoreFile([...storeFile]);
-                          showStoreFile.splice(i, 1);
-                          setShowStoreFile([...showStoreFile]);
-                        };
-
-                        return (
-                          <p key={"newFile-" + i}>
-                            <span className="filename">{filename}</span>
-                            <span
-                              className="material-icons del-file-icon"
-                              onClick={deleteFile}
-                            >
-                              delete
-                            </span>
-                          </p>
-                        );
-                      })}
-                    </div>
-                    <div className="storePartnership-btn-zone">
-                      <button
-                        className="storePartnership-storeImg-btn"
-                        onClick={storeThumbnail}
-                      >
-                        매장 사진 등록
-                      </button>
                     </div>
                   </th>
                 </tr>

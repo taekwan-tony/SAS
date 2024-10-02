@@ -8,14 +8,18 @@
         select * from review where store_no = (select store_no from store where so_email=#{storeId})
     </select>
 	<insert id="insertReview">
-		insert into review values(review_seq.nextval,#{reviewContent},sysdate,#{reviewScore},#{userNickname},#{storeNo},null,null,null)	
+		insert into review values(review_seq.nextval,#{reviewContent},sysdate,#{reviewScore},#{userNickname},#{storeNo},null,null,null,1,null)	
 	</insert>
 	
 	
 	<update id="modifyReview">
 		update review set review_content=#{reviewContent}
-		where user_nickname= #{userNickname}
+		where review_no= #{reviewNo}
 	</update>
+	
+	<delete id = "deleteReview">
+			delete from review where review_no=#{reviewNo}
+	</delete>
 	
 	<select id ="getReviewList" resultMap="getReview">
 		select review_no, user_nickname,review_content, store_name, review_score from review join store using(store_no) where
@@ -29,8 +33,14 @@
 		</choose>
 		<!-- 첨부 파일 만들면 selectkey 이용해서 첨부파일 가져오기 -->
 	</select>
-
+	<!-- 수정하기전에 리스트 리뷰 상세보기 -->
+	<select id="selectReview" resultType="review">
+		select * from review where review_no=#{reviewNo}
+	</select>
+	
+	
 	<resultMap id="getReview" type="review">
+		<result column="review_no" property="reviewNo"></result>
 		<collection property="filepathList" ofType="reviewImage" column="review_no" javaType="java.util.List" select="selectReviewImage"></collection>
 	</resultMap>
 	<select id="selectReviewImage" resultType="reviewImage">

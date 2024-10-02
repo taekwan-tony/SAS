@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -50,17 +51,31 @@ public class ReviewController {
 //    }
     //소비자리뷰등록
     @PostMapping("/usermain/mypage/myreview")
-    public ResponseEntity<Integer> insertReview(@RequestBody ReviewDTO review){
-    	
+    public ResponseEntity<Integer> insertReview(@RequestBody ReviewDTO review){    	
     	int result = reviewService.insertReview(review);
     	return ResponseEntity.ok(result);
     }
     //소비자리뷰수정
-    @PatchMapping("/usermain/mypage/myreview/{storeNo}")
+    @PatchMapping("/usermain/mypage/updateReview")
     public ResponseEntity<Integer> modifyReview(@ModelAttribute ReviewDTO review){
+    	System.out.println("리뷰로직 : " +review);
     	int result = reviewService.modifyReview(review);
     	return ResponseEntity.ok(result);
     }
+    @DeleteMapping("/{reviewNo}")
+    public ResponseEntity<Boolean> deleteReview(@PathVariable int reviewNo){
+    	System.out.println(reviewNo);
+    	boolean result = reviewService.deleteReview(reviewNo);
+    	return ResponseEntity.ok(result);
+    	
+    }
+    @GetMapping("/usermain/mypage/myreview/{reviewNo}")
+    public ResponseEntity<ReviewDTO> selectOneReview(@PathVariable int reviewNo){
+    	ReviewDTO selectReview = reviewService.selectOneReview(reviewNo);
+    	//System.out.println("하나가져오는거"+reviewNo);
+    	return ResponseEntity.ok(selectReview);
+    }
+    
     @PostMapping(value="/editorImage")
     public ResponseEntity<String> editorImage(@ModelAttribute MultipartFile image){
     	String savepath = root+"/editor";
@@ -73,6 +88,7 @@ public class ReviewController {
 	public ResponseEntity<List> getReviewList(@PathVariable int storeNo){
 		String type = "store";
 		List list = reviewService.getReviewList(storeNo, type);
+//		System.out.println(list);
 		return ResponseEntity.ok(list);
 	}
 	@GetMapping("/userNickname/{userNickname}/getReviewList")

@@ -28,6 +28,9 @@ import {
   ReservationModalSecond,
 } from "../reservation/ReservationMain";
 import { he } from "date-fns/locale";
+import { ReviewContent } from "../user/MypageContent";
+import QuillEditor from "../utils/QuillEditor";
+import { Rating, Stack } from "@mui/material";
 const { kakao } = window;
 
 const MenuView = () => {
@@ -37,7 +40,6 @@ const MenuView = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const [isFavoriteChange, setIsFavoriteChange] = useState(false);
-
   useEffect(() => {
     console.log("userNo:", loginUserNo);
     axios
@@ -520,13 +522,18 @@ const MenuPhoto = () => {
   );
 };
 
+//리뷰 수정
 const MenuReview = (props) => {
+  const review = props.review;
   const store = props.store;
   const [userNickname, setUserNickname] = useRecoilState(
     loginUserNicknameState
   );
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [reviewList, setReviewList] = useState([]);
+
+  const [changedReview, setChangedReview] = useState(true);
+
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -546,7 +553,7 @@ const MenuReview = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [changedReview]);
 
   return (
     <div className="menu-review">
@@ -554,78 +561,137 @@ const MenuReview = (props) => {
         ? reviewList.map((review, index) => {
             // const [isExpanded, setIsExpanded] = useState(false);
             // review.isExpanded = false;
-
-            // const isExpanded = false;
-            const setIsExpanded = (param) => {
-              console.log(param);
-              review.isExpanded = param;
-              console.log(review.isExpanded);
-              // console.log(reviewList);
-              setReviewList([...reviewList]);
-            };
-            const handleToggle = () => {
-              console.log(review.isExpanded);
-              setIsExpanded(!review.isExpanded);
-              // setReviewList([...]);
-            };
-            const regExp = /[</p>]/;
-
-            //리뷰 수정
-            const updateReview = (props) => {
-              const review = props.review;
-              const reviewNo = props.reviewNo;
-              const reviewScore = props.reviewScore;
-              const reviewContent = props.reviewContent;
-              const filePath = props.filePath;
-
-              const form = new FormData();
-              form.append("reviewNo", reviewNo);
-              form.append("reviewScore", reviewScore);
-              form.append("reviewContent", reviewContent);
-              form.append("filepath", filePath);
-
-              axios
-                .patch(
-                  `${backServer}/review/usermain/mypage/myreview/${review.reviewNo}`,
-                  form
-                )
-                .then((res) => {
-                  console.log(res);
-                  if (res.data > 0) {
-                    Swal.fire({
-                      title: "리뷰 수정 완료",
-                      text: "리뷰를 수정했습니다",
-                      icon: "success",
-                    }).then(() => {
-                      navigate(`/usermain/mypage/myreview`);
-                    });
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            };
             return (
-              <section className="review-box-container">
-                <div className="review-content">
-                  <p>{review.userNickname}</p>
-
-                  <p>
-                    <p
-                      dangerouslySetInnerHTML={{ __html: review.reviewContent }}
-                      className="reviewContent-text"
-                    ></p>
-                  </p>
-                  <button className="review-manager" onClick={updateReview}>
-                    수정
-                  </button>
-                  <button className="review-manager">삭제</button>
-                </div>
-              </section>
+              <ModifyReview
+                key={"review-" + index}
+                review={review}
+                changedReview={changedReview}
+                setChangedReview={setChangedReview}
+              />
             );
+            // const isExpanded = false;
           })
         : ""}
     </div>
+  );
+};
+
+const ModifyReview = (props) => {
+  const review = props.review;
+
+  const { changedReview, setChangedReview } = props;
+
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const navigate = useNavigate();
+  const [modifyType, setModifyType] = useState(0);
+  // const setIsExpanded = (param) => {
+  //   console.log(param);
+  //   review.isExpanded = param;
+  //   console.log(review.isExpanded);
+  //   // console.log(reviewList);
+  //   setReviewList([...reviewList]);
+  // };
+  // const handleToggle = () => {
+  //   console.log(review.isExpanded);
+  //   setIsExpanded(!review.isExpanded);
+  //   // setReviewList([...]);
+  // };
+  const regExp = /[</p>]/;
+  //리뷰 수정
+
+  const deleteReview = () => {
+    axios
+      .delete(`${backServer}/review/${review.reviewNo}`)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            title: "리뷰 삭제 완료",
+            text: "리뷰를 삭제했습니다",
+            icon: "success",
+          });
+          setChangedReview(!changedReview);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  //의존성배열안에있는 값이 변하면 다시 유즈이펙트가 돈다 .
+  const updateReview = () => {
+    if (modifyType === 0) {
+      setModifyType(1);
+    } else {
+      const form = new FormData();
+      form.append("reviewContent", editContent);
+      form.append("reviewNo", review.reviewNo);
+
+      axios
+        .patch(`${backServer}/review/usermain/mypage/updateReview`, form)
+        .then((res) => {
+          console.log(res);
+
+          if (res.data > 0) {
+            Swal.fire({
+              title: "리뷰 수정 완료",
+              text: "리뷰를 수정했습니다",
+              icon: "success",
+            }).then(() => {
+              setModifyType(0);
+              setChangedReview(!changedReview);
+              navigate(`/usermain/mypage/myreview`);
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("에러뜸");
+        });
+    }
+  };
+
+  const [editContent, setEditContent] = useState(review.reviewContent);
+
+  // useEffect(() => {
+  //   setEditContent(review.reviewContent);
+  // }, []);
+
+  return (
+    <section className="review-box-container">
+      <div className="review-content">
+        <p>{review.userNickname}</p>
+
+        <Stack spacing={1}>
+          <Rating
+            name="half-rating-read"
+            defaultValue={review.reviewScore}
+            precision={0.5}
+            readOnly
+          />
+        </Stack>
+        <br></br>
+        <p>
+          {modifyType === 0 ? (
+            <p
+              dangerouslySetInnerHTML={{ __html: review.reviewContent }}
+              className="reviewContent-text"
+            ></p>
+          ) : (
+            // <input type="text" value={review.reviewContent}></input>
+            // {}
+            <QuillEditor
+              noticeContent={editContent}
+              setNoticeContent={setEditContent}
+            />
+          )}
+        </p>
+        <button className="review-manager" onClick={updateReview}>
+          수정
+        </button>
+        <button className="review-manager" onClick={deleteReview}>
+          삭제
+        </button>
+      </div>
+    </section>
   );
 };
 
@@ -653,13 +719,19 @@ const Menuinfo = (props) => {
       <h2>매장정보</h2>
 
       {
-        <KaKao
-          addr={store.storeAddr}
-          name={store.storeName}
-          center={{ lat: 33.450701, lng: 126.570667 }}
-          style={{ width: "400px", height: "232px" }}
-          level={3}
-        />
+        <div className="store-menu-view-kakao">
+          {store.storeAddr ? (
+            <KaKao
+              addr={store.storeAddr}
+              name={store.storeName}
+              center={{ lat: 33.450701, lng: 126.570667 }}
+              style={{ width: "400px", height: "232px" }}
+              level={3}
+            />
+          ) : (
+            ""
+          )}
+        </div>
       }
 
       <p>{store.storeAddr}</p>

@@ -158,6 +158,7 @@ function ManageReserved() {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>예약관리</h1>
+
           <Link to="/usermain">
             <button className="button-bell">
               <div className="user-box-bell">

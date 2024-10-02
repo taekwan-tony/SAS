@@ -49,7 +49,6 @@ const StoreMenuView = () => {
     menuName: "",
     menuInfo: "",
     menuPrice: "",
-    menuPhoto: null,
     storeNo: null,
   });
 
@@ -65,9 +64,10 @@ const StoreMenuView = () => {
   const [menuThumbnail, setMenuThumbnail] = useState(null); // 메뉴 사진
 
   console.log("매장 번호  : ", storeMenu.storeNo);
+  console.log("메뉴 사진  : ", storeMenu.menuPhoto);
 
   const [addMenu, setAddMenu] = useState([
-    { menuName: "", menuInfo: "", menuPrice: "", menuPhoto: null }, // 기본적으로 하나의 빈 메뉴를 추가
+    { menuName: "", menuInfo: "", menuPrice: "" }, // 기본적으로 하나의 빈 메뉴를 추가
   ]);
 
   const changeStoreMenu = (e) => {
@@ -81,6 +81,11 @@ const StoreMenuView = () => {
   //메뉴 썸네일 이미지 첨부파일 변경 시 동작 함수
   const changeStoreThumbnail = (e) => {
     const files = e.currentTarget.files;
+    const { value } = e.target;
+    setStoreMenu((prevStoreMenu) => ({
+      ...prevStoreMenu,
+      menuPhoto: value,
+    }));
 
     if (files.length !== 0 && files[0] !== 0) {
       setMenuThumbnail(files[0]);
@@ -113,7 +118,6 @@ const StoreMenuView = () => {
       menuName: "",
       menuInfo: "",
       menuPrice: "",
-      menuPhoto: null,
     }); // 입력칸 초기화
   };
 
@@ -123,8 +127,8 @@ const StoreMenuView = () => {
     form.append("menuName", storeMenu.menuName);
     form.append("menuInfo", storeMenu.menuInfo);
     form.append("menuPrice", storeMenu.menuPrice);
-    form.append("menuPhoto", menuThumbnail); // 파일은 menuThumbnail로 추가
-    form.append("storeNo", storeMenu.storeNo); // storeNo 추가
+    form.append("menuThumbnail", menuThumbnail); // 파일은 menuThumbnail로 추가
+
     axios
       .post(`${backServer}/menu/insertStoreMenu/${storeMenu.storeNo}`, form, {
         headers: {
@@ -191,9 +195,6 @@ const StoreMenuView = () => {
                         </div>
                       </div>
                       <div className="storeMenuView-btn-zone">
-                        <button className="storeMenuView-storeMenuImg-btn">
-                          메뉴 사진 등록
-                        </button>
                         <input
                           className="storeMenuView-inputBox"
                           type="file"
