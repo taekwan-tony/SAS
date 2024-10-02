@@ -464,14 +464,15 @@ const ReserveTimeBox = (props) => {
   // 좌석수 계산해서 자리 있는지 계산하는 함수=>굳이 함수여야 할 이유가 있는지 생각하기(애는 이 컴포넌트에서 이번 한번만 돌아가는데 굳이 함수일 필요가 있을까?)
   //too many re-renders : 리엑트의 한계에 도달할 정도로 리렌더링이 너무 많이 돌아감->주로 잘못된 setState 사용(setState는 컴포넌트의 바디에 직접적으로 사용하지 말고 useEffect 나 이벤트 핸들러에서만 사용할것)
 
-  const countReserveFilter = countReserve.filter((count, index) => {
-    return count.reserveTime === timeValue;
-  });
-
   const [countSeat, setCountSeat] = useState([]);
   const [amount, setAmount] = useState(0);
   // const [countCheck, setCountCheck] = useState(false);
   useEffect(() => {
+    // 시간대로 자름
+    const countReserveFilter = countReserve.filter((count, index) => {
+      return count.reserveTime === timeValue;
+    });
+
     let amountCount = 0;
     // const countSeatAvailable = () => {
     // console.log(timeBoxSeatList);
@@ -481,6 +482,7 @@ const ReserveTimeBox = (props) => {
       let isExist = false;
       countReserveFilter.forEach((count, j) => {
         if (count.seatNo === seat.seatNo) {
+          //예약내역이 있으면 사용한 좌석수만큼 개수가 빠진 값이 들어감
           countSeat.push({
             seatNo: seat.seatNo,
             seatCapacity: seat.seatCapacity,
@@ -492,6 +494,7 @@ const ReserveTimeBox = (props) => {
         }
       });
       if (!isExist) {
+        //예약내역이 없으면 기존 값으로 들어감
         // console.log(timeValue, seat.seatNo);
         countSeat.push(seat);
         amountCount += amount + seat.seatAmount;
@@ -501,7 +504,7 @@ const ReserveTimeBox = (props) => {
     setCountSeat([...countSeat]);
     setAmount(amountCount);
     // setCountCheck(!countCheck);
-  }, [reservation]);
+  }, [reservation, countReserve]); //날짜, 인원수가 바뀔때마다
   const [isAble, setIsAble] = useState(false);
   useEffect(() => {
     setIsAble((today < selected || isLate(timeNow, timeValue)) && amount > 0);
