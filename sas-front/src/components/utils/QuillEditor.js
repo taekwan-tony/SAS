@@ -77,6 +77,7 @@ const QuillEditor = (props) => {
 
         handlers: { image: imageHandler },
       },
+
       ImageResize: {
         parchment: Quill.import("parchment"),
       },
