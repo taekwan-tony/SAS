@@ -128,7 +128,7 @@ const StoreCheckMain = () => {
           element={<StorePartnership setActiveIndex={setActiveIndex} />}
         />
         <Route
-          path="StoreMenuView"
+          path="StoreMenuAdd"
           element={<StoreMenuAdd setActiveIndex={setActiveIndex} />}
         />
       </Routes>

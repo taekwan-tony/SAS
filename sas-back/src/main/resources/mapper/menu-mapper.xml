@@ -5,6 +5,8 @@
 	<select id="allMenuList" resultType="menu">
 		select * from menu where store_no=#{loginStoreNo} order by menu_no asc
 	</select>
+	
+	
 	<select id="getMenuinfo" resultType="menu">
 		select * from menu where store_no=#{storeNo}
 	</select>
@@ -13,4 +15,9 @@
 	<insert id="insertStoreMenu">
 		insert into menu values(menu_seq.nextval, #{menuName}, #{menuPhoto}, #{menuInfo}, #{menuPrice}, #{storeNo})
 	</insert>
+	
+	
+	<delete id="deleteStoreMenu">
+		delete from menu where menu_no=#{menuNo}
+	</delete>
 </mapper>

@@ -9,6 +9,7 @@ import {
   storeTypeState,
 } from "../utils/RecoilData";
 import StoreMenuFrm from "./StoreMenuFrm";
+import StoreMenuList from "./StoreMenuList";
 
 const StoreMenuView = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -17,6 +18,7 @@ const StoreMenuView = () => {
   const [menuThumbnail, setMenuThumbnail] = useState([]); // 메뉴 사진
   const [storeMenuList, setStoreMenuList] = useState([]);
   const [check, setCheck] = useState(0);
+  console.log("매장 정보 : ", storeMenuList);
   useEffect(() => {
     console.log(1);
     axios
@@ -55,6 +57,7 @@ const StoreMenuView = () => {
   const [addMenu, setAddMenu] = useState([
     { menuName: "", menuInfo: "", menuPrice: "" }, // 기본적으로 하나의 빈 메뉴를 추가
   ]);
+
   // X 아이콘 클릭 시 특정 메뉴 삭제
   const hideInfoCard = (index) => {
     setStoreMenu((prevMenus) => prevMenus.filter((menu, i) => i !== index));
@@ -151,12 +154,12 @@ const StoreMenuView = () => {
           {storeMenuList
             ? storeMenuList.map((menu, index) => {
                 return (
-                  <StoreMenuFrm
+                  <StoreMenuList
                     key={"menu-" + index}
                     menu={menu}
                     index={index}
-                    storeMenu={storeMenuList}
-                    setStoreMenu={setStoreMenuList}
+                    setStoreMenu={setStoreMenu}
+                    storeMenuList={storeMenuList}
                     type={1}
                   />
                 );
