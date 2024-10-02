@@ -23,10 +23,7 @@ public class ReviewDTO {
 	private String reviewAnswer;
 	private String reviewAnswerDate;
 	private int reserveNo;
-<<<<<<< HEAD
 	private List<String> filepathList;
-=======
 	private int reviewType;
 	private String reviewReportContent;
->>>>>>> Testsas2
 }

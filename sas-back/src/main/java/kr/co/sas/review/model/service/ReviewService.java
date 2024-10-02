@@ -53,7 +53,6 @@ public class ReviewService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-<<<<<<< HEAD
 
 	public ReviewDTO selectOneReview(int reviewNo) {
 		ReviewDTO selectReview = reviewDao.selectOneReview(reviewNo);
@@ -66,10 +65,7 @@ public class ReviewService {
 		return result == 1;
 		
 	}
-	
-	
 
-=======
 	
 	// 리뷰 신고 처리
     @Transactional
@@ -82,5 +78,4 @@ public class ReviewService {
         
         return result1 + result2; // 둘 다 성공했을 때만 1+1=2
     }
->>>>>>> Testsas2
 }

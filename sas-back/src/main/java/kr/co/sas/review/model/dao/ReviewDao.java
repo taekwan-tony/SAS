@@ -26,15 +26,13 @@ public interface ReviewDao {
 	
 	int insertReviewAnswer(ReviewDTO review);
 
-<<<<<<< HEAD
 	ReviewDTO selectOneReview(int reviewNo);
 
 	int deleteReview(int reviewNo);
-=======
+
 	int updateReviewReport(int reviewNo);
 
 	int updateReviewReportContent(ReviewDTO review);
->>>>>>> Testsas2
 	
 
 }
