@@ -34,6 +34,20 @@ public class NoticeService {
 		return map;
 	}
 
+	public Map selectNoticeList(int reqPage, int noticeType, String loginNickname) {
+		int numPerPage = 12;
+		int pageNaviSize = 5;
+		int totalCount = 0;
+		totalCount += noticeDao.totalCount(noticeType);
+		totalCount += noticeDao.totalUserCount(loginNickname);
+		PageInfo pi = pageUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
+		List list = noticeDao.selectNoticeUserList(pi,noticeType,loginNickname);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list",list);
+		map.put("pi",pi);
+		return map;
+	}
+	
 	@Transactional
 	public int insertNotice(NoticeDTO notice) {
 		int result = noticeDao.insertNotice(notice);
@@ -46,6 +60,18 @@ public class NoticeService {
 			notice.setNoticeType(noticeType);
 		}
 		NoticeBothDTO noticeBoth = noticeDao.selectBothNotice(notice);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("notice", notice);
+		map.put("noticeBoth", noticeBoth);
+		return map;
+	}
+	public Map selectOneNotice(int noticeNo, int noticeType, String userNickname) {
+		NoticeDTO notice = noticeDao.selectOneNotice(noticeNo);
+		if(noticeType==0) {
+			notice.setNoticeType(noticeType);
+		}
+		notice.setSoEmail(userNickname);
+		NoticeBothDTO noticeBoth = noticeDao.selectBothNoticeUser(notice);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("notice", notice);
 		map.put("noticeBoth", noticeBoth);
@@ -81,4 +107,8 @@ public class NoticeService {
 		}
 		return result;
 	}
+
+
+
+	
 }
