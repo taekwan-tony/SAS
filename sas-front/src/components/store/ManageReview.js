@@ -135,96 +135,105 @@ function ManageReview(props) {
             review.map((reviewItem, index) => (
               <div
                 className={`review-wrapper ${
-                  reviewItem.reviewType === 2 ? "blur-review" : ""
+                  reviewItem.reviewType === 2 ? "blur-review" : "" // 점주가 신고한 경우 블러 처리
                 }`}
                 key={reviewItem.reviewNo}
               >
-                {/* 사용자 리뷰 */}
-                <div className="review-bubble user-review">
-                  <p className="review-nickname">
-                    <strong>{reviewItem.userNickName}</strong>
-                  </p>
-
-                  <Stack spacing={1}>
-                    <Rating
-                      name="half-rating-read"
-                      defaultValue={reviewItem.reviewScore}
-                      precision={0.5}
-                      readOnly
-                    />
-                  </Stack>
-                  <p className="review-score">
-                    평점: {reviewItem.reviewScore}/5
-                  </p>
-
-                  {/* 블러 처리된 리뷰 표시 */}
-                  <p className="review-text">
-                    {reviewItem.reviewType === 2
-                      ? "이 리뷰는 신고되어 블러 처리되었습니다."
-                      : reviewItem.reviewContent}
-                  </p>
-
-                  {/* 신고 버튼 */}
-                  {reviewItem.reviewType === 1 && ( // 정상 상태일 때만 신고 가능
-                    <button
-                      className="report-btn"
-                      onClick={() => openReportModal(reviewItem.reviewNo)}
-                    >
-                      신고
-                    </button>
-                  )}
-
-                  {/* 답글 작성 버튼 */}
-                  <button
-                    className="reply-btn"
-                    onClick={() => {
-                      setSelectedReview(reviewItem);
-                      setReviewAnswer(reviewItem.reviewAnswer || "");
-                    }}
-                  >
-                    답글 작성
-                  </button>
-                </div>
-
-                {/* 관리자 답글 */}
-                {reviewItem.reviewAnswer ? (
-                  <div className="review-bubble admin-reply">
-                    <strong>관리자 답글:</strong>
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: reviewItem.reviewAnswer,
-                      }}
-                    ></p>
+                {/* 리뷰 타입이 3인 경우 메시지 표시, 블러 처리 없음 */}
+                {reviewItem.reviewType === 3 ? (
+                  <div className="admin-processed-review">
+                    <p>관리자에 의해 처리된 댓글입니다.</p>
                   </div>
-                ) : null}
+                ) : (
+                  <>
+                    {/* 사용자 리뷰 */}
+                    <div className="review-bubble user-review">
+                      <p className="review-nickname">
+                        <strong>{reviewItem.userNickName}</strong>
+                      </p>
 
-                {/* 답글 작성 폼 */}
-                {selectedReview &&
-                  selectedReview.reviewNo === reviewItem.reviewNo && (
-                    <div className="reply-form-container">
-                      <div className="reply-form">
-                        <ReviewQuill
-                          content={reviewAnswer}
-                          setContent={setReviewAnswer}
-                          placeholder="답글을 작성하세요"
+                      <Stack spacing={1}>
+                        <Rating
+                          name="half-rating-read"
+                          defaultValue={reviewItem.reviewScore}
+                          precision={0.5}
+                          readOnly
                         />
-                        <div className="reply-actions">
-                          <button
-                            onClick={() => handleReplySubmit(index)}
-                            className="submit-reply-btn"
-                          >
-                            답글 달기
-                          </button>
-                          <button
-                            onClick={handleReplyCancel}
-                            className="cancel-reply-btn"
-                          >
-                            취소
-                          </button>
-                        </div>
-                      </div>
+                      </Stack>
+                      <p className="review-score">
+                        평점: {reviewItem.reviewScore}/5
+                      </p>
+
+                      {/* 블러 처리된 리뷰 표시 */}
+                      <p className="review-text">
+                        {reviewItem.reviewType === 2
+                          ? "점주에 의해 신고된 댓글입니다."
+                          : reviewItem.reviewContent}
+                      </p>
+
+                      {/* 신고 버튼 */}
+                      {reviewItem.reviewType === 1 && ( // 정상 상태일 때만 신고 가능
+                        <button
+                          className="report-btn"
+                          onClick={() => openReportModal(reviewItem.reviewNo)}
+                        >
+                          신고
+                        </button>
+                      )}
+
+                      {/* 답글 작성 버튼 */}
+                      <button
+                        className="reply-btn"
+                        onClick={() => {
+                          setSelectedReview(reviewItem);
+                          setReviewAnswer(reviewItem.reviewAnswer || "");
+                        }}
+                      >
+                        답글 작성
+                      </button>
                     </div>
-                  )}
+
+                    {/* 관리자 답글 */}
+                    {reviewItem.reviewAnswer ? (
+                      <div className="review-bubble admin-reply">
+                        <strong>관리자 답글:</strong>
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html: reviewItem.reviewAnswer,
+                          }}
+                        ></p>
+                      </div>
+                    ) : null}
+
+                    {/* 답글 작성 폼 */}
+                    {selectedReview &&
+                      selectedReview.reviewNo === reviewItem.reviewNo && (
+                        <div className="reply-form-container">
+                          <div className="reply-form">
+                            <ReviewQuill
+                              content={reviewAnswer}
+                              setContent={setReviewAnswer}
+                              placeholder="답글을 작성하세요"
+                            />
+                            <div className="reply-actions">
+                              <button
+                                onClick={() => handleReplySubmit(index)}
+                                className="submit-reply-btn"
+                              >
+                                답글 달기
+                              </button>
+                              <button
+                                onClick={handleReplyCancel}
+                                className="cancel-reply-btn"
+                              >
+                                취소
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                  </>
+                )}
               </div>
             ))
           ) : (

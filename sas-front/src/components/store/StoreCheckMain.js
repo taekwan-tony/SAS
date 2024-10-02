@@ -106,12 +106,6 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
-        <Route path="storeViewFrm" element={<StoreViewFrm />} />
-        <Route path="managereserved" element={<ManageReserved />} />
-        <Route path="ownerstatistics" element={<Ownerstatistics />} />
-        <Route path="managereview" element={<ManageReview />} />
-        <Route path="StorePartnership" element={<StorePartnership />} />
-        <Route path="StoreMenuAdd" element={<StoreMenuAdd />} />
         <Route path="StorePayment" element={<StorePayment />} />
         <Route
           path="storeViewFrm"
