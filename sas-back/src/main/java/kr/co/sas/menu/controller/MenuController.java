@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,14 @@ public class MenuController {
 		int result = menuService.insertStoreMenu(storeMenu);
 		return ResponseEntity.ok(result > 0);
 	}//insertStoreMenu
+	
+	
+	@Operation(summary = "매장 메뉴 삭제")
+	@DeleteMapping(value = "deleteStoreMenu/{menuNo}")
+	public ResponseEntity<Integer> deleteStoreMenu(@PathVariable int menuNo) {
+		int result = menuService.deleteStoreMenu(menuNo);
+		return ResponseEntity.ok(result);
+	}//deleteStornMenu
 
 }
 

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const StoreMenuFrm = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const menu = props.menu;
@@ -11,8 +13,6 @@ const StoreMenuFrm = (props) => {
   const changeStoreMenu = props.changeStoreMenu;
   const changeStoreThumbnail = props.changeStoreThumbnail;
   const type = props.type;
-
-  //메뉴 수정
 
   return (
     <>
@@ -73,7 +73,7 @@ const StoreMenuFrm = (props) => {
                     id="menuName"
                     name="menuName"
                     value={menu.menuName}
-                    // onChange={changeStoreMenu(index)}
+                    //onChange={setMenuName(index)}
                   ></input>
                 </td>
               </tr>

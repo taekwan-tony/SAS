@@ -15,4 +15,6 @@ public interface MenuDao {
 
 	List allMenuList(int loginStoreNo);
 
+	int deleteStoreMenu(int menuNo);
+
 }
