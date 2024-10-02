@@ -30,4 +30,11 @@ public class MenuService {
 		List list = menuDao.allMenuList(loginStoreNo);
 		return list;
 	}
+
+
+	@Transactional
+	public int deleteStoreMenu(int menuNo) {
+		int result = menuDao.deleteStoreMenu(menuNo);
+		return result;
+	}//deleteStoreMenu
 }
