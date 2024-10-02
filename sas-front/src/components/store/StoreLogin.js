@@ -23,7 +23,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const params = useParams();
   const storeNo = params.storeNo;
   const [store, setStore] = useState({
-    soName: "",
+    storeName: "",
     businessNumber: "",
     soPhone: "",
     soEmail: "",
@@ -75,7 +75,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
   const [storeName, setStoreName] = useRecoilState(storeNameState);
-  const setSoName = useSetRecoilState(loginStoreNameState);
 
   const soEmailRef = useRef(null);
   const soPwRef = useRef(null);
@@ -90,29 +89,28 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       axios
         .post(`${backServer}/store/storeLogin`, store)
         .then((res) => {
+          console.log("서버에서 받은 storeName 값:", res.data.storeName);
           console.log("로그인 응답 데이터:", res.data);
           const {
             result,
             storeType,
             loginSoEmail,
             storeNo,
-            soName, //서버에서 받은 점주 이름
             accessToken,
             refreshToken,
             storeName,
           } = res.data;
           console.log("매장 로그인 정보 : ", res.data);
-
-          console.log("서버로부터 받은 soName 값:", soName); // 여기서 soName 확인
+          console.log("서버로부터 받은 storeName 값:", res.data.storeName); // 여기서 soName 확인
 
           switch (res.data.result) {
             case 1:
               setLoginSoEmail(res.data.soEmail);
               setStoreType(res.data.storeType);
               setLoginStoreNo(res.data.storeNo);
-              setStoreName(soName); // 점주 이름 저장
+              setStoreName(res.data.storeName); // 점주 이름 저장
 
-              console.log("저장된 storeName 값:", soName);
+              console.log("저장된 storeName 값:", res.data.storeName);
 
               axios.defaults.headers.common["Authorization"] =
                 res.data.accessToken;

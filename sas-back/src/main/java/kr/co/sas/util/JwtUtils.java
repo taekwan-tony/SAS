@@ -118,6 +118,7 @@ public class JwtUtils {
 							.claim("soEmail", soEmail)	//토큰에 포함할 회원정보 세팅(key = value)
 							.claim("type", type) //토큰에 포함할 회원정보 세팅(key = value)
 							.claim("storeNo", storeNo) //토큰에 포함할 회원정보 세팅(key = value)
+							.claim("storeName", storeName)
 							.compact();
 			return token;
 		}
@@ -139,6 +140,7 @@ public class JwtUtils {
 									.claim("soEmail", soEmail)	//토큰에 포함할 회원정보 세팅(key = value)
 									.claim("type", type) //토큰에 포함할 회원정보 세팅(key = value)
 									.claim("storeNo", storeNo) //토큰에 포함할 회원정보 세팅(key = value)
+									.claim("storeName", storeName)
 									.compact();
 					return token;
 		}

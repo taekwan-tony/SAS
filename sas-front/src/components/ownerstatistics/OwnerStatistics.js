@@ -6,8 +6,12 @@ import { MdDeliveryDining } from "react-icons/md";
 import axios from "axios";
 import Chart, { chartData, chartOptions } from "../store/Chart";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil"; // Recoil에서 상태 가져오기
-import { loginStoreNameState, loginStoreNoState } from "../utils/RecoilData"; // 로그인된 점주의 storeNo 상태
+import { useRecoilState, useRecoilValue } from "recoil"; // Recoil에서 상태 가져오기
+import {
+  storeNameState,
+  loginStoreNoState,
+  loginStoreNameState,
+} from "../utils/RecoilData"; // 로그인된 점주의 storeNo 상태
 
 function Ownerstatistics(props) {
   const setActiveIndex = props.setActiveIndex;
@@ -38,7 +42,8 @@ function Ownerstatistics(props) {
   });
 
   const storeNo = useRecoilValue(loginStoreNoState); // Recoil에서 로그인된 점주의 storeNo 가져오기
-  const storeName = useRecoilValue(loginStoreNameState); //Recoil에서 로그인된 점주의 storeName가져오기
+
+  const [storeName, setStoreName] = useRecoilState(loginStoreNameState);
   console.log("현재 storeName 값:", storeName);
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
@@ -266,7 +271,7 @@ function Ownerstatistics(props) {
 
       WeekCustomer();
     }
-  }, [storeNo, backServer]);
+  }, [storeNo, backServer, storeName]);
   return (
     <>
       <div className="dashboard-body">

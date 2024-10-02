@@ -110,4 +110,10 @@ public class ReviewService {
         
         return result1 + result2; // 둘 다 성공했을 때만 1+1=2
     }
+    @Transactional
+    public int reportReviewAdmin(ReviewDTO review) {
+        int result = reviewDao.updateReviewReportAdmin(review.getReviewNo());
+        return result;
+    }
+
 }

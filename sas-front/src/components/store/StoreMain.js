@@ -1,8 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./storemain.css";
 import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import {
+  loginStoreIdState,
+  loginStoreNameState,
+  loginStoreNoState,
+  storeNameState,
+  storeTypeState,
+} from "../utils/RecoilData";
+import axios from "axios";
 
 function StoreMain() {
+  // 로그인 지속
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
+  const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
+  const [storeType, setStoreType] = useRecoilState(storeTypeState);
+  const [storeName, setStoreName] = useRecoilState(loginStoreNameState);
+
+  useEffect(() => {
+    storeRefreshLogin();
+    window.setInterval(storeRefreshLogin, 60 * 60 * 1000);
+  }, []);
+
+  const storeRefreshLogin = () => {
+    const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
+    if (storeRefreshToken != null) {
+      axios.defaults.headers.common["Authorization"] = storeRefreshToken;
+      axios
+        .post(`${backServer}/store/storeRefresh`)
+        .then((res) => {
+          console.log("로그인 유지 :", res);
+          setLoginSoEmail(res.data.soEmail);
+          setStoreType(res.data.storeType);
+          setLoginStoreNo(res.data.storeNo);
+          setStoreName(res.data.storeName);
+
+          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
+          window.localStorage.setItem(
+            "storeRefreshToken",
+            res.data.refreshToken
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoginSoEmail("");
+          setStoreType(2);
+          delete axios.defaults.headers.common["Authorization"];
+          window.localStorage.removeItem("storeRefreshToken");
+        });
+    }
+  };
+
   return (
     <main className="site-wrapper">
       <div className="pt-table desktop-768">
@@ -40,7 +91,7 @@ function StoreMain() {
                     icon="fas fa-utensils"
                     title="메뉴등록"
                     className="color"
-                    to="/storecheck/StoreMenuView"
+                    to="/storecheck/StoreMenuAdd"
                   />
                   <HexagonItem
                     icon="fas fa-money-check-alt"

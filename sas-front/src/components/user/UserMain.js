@@ -227,48 +227,48 @@ function UserMain() {
                   >
                     <i className="fa-solid fa-image-portrait"></i>마이페이지
                   </Link>
-                  <ul class="user-navi-submenu">
+                  <ul className="user-navi-submenu">
                     <li>
                       <a href="#">
-                        <i class="fa-solid fa-user-pen"></i>내 정보 수정
+                        <i className="fa-solid fa-user-pen"></i>내 정보 수정
                       </a>
                     </li>
                     <li>
                       <Link to="mypage/myreview">
-                        <i class="fa-solid fa-comment"></i>나의 리뷰
+                        <i className="fa-solid fa-comment"></i>나의 리뷰
                       </Link>
                     </li>
                   </ul>
                 </li>
                 <li>
                   <a href="#">
-                    <i class="fa-solid fa-magnifying-glass"></i>검색하기
+                    <i className="fa-solid fa-magnifying-glass"></i>검색하기
                   </a>
                 </li>
                 <li>
                   <Link to="mypage/resview">
-                    <i class="fa-solid fa-calendar-week"></i>예약보기
+                    <i className="fa-solid fa-calendar-week"></i>예약보기
                   </Link>
                 </li>
                 <li>
                   <a href="#">
-                    <i class="fa-solid fa-bookmark"></i>즐겨찾기
+                    <i className="fa-solid fa-bookmark"></i>즐겨찾기
                   </a>
                 </li>
               </ul>
             </div>
             <div className="user-social-links">
-              <a href="#" class="twitter">
-                <i class="fa-brands fa-twitter"></i>
+              <a href="#" className="twitter">
+                <i className="fa-brands fa-twitter"></i>
               </a>
-              <a href="#" class="facebook">
-                <i class="fa-brands fa-facebook"></i>
+              <a href="#" className="facebook">
+                <i className="fa-brands fa-facebook"></i>
               </a>
-              <a href="#" class="instagram">
-                <i class="fa-brands fa-instagram"></i>
+              <a href="#" className="instagram">
+                <i className="fa-brands fa-instagram"></i>
               </a>
-              <a href="#" class="google-plus">
-                <i class="fa-brands fa-youtube"></i>
+              <a href="#" className="google-plus">
+                <i className="fa-brands fa-youtube"></i>
               </a>
             </div>
             {/* 로그아웃 버튼 */}

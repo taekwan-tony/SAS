@@ -96,7 +96,7 @@ public class ReviewController {
 	public ResponseEntity<List> getReviewList(@PathVariable String userNickname){
 		String type = "user";
 		List list = reviewService.getReviewList(userNickname, type);
-		System.out.println(list);
+		System.out.println("스토어이름찾기"+list);
 		return ResponseEntity.ok(list);
 	}
 	
@@ -122,5 +122,15 @@ public class ReviewController {
             return ResponseEntity.status(500).body("리뷰 신고 처리 중 오류가 발생했습니다.");
         }
     }
+	@PatchMapping("/adminReport")
+	public ResponseEntity<String> reportReviewAdmin(@RequestBody ReviewDTO review) {
+	    int result = reviewService.reportReviewAdmin(review);
+	    if (result > 0) {
+	        return ResponseEntity.ok("관리자 리뷰를 블러 처리했습니다.");
+	    } else {
+	        return ResponseEntity.status(500).body("리뷰 블러 처리 중 오류가 발생했습니다.");
+	    }
+	}
+
 }
 
