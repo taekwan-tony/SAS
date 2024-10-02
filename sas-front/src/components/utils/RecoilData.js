@@ -67,6 +67,7 @@ const isStoreLoginState = selector({
     const storeType = state.get(storeTypeState);
     const loginStoreNo = state.get(loginStoreNoState);
     const storeName = state.get(storeNameState);
+
     return (
       loginStoreId !== "" &&
       storeType !== 0 &&

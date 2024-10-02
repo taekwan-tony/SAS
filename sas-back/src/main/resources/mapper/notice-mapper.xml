@@ -8,7 +8,10 @@
 		 where notice_type = #{noticeType}
 		 </if>
 	</select>
-	
+	<select id="totalUserCount" resultType="int">
+		select count(*) from notice
+		 where so_email=#{loginNickname}
+	</select>
 	<select id="selectNoticeList" resultType="notice">
 		select * from
 			(select rownum as rnum, b.* from(
@@ -21,6 +24,31 @@
 				<if test="noticeType != 0">
 		 		and notice_type = #{noticeType}
 		 		</if>	    
+			     order by notice_no desc)b)
+			where rnum between #{pi.start} and #{pi.end}
+	</select>
+	<select id="selectNoticeUserList" resultType="notice">
+		select * from
+			(select rownum as rnum, b.* from(
+			    (select
+			        notice_no,
+			        notice_title,
+			        notice_enroll_date,
+			        notice_type
+			    from notice where so_email is null 
+				<if test="noticeType != 0">
+		 		and notice_type = #{noticeType}
+		 		</if>
+		 		union all
+		 		 select
+			        notice_no,
+			        notice_title,
+			        notice_enroll_date,
+			        notice_type
+			    from notice where so_email = #{loginNickname} 
+		 		and notice_type = 1
+		 		
+		 		)	    
 			     order by notice_no desc)b)
 			where rnum between #{pi.start} and #{pi.end}
 	</select>
@@ -39,6 +67,20 @@
 		 		and notice_type = #{noticeType}
 		 		</if>
 				) order by notice_no desc) where  notice_no= #{noticeNo}
+	</select>
+	<select id="selectBothNoticeUser" resultType="noticeBoth">
+		select * from(select notice_no,lag(notice_no, 1, 0) over(order by notice_no desc) prev_no,lag(notice_title, 1, '이전글이 없습니다.')
+				 over (order by notice_no desc) prev_title,lead(notice_no,1,0) over (order by notice_no desc) next_no,lead(notice_title,1,'다음글이 없습니다.')
+				over (order by notice_no desc) next_title from
+                    (select * from notice 
+					where so_email is null 
+			 		and notice_type = #{noticeType}
+		 			union
+			 		select * from notice 
+			 		where (so_email = #{soEmail} or so_email is null)
+			 		and notice_type = #{noticeType})
+                    order by notice_no desc)
+                where notice_no =#{noticeNo}
 	</select>
 	<delete id="deleteNotice">
 		delete from notice where notice_no=#{noticeNo}
