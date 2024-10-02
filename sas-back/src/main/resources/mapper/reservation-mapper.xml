@@ -36,7 +36,7 @@
 			(select rownum as rnum, r.* from(
 			    select
 			        reserve_no,
-			        to_char(reserve_date,'yyyy-mm-dd') as reserve_enroll_date,
+			        to_char(reserve_enroll_date,'yyyy-mm-dd') as reserve_enroll_date,
 			        reserve_people,
 			        reserve_pay_status,
 			        user_tbl.user_name
@@ -46,9 +46,7 @@
 			     order by reserve_date desc)r)
 			where rnum between 1 and 5
     </select>
-    <select id="selectReservationForCount" resultType="reservation">
-    	select to_char(reserve_date, 'HH24:MI')reserve_time, seat_no from reservation where store_no=#{storeNo} and reserve_date between to_date(#{date}, 'yy-mm-dd') and (to_date(#{date}, 'yy-mm-dd')+interval'1'day)
-    </select>
+
 	
 
 	<!-- 연령대별 예약 손님 수 조회 -->
@@ -166,5 +164,23 @@
 	ORDER BY
 	MIN(reserve_date)
 </select>
+<!-- 수진 -->
+    <select id="selectReservationForCount" resultType="reservation">
+    	select 
+    		to_char(reserve_date,'hh24:mi') reserve_time ,
+    		seat_no,
+    		count(*) seat_amount
+		from reservation
+		where store_no=#{storeNo} and to_char(reserve_date,'yyyy-mm-dd')  = to_date(#{date}, 'yy-mm-dd')
+		group by (to_char(reserve_date,'hh24:mi'),seat_no)
+		order by 1
+    <!-- 
+     select to_char(reserve_date, 'HH24:MI')reserve_time, seat_no from reservation where store_no=#{storeNo} and reserve_date between to_date(#{date}, 'yy-mm-dd') and (to_date(#{date}, 'yy-mm-dd')+interval'1'day)
+     -->	
+    </select>
+	<insert id="insertReservation">
+		insert into reservation values(reservation_seq.nextval, to_date(#{reserveDateString}, 'yyyy-MM-dd hh24:mi'), #{reservePayStatus}, 0, #{reservePeople}, #{storeNo}, #{seatNo}, #{userId}, sysdate)
+	</insert>
+<!-- 수진 -->
 
 </mapper>

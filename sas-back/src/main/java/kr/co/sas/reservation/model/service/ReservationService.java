@@ -1,5 +1,6 @@
 package kr.co.sas.reservation.model.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.reservation.model.dao.ReservationDao;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
@@ -61,6 +63,14 @@ public class ReservationService {
 		public List selectReservationForCount(String date, int storeNo) {
 			List<ReservationDTO> list = reservationDao.selectReservationForCount(date, storeNo);
 			return list;
+		}
+		@Transactional
+		public int insertReservation(ReservationDTO reservation) {
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+			reservation.setReserveDateString(fmt.format(reservation.getReserveDate())+" "+reservation.getReserveTime());
+			System.out.println(reservation.getReserveDateString());
+			int result = reservationDao.insertReservation(reservation);
+			return result;
 		}
 }
 

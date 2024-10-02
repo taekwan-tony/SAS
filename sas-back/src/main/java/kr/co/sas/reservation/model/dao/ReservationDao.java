@@ -35,4 +35,6 @@ public interface ReservationDao {
 	List<ReservationDTO> selectReservationForCount(String date, int storeNo);
 
 	List<WeekCustomerDTO> selectWeekCustomer(int storeNo);
+
+	int insertReservation(ReservationDTO reservation);
 }

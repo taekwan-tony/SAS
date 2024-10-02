@@ -83,6 +83,16 @@
   .reservation-info-wrap
   > .reservation-how-many
   > .input-item
+  > span.input-text {
+  position: absolute;
+  left: -175px;
+  top: 3px;
+  display: none;
+}
+.reservation-modal-wrap.first
+  .reservation-info-wrap
+  > .reservation-how-many
+  > .input-item
   > button {
   position: absolute;
   outline: none;

@@ -8,12 +8,10 @@ const DatePicker = (props) => {
   const selected = props.selected;
   const setSelected = props.setSelected;
   const dayNow = props.dayNow;
-  let footer = "";
-  if (selected) {
-    footer = <p>You picked {format(selected, "PP")}.</p>;
-  }
+
   // 오늘 버튼 만들기 위해 달 이동 버튼 구현...
-  const [month, setMonth] = useState(addMonths(dayNow, 1));
+  // const [month, setMonth] = useState(addMonths(dayNow, 0));
+  const [month, setMonth] = useState(dayNow);
   const css = `
 
   button[class^="rdp"] {
