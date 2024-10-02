@@ -160,6 +160,7 @@ const StoreMenuView = () => {
                     index={index}
                     setStoreMenu={setStoreMenu}
                     storeMenuList={storeMenuList}
+                    setCheck={setCheck}
                     type={1}
                   />
                 );
