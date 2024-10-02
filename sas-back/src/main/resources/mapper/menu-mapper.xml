@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.co.sas.menu.model.dao.MenuDao">
 
-
+	<select id="allMenuList" resultType="menu">
+		select * from menu where store_no=#{loginStoreNo} order by menu_no desc
+	</select>
 	<select id="getMenuinfo" resultType="menu">
 		select * from menu where store_no=#{storeNo}
 	</select>
