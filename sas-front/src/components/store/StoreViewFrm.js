@@ -11,7 +11,8 @@ import StoreAmenitiesCheckBoxMUI from "../utils/StoreAmenitiesCheckBoxMUI";
 import { useRecoilState } from "recoil";
 import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
 
-const StoreViewFrm = () => {
+const StoreViewFrm = (props) => {
+  const setActiveIndex = props.setActiveIndex;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
@@ -19,6 +20,7 @@ const StoreViewFrm = () => {
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
 
   useEffect(() => {
+    setActiveIndex(0);
     storeRefreshLogin();
     const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
 

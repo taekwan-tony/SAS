@@ -29,5 +29,10 @@ public interface ReviewDao {
 	ReviewDTO selectOneReview(int reviewNo);
 
 	int deleteReview(int reviewNo);
+
+	int updateReviewReport(int reviewNo);
+
+	int updateReviewReportContent(ReviewDTO review);
 	
+
 }

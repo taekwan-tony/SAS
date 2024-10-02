@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
 
-const StoreMenuView = () => {
+const StoreMenuView = (props) => {
+  const setActiveIndex = props.setActiveIndex;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
@@ -13,6 +14,7 @@ const StoreMenuView = () => {
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
 
   useEffect(() => {
+    setActiveIndex(2);
     storeRefreshLogin();
     const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
 
@@ -45,12 +47,6 @@ const StoreMenuView = () => {
         });
     }
   };
-  const [storeMenu, setStoreMenu] = useState({
-    menuName: "",
-    menuInfo: "",
-    menuPrice: "",
-    storeNo: null,
-  });
 
   useEffect(() => {
     if (storeNumber !== null) {
@@ -60,12 +56,18 @@ const StoreMenuView = () => {
       }));
     }
   }, [storeNumber]);
-
+  const [storeMenu, setStoreMenu] = useState({
+    menuName: "",
+    menuInfo: "",
+    menuPrice: "",
+    storeNo: null,
+  });
   const [menuThumbnail, setMenuThumbnail] = useState(null); // 메뉴 사진
 
   console.log("매장 번호  : ", storeMenu.storeNo);
   console.log("메뉴 사진  : ", storeMenu.menuPhoto);
 
+  useEffect(() => {}, []);
   const [addMenu, setAddMenu] = useState([
     { menuName: "", menuInfo: "", menuPrice: "" }, // 기본적으로 하나의 빈 메뉴를 추가
   ]);

@@ -28,8 +28,6 @@ public interface ReservationDao {
     
     int selectLastMonthTotalReservedPeople(@Param("storeNo") int storeNo);
 
-	
-
 	List<ReservationDTO> selectReservationList(int storeNo);
 
 	List<ReservationDTO> selectReservationForCount(String date, int storeNo);
@@ -37,4 +35,7 @@ public interface ReservationDao {
 	List<WeekCustomerDTO> selectWeekCustomer(int storeNo);
 
 	int insertReservation(ReservationDTO reservation);
+
+	int deleteReservation(int reserveNo);
+
 }

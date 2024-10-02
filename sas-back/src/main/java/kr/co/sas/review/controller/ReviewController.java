@@ -98,6 +98,15 @@ public class ReviewController {
 		System.out.println(list);
 		return ResponseEntity.ok(list);
 	}
- 
+	// 리뷰 신고 처리
+	@PatchMapping("/report")
+    public ResponseEntity<String> reportReview(@RequestBody ReviewDTO review) {
+        int result = reviewService.reportReview(review);
+        if (result > 0) {
+            return ResponseEntity.ok("리뷰가 성공적으로 신고되었습니다.");
+        } else {
+            return ResponseEntity.status(500).body("리뷰 신고 처리 중 오류가 발생했습니다.");
+        }
+    }
 }
 

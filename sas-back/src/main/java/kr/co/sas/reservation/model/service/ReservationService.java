@@ -72,5 +72,9 @@ public class ReservationService {
 			int result = reservationDao.insertReservation(reservation);
 			return result;
 		}
+	    
+	    public int deleteReservation(int reserveNo) {
+	        return reservationDao.deleteReservation(reserveNo);
+	    }
 }
 

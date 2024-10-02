@@ -7,9 +7,10 @@ import axios from "axios";
 import Chart, { chartData, chartOptions } from "../store/Chart";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil"; // Recoil에서 상태 가져오기
-import { loginStoreNoState } from "../utils/RecoilData"; // 로그인된 점주의 storeNo 상태
+import { loginStoreNameState, loginStoreNoState } from "../utils/RecoilData"; // 로그인된 점주의 storeNo 상태
 
-function Ownerstatistics() {
+function Ownerstatistics(props) {
+  const setActiveIndex = props.setActiveIndex;
   const [totalReserve, setTotalReserve] = useState(0); // 이번달 예약 건수 상태
   const [totalReservedPeople, setTotalReservedPeople] = useState(0); // 이번달 예약된 총 인원수 상태
   const [lastMonthReserve, setLastMonthReserve] = useState(0); // 지난달 예약 건수 상태
@@ -37,6 +38,8 @@ function Ownerstatistics() {
   });
 
   const storeNo = useRecoilValue(loginStoreNoState); // Recoil에서 로그인된 점주의 storeNo 가져오기
+  const storeName = useRecoilValue(loginStoreNameState); //Recoil에서 로그인된 점주의 storeName가져오기
+  console.log("현재 storeName 값:", storeName);
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
   // 변동률 계산 함수
@@ -46,6 +49,7 @@ function Ownerstatistics() {
   };
   // 총 예약 수와 예약된 인원수 가져오기
   useEffect(() => {
+    setActiveIndex(5);
     // 이번달 예약 데이터 가져오기
     if (storeNo !== 0) {
       const CurrentData = async () => {
@@ -84,7 +88,7 @@ function Ownerstatistics() {
       CurrentData();
       LastMonthData();
     }
-  }, [backServer]);
+  }, [storeNo, backServer]);
 
   // 변동률 계산
   const reserveChange = calculatePercentageChange(
@@ -265,190 +269,181 @@ function Ownerstatistics() {
   }, [storeNo, backServer]);
   return (
     <>
-      {storeNo !== 0 ? (
-        <>
-          <div className="dashboard-body">
-            <header className="dashboard-head">
-              <h1>통계관리</h1>
-              <Link to="/usermain">
-                <button className="button-bell">
-                  <div className="user-box-bell">
-                    <div className="user-page-box">
-                      <div className="bellWrapper">
-                        <i className="fas fa-bell my-bell"></i>
-                      </div>
-
-                      <div className="circle first"></div>
-                      <div className="circle second"></div>
-                      <div className="circle third"></div>
-                    </div>
+      <div className="dashboard-body">
+        <header className="dashboard-head">
+          <h1>통계관리</h1>
+          <Link to="/usermain">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
                   </div>
-                </button>
-              </Link>
-            </header>
-          </div>
-          <div className="dashboard">
-            <div className="owner-background">
-              <img src="/image/200.jpg" alt="back" />
+
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
+              </div>
+            </button>
+          </Link>
+        </header>
+      </div>
+      <div className="dashboard">
+        <div className="owner-background">
+          <img src="/image/200.jpg" alt="back" />
+        </div>
+        {/* 상단 섹션 */}
+        <div className="top-section">
+          <div className="info-card">
+            <div className="info-text">
+              <h3>이번달 총 예약 수</h3>
+              <h2>
+                {totalReserve}건{" "}
+                <span className={reserveChange >= 0 ? "positive" : "negative"}>
+                  {reserveChange.toFixed(1)}%
+                </span>
+              </h2>
             </div>
-            {/* 상단 섹션 */}
-            <div className="top-section">
-              <div className="info-card">
-                <div className="info-text">
-                  <h3>이번달 총 예약 수</h3>
-                  <h2>
-                    {totalReserve}건{" "}
-                    <span
-                      className={reserveChange >= 0 ? "positive" : "negative"}
-                    >
-                      {reserveChange.toFixed(1)}%
-                    </span>
-                  </h2>
-                </div>
-                <div className="info-card-icon-bg">
-                  <RiReservedFill />
-                </div>
-              </div>
-
-              <div className="info-card">
-                <div className="info-text">
-                  <h3>방문한 총 고객 수</h3>
-                  <h2>
-                    {totalReservedPeople}명{" "}
-                    <span
-                      className={
-                        reservedPeopleChange >= 0 ? "positive" : "negative"
-                      }
-                    >
-                      {reservedPeopleChange.toFixed(1)}%
-                    </span>
-                  </h2>{" "}
-                  {/* 상태를 표시 */}
-                </div>
-                <div className="info-card-icon-bg">
-                  <FaPersonHalfDress />
-                </div>
-              </div>
-
-              <div className="info-card">
-                <div className="info-text">
-                  <h3>이번달 배달/포장 수</h3>
-                  <h2>
-                    120건 <span className="negative">-5%</span>
-                  </h2>
-                </div>
-                <div className="info-card-icon-bg">
-                  <MdDeliveryDining />
-                </div>
-              </div>
-
-              <div className="info-card">
-                <div className="info-text">
-                  <h3>금일 매출</h3>
-                  <h2>
-                    7,500,000원 <span className="positive">+5%</span>
-                  </h2>
-                </div>
-                <div className="info-card-icon-bg">
-                  <FaSackDollar />
-                </div>
-              </div>
-            </div>
-
-            {/* 중단 섹션 */}
-            <div className="middle-section">
-              <div className="main-info">
-                <div className="main-info-text">
-                  <h3>환영합니다</h3>
-                  <h1>OOO 점주님</h1>
-                  <p>
-                    이곳에서 각종 통계자료를 볼 수 있습니다.
-                    <br />
-                    좋은 하루되세요
-                  </p>
-                </div>
-                <div className="main-info-image">
-                  <img src="/image/s&s로고.png" alt="main-info-img" />
-                </div>
-              </div>
-
-              <div className="mf-ratio">
-                <h3>남녀 비율</h3>
-                {updatedChartData.doughnutData.datasets?.[0]?.data?.length >
-                0 ? (
-                  <Chart type="doughnut" data={updatedChartData.doughnutData} />
-                ) : (
-                  <p>성별 데이터가 없습니다.</p>
-                )}
-              </div>
-
-              <div className="age-distribution">
-                <h3>연령대 분포</h3>
-                <Chart
-                  type="bar"
-                  data={updatedChartData.agedata}
-                  options={chartOptions.generalOptions}
-                />
-              </div>
-            </div>
-
-            {/* 하단 섹션 */}
-            <div className="bottom-section">
-              {/* 그래프 섹션 */}
-              <div className="chart-empl-container">
-                <h3>매장 내 직원 수</h3>
-                <Chart
-                  type="bar"
-                  data={chartData.employeedata}
-                  options={chartOptions.employeeOptions}
-                />
-              </div>
-
-              <div className="orders-overview">
-                <h3>가장 많이 주문한 음식</h3>
-                <ul>
-                  <li>
-                    <img
-                      src="/image/IMG_3238.jpg"
-                      alt="Food 1"
-                      className="order-image"
-                    />
-                    <span>$2400 알 깨고 나온 윤태구</span>
-                  </li>
-                  <li>
-                    <img
-                      src="/image/IMG_3238.jpg"
-                      alt="Food 2"
-                      className="order-image"
-                    />
-                    <span>$2400 알 깨고 나온 윤태구</span>
-                  </li>
-                  {/* 다른 주문 아이템 추가 */}
-                </ul>
-              </div>
-            </div>
-
-            {/* 하단 테이블 영역에 차트 추가 */}
-            <div className="charts-section">
-              <div className="chart-container">
-                <h3>매출 그래프</h3>
-                <Chart type="line" data={chartData.lineData} />
-              </div>
-
-              <div className="chart-container">
-                <h3>이번주 손님 수</h3>
-                <Chart
-                  type="bar"
-                  data={updatedChartData.barData}
-                  options={chartOptions.generalOptions}
-                />
-              </div>
+            <div className="info-card-icon-bg">
+              <RiReservedFill />
             </div>
           </div>
-        </>
-      ) : (
-        <div>로그인 정보 확인 중...</div>
-      )}
+
+          <div className="info-card">
+            <div className="info-text">
+              <h3>방문한 총 고객 수</h3>
+              <h2>
+                {totalReservedPeople}명{" "}
+                <span
+                  className={
+                    reservedPeopleChange >= 0 ? "positive" : "negative"
+                  }
+                >
+                  {reservedPeopleChange.toFixed(1)}%
+                </span>
+              </h2>{" "}
+              {/* 상태를 표시 */}
+            </div>
+            <div className="info-card-icon-bg">
+              <FaPersonHalfDress />
+            </div>
+          </div>
+
+          <div className="info-card">
+            <div className="info-text">
+              <h3>이번달 배달/포장 수</h3>
+              <h2>
+                120건 <span className="negative">-5%</span>
+              </h2>
+            </div>
+            <div className="info-card-icon-bg">
+              <MdDeliveryDining />
+            </div>
+          </div>
+
+          <div className="info-card">
+            <div className="info-text">
+              <h3>금일 매출</h3>
+              <h2>
+                7,500,000원 <span className="positive">+5%</span>
+              </h2>
+            </div>
+            <div className="info-card-icon-bg">
+              <FaSackDollar />
+            </div>
+          </div>
+        </div>
+
+        {/* 중단 섹션 */}
+        <div className="middle-section">
+          <div className="main-info">
+            <div className="main-info-text">
+              <h3>환영합니다</h3>
+              <h1>{storeName} 점주님</h1>
+              <p>
+                이곳에서 각종 통계자료를 볼 수 있습니다.
+                <br />
+                좋은 하루되세요
+              </p>
+            </div>
+            <div className="main-info-image">
+              <img src="/image/s&s로고.png" alt="main-info-img" />
+            </div>
+          </div>
+
+          <div className="mf-ratio">
+            <h3>남녀 비율</h3>
+            {updatedChartData.doughnutData.datasets?.[0]?.data?.length > 0 ? (
+              <Chart type="doughnut" data={updatedChartData.doughnutData} />
+            ) : (
+              <p>성별 데이터가 없습니다.</p>
+            )}
+          </div>
+
+          <div className="age-distribution">
+            <h3>연령대 분포</h3>
+            <Chart
+              type="bar"
+              data={updatedChartData.agedata}
+              options={chartOptions.generalOptions}
+            />
+          </div>
+        </div>
+
+        {/* 하단 섹션 */}
+        <div className="bottom-section">
+          {/* 그래프 섹션 */}
+          <div className="chart-empl-container">
+            <h3>매장 내 직원 수</h3>
+            <Chart
+              type="bar"
+              data={chartData.employeedata}
+              options={chartOptions.employeeOptions}
+            />
+          </div>
+
+          <div className="orders-overview">
+            <h3>가장 많이 주문한 음식</h3>
+            <ul>
+              <li>
+                <img
+                  src="/image/IMG_3238.jpg"
+                  alt="Food 1"
+                  className="order-image"
+                />
+                <span>$2400 알 깨고 나온 윤태구</span>
+              </li>
+              <li>
+                <img
+                  src="/image/IMG_3238.jpg"
+                  alt="Food 2"
+                  className="order-image"
+                />
+                <span>$2400 알 깨고 나온 윤태구</span>
+              </li>
+              {/* 다른 주문 아이템 추가 */}
+            </ul>
+          </div>
+        </div>
+
+        {/* 하단 테이블 영역에 차트 추가 */}
+        <div className="charts-section">
+          <div className="chart-container">
+            <h3>매출 그래프</h3>
+            <Chart type="line" data={chartData.lineData} />
+          </div>
+
+          <div className="chart-container">
+            <h3>이번주 손님 수</h3>
+            <Chart
+              type="bar"
+              data={updatedChartData.barData}
+              options={chartOptions.generalOptions}
+            />
+          </div>
+        </div>
+      </div>
     </>
   );
 }
