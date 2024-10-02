@@ -100,13 +100,31 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
-        <Route path="storeViewFrm" element={<StoreViewFrm />} />
-        <Route path="managereserved" element={<ManageReserved />} />
-        <Route path="ownerstatistics" element={<Ownerstatistics />} />
-        <Route path="managereview" element={<ManageReview />} />
-        <Route path="StorePartnership" element={<StorePartnership />} />
-        <Route path="StoreMenuView" element={<StoreMenuView />} />
         <Route path="StorePayment" element={<StorePayment />} />
+        <Route
+          path="storeViewFrm"
+          element={<StoreViewFrm setActiveIndex={setActiveIndex} />}
+        />
+        <Route
+          path="managereserved"
+          element={<ManageReserved setActiveIndex={setActiveIndex} />}
+        />
+        <Route
+          path="ownerstatistics"
+          element={<Ownerstatistics setActiveIndex={setActiveIndex} />}
+        />
+        <Route
+          path="managereview"
+          element={<ManageReview setActiveIndex={setActiveIndex} />}
+        />
+        <Route
+          path="StorePartnership"
+          element={<StorePartnership setActiveIndex={setActiveIndex} />}
+        />
+        <Route
+          path="StoreMenuView"
+          element={<StoreMenuView setActiveIndex={setActiveIndex} />}
+        />
       </Routes>
       <div className="owner-navi">
         <div className="navigation">

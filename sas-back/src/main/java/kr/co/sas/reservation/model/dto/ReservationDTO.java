@@ -31,4 +31,8 @@ public class ReservationDTO {
 	private String reserveDateString;
 	@Schema(description = "예약 시간", type="string")
 	private String reserveTime;
+	@Schema(description="예약금-객체 가져올때 사용용...", type="int")
+	private int payPrice;
+	@Schema(description="해당시간 예약된 좌석수", type="int")
+	private int seatAmount;
 }

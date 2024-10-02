@@ -328,6 +328,8 @@ const MenuView = () => {
           style={customReserveModal}
         >
           <ReservationMain
+            setIsReserveModalOpen={setIsReserveModalOpen}
+            isReserveModalOpen={isReserveModalOpen}
             storeNo={store.storeNo}
             storeName={store.storeName}
           />

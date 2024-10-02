@@ -6,11 +6,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil"; // Recoil 상태를 업데이트할 수 있는 hook
 import {
   loginStoreIdState,
   loginStoreNoState,
   storeNameState,
   storeTypeState,
+  loginStoreNameState,
 } from "../utils/RecoilData";
 import StoreChangePw from "./StoreChangePw";
 import StoreCheckPw from "./StoreCheckPw";
@@ -21,7 +23,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const params = useParams();
   const storeNo = params.storeNo;
   const [store, setStore] = useState({
-    soName: "",
+    storeName: "",
     businessNumber: "",
     soPhone: "",
     soEmail: "",
@@ -78,6 +80,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const soPwRef = useRef(null);
 
   const login = () => {
+    console.log(login);
     soEmailRef.current.innerText = "";
     soPwRef.current.innerText = "";
     if (store.soEmail === "" || store.soPw === "") {
@@ -86,6 +89,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       axios
         .post(`${backServer}/store/storeLogin`, store)
         .then((res) => {
+          console.log("서버에서 받은 storeName 값:", res.data.storeName);
+          console.log("로그인 응답 데이터:", res.data);
           const {
             result,
             storeType,
@@ -96,11 +101,16 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
             storeName,
           } = res.data;
           console.log("매장 로그인 정보 : ", res.data);
+          console.log("서버로부터 받은 storeName 값:", storeName); // 여기서 soName 확인
+
           switch (res.data.result) {
             case 1:
               setLoginSoEmail(res.data.soEmail);
               setStoreType(res.data.storeType);
               setLoginStoreNo(res.data.storeNo);
+              setStoreName(storeName); // 점주 이름 저장
+
+              console.log("저장된 storeName 값:", storeName);
 
               axios.defaults.headers.common["Authorization"] =
                 res.data.accessToken;

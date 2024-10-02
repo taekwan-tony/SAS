@@ -65,7 +65,17 @@ public class ReviewService {
 		return result == 1;
 		
 	}
-	
-	
 
+	
+	// 리뷰 신고 처리
+    @Transactional
+    public int reportReview(ReviewDTO review) {
+        // 리뷰 타입을 2로 업데이트 (신고 상태로 변경)
+        int result1 = reviewDao.updateReviewReport(review.getReviewNo());
+        
+        // 신고 사유 저장
+        int result2 = reviewDao.updateReviewReportContent(review);
+        
+        return result1 + result2; // 둘 다 성공했을 때만 1+1=2
+    }
 }
