@@ -169,7 +169,7 @@ const StoreMenuView = () => {
             <StoreMenuFrm
               menu={menu}
               index={index}
-              storeMenu={storeMenu}
+              //storeMenu={storeMenu}
               setStoreMenu={setStoreMenu}
               storeMenuImage={storeMenuImage}
               setStoreMenuImage={setStoreMenuImage}
