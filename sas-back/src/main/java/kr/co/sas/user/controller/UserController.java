@@ -180,4 +180,13 @@ public class UserController {
 		return ResponseEntity.ok(map);
 	}
 	
+	@Operation(summary="일반회원 결제 정보 가져오기", description = "결제위해 필요한 일반회원 이름, 전화번호, 이메일 가져오기")
+	@GetMapping(value="/userNo/{userNo}/reservation")
+	public ResponseEntity<UserDTO> getUserInfoForPay(@PathVariable int userNo){
+		UserDTO user = userService.getUserInfoForPay(userNo);
+		if(user!=null) {
+			return ResponseEntity.ok(user);
+		}
+		return ResponseEntity.status(404).build();
+	}
 }
