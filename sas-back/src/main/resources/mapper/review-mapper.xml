@@ -39,6 +39,27 @@
     <update id="insertReviewAnswer">
     	update review set review_answer=#{reviewAnswer}, review_answer_date=sysdate where review_no = #{reviewNo}
     </update>
- 
-
+ 	<select id="totalCount" resultType="int">
+ 		select count(*) from review where review_type=2
+ 	</select>
+ 	<select id="reviewReportList" resultType="review">
+		select * from
+			(select rownum as rnum, b.* from(
+			    select
+			        review_no,
+			        review_date,
+			        review_content,
+			        user_nickname,
+			        store.store_name,
+			        store.so_name,
+			        review_report_content
+			    from review
+			    join store using(store_no)
+			     where review_type=2
+			     order by review_no desc)b)
+			where rnum between #{start} and #{end}
+	</select>
+	<update id="reviewReportComp">
+		update review set review_type = 3 where review_no=#{reviewNo}
+	</update>
 </mapper>

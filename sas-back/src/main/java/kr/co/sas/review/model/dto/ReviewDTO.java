@@ -25,5 +25,9 @@ public class ReviewDTO {
 	private String reviewAnswer;
 	private String reviewAnswerDate;
 	private int reserveNo;
+	private int reviewType;
+	private String reviewReportContent;
+	private String storeName;
+	private String soName;
 	private List<String> filepathList;
 }
