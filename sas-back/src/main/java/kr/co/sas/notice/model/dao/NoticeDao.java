@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.sas.notice.model.dto.NoticeBothDTO;
 import kr.co.sas.notice.model.dto.NoticeDTO;
+import kr.co.sas.review.model.dto.ReviewDTO;
 import kr.co.sas.util.PageInfo;
 
 @Mapper
@@ -24,5 +25,12 @@ public interface NoticeDao {
 	int deleteNotice(int noticeNo);
 
 	int updateNotice(NoticeDTO notice);
+
+	int totalUserCount(String loginNickname);
+
+	List selectNoticeUserList(PageInfo pi, int noticeType, String loginNickname);
+
+	NoticeBothDTO selectBothNoticeUser(NoticeDTO notice);
+
 
 }

@@ -288,7 +288,10 @@ function UserMain() {
         <Route path="menuview/:storeNo/*" element={<MenuView />} />
         <Route path="searchlist/:searchItem" element={<SearchList />} />
         <Route path="noticeList" element={<UserNoticeList />} />
-        <Route path="noticeDetail/:noticeNo" element={<UserNoticeDetail />} />
+        <Route
+          path="noticeDetail/:noticeNo/:userNickname"
+          element={<UserNoticeDetail />}
+        />
         <Route
           path=""
           element={
