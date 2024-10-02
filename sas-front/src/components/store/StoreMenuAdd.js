@@ -16,26 +16,21 @@ const StoreMenuView = () => {
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
   const [menuThumbnail, setMenuThumbnail] = useState([]); // 메뉴 사진
   const [storeMenuList, setStoreMenuList] = useState([]);
+  const [check, setCheck] = useState(0);
   useEffect(() => {
+    console.log(1);
     axios
       .get(`${backServer}/menu/allMenuList/${loginStoreNo}`)
       .then((res) => {
-        console.log(res);
+        console.log(res.data.length);
         setStoreMenuList(res.data);
+        setCheck(res.data.length);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  const [storeMenu, setStoreMenu] = useState([
-    {
-      menuName: "",
-      menuInfo: "",
-      menuPrice: "",
-      storeNo: loginStoreNo,
-      menuPhoto: "",
-    }, // 첫 번째 빈 메뉴 추가
-  ]);
+  }, [check]);
+  const [storeMenu, setStoreMenu] = useState([]);
   console.log("매장 번호  : ", loginStoreNo);
   console.log("메뉴 사진  : ", storeMenu.menuPhoto);
   const changeStoreThumbnail = (index) => (e) => {
@@ -128,7 +123,10 @@ const StoreMenuView = () => {
           console.log(err.response.data);
         });
     });
-
+    setCheck(storeMenuList.length + 1);
+    setStoreMenu([]);
+    setMenuThumbnail([]);
+    setStoreMenuImage([]);
     console.log(storeMenu);
 
     // for (const [key, value] of form.entries()) {
@@ -152,7 +150,16 @@ const StoreMenuView = () => {
           {/* infoCardVisible이 true일 때만 info-card 렌더링 */}
           {storeMenuList
             ? storeMenuList.map((menu, index) => {
-                <StoreMenuFrm />;
+                return (
+                  <StoreMenuFrm
+                    key={"menu-" + index}
+                    menu={menu}
+                    index={index}
+                    storeMenu={storeMenuList}
+                    setStoreMenu={setStoreMenuList}
+                    type={1}
+                  />
+                );
               })
             : ""}
           {storeMenu.map((menu, index) => (
@@ -167,6 +174,8 @@ const StoreMenuView = () => {
               hideInfoCard={hideInfoCard}
               changeStoreMenu={changeStoreMenu}
               changeStoreThumbnail={changeStoreThumbnail}
+              type={2}
+              setCheck={setCheck}
             />
           ))}
         </div>
