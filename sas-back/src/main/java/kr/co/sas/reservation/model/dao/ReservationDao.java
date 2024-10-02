@@ -28,13 +28,16 @@ public interface ReservationDao {
     
     int selectLastMonthTotalReservedPeople(@Param("storeNo") int storeNo);
 
-	
-
 	List<ReservationDTO> selectReservationList(int storeNo);
 
 	List<ReservationDTO> selectReservationForCount(String date, int storeNo);
 
 	List<WeekCustomerDTO> selectWeekCustomer(int storeNo);
+<<<<<<< HEAD
 
 	int insertReservation(ReservationDTO reservation);
+=======
+	
+	int deleteReservation(int reserveNo);
+>>>>>>> Testsas2
 }

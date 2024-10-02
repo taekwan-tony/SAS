@@ -227,6 +227,10 @@
   font-size: 0.8em;
   color: white;
 }
+.reserve-del-button {
+  background: linear-gradient(90deg, #291a1a 10%, #b23a3a 90%);
+  color: white;
+}
 
 /* 하단 네비 */
 .owner-navi {

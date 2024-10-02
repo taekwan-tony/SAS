@@ -59,6 +59,7 @@ public class ReservationService {
 	    public List<WeekCustomerDTO> getWeeklyCustomer(int storeNo) {
 	        return reservationDao.selectWeekCustomer(storeNo);
 	    }
+<<<<<<< HEAD
 
 		public List selectReservationForCount(String date, int storeNo) {
 			List<ReservationDTO> list = reservationDao.selectReservationForCount(date, storeNo);
@@ -72,5 +73,11 @@ public class ReservationService {
 			int result = reservationDao.insertReservation(reservation);
 			return result;
 		}
+=======
+	    
+	    public int deleteReservation(int reserveNo) {
+	        return reservationDao.deleteReservation(reserveNo);
+	    }
+>>>>>>> Testsas2
 }
 

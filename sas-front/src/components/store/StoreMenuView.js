@@ -45,6 +45,8 @@ const StoreMenuView = () => {
         });
     }
   };
+const StoreMenuView = (props) => {
+  const setActiveIndex = props.setActiveIndex;
   const [storeMenu, setStoreMenu] = useState({
     menuName: "",
     menuInfo: "",
@@ -66,6 +68,9 @@ const StoreMenuView = () => {
   console.log("매장 번호  : ", storeMenu.storeNo);
   console.log("메뉴 사진  : ", storeMenu.menuPhoto);
 
+  useEffect(() => {
+    setActiveIndex(2);
+  }, []);
   const [addMenu, setAddMenu] = useState([
     { menuName: "", menuInfo: "", menuPrice: "" }, // 기본적으로 하나의 빈 메뉴를 추가
   ]);
