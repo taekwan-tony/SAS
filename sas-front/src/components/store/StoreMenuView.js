@@ -14,6 +14,7 @@ const StoreMenuView = (props) => {
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
 
   useEffect(() => {
+    setActiveIndex(2);
     storeRefreshLogin();
     const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
 
