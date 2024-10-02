@@ -43,7 +43,7 @@ const MenuView = () => {
   useEffect(() => {
     console.log("userNo:", loginUserNo);
     axios
-      .get(`${backServer}/store/storeNo/${store.storeNo}/userNo/${loginUserNo}`)
+      .get(`${backServer}/store/storeNo/${storeNo}/userNo/${loginUserNo}`)
       .then((res) => {
         // console.log(res.data);
         setStore(res.data);
@@ -58,7 +58,7 @@ const MenuView = () => {
         console.log(2);
         axios
           .delete(
-            `${backServer}/favorite/storeNo/${store.storeNo}/userNo/${loginUserNo}`
+            `${backServer}/favorite/storeNo/${storeNo}/userNo/${loginUserNo}`
           )
           .then((res) => {
             // console.log(res);
@@ -76,7 +76,7 @@ const MenuView = () => {
         console.log(3);
         axios
           .post(`${backServer}/favorite`, {
-            storeNo: store.storeNo,
+            storeNo: storeNo,
             userNo: loginUserNo,
           })
           .then((res) => {
@@ -188,11 +188,16 @@ const MenuView = () => {
     userNo: loginUserNo,
     favoriteFolderNo: 0,
   });
+  // 자꾸 loginUserNo가 0으로 뜨므로..
+  useEffect(() => {
+    setChangeFolder({ ...changeFolder, userNo: loginUserNo });
+    setAddFolder({ ...addFolder, userNo: loginUserNo });
+  }, [loginUserNo]);
   // 즐겨찾기 목록 폴더 이동
   const changeFavoriteFolder = () => {
-    const form = new FormData();
-    form.append("userNo", changeFolder.userNo);
-    form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
+    // const form = new FormData();
+    // form.append("userNo", changeFolder.userNo);
+    // form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
     axios
       .patch(`${backServer}/favorite/changeFolder`, changeFolder)
       .then((res) => {
@@ -200,6 +205,10 @@ const MenuView = () => {
         if (res.data) {
           setIsFavoriteModalOpen(false);
           handleOpen("즐겨찾기 이동이 완료되었습니다.");
+          setChangeFolder({
+            ...changeFolder,
+            favoriteFolderNo: 0,
+          });
         }
       })
       .catch((err) => {
@@ -221,7 +230,7 @@ const MenuView = () => {
   };
   const addFavoriteFolder = () => {
     if (
-      addFolder.favoriteFolderName !== null &&
+      addFolder.favoriteFolderName != null &&
       addFolder.favoriteFolderName !== ""
     ) {
       // const form = new FormData();
@@ -337,7 +346,7 @@ const MenuView = () => {
           <ReservationMain
             setIsReserveModalOpen={setIsReserveModalOpen}
             isReserveModalOpen={isReserveModalOpen}
-            storeNo={store.storeNo}
+            storeNo={storeNo}
             storeName={store.storeName}
           />
         </Modal>
@@ -373,7 +382,12 @@ const MenuView = () => {
                       type="radio"
                       name="folder-name"
                       id={index}
-                      value={folder.favoriteFolderName}
+                      checked={
+                        changeFolder.favoriteFolderNo === 0
+                          ? index === 0
+                          : changeFolder.favoriteFolderNo ===
+                            folder.favoriteFolderNo
+                      }
                       onChange={changeChecked}
                     />
                     <label className="radio-box-content" htmlFor={index}>
@@ -384,7 +398,6 @@ const MenuView = () => {
               })}
               <form
                 ref={favoriteRef}
-                action=""
                 className="addFolder"
                 onSubmit={(e) => {
                   e.preventDefault();

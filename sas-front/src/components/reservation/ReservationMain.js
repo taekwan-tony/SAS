@@ -199,7 +199,8 @@ const ReservationModalFirst = (props) => {
       reservation.reservePeople !== 0 &&
       reservation.reservePeople !== "" &&
       reservation.reserveDate !== "" &&
-      (reservation.reserveTime !== "" || reserveCheck.check)
+      reservation.reserveTime !== "" &&
+      reserveCheck.check
     ) {
       setReservationPage(2);
     }
@@ -210,11 +211,11 @@ const ReservationModalFirst = (props) => {
     timeBox.splice(0, timeBox.length);
     setTimeBox([...timeBox]);
     if (
-      reservationStore.storeReStart !== null ||
+      reservationStore.storeReStart != null &&
       reservationStore.storeRestart !== ""
     ) {
       if (
-        reservationStore.breakTimeEnd === null ||
+        reservationStore.breakTimeEnd == null ||
         reservationStore.breakTimeEnd === ""
       ) {
         putTimeBox(reservationStore.storeReStart, reservationStore.storeReEnd);
@@ -253,11 +254,13 @@ const ReservationModalFirst = (props) => {
   useEffect(() => {
     msgRef.current.style.setProperty("display", "none");
     let peopleCapacity = 0;
-    reservationStore.seatList.forEach((seat) => {
-      if (seat.seatCapacity > peopleCapacity) {
-        peopleCapacity = seat.seatCapacity;
-      }
-    });
+    if (reservationStore.seatList != null) {
+      reservationStore.seatList.forEach((seat) => {
+        if (seat.seatCapacity > peopleCapacity) {
+          peopleCapacity = seat.seatCapacity;
+        }
+      });
+    }
     if (reservation.reservePeople > peopleCapacity) {
       msgRef.current.style.setProperty("display", "block");
     }
@@ -622,13 +625,20 @@ const ReserveTimeBox = (props) => {
   // console.log("1111111", seatList); //=>얘가 왠지 모르겠는데 값을 계속 받아감..
   // 시간이 늦은건지 여부 확인하는 함수
   const isLate = (timeNow, timeValue) => {
-    const nowHour = Number(timeNow.substring(0, 2));
-    const valueHour = Number(timeValue.substring(0, 2));
-    const nowMin = Number(timeNow.substring(3));
-    const valueMin = Number(timeValue.substring(3));
-    const bool =
-      nowHour < valueHour || (nowHour === valueHour && nowMin < valueMin);
-    return bool;
+    if (
+      timeNow !== null &&
+      timeNow !== "" &&
+      timeValue !== null &&
+      timeValue !== ""
+    ) {
+      const nowHour = Number(timeNow.substring(0, 2));
+      const valueHour = Number(timeValue.substring(0, 2));
+      const nowMin = Number(timeNow.substring(3));
+      const valueMin = Number(timeValue.substring(3));
+      const bool =
+        nowHour < valueHour || (nowHour === valueHour && nowMin < valueMin);
+      return bool;
+    }
   };
   // console.log(timeBoxSeatList);
   // console.log(countReserve);
