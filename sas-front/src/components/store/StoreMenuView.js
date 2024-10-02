@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./storeMenuView.css";
 
-const StoreMenuView = () => {
+const StoreMenuView = (props) => {
+  const setActiveIndex = props.setActiveIndex;
   const [storeMenu, setStoreMenu] = useState({
     menuName: "",
     menuInfo: "",
     menuPrice: "",
   });
-
+  useEffect(() => {
+    setActiveIndex(2);
+  }, []);
   const [addMenu, setAddMenu] = useState([
     { menuName: "", menuInfo: "", menuPrice: "" }, // 기본적으로 하나의 빈 메뉴를 추가
   ]);

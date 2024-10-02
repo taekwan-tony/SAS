@@ -9,7 +9,8 @@ import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil"; // Recoil에서 상태 가져오기
 import { loginStoreNameState, loginStoreNoState } from "../utils/RecoilData"; // 로그인된 점주의 storeNo 상태
 
-function Ownerstatistics() {
+function Ownerstatistics(props) {
+  const setActiveIndex = props.setActiveIndex;
   const [totalReserve, setTotalReserve] = useState(0); // 이번달 예약 건수 상태
   const [totalReservedPeople, setTotalReservedPeople] = useState(0); // 이번달 예약된 총 인원수 상태
   const [lastMonthReserve, setLastMonthReserve] = useState(0); // 지난달 예약 건수 상태
@@ -48,6 +49,7 @@ function Ownerstatistics() {
   };
   // 총 예약 수와 예약된 인원수 가져오기
   useEffect(() => {
+    setActiveIndex(5);
     // 이번달 예약 데이터 가져오기
     if (storeNo !== 0) {
       const CurrentData = async () => {

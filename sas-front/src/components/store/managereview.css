@@ -1,50 +1,49 @@
-/* 댓글 */
-/* 댓글과 답글 폼을 나란히 배치 */
 .comments-container {
-  margin-top: 5%;
+  padding: 5%;
 }
-.consum-comment {
+
+.review-wrapper {
+  margin-bottom: 30px;
+}
+
+.review-bubble {
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  width: fit-content;
+  max-width: 80%;
   position: relative;
-  left: 15%;
-  padding: 20px;
-  background: linear-gradient(120deg, #222623 10%, #0e110e 50%, #13241747 99%);
-  margin-bottom: 20px;
-  border-radius: 20px;
-  width: 40%;
 }
 
-.review-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.user-review {
+  background: linear-gradient(120deg, #1d201e 50%, #29482a47 99%);
+  text-align: left;
+  margin-left: 10px;
 }
 
+.admin-reply {
+  background: linear-gradient(250deg, #1d201e 50%, #29482a47 99%);
+  text-align: right;
+  margin-left: auto;
+  margin-right: 10px;
+}
+.admin-reply p {
+  color: #fff;
+}
 .reply-btn {
-  margin-top: 10px;
-  padding: 10px;
-  background: linear-gradient(
-    290deg,
-    #104622 10%,
-    #29482a47 80%,
-    #29482a47 99%
-  );
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.reply-btn:hover {
   background: linear-gradient(290deg, #3b5f47 10%, #29482a47 80%);
+  color: #fff;
+}
+.report-btn {
+  background: linear-gradient(290deg, #291a1a 10%, #f7080847 80%);
+  color: #fff;
+}
+.reply-btn-wrapper {
+  text-align: right;
 }
 
-/* 답글 작성 폼 스타일 */
 .reply-form-container {
   margin-top: 10px;
-  padding: 20px;
-  background: linear-gradient(120deg, #222623 10%, #0e110e 50%, #13241747 99%);
-
-  border-radius: 10px;
 }
 
 .reply-form {
@@ -54,190 +53,138 @@
 
 .reply-input {
   width: 100%;
+  height: 100px;
   padding: 10px;
-  border-radius: 5px;
-  background: linear-gradient(120deg, #222623 10%, #0e110e 50%, #13241747 99%);
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: linear-gradient(120deg, #1d201e 50%, #29482a47 99%);
+  resize: none;
 }
 
 .reply-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
 }
 
 .submit-reply-btn,
 .cancel-reply-btn {
-  padding: 10px;
-  background: linear-gradient(
-    290deg,
-    #104622 10%,
-    #29482a47 80%,
-    #29482a47 99%
-  );
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  padding: 10px 20px;
   margin-left: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-reply-btn {
+  background: linear-gradient(290deg, #3b5f47 10%, #29482a47 80%);
+  color: white;
 }
 
 .cancel-reply-btn {
   background: linear-gradient(290deg, #291a1a 10%, #f7080847 80%);
+  color: white;
 }
-
-.submit-reply-btn:hover {
-  background: linear-gradient(290deg, #3b5f47 10%, #29482a47 80%);
-}
-
-.cancel-reply-btn:hover {
-  background-color: #999;
-}
-/* 하단 네비 */
-.owner-navi {
-  position: fixed; /* 화면에 고정 */
-  bottom: 0; /* 화면의 하단에 고정 */
-  left: 50%; /* 가운데 정렬 */
-  transform: translateX(-50%); /* 정 가운데 위치 */
-  width: 100%; /* 전체 너비 */
-  max-width: 570px; /* 최대 너비 */
-  background-color: #000; /* 배경 검은색 */
-  padding: 10px; /* 내부 여백 */
-  z-index: 1000; /* 다른 요소 위에 표시 */
-  border-radius: 20px 20px 10px 10px; /* 상단 모서리 둥글게 */
-  height: 72px;
-}
-
-.navigation {
+/* 모달 오버레이 스타일 */
+.report-modal-overlay {
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   bottom: 0;
-  width: 550px;
-  height: 60px;
-  background: linear-gradient(45deg, #1d2420, #183e29, #487144);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-}
-.navigation ul {
-  display: flex;
-  width: 100%;
-}
-.navigation ul li {
-  position: relative;
-  width: 70px;
-  height: 70px;
-  list-style: none;
-  z-index: 1;
-}
-.navigation ul li a {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  text-align: center;
-  font-weight: 500;
-}
-.navigation ul li a .icon {
-  padding-top: 5px;
-  position: relative;
-  display: block;
-  line-height: 75px;
-  font-size: 1.5em;
-  text-align: center;
-  color: #fff;
-  transition: 0.5s;
+  background-color: rgba(0, 0, 0, 0.75); /* 배경 어둡게 처리 */
+  z-index: 1000; /* 오버레이가 다른 요소들 위에 표시되도록 설정 */
 }
 
-.navigation ul li.active a .icon {
-  transform: translateY(-27px);
-}
-.navigation ul li a .text {
+/* 모달 창 스타일 */
+.report-modal {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 모달 중앙 정렬 */
+  background: linear-gradient(250deg, #475c41 10%, #333f3347 99%);
+  padding: 20px;
+  width: 400px; /* 모달 너비 */
+  max-width: 80%; /* 작은 화면에서 너비 조절 */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 */
+  z-index: 1001; /* 오버레이보다 높은 z-index */
+  text-align: center; /* 모달 내용 가운데 정렬 */
   color: #fff;
-  font-weight: 400;
-  font-size: 0.75em;
-  letter-spacing: 0.05em;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 0.5s;
 }
-.navigation ul li.active a .text {
-  opacity: 1;
-  padding-top: 25px;
-  transform: translateY(10px);
+
+/* 신고 사유 입력 필드 스타일 */
+.report-reason-input {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  background: linear-gradient(120deg, #1d201e 50%, #29482a47 99%);
+  color: #fff;
 }
-.navigation ul li a .circle {
-  position: absolute;
-  display: block;
-  width: 50px; /* 서클의 기본 크기 */
-  height: 50px;
-  background: transparent;
-  border-radius: 50%;
-  border: 1.8px solid #fff;
-  transform: translateY(-37px) scale(0); /* 서클이 0 크기에서 시작 */
-  transition: transform 0.5s ease-in-out; /* 부드럽게 커지도록 */
-}
-/* 
-    .navigation ul li.active a .circle {
-      transform: translateY(-27px) scale(1);
-      transition: none;
-    }
-    */
-.indicator {
-  position: absolute;
-  top: -59%;
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(45deg, #447156, #183e29, #1d2420);
-  border: 6px solid #06021b;
-  border-radius: 50%;
+
+/* 모달 안의 버튼 스타일 */
+.report-modal-actions {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.5s;
+  justify-content: space-between;
+  margin-top: 20px;
 }
-.indicator::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -22px;
-  width: 20px;
-  height: 20px;
-  background: transparent;
-  border-top-right-radius: 20px;
-  box-shadow: 1px -10px 0 #06021b;
+
+/* 신고 제출 버튼 스타일 */
+.submit-report-btn {
+  background: linear-gradient(290deg, #291a1a 10%, #f7080864 80%);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
-.indicator::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -22px;
-  width: 20px;
-  height: 20px;
-  background: transparent;
-  border-top-left-radius: 20px;
-  box-shadow: -1px -10px 0 #06021b;
+
+.submit-report-btn:hover {
+  background-color: #d32f2f;
 }
-.navigation ul li:nth-child(1).active ~ .indicator {
-  transform: translateX(calc(70px * 0));
+
+/* 신고 취소 버튼 스타일 */
+.cancel-report-btn {
+  background: linear-gradient(290deg, #291a1a 10%, #2322227d 80%);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
-.navigation ul li:nth-child(2).active ~ .indicator {
-  transform: translateX(calc(70px * 1));
+.css-34he1w-MuiRating-decimal path {
+  color: gold;
 }
-.navigation ul li:nth-child(3).active ~ .indicator {
-  transform: translateX(calc(70px * 2));
+.css-6lewhu-MuiRating-icon path {
+  color: transparent;
 }
-.navigation ul li:nth-child(4).active ~ .indicator {
-  transform: translateX(calc(70px * 3));
+.review-text {
+  color: #fff;
 }
-.navigation ul li:nth-child(5).active ~ .indicator {
-  transform: translateX(calc(70px * 4));
+.review-score {
+  color: #fff;
 }
-.navigation ul li:nth-child(6).active ~ .indicator {
-  transform: translateX(calc(70px * 5));
+.cancel-report-btn:hover {
+  background-color: #3333338b;
 }
-.navigation ul li:nth-child(7).active ~ .indicator {
-  transform: translateX(calc(70px * 6));
+/* 블러 처리된 리뷰 */
+.blur-review {
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.review-wrapper {
+  transition: all 0.3s ease;
+}
+
+.review-wrapper:hover {
+  filter: none;
+  pointer-events: auto;
 }

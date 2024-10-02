@@ -10,7 +10,8 @@ import { Link } from "react-router-dom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { loginStoreNoState, reservationState } from "../utils/RecoilData";
 
-function ManageReserved() {
+function ManageReserved(props) {
+  const setActiveIndex = props.setActiveIndex;
   const [inputValue, setInputValue] = useState(0); // 입력 값 관리
   const [totalValue, setTotalValue] = useState(0); // 누적 값 관리
   const [warningVisible, setWarningVisible] = useState(false); // 경고 메시지 상태
@@ -28,6 +29,7 @@ function ManageReserved() {
   const [calendarEvents, setCalendarEvents] = useState([]);
 
   useEffect(() => {
+    setActiveIndex(6);
     if (storeNo !== 0) {
       axios
         .get(`${backServer}/reservation/reservation/${storeNo}`)
