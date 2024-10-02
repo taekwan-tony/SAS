@@ -6,22 +6,20 @@ import { useRecoilState } from "recoil";
 import { loginStoreIdState } from "../utils/RecoilData";
 import { Link } from "react-router-dom";
 import Modal from "react-modal"; // 모달 라이브러리 사용
-import QuillEditor from "../utils/QuillEditor"; // Quill 에디터 컴포넌트 가져오기
+import ReviewQuill from "./ReviewQuill"; // 분리된 Quill 에디터 컴포넌트
 
 Modal.setAppElement("#root"); // 접근성 설정
 
 function ManageReview(props) {
   const setActiveIndex = props.setActiveIndex;
   const [review, setReview] = useState([]);
-  const [selectedReview, setSelectedReview] = useState({
-    reviewNo: 0,
-    reviewAnswer: "",
-  });
+  const [selectedReview, setSelectedReview] = useState(null); // 선택된 리뷰 상태
   const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 상태
   const [reportReason, setReportReason] = useState(""); // 신고 사유 상태
   const [selectedReportReviewNo, setSelectedReportReviewNo] = useState(null); // 신고할 리뷰 번호
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginStoreId, setLoginStoreId] = useRecoilState(loginStoreIdState);
+  const [reviewAnswer, setReviewAnswer] = useState(""); // 답글 상태
 
   useEffect(() => {
     setActiveIndex(4);
@@ -36,25 +34,35 @@ function ManageReview(props) {
       });
   }, [loginStoreId]);
 
-  const handleReplyChange = (value) => {
-    setSelectedReview({ ...selectedReview, reviewAnswer: value });
-  };
-
   const handleReplySubmit = (index) => {
-    axios.patch(`${backServer}/review`, selectedReview).then((res) => {
-      if (res.data > 0) {
-        review[index] = {
-          ...review[index],
-          reviewAnswer: selectedReview.reviewAnswer,
-        };
-        setReview([...review]);
-        setSelectedReview({ reviewNo: 0, reviewAnswer: "" });
-      }
-    });
+    if (!reviewAnswer) {
+      alert("답글을 입력하세요.");
+      return;
+    }
+    axios
+      .patch(`${backServer}/review`, {
+        reviewNo: selectedReview.reviewNo,
+        reviewAnswer: reviewAnswer, // Quill에서 입력한 값 사용
+      })
+      .then((res) => {
+        if (res.data > 0) {
+          review[index] = {
+            ...review[index],
+            reviewAnswer: reviewAnswer,
+          };
+          setReview([...review]);
+          setSelectedReview(null);
+          setReviewAnswer(""); // 답글 입력란 초기화
+        }
+      })
+      .catch((err) => {
+        console.error("답글 제출 중 오류가 발생했습니다.", err);
+      });
   };
 
   const handleReplyCancel = () => {
-    setSelectedReview({ reviewNo: 0, reviewAnswer: "" });
+    setSelectedReview(null);
+    setReviewAnswer(""); // 답글 입력란 초기화
   };
 
   // 신고 모달 열기
@@ -124,41 +132,43 @@ function ManageReview(props) {
         {/* 하단 테이블 - 리뷰 리스트 */}
         <div className="comments-container">
           {review && review.length > 0 ? (
-            review.map((review, index) => (
+            review.map((reviewItem, index) => (
               <div
                 className={`review-wrapper ${
-                  review.reviewType === 2 ? "blur-review" : ""
+                  reviewItem.reviewType === 2 ? "blur-review" : ""
                 }`}
-                key={review.reviewNo}
+                key={reviewItem.reviewNo}
               >
                 {/* 사용자 리뷰 */}
                 <div className="review-bubble user-review">
                   <p className="review-nickname">
-                    <strong>{review.userNickName}</strong>
+                    <strong>{reviewItem.userNickName}</strong>
                   </p>
 
                   <Stack spacing={1}>
                     <Rating
                       name="half-rating-read"
-                      defaultValue={review.reviewScore}
+                      defaultValue={reviewItem.reviewScore}
                       precision={0.5}
                       readOnly
                     />
                   </Stack>
-                  <p className="review-score">평점: {review.reviewScore}/5</p>
+                  <p className="review-score">
+                    평점: {reviewItem.reviewScore}/5
+                  </p>
 
                   {/* 블러 처리된 리뷰 표시 */}
                   <p className="review-text">
-                    {review.reviewType === 2
+                    {reviewItem.reviewType === 2
                       ? "이 리뷰는 신고되어 블러 처리되었습니다."
-                      : review.reviewContent}
+                      : reviewItem.reviewContent}
                   </p>
 
                   {/* 신고 버튼 */}
-                  {review.reviewType === 1 && ( // 정상 상태일 때만 신고 가능
+                  {reviewItem.reviewType === 1 && ( // 정상 상태일 때만 신고 가능
                     <button
                       className="report-btn"
-                      onClick={() => openReportModal(review.reviewNo)}
+                      onClick={() => openReportModal(reviewItem.reviewNo)}
                     >
                       신고
                     </button>
@@ -167,51 +177,54 @@ function ManageReview(props) {
                   {/* 답글 작성 버튼 */}
                   <button
                     className="reply-btn"
-                    onClick={() =>
-                      setSelectedReview({
-                        reviewNo: review.reviewNo,
-                        reviewAnswer: "",
-                      })
-                    }
+                    onClick={() => {
+                      setSelectedReview(reviewItem);
+                      setReviewAnswer(reviewItem.reviewAnswer || "");
+                    }}
                   >
                     답글 작성
                   </button>
                 </div>
 
                 {/* 관리자 답글 */}
-                {review.reviewAnswer ? (
+                {reviewItem.reviewAnswer ? (
                   <div className="review-bubble admin-reply">
                     <strong>관리자 답글:</strong>
-                    <p>{review.reviewAnswer}</p>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: reviewItem.reviewAnswer,
+                      }}
+                    ></p>
                   </div>
                 ) : null}
 
-                {/* 답글 작성 폼 (Quill 에디터 사용) */}
-                {selectedReview.reviewNo === review.reviewNo && (
-                  <div className="reply-form-container">
-                    <div className="reply-form">
-                      <QuillEditor
-                        value={selectedReview.reviewAnswer}
-                        onChange={(content) => handleReplyChange(content)}
-                        placeholder="답글을 작성하세요"
-                      />
-                      <div className="reply-actions">
-                        <button
-                          onClick={() => handleReplySubmit(index)}
-                          className="submit-reply-btn"
-                        >
-                          답글 달기
-                        </button>
-                        <button
-                          onClick={handleReplyCancel}
-                          className="cancel-reply-btn"
-                        >
-                          취소
-                        </button>
+                {/* 답글 작성 폼 */}
+                {selectedReview &&
+                  selectedReview.reviewNo === reviewItem.reviewNo && (
+                    <div className="reply-form-container">
+                      <div className="reply-form">
+                        <ReviewQuill
+                          content={reviewAnswer}
+                          setContent={setReviewAnswer}
+                          placeholder="답글을 작성하세요"
+                        />
+                        <div className="reply-actions">
+                          <button
+                            onClick={() => handleReplySubmit(index)}
+                            className="submit-reply-btn"
+                          >
+                            답글 달기
+                          </button>
+                          <button
+                            onClick={handleReplyCancel}
+                            className="cancel-reply-btn"
+                          >
+                            취소
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             ))
           ) : (

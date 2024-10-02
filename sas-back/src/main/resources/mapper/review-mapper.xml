@@ -56,6 +56,12 @@
         SET review_type = 2
         WHERE review_no = #{reviewNo}
     </update>
+    <!-- 리뷰 신고 처리: review_type을 3으로 변경 (관리자가 블러 처리한 경우) -->
+<update id="updateReviewReportAdmin">
+    UPDATE review
+    SET review_type = 3
+    WHERE review_no = #{reviewNo}
+</update>
 
     <!-- 리뷰 신고 처리: review_report_content에 신고 사유 저장 -->
     <update id="updateReviewReportContent">
