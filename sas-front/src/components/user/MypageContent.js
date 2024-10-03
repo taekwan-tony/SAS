@@ -7,14 +7,15 @@ import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const ReserveContent = () => {
+const ReserveContent = (props) => {
+  const reserve = props.reserve;
   return (
     <div className="reserve-content round">
       <div className="reserve-img"></div>
       <div className="reserve-info">
-        <h4 className="reserve-name">매장 이름</h4>
-        <span>인원 수</span>
-        <span>예약 시간</span>
+        <h4 className="reserve-name">{reserve.storeName}</h4>
+        <span>{reserve.reservePeople + " 명"}</span>
+        <span>{reserve.reserveDateString}</span>
         <span className="d-day round">d-day</span>
       </div>
     </div>
@@ -117,13 +118,15 @@ const Profile = (props) => {
   );
 };
 
-const FavoriteBox = () => {
+const FavoriteBox = (props) => {
+  const favorite = props.favorite;
   return (
     <div className="favorite-list-content round">
       <div className="img"></div>
       <div className="title">
         <h3>
-          즐겨찾기 제목 <span className="count">2</span>
+          {favorite ? favorite.favoriteFolderName : ""}{" "}
+          <span className="count">2</span>
         </h3>
       </div>
     </div>
@@ -147,7 +150,8 @@ const EmptyBox = (props) => {
     </div>
   );
 };
-const MypageFavorite = () => {
+const MypageFavorite = (props) => {
+  const favoriteFolderList = props.favoriteFolderList;
   const settings = {
     dots: false,
     infinite: false,
@@ -158,17 +162,26 @@ const MypageFavorite = () => {
   };
   return (
     <div className="slider-container favorite-list-content-wrap">
-      <Slider {...settings}>
-        <FavoriteBox />
-        <FavoriteBox />
-        <FavoriteBox />
-        <FavoriteBox />
-        <FavoriteBox />
-        <FavoriteBox />
-        <FavoriteBox />
-        <FavoriteBox />
-        <FavoriteBoxEmpty />
-      </Slider>
+      {favoriteFolderList != null && favoriteFolderList.length > 1 ? (
+        <Slider {...settings}>
+          {favoriteFolderList
+            ? favoriteFolderList.map((favorite, index) => {
+                return <FavoriteBox favorite={favorite} />;
+              })
+            : ""}
+
+          <FavoriteBoxEmpty />
+        </Slider>
+      ) : (
+        <>
+          {favoriteFolderList
+            ? favoriteFolderList.map((favorite, index) => {
+                return <FavoriteBox favorite={favorite} />;
+              })
+            : ""}
+          <FavoriteBoxEmpty />
+        </>
+      )}
     </div>
   );
 };

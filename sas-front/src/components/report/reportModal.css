@@ -1,0 +1,76 @@
+.report-modal-wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.report-modal-wrap > .report-modal-header {
+  position: relative;
+}
+.report-modal-wrap > .report-modal-header > h2 {
+  text-align: center;
+  color: var(--main1);
+  font-weight: bold;
+  font-family: var(--pointFont);
+  font-size: 2.5em;
+}
+.report-modal-wrap > .report-modal-header > h4 {
+  text-align: center;
+  font-weight: 100;
+  font-size: 1em;
+}
+.report-modal-wrap > .report-modal-header > button.dismiss {
+  position: absolute;
+  right: -10px;
+  top: -5px;
+  font-weight: 600;
+}
+.report-modal-wrap button {
+  cursor: pointer;
+  outline: none;
+}
+
+.report-modal-wrap > .report-modal-header > button {
+  border: none;
+  background-color: transparent;
+}
+.report-modal-wrap > .report-modal-content {
+  padding: 20px;
+  padding-top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.report-modal-wrap > .report-modal-content > .input-box {
+  width: 50%;
+  padding: 5px 0;
+}
+
+.report-modal-wrap > .report-modal-content > .input-box.others {
+  padding-bottom: 0;
+}
+
+.report-modal-wrap > .report-modal-content > .input-box > label {
+  margin-left: 5px;
+}
+.report-modal-wrap input#others {
+  width: 95%;
+  margin: 0 auto;
+  padding-left: 10px;
+  outline: none;
+}
+.report-modal-wrap input#others.on {
+  border: 1px solid var(--main1);
+}
+.report-modal-wrap > .report-modal-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.report-modal-wrap > .report-modal-footer > button {
+  width: 40%;
+  height: 40px;
+}

@@ -26,6 +26,7 @@ import SearchList from "../menu/SearchList";
 import ReservationMain from "../reservation/ReservationMain";
 import UserNoticeList from "./UserNoticeList";
 import UserNoticeDetail from "./UserNoticeDetail";
+import ReportMain from "../report/ReportMain";
 
 function UserMain() {
   // 일반회원 로그인 지속 구현-수진(문제 생기면 말씀해주세요..)
@@ -312,7 +313,8 @@ function UserMain() {
             <UserMainView activeTab={activeTab} setActiveTab={setActiveTab} />
           }
         ></Route>
-        {/* <Route path="/reservationMain/*" element={<ReservationMain />}></Route> */}
+        {/* 신고 모달 확인용 */}
+        <Route path="report*" element={<ReportMain />}></Route>
       </Routes>
     </div>
   );

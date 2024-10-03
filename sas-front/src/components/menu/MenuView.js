@@ -1,6 +1,4 @@
 // 예약 관련 모달창, 즐겨찾기 스낵바 위한 import
-import DatePicker from "../utils/DatePicker";
-import { format } from "date-fns";
 import Modal from "react-modal";
 import "../user/etc.css";
 import "../reservation/reservationModal.css";
@@ -8,10 +6,7 @@ import Swal from "sweetalert2";
 // 끝
 import { Link, Route, Routes, useParams, useNavigate } from "react-router-dom";
 import "./menuview.css";
-import { Map } from "react-kakao-maps-sdk";
-import { useEffect, useMemo, useRef, useState } from "react";
-import ReactQuill from "react-quill";
-import { PiArrowFatLeft, PiStarFill, PiStarLight } from "react-icons/pi";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import KaKao from "../utils/Kakao";
 import {
@@ -22,16 +17,9 @@ import {
 } from "../utils/RecoilData";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Snackbar from "@mui/material/Snackbar";
-import {
-  ReservationMain,
-  ReservationModalFirst,
-  ReservationModalSecond,
-} from "../reservation/ReservationMain";
-import { he } from "date-fns/locale";
-import { ReviewContent } from "../user/MypageContent";
+import { ReservationMain } from "../reservation/ReservationMain";
 import QuillEditor from "../utils/QuillEditor";
 import { Rating, Stack } from "@mui/material";
-const { kakao } = window;
 
 const MenuView = () => {
   const params = useParams();
