@@ -30,11 +30,7 @@
 	<!-- 이번 달 예약한 사람의 총 인원을 조회하는 쿼리 -->
 	<select id="selectTotalReservedPeople" resultType="int">
 		SELECT
-           (case 
-           WHEN
-		SUM(reserve_people) > 0 THEN SUM(reserve_people)
-        else 0
-        end)
+           nvl(SUM(reserve_people),0)
 		FROM reservation
 		WHERE store_no = #{storeNo}
 		AND
