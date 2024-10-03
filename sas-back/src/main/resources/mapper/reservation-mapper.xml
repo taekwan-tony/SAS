@@ -30,7 +30,7 @@
 	<!-- 이번 달 예약한 사람의 총 인원을 조회하는 쿼리 -->
 	<select id="selectTotalReservedPeople" resultType="int">
 		SELECT
-		SUM(reserve_people)
+           nvl(SUM(reserve_people),0)
 		FROM reservation
 		WHERE store_no = #{storeNo}
 		AND

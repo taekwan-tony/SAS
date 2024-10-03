@@ -67,6 +67,9 @@
 			where rnum between #{pi.start} and #{pi.end}
 	
 </select>
+<select id="storeEmailselect" resultType="store">
+	select so_email from store where store_no = #{storeNo}
+</select>
 
 <!-- 안되면 수진 favorite 수정해야함 -->
 	<select id="getStoreinfo" resultMap="store">

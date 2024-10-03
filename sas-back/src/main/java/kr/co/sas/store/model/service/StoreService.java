@@ -208,4 +208,10 @@ public class StoreService {
 	}//checkBusinessNumber
 
 
+	public StoreDTO storeEmailselect(int storeNo) {
+		StoreDTO store = storeDao.storeEmailselect(storeNo);
+		return store;
+	}
+
+
 }

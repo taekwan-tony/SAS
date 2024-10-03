@@ -102,6 +102,12 @@ public class StoreController {
 		return ResponseEntity.ok(storeList);
 	}
 	
+	@GetMapping(value="/storeEmail/{storeNo}")
+	public ResponseEntity<StoreDTO> storeEmail(@PathVariable int storeNo){
+		StoreDTO store = storeService.storeEmailselect(storeNo);
+		return ResponseEntity.ok(store);
+	}
+	
 	@GetMapping(value="/storeNo/{storeNo}/userNo/{userNo}")
 	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo, @PathVariable int userNo) {
 //		System.out.println(userNo);

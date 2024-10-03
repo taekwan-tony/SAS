@@ -60,5 +60,7 @@ public interface StoreDao {
 
 	StoreDTO checkBusinessNumber(int businessNumber);
 
+	StoreDTO storeEmailselect(int storeNo);
+
 
 }

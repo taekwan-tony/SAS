@@ -187,7 +187,7 @@ function ManageReserved(props) {
         <header className="dashboard-head">
           <h1>예약관리</h1>
 
-          <Link to="/usermain">
+          <Link to="/storecheck/storeNoticeList">
             <button className="button-bell">
               <div className="user-box-bell">
                 <div className="user-page-box">

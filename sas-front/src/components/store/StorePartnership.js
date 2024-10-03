@@ -5,7 +5,7 @@ import axios from "axios";
 import PostCodeApi from "../utils/PostCodeApi";
 import "./modal.css";
 import SelectMUI from "../utils/SelectMUI";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const StorePartnership = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -104,6 +104,21 @@ const StorePartnership = (props) => {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>매장 등록</h1>
+          <Link to="/storecheck/storeNoticeList">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
+
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
+              </div>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">
