@@ -1,4 +1,9 @@
-import { Map, MapMarker, MarkerClusterer } from "react-kakao-maps-sdk";
+import {
+  Map,
+  MapInfoWindow,
+  MapMarker,
+  MarkerClusterer,
+} from "react-kakao-maps-sdk";
 
 const KakaoCluster = (props) => {
   const positions = props.positions;
@@ -21,13 +26,18 @@ const KakaoCluster = (props) => {
         minLevel={10} // 클러스터 할 최소 지도 레벨
       >
         {positions.map((pos) => (
-          <MapMarker
-            key={`${pos.lat}-${pos.lng}`}
-            position={{
-              lat: pos.lat,
-              lng: pos.lng,
-            }}
-          />
+          <>
+            <MapMarker
+              key={`${pos.lat}-${pos.lng}`}
+              position={{
+                lat: pos.lat,
+                lng: pos.lng,
+              }}
+            />
+            <MapInfoWindow
+              content={`<div style="width:150px;text-align:center;padding:6px 0;">${pos.title}</div>`}
+            />
+          </>
         ))}
       </MarkerClusterer>
     </Map>
