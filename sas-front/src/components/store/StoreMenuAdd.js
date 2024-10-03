@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./storeMenuAdd.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
   loginStoreIdState,
@@ -142,6 +142,21 @@ const StoreMenuView = () => {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>메뉴 등록</h1>
+          <Link to="/storecheck/storeNoticeList">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
+
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
+              </div>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">

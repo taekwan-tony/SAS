@@ -40,7 +40,7 @@ const AdminStoreDetail = (props) => {
             ...prevData,
             agedata: {
               ...prevData.agedata,
-              labels: ageLabels,
+              labels: ["10대", "20대", "30대", "40대", "50대", "60대", "70대"],
               datasets: [
                 {
                   label: "연령별 손님",
