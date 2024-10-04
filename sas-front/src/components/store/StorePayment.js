@@ -90,12 +90,6 @@ const StorePayment = () => {
         <div className="storePayment-info-card">
           <div className="storePayment-info-text">
             <h3>이용료</h3>
-            <h2>
-              지난 달 서비스 이용료는{" "}
-              {lastMonthReserve * 10000 + lastMonthReservedPeople * 1000}
-              원입니다.{" "}
-            </h2>
-            {""}
           </div>
         </div>
       </div>

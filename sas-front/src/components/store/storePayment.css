@@ -229,7 +229,7 @@
   border-radius: 12px;
   flex: 1;
   display: flex;
-  justify-content: space-between; /* 텍스트와 아이콘을 양 끝으로 배치 */
+  justify-content: center; /* 텍스트와 아이콘을 양 끝으로 배치 */
   color: #fff;
 }
 
@@ -240,6 +240,9 @@
 .storePayment-info-text h3 {
   text-align: center;
   color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .storePayment-info-text h2 {
