@@ -166,11 +166,18 @@ function ManageReview(props) {
                       </p>
 
                       {/* 블러 처리된 리뷰 표시 */}
-                      <p className="review-text">
-                        {reviewItem.reviewType === 2
-                          ? "점주에 의해 신고된 댓글입니다."
-                          : reviewItem.reviewContent}
-                      </p>
+                      {reviewItem.reviewType === 2 ? (
+                        <p className="review-text">
+                          점주에 의해 신고된 댓글입니다.
+                        </p>
+                      ) : (
+                        <p
+                          className="review-text"
+                          dangerouslySetInnerHTML={{
+                            __html: reviewItem.reviewContent,
+                          }}
+                        ></p>
+                      )}
 
                       {/* 신고 버튼 */}
                       {reviewItem.reviewType === 1 && ( // 정상 상태일 때만 신고 가능
