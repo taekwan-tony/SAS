@@ -15,7 +15,7 @@ const ManagementMain = () => {
       <div className="admin-management-content-wrap">
         <Routes>
           <Route
-            path="storeMap"
+            path="storeMap/*"
             element={
               <ManagementStore setAdminDetailTitle={setAdminDetailTitle} />
             }

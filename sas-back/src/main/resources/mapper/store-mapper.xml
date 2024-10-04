@@ -209,5 +209,7 @@
 	<select id="checkBusinessNumber" resultType="store">
 		select * from store where businessNumber=#{businessNumber}
 	</select>
-
+	<select id="kakaoMapStore" resultType="store">
+		select  store_no,store_name,store_addr,so_name,store_phone,(select si_filepath from store_image_file b where b.store_no = s.store_no and rownum =1) as si_filepath from store s
+	</select>
 </mapper>

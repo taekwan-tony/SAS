@@ -250,5 +250,10 @@ public class StoreController {
 		return ResponseEntity.ok(result);
 	}//checkBusinessNumber
 	
-	
+	@Operation(summary = "카카오맵 데이터 추출")
+	@GetMapping(value = "/kakaoMapStore")
+	public ResponseEntity<List> kakaoMapStore(){
+		List list = storeService.kakaoMapStore();
+		return ResponseEntity.ok(list);
+	}
 }

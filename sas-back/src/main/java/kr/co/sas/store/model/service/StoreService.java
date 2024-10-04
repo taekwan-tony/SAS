@@ -214,4 +214,10 @@ public class StoreService {
 	}
 
 
+	public List kakaoMapStore() {
+		List list = storeDao.kakaoMapStore();
+		return list;
+	}
+
+
 }

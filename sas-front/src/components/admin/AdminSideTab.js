@@ -14,7 +14,7 @@ const AdminSideTab = () => {
               <Link to="#">매출관리</Link>
             </li>
             <li>
-              <Link to="#">제휴현황</Link>
+              <Link to="/admin/management/storeMap">제휴현황</Link>
             </li>
           </ul>
         </li>

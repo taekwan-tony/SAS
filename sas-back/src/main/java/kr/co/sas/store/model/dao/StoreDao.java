@@ -62,5 +62,7 @@ public interface StoreDao {
 
 	StoreDTO storeEmailselect(int storeNo);
 
+	List kakaoMapStore();
+
 
 }
