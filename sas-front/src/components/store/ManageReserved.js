@@ -181,10 +181,8 @@ function ManageReserved(props) {
           const index = calendarEvents.findIndex(
             (obj) => obj.extendedProps.reserveNo === reserveNo
           );
-          console.log(calendarEvents.length);
           const newCalendarEvents = [...calendarEvents];
           newCalendarEvents.splice(index, 1);
-          console.log(calendarEvents.length);
           setCalendarEvents(newCalendarEvents);
         })
         .catch((error) => {

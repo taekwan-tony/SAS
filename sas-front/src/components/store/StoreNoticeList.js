@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PageNavi from "../utils/PagiNavi";
 import { useRecoilState } from "recoil";
 import { loginStoreNoState } from "../utils/RecoilData";
+import "./storenotice.css";
 
 const StoreNoticeList = () => {
   const navigate = useNavigate();
