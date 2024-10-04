@@ -213,5 +213,10 @@
 	<select id="checkBusinessNumber" resultType="store">
 		select * from store where businessNumber=#{businessNumber}
 	</select>
+	
+	
+	<select id="selectStorePayList" resultType="storePayment">
+		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
+	</select>
 
 </mapper>

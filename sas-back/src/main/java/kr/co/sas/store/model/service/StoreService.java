@@ -214,4 +214,10 @@ public class StoreService {
 	}
 
 
+	public List selectStorePayList(int storeNo) {
+		List list = storeDao.selectStorePayList(storeNo);
+		return list;
+	}//selectStorePayList
+
+
 }

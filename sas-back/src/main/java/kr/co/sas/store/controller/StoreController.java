@@ -251,4 +251,12 @@ public class StoreController {
 	}//checkBusinessNumber
 	
 	
+	@Operation(summary = "서비스 이용료 결제 내역")
+	@GetMapping(value = "/storePayList/{storeNo}")
+	public ResponseEntity<List> list(@PathVariable int storeNo) {
+		List list = storeService.selectStorePayList(storeNo);
+		System.out.println("결제 내역 : " +list);
+		return ResponseEntity.ok(list);
+	}//list
+	
 }

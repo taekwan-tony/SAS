@@ -1,6 +1,7 @@
 package kr.co.sas.store.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -61,6 +62,8 @@ public interface StoreDao {
 	StoreDTO checkBusinessNumber(int businessNumber);
 
 	StoreDTO storeEmailselect(int storeNo);
+
+	List selectStorePayList(int storeNo);
 
 
 }
