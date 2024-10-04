@@ -68,7 +68,7 @@ function ManageReserved(props) {
               },
             };
           });
-
+          console.log(events);
           setCalendarEvents(events); // 모든 예약 데이터를 상태로 설정
         })
         .catch((error) => {
@@ -178,12 +178,21 @@ function ManageReserved(props) {
               (reservation) => reservation.RESERVE_NO !== reserveNo
             )
           );
+          const index = calendarEvents.findIndex(
+            (obj) => obj.extendedProps.reserveNo === reserveNo
+          );
+          console.log(calendarEvents.length);
+          const newCalendarEvents = [...calendarEvents];
+          newCalendarEvents.splice(index, 1);
+          console.log(calendarEvents.length);
+          setCalendarEvents(newCalendarEvents);
         })
         .catch((error) => {
           console.error("예약 삭제 중 오류 발생:", error);
         });
     }
   };
+  console.log(1);
   return (
     <>
       <div className="dashboard-body">
