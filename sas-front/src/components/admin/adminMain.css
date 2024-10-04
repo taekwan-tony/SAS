@@ -163,3 +163,11 @@
 .map-cluster-info-content-detail > div > span {
   font-size: 15px;
 }
+
+.map-cluster-info-content-detail > div > span:last-child {
+  cursor: pointer;
+}
+.map-cluster-info-content-detail > div > span:last-child:hover {
+  color: var(--main2);
+  text-decoration: underline;
+}

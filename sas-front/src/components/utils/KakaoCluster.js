@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const KakaoCluster = (props) => {
   const positions = props.positions;
+  const setStoreNo = props.setStoreNo;
   return (
     <Map // 지도를 표시할 Container
       center={{
@@ -26,12 +27,16 @@ const KakaoCluster = (props) => {
     >
       <MarkerClusterer
         averageCenter={true} // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-        minLevel={3} // 클러스터 할 최소 지도 레벨
+        minLevel={8} // 클러스터 할 최소 지도 레벨
       >
         {positions.map((pos, index) => {
           return (
             <>
-              <KakaoMapMakrker pos={pos} key={"kakaoMap-" + index} />
+              <KakaoMapMakrker
+                pos={pos}
+                setStoreNo={setStoreNo}
+                key={`kakaoMap-index+${index}`}
+              />
             </>
           );
         })}
@@ -42,6 +47,7 @@ const KakaoCluster = (props) => {
 
 const KakaoMapMakrker = (props) => {
   const pos = props.pos;
+  const setStoreNo = props.setStoreNo;
   const [isVisible, setIsVisible] = useState(false);
   console.log(isVisible);
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -65,7 +71,7 @@ const KakaoMapMakrker = (props) => {
           <div
             className="map-cluster-wrap"
             style={{
-              width: "400px",
+              minWidth: "400px",
               transform: "translate(-20px, -200px)",
               backgroundColor: "white",
               borderRadius: "5px",
@@ -102,7 +108,15 @@ const KakaoMapMakrker = (props) => {
                   <div>
                     <span>매장번호 : {pos.storePhone}</span>
                   </div>
-                  <div></div>
+                  <div>
+                    <span
+                      onClick={() => {
+                        setStoreNo(pos.storeNo);
+                      }}
+                    >
+                      상세내역 보기
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

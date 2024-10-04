@@ -10,7 +10,7 @@ const AdminSideTab = () => {
         <li>
           <Link to="#">현황관리</Link>
           <ul className="admin-side-sub-tab">
-            <li>
+            <li className="admin-side-sub-li">
               <Link to="#">매출관리</Link>
             </li>
             <li>
