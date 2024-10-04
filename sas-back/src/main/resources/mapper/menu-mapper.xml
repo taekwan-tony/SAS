@@ -20,4 +20,9 @@
 	<delete id="deleteStoreMenu">
 		delete from menu where menu_no=#{menuNo}
 	</delete>
+	
+	
+	<update id="updateStoreMenu">
+		update menu set menu_name=#{menuName}, menu_photo=#{menuPhoto}, menu_info=#{menuInfo}, menu_price=#{menuPrice} where menu_no=#{menuNo}
+	</update>
 </mapper>

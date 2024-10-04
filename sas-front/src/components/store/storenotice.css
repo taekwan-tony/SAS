@@ -4,13 +4,7 @@
   align-items: center; /* 수직 중앙 정렬 */
   height: 100px; /* 헤더 높이 */
 }
-.dashboard-store {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 80px;
-  color: white;
-}
+
 .dashboard-store-head {
   width: 100%; /* 화면 전체 너비 */
 }

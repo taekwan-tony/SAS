@@ -326,6 +326,14 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     return null; // 모달이 열리지 않았을 경우 null을 반환하여 아무것도 렌더링하지 않음
   }
 
+  // 엔터 설정
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // 기본 폼 제출 방지
+      login(); // 로그인 함수 호출
+    }
+  };
+
   return (
     <>
       <div className="storeLogin-wrap">
@@ -379,6 +387,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                     name="soEmail"
                                     value={store.soEmail}
                                     onChange={changeStore}
+                                    onKeyDown={handleKeyDown} // Enter 키 감지
                                   ></input>
                                   <p
                                     className="storeLogin-p"
@@ -401,11 +410,12 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   <input
                                     className="storeLogin-inputBox"
                                     placeholder="비밀번호를 입력해주세요."
-                                    type="text"
+                                    type="password"
                                     id="soPw"
                                     name="soPw"
                                     value={store.soPw}
                                     onChange={changeStore}
+                                    onKeyDown={handleKeyDown} // Enter 키 감지
                                   ></input>
                                   <p className="storeLogin-p" ref={soPwRef}></p>
                                 </div>

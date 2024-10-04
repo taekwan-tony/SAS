@@ -202,3 +202,7 @@
   filter: none;
   pointer-events: auto;
 }
+.review-text p img {
+  width: 200px;
+  height: auto;
+}

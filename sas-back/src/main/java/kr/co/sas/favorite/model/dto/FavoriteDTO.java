@@ -21,4 +21,6 @@ public class FavoriteDTO {
 	private int storeNo;
 	@Schema(description = "유저 번호", type="int")
 	private int userNo;
+	@Schema(description = "매장 프로필 사진", type="string")
+	private String storeImage;
 }

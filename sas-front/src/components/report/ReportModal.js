@@ -6,11 +6,10 @@ import Swal from "sweetalert2";
 
 const ReportModal = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const { userNo, storeNo, closeReport } = props;
+  const { reserveNo, closeReport } = props;
   const [report, setReport] = useState({
     reportReason: "",
-    userNo: userNo,
-    storeNo: storeNo,
+    reserveNo: reserveNo,
   });
   const [reportReasonOther, setReportReasonOther] = useState({
     disabled: true,

@@ -1,226 +1,109 @@
-import { useEffect, useState } from "react";
-import "./storeMenuAdd.css";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import {
-  loginStoreIdState,
-  loginStoreNoState,
-  storeTypeState,
-} from "../utils/RecoilData";
-import StoreMenuFrm from "./StoreMenuFrm";
-import StoreMenuList from "./StoreMenuList";
+import { useState } from "react";
 
-const StoreMenuView = () => {
+const StoreMenuAdd = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const navigate = useNavigate();
-  const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
-  const [menuThumbnail, setMenuThumbnail] = useState([]); // 메뉴 사진
-  const [storeMenuList, setStoreMenuList] = useState([]);
-  const [check, setCheck] = useState(0);
-  console.log("매장 정보 : ", storeMenuList);
-  useEffect(() => {
-    console.log(1);
-    axios
-      .get(`${backServer}/menu/allMenuList/${loginStoreNo}`)
-      .then((res) => {
-        console.log(res.data.length);
-        setStoreMenuList(res.data);
-        setCheck(res.data.length);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [check]);
-  const [storeMenu, setStoreMenu] = useState([]);
-  console.log("매장 번호  : ", loginStoreNo);
-  console.log("메뉴 사진  : ", storeMenu.menuPhoto);
-  const changeStoreThumbnail = (index) => (e) => {
-    const files = e.target.files;
-    if (files.length > 0) {
-      const reader = new FileReader();
-      reader.readAsDataURL(files[0]);
-      reader.onloadend = () => {
-        setStoreMenuImage((prevImages) => {
-          const updatedImages = [...prevImages];
-          updatedImages[index] = reader.result;
-          return updatedImages;
-        });
-      };
-      setMenuThumbnail((prevThumbnails) => {
-        const updatedThumbnails = [...prevThumbnails];
-        updatedThumbnails[index] = files[0]; // 각 인덱스에 맞는 파일 저장
-        return updatedThumbnails;
-      });
-    }
-  };
-  const [addMenu, setAddMenu] = useState([
-    { menuName: "", menuInfo: "", menuPrice: "" }, // 기본적으로 하나의 빈 메뉴를 추가
-  ]);
-
-  // X 아이콘 클릭 시 특정 메뉴 삭제
-  const hideInfoCard = (index) => {
-    setStoreMenu((prevMenus) => prevMenus.filter((menu, i) => i !== index));
-  };
-
-  // 메뉴 정보 변경 시 storeMenu 배열의 특정 인덱스 메뉴 변경
-  const changeStoreMenu = (index) => (e) => {
-    console.log(e);
-    console.log(index);
-    const name = e.target.name;
-    const value = e.target.value;
-    setStoreMenu((prevStoreMenu) =>
-      prevStoreMenu.map((menu, i) =>
-        i === index ? { ...menu, [name]: value } : menu
-      )
-    );
-  };
-  //미리보기
-  const [storeMenuImage, setStoreMenuImage] = useState([]);
-
-  // info-card 가 보이는지 여부를 관리하는 상태
-  const [infoCardVisible, setInfoCardVisible] = useState(true);
-
-  // 메뉴 추가 시 새로운 메뉴를 storeMenu 배열에 추가하는 함수
-  const addStoreMenuDIV = () => {
-    setStoreMenu((prevStoreMenu) => [
-      ...prevStoreMenu,
-      {
-        menuName: "",
-        menuInfo: "",
-        menuPrice: "",
-        storeNo: loginStoreNo,
-        menuPhoto: "",
-      },
-    ]);
-
-    setStoreMenuImage((prevImages) => [...prevImages, null]);
-    setMenuThumbnail((prevThumbnails) => [...prevThumbnails, null]);
-  };
-
-  // 메뉴 추가
-  const addStoreMenu = () => {
-    storeMenu.forEach((menu, index) => {
-      console.log(menu);
-      const form = new FormData();
-      form.append(`menuName`, menu.menuName);
-      form.append(`menuInfo`, menu.menuInfo);
-      form.append(`menuPrice`, menu.menuPrice);
-      form.append(`storeNo`, menu.storeNo);
-
-      if (menuThumbnail[index]) {
-        form.append(`menuThumbnail`, menuThumbnail[index]);
-      }
-      axios
-        .post(`${backServer}/menu/insertStoreMenu/${loginStoreNo}`, form, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          console.log("메뉴 추가 완료");
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log("메뉴 추가 실패");
-          console.log(err.response.data);
-        });
-    });
-    setCheck(storeMenuList.length + 1);
-    setStoreMenu([]);
-    setMenuThumbnail([]);
-    setStoreMenuImage([]);
-    console.log(storeMenu);
-
-    // for (const [key, value] of form.entries()) {
-    //   console.log(key, value);
-    // }
-  };
+  const menu = props.menu;
+  const index = props.index;
+  const storeMenu = props.storeMenu;
+  const setStoreMenu = props.setStoreMenu;
+  const storeMenuImage = props.storeMenuImage;
+  const setStoreMenuImage = props.setStoreMenuImage;
+  const setMenuThumbnail = props.setMenuThumbnail;
+  const hideInfoCard = props.hideInfoCard;
+  const changeStoreMenu = props.changeStoreMenu;
+  const changeStoreThumbnail = props.changeStoreThumbnail;
+  const type = props.type;
 
   return (
     <>
-      <div className="dashboard-body">
-        <header className="dashboard-head">
-          <h1>메뉴 등록</h1>
-          <Link to="/storecheck/storeNoticeList">
-            <button className="button-bell">
-              <div className="user-box-bell">
-                <div className="user-page-box">
-                  <div className="bellWrapper">
-                    <i className="fas fa-bell my-bell"></i>
+      <div className="storeMenuView-info-card">
+        <div className="storeMenuView-close-div">
+          {/* X 버튼 클릭 시 메뉴 삭제 */}
+          <img
+            className="storeMenuView-close"
+            src="/image/close.icon.png"
+            onClick={() => hideInfoCard(index)} // 클릭 이벤트 핸들러 추가
+            alt="close"
+          ></img>
+        </div>
+        <table className="storeMenuView-table">
+          <tbody className="storeMenuView-tbody">
+            <tr>
+              <td className="storeMenuView-td storeMenuView-img-td" rowSpan={4}>
+                <div className="storeMenuView-imgdiv-zone">
+                  <div className="storeMenuView-imgDiv">
+                    {storeMenuImage[index] ? (
+                      <img
+                        className="storeMenuView-img"
+                        src={storeMenuImage[index]}
+                        alt="메뉴 사진"
+                      />
+                    ) : (
+                      <img
+                        className="storeMenuView-img"
+                        src="/image/s&s로고.png"
+                        alt="Default"
+                      />
+                    )}
                   </div>
-
-                  <div className="circle first"></div>
-                  <div className="circle second"></div>
-                  <div className="circle third"></div>
                 </div>
-              </div>
-            </button>
-          </Link>
-        </header>
-      </div>
-      <div className="dashboard">
-        <div className="owner-background">
-          <img src="/image/200.jpg" alt="back" />
-        </div>
-
-        <div className="storeMenuView-top-section">
-          {/* infoCardVisible이 true일 때만 info-card 렌더링 */}
-          {storeMenuList
-            ? storeMenuList.map((menu, index) => {
-                return (
-                  <StoreMenuList
-                    key={"menu-" + index}
-                    menu={menu}
-                    index={index}
-                    setStoreMenu={setStoreMenu}
-                    storeMenuList={storeMenuList}
-                    setCheck={setCheck}
-                    type={1}
-                  />
-                );
-              })
-            : ""}
-          {storeMenu.map((menu, index) => (
-            <StoreMenuFrm
-              menu={menu}
-              index={index}
-              //storeMenu={storeMenu}
-              setStoreMenu={setStoreMenu}
-              storeMenuImage={storeMenuImage}
-              setStoreMenuImage={setStoreMenuImage}
-              setMenuThumbnail={setMenuThumbnail}
-              hideInfoCard={hideInfoCard}
-              changeStoreMenu={changeStoreMenu}
-              changeStoreThumbnail={changeStoreThumbnail}
-              type={2}
-              setCheck={setCheck}
-            />
-          ))}
-        </div>
-        <div className="storeMenuView-insert">
-          <div className="storeMenuView-menu-btn-zone">
-            <button className="storeMenu-menu-btn" onClick={addStoreMenu}>
-              완료
-            </button>
-          </div>
-          <div className="storeMenuView-insert-btn-zone">
-            <button
-              className="storeMenuView-insert-btn"
-              onClick={addStoreMenuDIV}
-            >
-              <img
-                src="/image/add.png"
-                className="storeMenuView-add"
-                alt="추가"
-              ></img>
-              메뉴 추가
-            </button>
-          </div>
-        </div>
+                <div className="storeMenuView-btn-zone">
+                  <input
+                    className="storeMenuView-inputBox"
+                    type="file"
+                    id="menuPhoto"
+                    name="menuPhoto"
+                    onChange={changeStoreThumbnail(2, index)}
+                    accept="image/*"
+                  ></input>
+                </div>
+                <div className="storeMenuView-div"></div>
+              </td>
+            </tr>
+            <tr className="storeMenuView-tr">
+              <td className="storeMenuView-td">
+                <label className="storeMenuView-label">메뉴명</label>
+                <input
+                  className="storeMenuView-inputBox"
+                  type="text"
+                  id="menuName"
+                  name="menuName"
+                  value={menu.menuName}
+                  onChange={changeStoreMenu(index)}
+                ></input>
+              </td>
+            </tr>
+            <tr className="storeMenuView-tr">
+              <td className="storeMenuView-td">
+                <label className="storeMenuView-label">세부 설명</label>
+                <input
+                  className="storeMenuView-inputBox"
+                  type="text"
+                  id="menuInfo"
+                  name="menuInfo"
+                  value={menu.menuInfo}
+                  onChange={changeStoreMenu(index)}
+                ></input>
+              </td>
+            </tr>
+            <tr className="storeMenuView-tr">
+              <td className="storeMenuView-td">
+                <label className="storeMenuView-label">가격</label>
+                <input
+                  className="storeMenuView-inputBox"
+                  type="text"
+                  id="menuPrice"
+                  name="menuPrice"
+                  value={menu.menuPrice}
+                  onChange={changeStoreMenu(index)}
+                ></input>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </>
   );
 };
 
-export default StoreMenuView;
+export default StoreMenuAdd;

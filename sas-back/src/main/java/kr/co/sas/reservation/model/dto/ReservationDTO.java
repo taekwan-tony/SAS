@@ -35,4 +35,6 @@ public class ReservationDTO {
 	private int payPrice;
 	@Schema(description="해당시간 예약된 좌석수", type="int")
 	private int seatAmount;
+	@Schema(description = "매장 사진", type="string")
+	private String storeImage;
 }
