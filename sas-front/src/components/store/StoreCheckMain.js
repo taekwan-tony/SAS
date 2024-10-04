@@ -16,6 +16,8 @@ import {
 } from "../utils/RecoilData";
 import StorePayment from "./StorePayment";
 import { storeNameState } from "../utils/RecoilData";
+import StoreNoticeList from "./StoreNoticeList";
+import StoreNoticeDetail from "./StoreNoticeDetail";
 
 const StoreCheckMain = () => {
   // 로그인 지속
@@ -131,8 +133,16 @@ const StoreCheckMain = () => {
           element={<StorePartnership setActiveIndex={setActiveIndex} />}
         />
         <Route
-          path="StoreMenuView"
+          path="StoreMenuAdd"
           element={<StoreMenuAdd setActiveIndex={setActiveIndex} />}
+        />
+        <Route
+          path="storeNoticeList"
+          element={<StoreNoticeList noticeType={2} />}
+        />
+        <Route
+          path="noticeDetail/:noticeNo/:soEmail"
+          element={<StoreNoticeDetail />}
         />
       </Routes>
       <div className="owner-navi">

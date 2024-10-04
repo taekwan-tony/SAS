@@ -45,10 +45,10 @@
 	<update id="updatePw">
 		update user_tbl set user_pw = #{userPw} where user_no = #{userNo}
 	</update>
-	<select id="selectOneUser" resultMap="getUser">
+	<select id="selectOneUser" resultMap="getUserForMypage">
 		select user_no, user_id, user_nickname, user_birth, user_phone, user_email, user_gender, user_photo	from user_tbl where user_no = #{userNo}
 	</select>
-	<resultMap type="user" id="getUser">
+	<resultMap type="user" id="getUserForMypage">
 		<result column="user_nickname" property="userNickname"/>
 		<result column="user_id" property="userId"/>
 		<result column="user_no" property="userNo"/>
@@ -62,7 +62,7 @@
 	<select id="selectReservationList" resultType="reservation">
 		select * from 
 		(select rownum as rnum, r.* from 
-		(select reserve_date, reserve_status, reserve_people, store_name 
+		(select reserve_date,to_char(reserve_date, 'yyyy-MM-dd hh24:mi') reserve_date_string, reserve_status, reserve_people, store_name 
 		from reservation join store using(store_no) where user_id=#{userId} and reserve_status =0 order by 
 1)r )rnum_tbl where rnum between 1 and 3
 	</select>
@@ -72,4 +72,7 @@
 	<update id="updateUserPhoto">
 		update user_tbl set user_photo=#{userPhoto} where user_no = #{userNo}
 	</update>
+	<select id="getUserInfoForPay">
+		select user_email, user_phone, user_name from user_tbl where user_no=#{userNo}
+	</select>
 </mapper>

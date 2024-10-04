@@ -6,7 +6,8 @@ const UserNoticeDetail = () => {
   const params = useParams();
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const noticeNo = params.noticeNo;
-  const noticeType = params.noticeType;
+  const userNickname = params.userNickname;
+  const noticeType = 1;
   const navigate = useNavigate();
   const [notice, setNotice] = useState({
     noticeNo: "",
@@ -18,7 +19,9 @@ const UserNoticeDetail = () => {
   const [noticeBoth, setNoticeBoth] = useState({});
   useEffect(() => {
     axios
-      .get(`${backServer}/notice/detail/${noticeNo}/${1}`)
+      .get(
+        `${backServer}/notice/userDetail/${noticeNo}/${noticeType}/${userNickname}`
+      )
       .then((res) => {
         setNotice(res.data.notice);
         setNoticeBoth(res.data.noticeBoth);
@@ -59,7 +62,9 @@ const UserNoticeDetail = () => {
             <tr
               className="notice-both-wrap"
               onClick={() => {
-                navigate(`/usermain/noticeDetail/${noticeBoth.prevNo}`);
+                navigate(
+                  `/usermain/noticeDetail/${noticeBoth.prevNo}/${userNickname}`
+                );
               }}
             >
               <th>
@@ -75,7 +80,9 @@ const UserNoticeDetail = () => {
             <tr
               className="notice-both-wrap"
               onClick={() => {
-                navigate(`/usermain/noticeDetail/${noticeBoth.nextNo}`);
+                navigate(
+                  `/usermain/noticeDetail/${noticeBoth.nextNo}/${userNickname}`
+                );
               }}
             >
               <th>

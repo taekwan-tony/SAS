@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./storeMenuAdd.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
   loginStoreIdState,
@@ -9,6 +9,7 @@ import {
   storeTypeState,
 } from "../utils/RecoilData";
 import StoreMenuFrm from "./StoreMenuFrm";
+import StoreMenuList from "./StoreMenuList";
 
 const StoreMenuView = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -16,26 +17,22 @@ const StoreMenuView = () => {
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
   const [menuThumbnail, setMenuThumbnail] = useState([]); // 메뉴 사진
   const [storeMenuList, setStoreMenuList] = useState([]);
+  const [check, setCheck] = useState(0);
+  console.log("매장 정보 : ", storeMenuList);
   useEffect(() => {
+    console.log(1);
     axios
       .get(`${backServer}/menu/allMenuList/${loginStoreNo}`)
       .then((res) => {
-        console.log(res);
+        console.log(res.data.length);
         setStoreMenuList(res.data);
+        setCheck(res.data.length);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  const [storeMenu, setStoreMenu] = useState([
-    {
-      menuName: "",
-      menuInfo: "",
-      menuPrice: "",
-      storeNo: loginStoreNo,
-      menuPhoto: "",
-    }, // 첫 번째 빈 메뉴 추가
-  ]);
+  }, [check]);
+  const [storeMenu, setStoreMenu] = useState([]);
   console.log("매장 번호  : ", loginStoreNo);
   console.log("메뉴 사진  : ", storeMenu.menuPhoto);
   const changeStoreThumbnail = (index) => (e) => {
@@ -60,6 +57,7 @@ const StoreMenuView = () => {
   const [addMenu, setAddMenu] = useState([
     { menuName: "", menuInfo: "", menuPrice: "" }, // 기본적으로 하나의 빈 메뉴를 추가
   ]);
+
   // X 아이콘 클릭 시 특정 메뉴 삭제
   const hideInfoCard = (index) => {
     setStoreMenu((prevMenus) => prevMenus.filter((menu, i) => i !== index));
@@ -128,7 +126,10 @@ const StoreMenuView = () => {
           console.log(err.response.data);
         });
     });
-
+    setCheck(storeMenuList.length + 1);
+    setStoreMenu([]);
+    setMenuThumbnail([]);
+    setStoreMenuImage([]);
     console.log(storeMenu);
 
     // for (const [key, value] of form.entries()) {
@@ -141,6 +142,21 @@ const StoreMenuView = () => {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>메뉴 등록</h1>
+          <Link to="/storecheck/storeNoticeList">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
+
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
+              </div>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">
@@ -152,14 +168,24 @@ const StoreMenuView = () => {
           {/* infoCardVisible이 true일 때만 info-card 렌더링 */}
           {storeMenuList
             ? storeMenuList.map((menu, index) => {
-                <StoreMenuFrm />;
+                return (
+                  <StoreMenuList
+                    key={"menu-" + index}
+                    menu={menu}
+                    index={index}
+                    setStoreMenu={setStoreMenu}
+                    storeMenuList={storeMenuList}
+                    setCheck={setCheck}
+                    type={1}
+                  />
+                );
               })
             : ""}
           {storeMenu.map((menu, index) => (
             <StoreMenuFrm
               menu={menu}
               index={index}
-              storeMenu={storeMenu}
+              //storeMenu={storeMenu}
               setStoreMenu={setStoreMenu}
               storeMenuImage={storeMenuImage}
               setStoreMenuImage={setStoreMenuImage}
@@ -167,6 +193,8 @@ const StoreMenuView = () => {
               hideInfoCard={hideInfoCard}
               changeStoreMenu={changeStoreMenu}
               changeStoreThumbnail={changeStoreThumbnail}
+              type={2}
+              setCheck={setCheck}
             />
           ))}
         </div>

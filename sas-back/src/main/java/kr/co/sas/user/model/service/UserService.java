@@ -131,5 +131,10 @@ public class UserService {
 		int result = userDao.updateUserPhoto(user);
 		return result;
 	}
+
+	public UserDTO getUserInfoForPay(int userNo) {
+		UserDTO user = userDao.getUserInfoForPay(userNo);
+		return user;
+	}
 	
 }

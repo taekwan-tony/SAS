@@ -51,7 +51,7 @@ const MypageMain = () => {
     axios
       .get(`${backServer}/user/userNo/${loginUserNo}`)
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setUser(res.data);
       })
       .catch((err) => {
@@ -76,7 +76,12 @@ const MypageMain = () => {
           ) : (
             <div className="reserve-content-wrap list-content">
               {user.reservationList.map((reserve, index) => {
-                return <ReserveContent key={"reserveContent" + index} />;
+                return (
+                  <ReserveContent
+                    key={"reserveContent" + index}
+                    reserve={reserve}
+                  />
+                );
               })}
             </div>
           )
@@ -92,7 +97,7 @@ const MypageMain = () => {
             {user.favoriteFolderList ? user.favoriteFolderList.length : 0}
           </span>
         </h3>
-        <MypageFavorite />
+        <MypageFavorite favoriteFolderList={user.favoriteFolderList} />
       </section>
       <section className="mypage-list-wrap review-list">
         <Link to="#">더보기</Link>
@@ -103,7 +108,11 @@ const MypageMain = () => {
           </span>
         </h3>
         <div className="list-content review-content-wrap">
-          <ReviewContent />
+          {user.reviewList
+            ? user.reviewList.map((review, index) => {
+                return <ReviewContent review={review} />;
+              })
+            : ""}
         </div>
       </section>
     </>
@@ -146,7 +155,7 @@ const ReservationView = () => {
               className="profile-image"
             />
             <div className="res-menu">
-              <h2>매장이름</h2>
+              <h2>가게이르므</h2>
               <h2>결제정보</h2>
               <p>인원수</p>
               <p>예약시간</p>

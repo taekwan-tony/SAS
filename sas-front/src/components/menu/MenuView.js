@@ -1,6 +1,4 @@
 // 예약 관련 모달창, 즐겨찾기 스낵바 위한 import
-import DatePicker from "../utils/DatePicker";
-import { format } from "date-fns";
 import Modal from "react-modal";
 import "../user/etc.css";
 import "../reservation/reservationModal.css";
@@ -8,10 +6,7 @@ import Swal from "sweetalert2";
 // 끝
 import { Link, Route, Routes, useParams, useNavigate } from "react-router-dom";
 import "./menuview.css";
-import { Map } from "react-kakao-maps-sdk";
-import { useEffect, useMemo, useRef, useState } from "react";
-import ReactQuill from "react-quill";
-import { PiArrowFatLeft, PiStarFill, PiStarLight } from "react-icons/pi";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import KaKao from "../utils/Kakao";
 import {
@@ -22,16 +17,9 @@ import {
 } from "../utils/RecoilData";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Snackbar from "@mui/material/Snackbar";
-import {
-  ReservationMain,
-  ReservationModalFirst,
-  ReservationModalSecond,
-} from "../reservation/ReservationMain";
-import { he } from "date-fns/locale";
-import { ReviewContent } from "../user/MypageContent";
+import { ReservationMain } from "../reservation/ReservationMain";
 import QuillEditor from "../utils/QuillEditor";
 import { Rating, Stack } from "@mui/material";
-const { kakao } = window;
 
 const MenuView = () => {
   const params = useParams();
@@ -43,7 +31,7 @@ const MenuView = () => {
   useEffect(() => {
     console.log("userNo:", loginUserNo);
     axios
-      .get(`${backServer}/store/storeNo/${store.storeNo}/userNo/${loginUserNo}`)
+      .get(`${backServer}/store/storeNo/${storeNo}/userNo/${loginUserNo}`)
       .then((res) => {
         // console.log(res.data);
         setStore(res.data);
@@ -51,11 +39,14 @@ const MenuView = () => {
       .catch((err) => {});
   }, [loginUserNo, isFavoriteChange]);
   const changeFavorite = () => {
+    console.log(loginUserNo);
     if (loginUserNo !== 0) {
+      console.log(1);
       if (store.favorite) {
+        console.log(2);
         axios
           .delete(
-            `${backServer}/favorite/storeNo/${store.storeNo}/userNo/${loginUserNo}`
+            `${backServer}/favorite/storeNo/${storeNo}/userNo/${loginUserNo}`
           )
           .then((res) => {
             // console.log(res);
@@ -68,10 +59,12 @@ const MenuView = () => {
           .catch((err) => {
             console.log(err);
           });
+        console.log(4);
       } else {
+        console.log(3);
         axios
           .post(`${backServer}/favorite`, {
-            storeNo: store.storeNo,
+            storeNo: storeNo,
             userNo: loginUserNo,
           })
           .then((res) => {
@@ -183,11 +176,16 @@ const MenuView = () => {
     userNo: loginUserNo,
     favoriteFolderNo: 0,
   });
+  // 자꾸 loginUserNo가 0으로 뜨므로..
+  useEffect(() => {
+    setChangeFolder({ ...changeFolder, userNo: loginUserNo });
+    setAddFolder({ ...addFolder, userNo: loginUserNo });
+  }, [loginUserNo]);
   // 즐겨찾기 목록 폴더 이동
   const changeFavoriteFolder = () => {
-    const form = new FormData();
-    form.append("userNo", changeFolder.userNo);
-    form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
+    // const form = new FormData();
+    // form.append("userNo", changeFolder.userNo);
+    // form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
     axios
       .patch(`${backServer}/favorite/changeFolder`, changeFolder)
       .then((res) => {
@@ -195,6 +193,10 @@ const MenuView = () => {
         if (res.data) {
           setIsFavoriteModalOpen(false);
           handleOpen("즐겨찾기 이동이 완료되었습니다.");
+          setChangeFolder({
+            ...changeFolder,
+            favoriteFolderNo: 0,
+          });
         }
       })
       .catch((err) => {
@@ -216,7 +218,7 @@ const MenuView = () => {
   };
   const addFavoriteFolder = () => {
     if (
-      addFolder.favoriteFolderName !== null &&
+      addFolder.favoriteFolderName != null &&
       addFolder.favoriteFolderName !== ""
     ) {
       // const form = new FormData();
@@ -296,6 +298,8 @@ const MenuView = () => {
           <Route path="info" element={<Menuinfo store={store} />}></Route>
         </Routes>
       }
+      {/* 덮어쓰기영 */}
+      <span></span>
       <div className="reservation-button">
         <span className="material-icons page-item" onClick={changeFavorite}>
           {store.favorite ? "bookmark" : "bookmark_border"}
@@ -330,7 +334,7 @@ const MenuView = () => {
           <ReservationMain
             setIsReserveModalOpen={setIsReserveModalOpen}
             isReserveModalOpen={isReserveModalOpen}
-            storeNo={store.storeNo}
+            storeNo={storeNo}
             storeName={store.storeName}
           />
         </Modal>
@@ -366,7 +370,12 @@ const MenuView = () => {
                       type="radio"
                       name="folder-name"
                       id={index}
-                      value={folder.favoriteFolderName}
+                      checked={
+                        changeFolder.favoriteFolderNo === 0
+                          ? index === 0
+                          : changeFolder.favoriteFolderNo ===
+                            folder.favoriteFolderNo
+                      }
                       onChange={changeChecked}
                     />
                     <label className="radio-box-content" htmlFor={index}>
@@ -377,7 +386,6 @@ const MenuView = () => {
               })}
               <form
                 ref={favoriteRef}
-                action=""
                 className="addFolder"
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -506,14 +514,21 @@ const Menu = () => {
     </div>
   );
 };
-
+//스토어할때 모든걸 다 갖고와 . !!
 const MenuPhoto = () => {
+  const params = useParams();
+  const storeNo = params.storeNo;
+  const [store, setStore] = useState({ storeNo: storeNo });
   return (
     <div className="menu-photo">
       <h2>사진</h2>
       <div className="menu-image2">
-        <img src="" alt="가게 로고" />
-        <img src="/image/youtube.png" alt="가게 로고" />
+        <img
+          src=""
+          alt="메뉴사진 ?
+        "
+        />
+        <img src={store.storePhoto} alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />
         <img src="/image/youtube.png" alt="가게 로고" />

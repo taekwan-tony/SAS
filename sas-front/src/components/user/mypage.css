@@ -254,6 +254,7 @@ div.mypage-main .review-content-wrap > .review-list-content {
   background-color: #fff;
   display: flex;
   padding: 15px;
+  margin-bottom: 20px;
 }
 div.mypage-main .review-content-wrap > .review-list-content > .img {
   width: 90px;
