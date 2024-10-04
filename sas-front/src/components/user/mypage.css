@@ -294,3 +294,82 @@ div.mypage-main div.empty > p.text {
   padding: 10px;
   margin: 0;
 }
+
+/* 전체 사진 조정*/
+div.mypage-class-for-img div.img,
+div.mypage-class-for-img div.reserve-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.mypage-class-for-img div.img > img,
+div.mypage-class-for-img div.reserve-img > img {
+  width: 100%;
+  object-fit: contain;
+}
+
+/* 즐겨찾기 폴더 이미지 리스트 */
+div.mypage-class-for-img div.img.favorite-list {
+  position: relative;
+  overflow: hidden;
+}
+div.mypage-class-for-img div.img > div.img-list {
+  position: absolute;
+  width: 100%;
+  background-color: #fff;
+}
+div.mypage-class-for-img div.img > div.img-list > img {
+  position: absolute;
+  background-color: #fff;
+  height: 210px;
+  object-fit: cover;
+  top: -105px;
+}
+
+/* 즐겨찾기 목록 추가 모달 */
+div.addFavoriteFolder-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div.addFavoriteFolder-wrap .addFavoriteFolder-modal-header > h2 {
+  font: bold 2em var(--pointFont);
+  color: var(--main1);
+  margin: 10px 0;
+}
+div.addFavoriteFolder-wrap .addFavoriteFolder-modal-content {
+  padding: 50px 20px;
+}
+div.addFavoriteFolder-wrap .addFavoriteFolder-modal-content > .input-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+div.addFavoriteFolder-wrap .addFavoriteFolder-modal-content label {
+  padding: 0;
+  margin: 0;
+  width: 25%;
+  font: 600 1.1em var(--defaultFont);
+  text-align: center;
+}
+div.addFavoriteFolder-wrap .addFavoriteFolder-modal-content input {
+  width: 70%;
+  height: 40px;
+  outline: none;
+  padding-left: 10px;
+}
+div.addFavoriteFolder-wrap .addFavoriteFolder-modal-footer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 20px;
+}
+div.addFavoriteFolder-wrap .addFavoriteFolder-modal-footer > button {
+  width: 40%;
+  height: 40px;
+  outline: none;
+}

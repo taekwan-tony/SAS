@@ -224,17 +224,34 @@ const MenuView = () => {
       // const form = new FormData();
       // form.append("favoriteFolderName", addFolder.favoriteFolderName);
       // form.append("userNo", addFolder.userNo);
-      console.log(addFolder);
       axios
-        .post(`${backServer}/favorite/insertFolder`, addFolder)
+        .get(
+          `${backServer}/favorite/userNo/${addFolder.userNo}/favoriteFolderName/${addFolder.favoriteFolderName}/checkFolder`
+        )
         .then((res) => {
           if (res.data) {
-            setAddFolder({
-              favoriteFolderName: "",
-              userNo: loginUserNo,
+            axios
+              .post(`${backServer}/favorite/insertFolder`, addFolder)
+              .then((res) => {
+                if (res.data) {
+                  setAddFolder({
+                    favoriteFolderName: "",
+                    userNo: loginUserNo,
+                  });
+                  setCheckAddFolder(!checkAddFolder);
+                  favoriteRef.current.classList.remove("show");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            Swal.fire({
+              title: "즐겨찾기 목록 이름 중복",
+              text: "중복된 이름은 사용하실 수 없습니다.",
+              icon: "warning",
+              confirmButtonColor: "var(--main1)",
             });
-            setCheckAddFolder(!checkAddFolder);
-            favoriteRef.current.classList.remove("show");
           }
         })
         .catch((err) => {

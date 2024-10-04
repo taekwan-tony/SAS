@@ -81,7 +81,7 @@
 		where store_no = #{storeNo}
 	</select>
 	<resultMap id="getStore" type="store">
-	    <result column="store" property="storeNo" />
+	    <result column="store_no" property="storeNo" />
 	    <result column="store_name" property="storeName" />
 	    <result column="store_time" property="storeTime" />
 	    <result column="store_introduce" property="storeIntroduce" />

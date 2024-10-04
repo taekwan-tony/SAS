@@ -25,4 +25,6 @@ public interface FavoriteDao {
 
 	int updateFolderNo(FavoriteDTO changeFolder);
 
+	int countSameName(int userNo, String favoriteFolderName);
+
 }

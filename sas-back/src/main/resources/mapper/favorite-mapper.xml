@@ -32,4 +32,7 @@
 	<insert id="insertFavoriteFolder">
 		insert into favorite_folder values(favorite_folder_seq.nextval, #{userNo}, #{favoriteFolderName})
 	</insert>
+	<select id="countSameName" resultType="int">
+		select count(*) from favorite_folder where favorite_folder_name=#{favoriteFolderName} and user_no=#{userNo}
+	</select>
 </mapper>
