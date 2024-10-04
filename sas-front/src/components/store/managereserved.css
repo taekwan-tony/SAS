@@ -230,6 +230,7 @@
 .reserve-del-button {
   background: linear-gradient(90deg, #291a1a 10%, #b23a3a 90%);
   color: white;
+  border-radius: 7px;
 }
 
 /* 하단 네비 */

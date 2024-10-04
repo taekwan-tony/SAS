@@ -27,6 +27,7 @@ function ManageReview(props) {
     axios
       .get(`${backServer}/review/allList/${loginStoreId}`)
       .then((res) => {
+        console.log(res.data);
         setReview(res.data);
       })
       .catch((err) => {
@@ -142,14 +143,14 @@ function ManageReview(props) {
                 {/* 리뷰 타입이 3인 경우 메시지 표시, 블러 처리 없음 */}
                 {reviewItem.reviewType === 3 ? (
                   <div className="admin-processed-review">
-                    <p>관리자에 의해 처리된 댓글입니다.</p>
+                    <p>관리자에 의해 처리된 리뷰입니다.</p>
                   </div>
                 ) : (
                   <>
                     {/* 사용자 리뷰 */}
                     <div className="review-bubble user-review">
                       <p className="review-nickname">
-                        <strong>{reviewItem.userNickName}</strong>
+                        {reviewItem.userNickname}
                       </p>
 
                       <Stack spacing={1}>
@@ -165,16 +166,23 @@ function ManageReview(props) {
                       </p>
 
                       {/* 블러 처리된 리뷰 표시 */}
-                      <p className="review-text">
-                        {reviewItem.reviewType === 2
-                          ? "점주에 의해 신고된 댓글입니다."
-                          : reviewItem.reviewContent}
-                      </p>
+                      {reviewItem.reviewType === 2 ? (
+                        <p className="review-text">
+                          점주에 의해 신고된 댓글입니다.
+                        </p>
+                      ) : (
+                        <p
+                          className="review-text"
+                          dangerouslySetInnerHTML={{
+                            __html: reviewItem.reviewContent,
+                          }}
+                        ></p>
+                      )}
 
                       {/* 신고 버튼 */}
                       {reviewItem.reviewType === 1 && ( // 정상 상태일 때만 신고 가능
                         <button
-                          className="report-btn"
+                          className="cancel-report-btn"
                           onClick={() => openReportModal(reviewItem.reviewNo)}
                         >
                           신고
@@ -183,7 +191,7 @@ function ManageReview(props) {
 
                       {/* 답글 작성 버튼 */}
                       <button
-                        className="reply-btn"
+                        className="submit-reply-btn"
                         onClick={() => {
                           setSelectedReview(reviewItem);
                           setReviewAnswer(reviewItem.reviewAnswer || "");
@@ -260,7 +268,10 @@ function ManageReview(props) {
           <button className="submit-report-btn" onClick={handleReportSubmit}>
             신고 제출
           </button>
-          <button className="cancel-report-btn" onClick={closeReportModal}>
+          <button
+            className="modal-cancel-report-btn"
+            onClick={closeReportModal}
+          >
             취소
           </button>
         </div>

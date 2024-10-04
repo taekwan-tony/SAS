@@ -1,36 +1,52 @@
 import axios from "axios";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const StoreMenuList = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [isInfoDiv, setIsInfoDiv] = useState(true);
   const menu = props.menu;
   const index = props.index;
   const storeMenu = props.storeMenu;
   const setStoreMenu = props.setStoreMenu;
   const storeMenuList = props.storeMenuList;
+  const setStoreMenuList = props.setStoreMenuList;
   const hideInfoCard = props.hideInfoCard;
   const type = props.type;
   const loginStoreNo = props.loginStoreNo;
+  const setCheck = props.setCheck;
+  const changeStoreThumbnail = props.changeStoreThumbnail;
 
   console.log("리스트 매장 정보 : ", menu);
 
   const deleteMenu = () => {
-    axios
-      .delete(`${backServer}/menu/deleteStoreMenu/${menu.menuNo}`)
-      .then((res) => {
-        console.log(res);
-        const deleteMenuDiv = storeMenuList.filter((_, i) => i !== index);
-        setStoreMenu(deleteMenuDiv);
-        setIsInfoDiv(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    Swal.fire({
+      title: "메뉴를 삭제하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#518142",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${backServer}/menu/deleteStoreMenu/${menu.menuNo}`)
+          .then((res) => {
+            console.log(res);
+            setCheck(storeMenuList.length + 1);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   };
 
-  // info-card가 보이는 상태인지 확인
-  if (!isInfoDiv) return null;
+  //메뉴 수정
+  const modifyMenu = (field, value) => {
+    const updatedMenu = { ...menu, [field]: value };
+    const updatedStoreMenuList = [...storeMenuList];
+    updatedStoreMenuList[index] = updatedMenu; // 메뉴 리스트에서 해당 메뉴를 업데이트
+    setStoreMenuList(updatedStoreMenuList); // 업데이트된 메뉴 리스트를 상태로 저장
+  };
 
   return (
     <div className="storeMenuView-info-card">
@@ -52,7 +68,11 @@ const StoreMenuList = (props) => {
                   {type == 1 ? (
                     <img
                       className="storeMenuView-img"
-                      src={`${backServer}/store/storeMenu/${menu.menuPhoto}`}
+                      src={
+                        menu.menuPhoto.startsWith("data:image")
+                          ? menu.menuPhoto // base64 이미지
+                          : `${backServer}/store/storeMenu/${menu.menuPhoto}`
+                      } // 서버 이미지
                       alt="메뉴 사진"
                     />
                   ) : (
@@ -64,16 +84,16 @@ const StoreMenuList = (props) => {
                   )}
                 </div>
               </div>
-              {/* <div className="storeMenuView-btn-zone">
-                    <input
-                      className="storeMenuView-inputBox"
-                      type="file"
-                      id="menuPhoto"
-                      name="menuPhoto"
-                      onChange={changeStoreThumbnail(index)}
-                      accept="image/*"
-                    ></input>
-                  </div> */}
+              <div className="storeMenuView-btn-zone">
+                <input
+                  className="storeMenuView-inputBox"
+                  type="file"
+                  id="menuPhoto"
+                  name="menuPhoto"
+                  onChange={changeStoreThumbnail(1, index)}
+                  accept="image/*"
+                ></input>
+              </div>
               <div className="storeMenuView-div"></div>
             </td>
           </tr>
@@ -86,7 +106,7 @@ const StoreMenuList = (props) => {
                 id="menuName"
                 name="menuName"
                 value={menu.menuName}
-                //onChange={setMenuName(index)}
+                onChange={(e) => modifyMenu("menuName", e.target.value)}
               ></input>
             </td>
           </tr>
@@ -99,7 +119,7 @@ const StoreMenuList = (props) => {
                 id="menuInfo"
                 name="menuInfo"
                 value={menu.menuInfo}
-                // onChange={changeStoreMenu(index)}
+                onChange={(e) => modifyMenu("menuInfo", e.target.value)}
               ></input>
             </td>
           </tr>
@@ -112,7 +132,7 @@ const StoreMenuList = (props) => {
                 id="menuPrice"
                 name="menuPrice"
                 value={menu.menuPrice}
-                // onChange={changeStoreMenu(index)}
+                onChange={(e) => modifyMenu("menuPrice", e.target.value)}
               ></input>
             </td>
           </tr>
