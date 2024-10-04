@@ -33,12 +33,12 @@ const StoreNoticeDetail = () => {
 
   return (
     <>
-      <div className="dashboard-body">
-        <header className="dashboard-head">
+      <div className="dashboard-store-body">
+        <header className="dashboard-store-head">
           <h1>공지사항</h1>
         </header>
       </div>
-      <div className="dashboard">
+      <div className="dashboard-store">
         <div className="owner-background">
           <img src="/image/200.jpg" alt="back" />
         </div>

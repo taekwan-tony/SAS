@@ -1,5 +1,6 @@
 .comments-container {
-  padding: 5%;
+  padding: 20%;
+  margin-top: -15%;
 }
 
 .review-wrapper {
@@ -175,7 +176,6 @@
 .css-6lewhu-MuiRating-icon path {
   color: transparent;
 }
-
 .review-text {
   color: #fff;
 }
