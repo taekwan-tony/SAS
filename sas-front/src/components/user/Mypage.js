@@ -69,7 +69,6 @@ const MypageMain = () => {
             {user.reservationList ? user.reservationList.length : 0}
           </span>
         </h3>
-
         {user.reservationList ? (
           user.reservationList.length === 0 ? (
             <EmptyBox text={"진행중인 예약이 존재하지 않습니다"} />
@@ -92,7 +91,7 @@ const MypageMain = () => {
       <section className="mypage-list-wrap favorite-list">
         <Link to="#">더보기</Link>
         <h3 className="title">
-          즐겨찾기{" "}
+          즐겨찾기 목록{" "}
           <span className="count">
             {user.favoriteFolderList ? user.favoriteFolderList.length : 0}
           </span>

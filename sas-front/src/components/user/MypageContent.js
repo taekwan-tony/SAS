@@ -15,7 +15,7 @@ const ReserveContent = (props) => {
       <div className="reserve-info">
         <h4 className="reserve-name">{reserve.storeName}</h4>
         <span>{reserve.reservePeople + " 명"}</span>
-        <span>{reserve.reserveDateString}</span>
+        <span>{`${reserve.reserveDateString} ${reserve.reserveTime}`}</span>
         <span className="d-day round">d-day</span>
       </div>
     </div>
@@ -91,27 +91,21 @@ const Profile = (props) => {
             <span class="material-icons">bookmark</span>
             즐겨찾기
           </div>
-          <h3 className="info-count">
-            {user.favoriteFolderList ? user.favoriteFolderList.length : 0}
-          </h3>
+          <h3 className="info-count">{user.favoriteCount}</h3>
         </div>
         <div className="info-wrap">
           <div className="info-title">
             <span class="material-icons">schedule</span>
             나의 예약
           </div>
-          <h3 className="info-count">
-            {user.reservationList ? user.reservationList.length : 0}
-          </h3>
+          <h3 className="info-count">{user.reservationCount}</h3>
         </div>
         <div className="info-wrap">
           <div className="info-title">
             <span class="material-icons">assignment</span>
             나의 리뷰
           </div>
-          <h3 className="info-count">
-            {user.reviewList ? user.reviewList.length : 0}
-          </h3>
+          <h3 className="info-count">{user.reviewCount}</h3>
         </div>
       </div>
     </section>
@@ -126,7 +120,7 @@ const FavoriteBox = (props) => {
       <div className="title">
         <h3>
           {favorite ? favorite.favoriteFolderName : ""}{" "}
-          <span className="count">2</span>
+          <span className="count">{favorite.favoriteList.length}</span>
         </h3>
       </div>
     </div>
@@ -186,18 +180,25 @@ const MypageFavorite = (props) => {
   );
 };
 
-const ReviewContent = () => {
+const ReviewContent = (props) => {
+  const review = props.review;
+  const [starArr, setStarArr] = useState([]);
+  useEffect(() => {
+    for (let i = 0; i < review.reviewScore; i++) {
+      starArr.push("star");
+    }
+    setStarArr(starArr);
+  }, []);
+
   return (
     <div className="review-list-content round">
       <div className="img"></div>
       <div className="review-info">
-        <h4>매장 이름</h4>
+        <h4>{review.storeName}</h4>
         <div className="star">
-          <span class="material-icons">star</span>
-          <span class="material-icons">star</span>
-          <span class="material-icons">star</span>
-          <span class="material-icons">star</span>
-          <span class="material-icons">star</span>
+          {starArr.map((star) => {
+            return <span class="material-icons">{star}</span>;
+          })}
         </div>
       </div>
     </div>
