@@ -3,7 +3,6 @@ import { useState } from "react";
 
 const StoreMenuList = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [isInfoDiv, setIsInfoDiv] = useState(true);
   const menu = props.menu;
   const index = props.index;
   const storeMenu = props.storeMenu;
@@ -12,6 +11,7 @@ const StoreMenuList = (props) => {
   const hideInfoCard = props.hideInfoCard;
   const type = props.type;
   const loginStoreNo = props.loginStoreNo;
+  const setCheck = props.setCheck;
 
   console.log("리스트 매장 정보 : ", menu);
 
@@ -20,17 +20,12 @@ const StoreMenuList = (props) => {
       .delete(`${backServer}/menu/deleteStoreMenu/${menu.menuNo}`)
       .then((res) => {
         console.log(res);
-        const deleteMenuDiv = storeMenuList.filter((_, i) => i !== index);
-        setStoreMenu(deleteMenuDiv);
-        setIsInfoDiv(false);
+        setCheck(storeMenuList.length + 1);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  // info-card가 보이는 상태인지 확인
-  if (!isInfoDiv) return null;
 
   return (
     <div className="storeMenuView-info-card">
