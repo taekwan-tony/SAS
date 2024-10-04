@@ -17,4 +17,6 @@ public interface MenuDao {
 
 	int deleteStoreMenu(int menuNo);
 
+	int updateStoreMenu(MenuDTO storeMenu);
+
 }
