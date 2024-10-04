@@ -5,7 +5,7 @@ import ManageReview from "./ManageReview";
 import Ownerstatistics from "../ownerstatistics/OwnerStatistics";
 import StoreRegist from "./StoreRegist";
 import StorePartnership from "./StorePartnership";
-import StoreMenuAdd from "./StoreMenuAdd";
+import StoreMenuMain from "./StoreMenuMain";
 import StoreViewFrm from "./StoreViewFrm";
 import axios from "axios";
 import { useRecoilState } from "recoil";
@@ -85,7 +85,7 @@ const StoreCheckMain = () => {
     {
       text: "메뉴관리",
       icon: "fas fa-utensils",
-      to: "/storecheck/StoreMenuAdd",
+      to: "/storecheck/StoreMenuMain",
     },
     {
       text: "제휴결제",
@@ -133,8 +133,8 @@ const StoreCheckMain = () => {
           element={<StorePartnership setActiveIndex={setActiveIndex} />}
         />
         <Route
-          path="StoreMenuAdd"
-          element={<StoreMenuAdd setActiveIndex={setActiveIndex} />}
+          path="StoreMenuMain"
+          element={<StoreMenuMain setActiveIndex={setActiveIndex} />}
         />
         <Route
           path="storeNoticeList"

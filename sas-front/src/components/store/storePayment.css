@@ -218,6 +218,35 @@
   margin-top: 50px;
 }
 
+.storePayment-info-card {
+  text-align: center;
+  color: #fff;
+  align-items: center; /* 수직 가운데 정렬 */
+  padding: 50px;
+  margin-top: 50px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
+  border-radius: 12px;
+  flex: 1;
+  display: flex;
+  justify-content: space-between; /* 텍스트와 아이콘을 양 끝으로 배치 */
+  color: #fff;
+}
+
+.storePayment-info-text {
+  text-align: center;
+}
+
+.storePayment-info-text h3 {
+  text-align: center;
+  color: #fff;
+}
+
+.storePayment-info-text h2 {
+  text-align: center;
+  color: #fff;
+}
+
 .info-card h2 {
   font-size: 2rem;
   color: #fff;
