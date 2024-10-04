@@ -78,7 +78,7 @@ const StoreCheckMain = () => {
       to: "/storecheck/StoreViewFrm",
     },
     {
-      text: "매장등록",
+      text: "매장관리",
       icon: "fas fa-id-card",
       to: "/storecheck/StoreViewFrm",
     },
