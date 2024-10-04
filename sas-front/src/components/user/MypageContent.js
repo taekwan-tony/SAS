@@ -10,6 +10,13 @@ import axios from "axios";
 const ReserveContent = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const reserve = props.reserve;
+  const [reserveDate, setReserveDate] = useState(
+    reserve.reserveDate
+      ? new Date(reserve.reserveDate).getTime()
+      : new Date().getTime()
+  );
+  const today = new Date().getTime();
+  const dDay = Math.ceil((reserveDate - today) / (1000 * 60 * 60 * 24));
   return (
     <div className="reserve-content round mypage-class-for-img">
       <div className="reserve-img">
@@ -23,7 +30,9 @@ const ReserveContent = (props) => {
         <h4 className="reserve-name">{reserve.storeName}</h4>
         <span>{reserve.reservePeople + " 명"}</span>
         <span>{`${reserve.reserveDateString} ${reserve.reserveTime}`}</span>
-        <span className="d-day round">d-day</span>
+        <span className={dDay > 0 ? "round d-day" : "round d-day ok"}>
+          {dDay > 0 ? `d-${dDay}` : "d-day"}
+        </span>
       </div>
     </div>
   );
