@@ -34,9 +34,6 @@ const KakaoCluster = (props) => {
                 lng: pos.lng,
               }}
             />
-            <MapInfoWindow
-              content={`<div style="width:150px;text-align:center;padding:6px 0;">${pos.title}</div>`}
-            />
           </>
         ))}
       </MarkerClusterer>
