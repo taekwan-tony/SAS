@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import {
   Map,
   MapInfoWindow,
@@ -25,17 +26,23 @@ const KakaoCluster = (props) => {
         averageCenter={true} // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
         minLevel={10} // 클러스터 할 최소 지도 레벨
       >
-        {positions.map((pos) => (
-          <>
-            <MapMarker
-              key={`${pos.lat}-${pos.lng}`}
-              position={{
-                lat: pos.lat,
-                lng: pos.lng,
-              }}
-            />
-          </>
-        ))}
+        {positions.map((pos) => {
+          return (
+            <>
+              <MapMarker
+                key={`${pos.lat}-${pos.lng}`}
+                position={{
+                  lat: pos.lat,
+                  lng: pos.lng,
+                }}
+              >
+                <div className="map-cluster-wrap kakao-cluster-hide">
+                  {pos.title}
+                </div>
+              </MapMarker>
+            </>
+          );
+        })}
       </MarkerClusterer>
     </Map>
   );
