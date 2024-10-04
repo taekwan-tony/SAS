@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
+  CustomOverlayMap,
   Map,
   MapInfoWindow,
   MapMarker,
@@ -29,22 +30,56 @@ const KakaoCluster = (props) => {
         {positions.map((pos) => {
           return (
             <>
-              <MapMarker
-                key={`${pos.lat}-${pos.lng}`}
-                position={{
-                  lat: pos.lat,
-                  lng: pos.lng,
-                }}
-              >
-                <div className="map-cluster-wrap kakao-cluster-hide">
-                  {pos.title}
-                </div>
-              </MapMarker>
+              <KakaoMapMakrker pos={pos} key={"index-" + pos.lat} />
             </>
           );
         })}
       </MarkerClusterer>
     </Map>
+  );
+};
+
+const KakaoMapMakrker = (props) => {
+  const pos = props.pos;
+  const [isVisible, setIsVisible] = useState(false);
+  console.log(pos.title);
+  return (
+    <>
+      <MapMarker
+        position={{
+          lat: pos.lat,
+          lng: pos.lng,
+        }}
+        onClick={() => setIsVisible(true)}
+      />
+      {isVisible ? ( //isVisible이 true이면 렌더링
+        <CustomOverlayMap
+          position={{
+            lat: pos.lat,
+            lng: pos.lng,
+          }} // 커스텀 오버레이가 나타날 위치
+        >
+          <div
+            className="map-cluster-wrap"
+            style={{
+              width: "300px",
+              transform: "translate(-20px, -100px)",
+              backgroundColor: "white",
+              borderRadius: "5px",
+              boxShadow: "0px 1px 2px #888",
+            }}
+          >
+            <div className="map-cluster-info">
+              <div className="map-cluster-info-title">
+                <span>{pos.title}</span>
+              </div>
+            </div>
+          </div>
+        </CustomOverlayMap>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 

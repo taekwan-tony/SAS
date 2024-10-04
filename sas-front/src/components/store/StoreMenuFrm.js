@@ -53,7 +53,7 @@ const StoreMenuFrm = (props) => {
                     type="file"
                     id="menuPhoto"
                     name="menuPhoto"
-                    onChange={changeStoreThumbnail(index)}
+                    onChange={changeStoreThumbnail(2, index)}
                     accept="image/*"
                   ></input>
                 </div>

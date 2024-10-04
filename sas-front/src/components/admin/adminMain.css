@@ -68,3 +68,7 @@
   text-decoration: underline;
   color: var(--main2);
 }
+
+.map-cluster-info > .map-cluster-info-title {
+  text-align: center;
+}

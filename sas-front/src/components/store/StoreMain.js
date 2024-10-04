@@ -89,7 +89,7 @@ function StoreMain() {
                   />
                   <HexagonItem
                     icon="fas fa-utensils"
-                    title="메뉴등록"
+                    title="메뉴관리"
                     className="color"
                     to="/storecheck/StoreMenuAdd"
                   />
