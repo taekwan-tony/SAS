@@ -90,7 +90,7 @@ const StoreCheckMain = () => {
     {
       text: "제휴결제",
       icon: "fas fa-money-check-alt",
-      to: "/storecheck/storePayment",
+      to: "/storecheck/storePayList/:storeNo",
     },
     {
       text: "리뷰관리",
@@ -111,7 +111,7 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
-        <Route path="StorePayment" element={<StorePayment />} />
+        <Route path="storePayList/:storeNo" element={<StorePayment />} />
         <Route
           path="storeViewFrm"
           element={<StoreViewFrm setActiveIndex={setActiveIndex} />}
