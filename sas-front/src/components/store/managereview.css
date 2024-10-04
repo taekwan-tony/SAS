@@ -75,6 +75,7 @@
   cursor: pointer;
   z-index: 9999;
   color: #fff;
+  margin-left: 20px;
 }
 
 .submit-reply-btn {
@@ -151,6 +152,15 @@
 
 /* 신고 취소 버튼 스타일 */
 .cancel-report-btn {
+  background: linear-gradient(290deg, #291a1a 10%, #8e10107d 80%);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.modal-cancel-report-btn {
   background: linear-gradient(290deg, #291a1a 10%, #2322227d 80%);
   color: white;
   padding: 10px 20px;
@@ -165,10 +175,14 @@
 .css-6lewhu-MuiRating-icon path {
   color: transparent;
 }
+
 .review-text {
   color: #fff;
 }
 .review-score {
+  color: #fff;
+}
+.review-nickname {
   color: #fff;
 }
 .cancel-report-btn:hover {
