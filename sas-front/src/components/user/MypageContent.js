@@ -8,14 +8,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const ReserveContent = (props) => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
   const reserve = props.reserve;
   return (
-    <div className="reserve-content round">
-      <div className="reserve-img"></div>
+    <div className="reserve-content round mypage-class-for-img">
+      <div className="reserve-img">
+        {reserve.storeImage ? (
+          <img src={`${backServer}/store/${reserve.storeImage}`} alt="" />
+        ) : (
+          <img src={"/image/s&s로고.png"} alt="" />
+        )}
+      </div>
       <div className="reserve-info">
         <h4 className="reserve-name">{reserve.storeName}</h4>
         <span>{reserve.reservePeople + " 명"}</span>
-        <span>{reserve.reserveDateString}</span>
+        <span>{`${reserve.reserveDateString} ${reserve.reserveTime}`}</span>
         <span className="d-day round">d-day</span>
       </div>
     </div>
@@ -91,27 +98,21 @@ const Profile = (props) => {
             <span class="material-icons">bookmark</span>
             즐겨찾기
           </div>
-          <h3 className="info-count">
-            {user.favoriteFolderList ? user.favoriteFolderList.length : 0}
-          </h3>
+          <h3 className="info-count">{user.favoriteCount}</h3>
         </div>
         <div className="info-wrap">
           <div className="info-title">
             <span class="material-icons">schedule</span>
             나의 예약
           </div>
-          <h3 className="info-count">
-            {user.reservationList ? user.reservationList.length : 0}
-          </h3>
+          <h3 className="info-count">{user.reservationCount}</h3>
         </div>
         <div className="info-wrap">
           <div className="info-title">
             <span class="material-icons">assignment</span>
             나의 리뷰
           </div>
-          <h3 className="info-count">
-            {user.reviewList ? user.reviewList.length : 0}
-          </h3>
+          <h3 className="info-count">{user.reviewCount}</h3>
         </div>
       </div>
     </section>
@@ -120,23 +121,49 @@ const Profile = (props) => {
 
 const FavoriteBox = (props) => {
   const favorite = props.favorite;
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [favoriteList, setFavoriteList] = useState(
+    favorite.favoriteList
+      ? favorite.favoriteList.filter((favoriteBox) => {
+          return favoriteBox.storeImage != null;
+        })
+      : []
+  );
   return (
-    <div className="favorite-list-content round">
-      <div className="img"></div>
+    <div className="favorite-list-content round mypage-class-for-img">
+      <div className="img favorite-list">
+        <img src={"/image/s&s로고.png"} alt="" />
+        <div className="img-list">
+          {favoriteList.map((favoriteBox, index) => {
+            if (index < 5) {
+              return (
+                <img
+                  src={`${backServer}/store/${favoriteBox.storeImage}`}
+                  style={{ left: `${(index + 1) * 20}px` }}
+                  alt=""
+                />
+              );
+            }
+          })}
+        </div>
+      </div>
       <div className="title">
         <h3>
           {favorite ? favorite.favoriteFolderName : ""}{" "}
-          <span className="count">2</span>
+          <span className="count">{favorite.favoriteList.length}</span>
         </h3>
       </div>
     </div>
   );
 };
-const FavoriteBoxEmpty = () => {
+const FavoriteBoxEmpty = (props) => {
+  const addFolderModalOpen = props.addFolderModalOpen;
   return (
     <div>
       <div className="favorite-list-content round empty">
-        <span class="material-icons">add_circle_outline</span>
+        <span class="material-icons" onClick={addFolderModalOpen}>
+          add_circle_outline
+        </span>
       </div>
     </div>
   );
@@ -152,6 +179,7 @@ const EmptyBox = (props) => {
 };
 const MypageFavorite = (props) => {
   const favoriteFolderList = props.favoriteFolderList;
+  const addFolderModalOpen = props.addFolderModalOpen;
   const settings = {
     dots: false,
     infinite: false,
@@ -170,7 +198,7 @@ const MypageFavorite = (props) => {
               })
             : ""}
 
-          <FavoriteBoxEmpty />
+          <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
         </Slider>
       ) : (
         <>
@@ -179,25 +207,40 @@ const MypageFavorite = (props) => {
                 return <FavoriteBox favorite={favorite} />;
               })
             : ""}
-          <FavoriteBoxEmpty />
+          <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
         </>
       )}
     </div>
   );
 };
 
-const ReviewContent = () => {
+const ReviewContent = (props) => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const review = props.review;
+  const [starArr, setStarArr] = useState([]);
+  useEffect(() => {
+    starArr.splice(0, starArr.length);
+    for (let i = 0; i < review.reviewScore; i++) {
+      starArr.push("star");
+    }
+    setStarArr(starArr);
+  }, []);
+
   return (
-    <div className="review-list-content round">
-      <div className="img"></div>
+    <div className="review-list-content round mypage-class-for-img">
+      <div className="img">
+        {review.storeImage ? (
+          <img src={`${backServer}/store/${review.storeImage}`} alt="" />
+        ) : (
+          <img src={"/image/s&s로고.png"} alt="" />
+        )}
+      </div>
       <div className="review-info">
-        <h4>매장 이름</h4>
+        <h4>{review.storeName}</h4>
         <div className="star">
-          <span class="material-icons">star</span>
-          <span class="material-icons">star</span>
-          <span class="material-icons">star</span>
-          <span class="material-icons">star</span>
-          <span class="material-icons">star</span>
+          {starArr.map((star) => {
+            return <span class="material-icons">{star}</span>;
+          })}
         </div>
       </div>
     </div>

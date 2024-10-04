@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,7 @@ public class ReviewDTO {
 	private String reviewReportContent;
 	private String soName;
 	private List<String> filepathList;
+	@Schema(description = "매장 사진", type="string")
+	private String storeImage;
 
 }

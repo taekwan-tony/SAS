@@ -45,30 +45,68 @@
 	<update id="updatePw">
 		update user_tbl set user_pw = #{userPw} where user_no = #{userNo}
 	</update>
+	<!-- 마이페이지 정보 한번에 가져오는 쿼리 중.. -->
 	<select id="selectOneUser" resultMap="getUserForMypage">
-		select user_no, user_id, user_nickname, user_birth, user_phone, user_email, user_gender, user_photo	from user_tbl where user_no = #{userNo}
+		select user_no, user_id, user_nickname, user_birth, user_phone, user_email, user_gender, user_photo, 
+		(select count(*)from favorite join favorite_folder using (favorite_folder_no) where user_no=user_tbl.user_no) favorite_count,
+		(select count(*)from review where user_nickname=user_tbl.user_nickname) review_count, 
+		(select count(*)from reservation where user_id=user_tbl.user_id) reservation_count	from user_tbl where user_no = #{userNo}
 	</select>
 	<resultMap type="user" id="getUserForMypage">
 		<result column="user_nickname" property="userNickname"/>
 		<result column="user_id" property="userId"/>
 		<result column="user_no" property="userNo"/>
+		<result column="user_birth" property="userBirth"/>
+		<result column="user_phone" property="userPhone"/>
+		<result column="user_email" property="userEmail"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_photo" property="userPhoto"/>
+		<result column="favorite_count" property="favoriteCount"></result>
+		<result column="review_count" property="reviewCount"/>
+		<result column="reservation_count" property="reservationCount"/>
 		<collection property="favoriteFolderList" select="selectFavoriteFolderList" column="user_no" javaType="java.util.List" ofType="favoriteFolder"/>
 		<collection property="reservationList" select="selectReservationList" column="user_id" javaType="java.util.List" ofType="reservation"/>
 		<collection property="reviewList" select="selectReviewList" column="user_nickname" javaType="java.util.List" ofType="review"/>
 	</resultMap>
-	<select id="selectFavoriteFolderList" resultType="favoriteFolder">
-		select * from favorite_folder where user_no=#{userNo} and favorite_folder_name!='기본폴더'
+	<select id="selectFavoriteFolderList" resultMap="getFavoriteFolder">
+		select * from favorite_folder where user_no=#{userNo}
+	</select>
+	<resultMap type="favoriteFolder" id="getFavoriteFolder">
+		<result column="favorite_folder_no" property="favoriteFolderNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="favorite_folder_name" property="favoriteFolderName"></result>
+		<collection property="favoriteList" select="selectFavorite" column="favorite_folder_no" javaType="java.util.List" ofType="favorite"/>
+	</resultMap>
+	<select id="selectFavorite" resultType="favorite">
+		select favorite_no, 
+				favorite_folder_no, 
+				store_name, 
+				(select si_filepath from store_image_file 
+					where si_file_no=(select min(si_file_no) 
+										from store_image_file  
+										where store_image_file.store_no=favorite.store_no))store_image 
+		from favorite join store on(favorite.store_no=store.store_no) 
+		where favorite_folder_no=#{favoriteFolderNo}
 	</select>
 	<select id="selectReservationList" resultType="reservation">
 		select * from 
 		(select rownum as rnum, r.* from 
-		(select reserve_date,to_char(reserve_date, 'yyyy-MM-dd hh24:mi') reserve_date_string, reserve_status, reserve_people, store_name 
-		from reservation join store using(store_no) where user_id=#{userId} and reserve_status =0 order by 
-1)r )rnum_tbl where rnum between 1 and 3
+		(select reserve_date,to_char(reserve_date, 'yyyy-MM-dd') reserve_date_string, to_char(reserve_date, 'hh24:mi') reserve_time, reserve_status, reserve_people, store_name,
+        (select si_filepath from store_image_file where si_file_no=(select min(si_file_no) from store_image_file  where store_image_file.store_no=reservation.store_no))store_image 
+        from reservation join store on(reservation.store_no=store.store_no) where user_id=#{userId} order by 1)r )rnum_tbl where rnum between 1 and 3
 	</select>
 	<select id="selectReviewList" resultType="review">
-		select * from review where user_nickname=#{userNickname}
+		select review_no, 
+				store_name, 
+				review_score, 
+				(select si_filepath from store_image_file where si_file_no=(select min(si_file_no) 
+																			from store_image_file  
+																			where store_image_file.store_no=review.store_no))
+					store_image 
+		from review join store on(review.store_no=store.store_no) 
+		where user_nickname=#{userNickname}
 	</select>
+	<!-- 마이페이지 정보 한번에 가져오는 쿼리 끝.. -->
 	<update id="updateUserPhoto">
 		update user_tbl set user_photo=#{userPhoto} where user_no = #{userNo}
 	</update>

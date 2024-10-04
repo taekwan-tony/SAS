@@ -1,4 +1,5 @@
 import ReactQuill, { Quill } from "react-quill";
+import Modal from "react-modal";
 import { useState, useEffect, useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
@@ -7,7 +8,7 @@ import { styled } from "@mui/material/styles";
 import { Link, Route, Routes } from "react-router-dom";
 import "../menu/menuview.css";
 import "./mypage.css";
-import Swal, { swal } from "sweetalert2";
+import Swal from "sweetalert2";
 
 import {
   EmptyBox,
@@ -30,18 +31,177 @@ import ImageResize from "@looop/quill-image-resize-module-react";
 import QuillEditor from "../utils/QuillEditor";
 
 const Mypage = () => {
+  // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
+
+  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
+  const [addFolder, setAddFolder] = useState({
+    favoriteFolderName: "",
+    userNo: loginUserNo,
+  });
+  const [checkAddFolder, setCheckAddFolder] = useState(false);
+  useEffect(() => {
+    setAddFolder({ ...addFolder, userNo: loginUserNo });
+  }, [loginUserNo]);
+  const [isAddFolderModal, setIsAddFolderModal] = useState(false);
+  const addFolderModalOpen = () => {
+    setIsAddFolderModal(true);
+  };
+  const addFolderModalClose = () => {
+    setIsAddFolderModal(false);
+    setAddFolder({ favoriteFolderName: "", userNo: loginUserNo });
+  };
+  const customAddFolderModal = {
+    overlay: {
+      backgroundColor: " rgba(0, 0, 0, 0.2)",
+      width: "100%",
+      height: "100vh",
+      zIndex: "10",
+      position: "fixed",
+      top: "0",
+      left: "0",
+    },
+    content: {
+      width: "500px",
+      height: "290px",
+      zIndex: "150",
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "10px",
+      boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+      backgroundColor: "white",
+      justifyContent: "center",
+      overflow: "hidden",
+    },
+  };
   return (
     <div className="mypage-main">
       <Routes>
-        <Route path="" element={<MypageMain />}></Route>
+        <Route
+          path=""
+          element={
+            <MypageMain
+              addFolderModalOpen={addFolderModalOpen}
+              checkAddFolder={checkAddFolder}
+            />
+          }
+        ></Route>
         <Route path="resview" element={<ReservationView />}></Route>
         <Route path="reviewWrite" element={<ReviewWrite />} />
         <Route path="myreview" element={<MenuReview />} />
       </Routes>
+      {isAddFolderModal ? (
+        <Modal
+          isOpen={true}
+          ariaHideApp={false}
+          onRequestClose={() => {
+            addFolderModalClose();
+          }}
+          style={customAddFolderModal}
+        >
+          <AddFolderModal
+            addFolder={addFolder}
+            setAddFolder={setAddFolder}
+            addFolderModalClose={addFolderModalClose}
+            setCheckAddFolder={setCheckAddFolder}
+            checkAddFolder={checkAddFolder}
+          />
+        </Modal>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
-const MypageMain = () => {
+
+const AddFolderModal = (props) => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const {
+    addFolder,
+    setAddFolder,
+    addFolderModalClose,
+    setCheckAddFolder,
+    checkAddFolder,
+  } = props;
+  const addFavoriteFolder = () => {
+    if (
+      addFolder.favoriteFolderName != null ||
+      addFolder.favoriteFolderName !== ""
+    ) {
+      axios
+        .get(
+          `${backServer}/favorite/userNo/${addFolder.userNo}/favoriteFolderName/${addFolder.favoriteFolderName}/checkFolder`
+        )
+        .then((res) => {
+          if (res.data) {
+            axios
+              .post(`${backServer}/favorite/insertFolder`, addFolder)
+              .then((res) => {
+                if (res.data) {
+                  Swal.fire({
+                    title: "즐겨찾기 목록 추가 완료",
+                    icon: "success",
+                    confirmButtonColor: "var(--main1)",
+                  }).then(() => {
+                    addFolderModalClose();
+                    setCheckAddFolder(!checkAddFolder);
+                  });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            Swal.fire({
+              title: "즐겨찾기 목록 이름 중복",
+              text: "중복된 이름은 사용하실 수 없습니다.",
+              icon: "warning",
+              confirmButtonColor: "var(--main1)",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  return (
+    <div className="addFavoriteFolder-wrap">
+      <div className="addFavoriteFolder-modal-header">
+        <h2>즐겨찾기 목록 추가</h2>
+      </div>
+      <div className="addFavoriteFolder-modal-content">
+        <div className="input-box">
+          <label htmlFor="favoriteFolderName">새 즐겨찾기 목록 이름 </label>
+          <input
+            type="text"
+            id="favoriteFolderName"
+            value={addFolder.favoriteFolderName}
+            onChange={(e) => {
+              setAddFolder({
+                ...addFolder,
+                favoriteFolderName: e.target.value,
+              });
+            }}
+          />
+        </div>
+      </div>
+      <div className="addFavoriteFolder-modal-footer">
+        <button className="btn-sub round" onClick={addFolderModalClose}>
+          취소
+        </button>
+        <button className="btn-main round" onClick={addFavoriteFolder}>
+          확인
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const MypageMain = (props) => {
+  const addFolderModalOpen = props.addFolderModalOpen;
+  const checkAddFolder = props.checkAddFolder;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
@@ -57,7 +217,7 @@ const MypageMain = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [loginUserNo]);
+  }, [loginUserNo, checkAddFolder]);
   return (
     <>
       <Profile user={user} setUser={setUser} />
@@ -69,7 +229,6 @@ const MypageMain = () => {
             {user.reservationList ? user.reservationList.length : 0}
           </span>
         </h3>
-
         {user.reservationList ? (
           user.reservationList.length === 0 ? (
             <EmptyBox text={"진행중인 예약이 존재하지 않습니다"} />
@@ -92,12 +251,15 @@ const MypageMain = () => {
       <section className="mypage-list-wrap favorite-list">
         <Link to="#">더보기</Link>
         <h3 className="title">
-          즐겨찾기{" "}
+          즐겨찾기 목록{" "}
           <span className="count">
             {user.favoriteFolderList ? user.favoriteFolderList.length : 0}
           </span>
         </h3>
-        <MypageFavorite favoriteFolderList={user.favoriteFolderList} />
+        <MypageFavorite
+          favoriteFolderList={user.favoriteFolderList}
+          addFolderModalOpen={addFolderModalOpen}
+        />
       </section>
       <section className="mypage-list-wrap review-list">
         <Link to="#">더보기</Link>

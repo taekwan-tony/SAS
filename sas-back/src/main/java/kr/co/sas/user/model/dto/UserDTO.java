@@ -47,7 +47,6 @@ public class UserDTO {
 	private int reservationCount;
 	@Schema(description="일반 회원 작성한 리뷰 개수", type="int")
 	private int reviewCount;
-//	위에거 지울거임
 	@Schema(description="일반 회원 즐겨찾기 목록", type="list")
 	private List<FavoriteFolderDTO> favoriteFolderList;
 	@Schema(description = "일반 회원 예약 목록", type="list")

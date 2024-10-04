@@ -252,7 +252,7 @@ function ManageReserved(props) {
 
           <div className="info-card">
             <div className="info-text">
-              <h3>금번주 총 예약수</h3>
+              <h3>금주 총 예약수</h3>
               <h2>{weekReservations.length}건</h2>
             </div>
             <div className="info-card-icon-bg">

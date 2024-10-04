@@ -68,7 +68,7 @@ function UserMain() {
           );
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err, "자동로그인 안됨");
           setLoginUserId("");
           setUserType(0);
           setLoginUserNo(0);
