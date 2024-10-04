@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import PostCodeApi from "../utils/PostCodeApi";
 import "./modal.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import SelectMUI from "../utils/SelectMUI";
 import StoreMoodCheckBoxMUI from "../utils/StoreMoodCheckBoxMUI";
 import StoreAmenitiesCheckBoxMUI from "../utils/StoreAmenitiesCheckBoxMUI";
@@ -283,6 +283,21 @@ const StoreViewFrm = (props) => {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>MY STORE</h1>
+          <Link to="/usermain">
+            <button className="button-bell">
+              <div className="user-box-bell">
+                <div className="user-page-box">
+                  <div className="bellWrapper">
+                    <i className="fas fa-bell my-bell"></i>
+                  </div>
+
+                  <div className="circle first"></div>
+                  <div className="circle second"></div>
+                  <div className="circle third"></div>
+                </div>
+              </div>
+            </button>
+          </Link>
         </header>
       </div>
       <div className="dashboard">
