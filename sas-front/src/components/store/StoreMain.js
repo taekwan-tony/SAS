@@ -91,7 +91,7 @@ function StoreMain() {
                     icon="fas fa-utensils"
                     title="메뉴관리"
                     className="color"
-                    to="/storecheck/StoreMenuAdd"
+                    to="/storecheck/StoreMenuMain"
                   />
                   <HexagonItem
                     icon="fas fa-money-check-alt"
