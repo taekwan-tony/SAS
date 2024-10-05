@@ -97,7 +97,7 @@ function StoreMain() {
                     icon="fas fa-money-check-alt"
                     title="제휴결제"
                     className="color"
-                    to="/storecheck/storePayment"
+                    to="/storecheck/storePayList/:storeNo"
                   />
                   <HexagonItem
                     icon="far fa-comment-dots"

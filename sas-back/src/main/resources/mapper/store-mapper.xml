@@ -81,7 +81,7 @@
 		where store_no = #{storeNo}
 	</select>
 	<resultMap id="getStore" type="store">
-	    <result column="store" property="storeNo" />
+	    <result column="store_no" property="storeNo" />
 	    <result column="store_name" property="storeName" />
 	    <result column="store_time" property="storeTime" />
 	    <result column="store_introduce" property="storeIntroduce" />
@@ -216,4 +216,10 @@
 	<select id="kakaoMapStore" resultType="store">
 		select  store_no,store_name,store_addr,so_name,store_phone,map_x,map_y,(select si_filepath from store_image_file b where b.store_no = s.store_no and rownum =1) as si_filepath from store s
 	</select>
+	
+	
+	<select id="selectStorePayList" resultType="storePayment">
+		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
+	</select>
+
 </mapper>

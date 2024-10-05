@@ -8,15 +8,31 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const ReserveContent = (props) => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
   const reserve = props.reserve;
+  const [reserveDate, setReserveDate] = useState(
+    reserve.reserveDate
+      ? new Date(reserve.reserveDate).getTime()
+      : new Date().getTime()
+  );
+  const today = new Date().getTime();
+  const dDay = Math.ceil((reserveDate - today) / (1000 * 60 * 60 * 24));
   return (
-    <div className="reserve-content round">
-      <div className="reserve-img"></div>
+    <div className="reserve-content round mypage-class-for-img">
+      <div className="reserve-img">
+        {reserve.storeImage ? (
+          <img src={`${backServer}/store/${reserve.storeImage}`} alt="" />
+        ) : (
+          <img src={"/image/s&s로고.png"} alt="" />
+        )}
+      </div>
       <div className="reserve-info">
         <h4 className="reserve-name">{reserve.storeName}</h4>
         <span>{reserve.reservePeople + " 명"}</span>
         <span>{`${reserve.reserveDateString} ${reserve.reserveTime}`}</span>
-        <span className="d-day round">d-day</span>
+        <span className={dDay > 0 ? "round d-day" : "round d-day ok"}>
+          {dDay > 0 ? `d-${dDay}` : "d-day"}
+        </span>
       </div>
     </div>
   );
@@ -114,9 +130,32 @@ const Profile = (props) => {
 
 const FavoriteBox = (props) => {
   const favorite = props.favorite;
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [favoriteList, setFavoriteList] = useState(
+    favorite.favoriteList
+      ? favorite.favoriteList.filter((favoriteBox) => {
+          return favoriteBox.storeImage != null;
+        })
+      : []
+  );
   return (
-    <div className="favorite-list-content round">
-      <div className="img"></div>
+    <div className="favorite-list-content round mypage-class-for-img">
+      <div className="img favorite-list">
+        <img src={"/image/s&s로고.png"} alt="" />
+        <div className="img-list">
+          {favoriteList.map((favoriteBox, index) => {
+            if (index < 5) {
+              return (
+                <img
+                  src={`${backServer}/store/${favoriteBox.storeImage}`}
+                  style={{ left: `${(index + 1) * 20}px` }}
+                  alt=""
+                />
+              );
+            }
+          })}
+        </div>
+      </div>
       <div className="title">
         <h3>
           {favorite ? favorite.favoriteFolderName : ""}{" "}
@@ -126,11 +165,14 @@ const FavoriteBox = (props) => {
     </div>
   );
 };
-const FavoriteBoxEmpty = () => {
+const FavoriteBoxEmpty = (props) => {
+  const addFolderModalOpen = props.addFolderModalOpen;
   return (
     <div>
       <div className="favorite-list-content round empty">
-        <span class="material-icons">add_circle_outline</span>
+        <span class="material-icons" onClick={addFolderModalOpen}>
+          add_circle_outline
+        </span>
       </div>
     </div>
   );
@@ -146,6 +188,7 @@ const EmptyBox = (props) => {
 };
 const MypageFavorite = (props) => {
   const favoriteFolderList = props.favoriteFolderList;
+  const addFolderModalOpen = props.addFolderModalOpen;
   const settings = {
     dots: false,
     infinite: false,
@@ -164,7 +207,7 @@ const MypageFavorite = (props) => {
               })
             : ""}
 
-          <FavoriteBoxEmpty />
+          <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
         </Slider>
       ) : (
         <>
@@ -173,7 +216,7 @@ const MypageFavorite = (props) => {
                 return <FavoriteBox favorite={favorite} />;
               })
             : ""}
-          <FavoriteBoxEmpty />
+          <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
         </>
       )}
     </div>
@@ -181,9 +224,11 @@ const MypageFavorite = (props) => {
 };
 
 const ReviewContent = (props) => {
+  const backServer = process.env.REACT_APP_BACK_SERVER;
   const review = props.review;
   const [starArr, setStarArr] = useState([]);
   useEffect(() => {
+    starArr.splice(0, starArr.length);
     for (let i = 0; i < review.reviewScore; i++) {
       starArr.push("star");
     }
@@ -191,8 +236,14 @@ const ReviewContent = (props) => {
   }, []);
 
   return (
-    <div className="review-list-content round">
-      <div className="img"></div>
+    <div className="review-list-content round mypage-class-for-img">
+      <div className="img">
+        {review.storeImage ? (
+          <img src={`${backServer}/store/${review.storeImage}`} alt="" />
+        ) : (
+          <img src={"/image/s&s로고.png"} alt="" />
+        )}
+      </div>
       <div className="review-info">
         <h4>{review.storeName}</h4>
         <div className="star">

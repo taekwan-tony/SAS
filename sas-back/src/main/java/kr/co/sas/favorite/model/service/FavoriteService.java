@@ -53,4 +53,10 @@ public class FavoriteService {
 		int result = favoriteDao.updateFolderNo(changeFolder);
 		return result;
 	}
+
+
+	public boolean checkDuplicate(int userNo, String favoriteFolderName) {
+		int favoriteFolderCount = favoriteDao.countSameName(userNo, favoriteFolderName);
+		return favoriteFolderCount==0;
+	}
 }

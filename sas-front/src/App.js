@@ -3,7 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import LoginMain from "./components/user/LoginMain";
 import Main from "./components/main/Main";
 import Join from "./components/user/Join";
-
+import Error404 from "./components/main/Error404";
+import Error500 from "./components/main/Error500";
+import Loading from "./components/store/Loading";
 import UserMain from "./components/user/UserMain";
 import AdminMain from "./components/admin/AdminMain";
 import MenuView from "./components/menu/MenuView";
@@ -38,6 +40,9 @@ function App() {
         <Route path="/storemain/managereserved" element={<ManageReserved />} />
         <Route path="/admin/*" element={<AdminMain />} />
         <Route path="/storecheck/*" element={<StoreCheckMain />} />
+        <Route path="/Error404" element={<Error404 />} />
+        <Route path="/Error500" element={<Error500 />} />
+        <Route path="/Loading" element={<Loading />} />
       </Routes>
     </div>
   );

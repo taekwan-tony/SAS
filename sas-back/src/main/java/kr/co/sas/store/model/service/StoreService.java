@@ -218,6 +218,10 @@ public class StoreService {
 		List list = storeDao.kakaoMapStore();
 		return list;
 	}
+	public List selectStorePayList(int storeNo) {
+		List list = storeDao.selectStorePayList(storeNo);
+		return list;
+	}//selectStorePayList
 
 
 }

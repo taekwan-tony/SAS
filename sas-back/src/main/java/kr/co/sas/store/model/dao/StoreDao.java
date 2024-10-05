@@ -1,6 +1,7 @@
 package kr.co.sas.store.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -63,6 +64,8 @@ public interface StoreDao {
 	StoreDTO storeEmailselect(int storeNo);
 
 	List kakaoMapStore();
+	
+	List selectStorePayList(int storeNo);
 
 
 }

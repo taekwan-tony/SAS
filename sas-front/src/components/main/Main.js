@@ -5,7 +5,6 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Link } from "react-router-dom";
 import "./Main.css";
 import StoreLogin from "../store/StoreLogin";
-import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 

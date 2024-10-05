@@ -68,4 +68,11 @@ public class FavoriteController {
 		int result = favoriteService.insertFavoriteFolder(addFolder);
 		return ResponseEntity.ok(result > 0);
 	}
+	
+	@Operation(summary="즐겨찾기 목록 중복 체크", description = "즐겨찾기 목록 이름과 회원번호를 받아서 중복 체크해 결과값을 논리값으로 반환")
+	@GetMapping(value="/userNo/{userNo}/favoriteFolderName/{favoriteFolderName}/checkFolder")
+	public ResponseEntity<Boolean> checkDuplicate(@PathVariable int userNo, @PathVariable String favoriteFolderName){
+		boolean result = favoriteService.checkDuplicate(userNo, favoriteFolderName);
+		return ResponseEntity.ok(result);
+	}
 }
