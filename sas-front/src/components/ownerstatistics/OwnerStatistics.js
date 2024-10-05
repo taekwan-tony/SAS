@@ -277,7 +277,7 @@ function Ownerstatistics(props) {
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>통계관리</h1>
-          <Link to="/usermain">
+          <Link to="/storecheck/storeNoticeList">
             <button className="button-bell">
               <div className="user-box-bell">
                 <div className="user-page-box">

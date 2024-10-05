@@ -48,9 +48,8 @@ public class AdminService {
 	@Transactional
 	public int approvalStore(StoreDTO store) {
 		String receiver = store.getSoEmail();
-		System.out.println(store);
 		//인증메일 제목 생성
-		String emailTitle = "Spoon & Smiles 인증메일입니다.";
+		String emailTitle = "Spoon & Smiles 제휴승인 메일입니다.";
 		if(store.getRegistType()==1) {
 		//인증메일 인증코드 생성
 		Random r = new Random();
@@ -73,6 +72,7 @@ public class AdminService {
 					sb.append(randomCode);
 				}
 			}
+			System.out.println(sb.toString());
 		String encPw = encoder.encode(sb.toString());
 		store.setSoPw(encPw);
 		String emailContent = "<h1>안녕하세요. Spoon & Smiles 입니다 </h1>"
@@ -81,7 +81,7 @@ public class AdminService {
 				+sb.toString()
 				+"</span>]입니다. </h3>"
 				+"<h3>아이디는 이메일을 사용부탁드리며, 비밀번호는 바로 수정 부탁드립니다.</h3>";
-		email.sendMail(emailTitle, receiver, emailContent);
+//		email.sendMail(emailTitle, receiver, emailContent);
 		}
 		int result = storeDao.approvalStore(store);
 		return result;

@@ -37,4 +37,11 @@ public class MenuService {
 		int result = menuDao.deleteStoreMenu(menuNo);
 		return result;
 	}//deleteStoreMenu
+
+
+	@Transactional
+	public int updateStoreMenu(MenuDTO storeMenu) {
+		int result = menuDao.updateStoreMenu(storeMenu);
+		return result;
+	}//updateStoreMenu
 }

@@ -5,7 +5,7 @@ import ManageReview from "./ManageReview";
 import Ownerstatistics from "../ownerstatistics/OwnerStatistics";
 import StoreRegist from "./StoreRegist";
 import StorePartnership from "./StorePartnership";
-import StoreMenuAdd from "./StoreMenuAdd";
+import StoreMenuMain from "./StoreMenuMain";
 import StoreViewFrm from "./StoreViewFrm";
 import axios from "axios";
 import { useRecoilState } from "recoil";
@@ -16,6 +16,8 @@ import {
 } from "../utils/RecoilData";
 import StorePayment from "./StorePayment";
 import { storeNameState } from "../utils/RecoilData";
+import StoreNoticeList from "./StoreNoticeList";
+import StoreNoticeDetail from "./StoreNoticeDetail";
 
 const StoreCheckMain = () => {
   // 로그인 지속
@@ -76,19 +78,19 @@ const StoreCheckMain = () => {
       to: "/storecheck/StoreViewFrm",
     },
     {
-      text: "매장등록",
+      text: "매장관리",
       icon: "fas fa-id-card",
       to: "/storecheck/StoreViewFrm",
     },
     {
       text: "메뉴관리",
       icon: "fas fa-utensils",
-      to: "/storecheck/StoreMenuAdd",
+      to: "/storecheck/StoreMenuMain",
     },
     {
       text: "제휴결제",
       icon: "fas fa-money-check-alt",
-      to: "/storecheck/storePayment",
+      to: "/storecheck/storePayList/:storeNo",
     },
     {
       text: "리뷰관리",
@@ -109,7 +111,7 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
-        <Route path="StorePayment" element={<StorePayment />} />
+        <Route path="storePayList/:storeNo" element={<StorePayment />} />
         <Route
           path="storeViewFrm"
           element={<StoreViewFrm setActiveIndex={setActiveIndex} />}
@@ -131,8 +133,16 @@ const StoreCheckMain = () => {
           element={<StorePartnership setActiveIndex={setActiveIndex} />}
         />
         <Route
-          path="StoreMenuAdd"
-          element={<StoreMenuAdd setActiveIndex={setActiveIndex} />}
+          path="StoreMenuMain"
+          element={<StoreMenuMain setActiveIndex={setActiveIndex} />}
+        />
+        <Route
+          path="storeNoticeList"
+          element={<StoreNoticeList noticeType={2} />}
+        />
+        <Route
+          path="noticeDetail/:noticeNo/:soEmail"
+          element={<StoreNoticeDetail />}
         />
       </Routes>
       <div className="owner-navi">

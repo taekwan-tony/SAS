@@ -89,15 +89,15 @@ function StoreMain() {
                   />
                   <HexagonItem
                     icon="fas fa-utensils"
-                    title="메뉴등록"
+                    title="메뉴관리"
                     className="color"
-                    to="/storecheck/StoreMenuAdd"
+                    to="/storecheck/StoreMenuMain"
                   />
                   <HexagonItem
                     icon="fas fa-money-check-alt"
                     title="제휴결제"
                     className="color"
-                    to="/storecheck/storePayment"
+                    to="/storecheck/storePayList/:storeNo"
                   />
                   <HexagonItem
                     icon="far fa-comment-dots"

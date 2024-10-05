@@ -5,12 +5,18 @@
 
 	<!-- 모든 예약을 조회하는 쿼리 -->
 	<select id="selectAllReservation" resultType="reservation">
-		SELECT reserve_no,
-		reserve_date, reserve_pay_status, reserve_status,
-		reserve_people,
-		store_no, seat_no, user_id
-		FROM reservation
-		WHERE store_no = #{storeNo}
+		 SELECT 
+    reserve_no,
+    reserve_date,
+    TO_CHAR(reserve_date, 'HH24:MI') AS reserve_time,
+    reserve_pay_status, 
+    reserve_status,
+    reserve_people,
+    store_no, 
+    seat_no, 
+    user_id
+    FROM reservation
+    WHERE store_no = #{storeNo}
 
 	</select>
 
@@ -30,7 +36,7 @@
 	<!-- 이번 달 예약한 사람의 총 인원을 조회하는 쿼리 -->
 	<select id="selectTotalReservedPeople" resultType="int">
 		SELECT
-		SUM(reserve_people)
+           nvl(SUM(reserve_people),0)
 		FROM reservation
 		WHERE store_no = #{storeNo}
 		AND
@@ -39,22 +45,22 @@
 		'YYYYMMDD')
 		AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
 	</select>
-	
-    <select id="selectReservationList" resultType="reservation">
-    	select * from
-			(select rownum as rnum, r.* from(
-			    select
-			        reserve_no,
-			        to_char(reserve_enroll_date,'yyyy-mm-dd') as reserve_enroll_date,
-			        reserve_people,
-			        reserve_pay_status,
-			        user_tbl.user_name
-			    from reservation
-			    join user_tbl on (reservation.user_id=user_tbl.user_id)
-			     where store_no=#{storeNo}
-			     order by reserve_date desc)r)
-			where rnum between 1 and 5
-    </select>
+
+	<select id="selectReservationList" resultType="reservation">
+		select * from
+		(select rownum as rnum, r.* from(
+		select
+		reserve_no,
+		to_char(reserve_enroll_date,'yyyy-mm-dd') as reserve_enroll_date,
+		reserve_people,
+		reserve_pay_status,
+		user_tbl.user_name
+		from reservation
+		join user_tbl on (reservation.user_id=user_tbl.user_id)
+		where store_no=#{storeNo}
+		order by reserve_date desc)r)
+		where rnum between 1 and 5
+	</select>
 
 
 
@@ -120,26 +126,24 @@
 		reserve_no,
 		TO_CHAR(reserve_date, 'YYYY-MM-DD HH24:MI') AS
 		reserve_date,
+		TO_CHAR(reserve_date, 'HH24:MI') AS reserve_time,
 		reserve_people,
 		store_no,
 		seat_no,
 		user_id,
 		CASE
+		WHEN reserve_pay_status = 0
+		THEN '입금대기'
+		WHEN reserve_pay_status = 1 THEN '결제완료'
 		WHEN
-		reserve_pay_status = 0 THEN '입금대기'
-		WHEN reserve_pay_status = 1 THEN
-		'결제완료'
-		WHEN reserve_pay_status = 2 THEN '취소'
-
+		reserve_pay_status = 2 THEN '취소'
 		END AS reserveStatus
-		FROM
-		reservation
+		FROM reservation
 		WHERE store_no = #{storeNo}
-		AND TO_CHAR(reserve_date,
-		'YYYYMMDD')
+		AND TO_CHAR(reserve_date, 'YYYYMMDD')
 		BETWEEN TO_CHAR(SYSDATE, 'YYYYMMDD')
-		AND TO_CHAR(SYSDATE +
-		7, 'YYYYMMDD')
+		AND TO_CHAR(SYSDATE + 7,
+		'YYYYMMDD')
 	</select>
 
 	<!-- 남여 비율을 조회하는 쿼리 -->
@@ -185,23 +189,29 @@
 		TO_CHAR(LAST_DAY(ADD_MONTHS(SYSDATE, -1)), 'YYYYMMDD')
 	</select>
 
-	
-<!-- 수진 -->
-    <select id="selectReservationForCount" resultType="reservation">
-    	select 
-    		to_char(reserve_date,'hh24:mi') reserve_time ,
-    		seat_no,
-    		count(*) seat_amount
+
+	<!-- 수진 -->
+	<select id="selectReservationForCount" resultType="reservation">
+		select
+		to_char(reserve_date,'hh24:mi') reserve_time ,
+		seat_no,
+		count(*) seat_amount
 		from reservation
-		where store_no=#{storeNo} and to_char(reserve_date,'yyyy-mm-dd')  = to_date(#{date}, 'yy-mm-dd')
+		where store_no=#{storeNo} and
+		to_char(reserve_date,'yyyy-mm-dd') = to_date(#{date}, 'yy-mm-dd')
 		group by (to_char(reserve_date,'hh24:mi'),seat_no)
 		order by 1
-    <!-- 
-     select to_char(reserve_date, 'HH24:MI')reserve_time, seat_no from reservation where store_no=#{storeNo} and reserve_date between to_date(#{date}, 'yy-mm-dd') and (to_date(#{date}, 'yy-mm-dd')+interval'1'day)
-     -->	
-    </select>
+		<!-- select to_char(reserve_date, 'HH24:MI')reserve_time, seat_no from 
+			reservation where store_no=#{storeNo} and reserve_date between to_date(#{date}, 
+			'yy-mm-dd') and (to_date(#{date}, 'yy-mm-dd')+interval'1'day) -->
+	</select>
+	<!-- 수진 -->
 	<insert id="insertReservation">
-		insert into reservation values(reservation_seq.nextval, to_date(#{reserveDateString}, 'yyyy-MM-dd hh24:mi'), #{reservePayStatus}, 0, #{reservePeople}, #{storeNo}, #{seatNo}, #{userId}, sysdate)
+		insert into reservation
+		values(reservation_seq.nextval, to_date(#{reserveDateString},
+		'yyyy-MM-dd hh24:mi'), #{reservePayStatus}, 0, #{reservePeople},
+		#{storeNo}, #{seatNo}, #{userId}, sysdate)
+		
 		<selectKey order="AFTER" resultType="int" keyProperty="reserveNo" >
 			select max(reserve_no) from reservation
 		</selectKey>
@@ -215,15 +225,18 @@
 		insert into payment values(payment_seq.nextval, sysdate, #{payMethod}, #{reserveNo}, #{payCode}, #{payPrice})
 	</insert>
 <!-- 수진 끝 -->
+
 	<select id="selectWeekCustomer" resultType="map">
 		SELECT
 		TO_CHAR(reserve_date, 'DAY') AS dayOfWeek,
-		SUM(reserve_people) AS customerCount
+		SUM(reserve_people) AS
+		customerCount
 		FROM
 		reservation
 		WHERE
 		store_no = #{storeNo}
-		AND reserve_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') +
+		AND reserve_date
+		BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') +
 		6
 		GROUP BY
 		TO_CHAR(reserve_date, 'DAY')
@@ -235,7 +248,8 @@
 	<!-- 예약 삭제 쿼리 -->
 	<delete id="deleteReservation">
 		DELETE FROM reservation
-		WHERE reserve_no = #{reserveNo}
+		WHERE reserve_no =
+		#{reserveNo}
 	</delete>
 	
 	<!--예약내역불러오기-->

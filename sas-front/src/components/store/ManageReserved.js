@@ -34,10 +34,12 @@ function ManageReserved(props) {
       axios
         .get(`${backServer}/reservation/reservation/${storeNo}`)
         .then((response) => {
+          console.log("예약 데이터: ", response.data);
           setReservations(response.data);
 
           // 예약 데이터를 달력 형식으로 변환 (필터링 제거)
           const events = response.data.map((reservation) => {
+            console.log("reserveTime: ", reservation.RESERVE_TIME);
             let backgroundColor;
             let borderColor;
             // 상태에 따른 색상 지정
@@ -53,7 +55,7 @@ function ManageReserved(props) {
             }
 
             return {
-              title: `${reservation.reservePeople}명 예약`,
+              title: `${reservation.reserveTime} - ${reservation.reservePeople}명 예약`, // 예약 시간 추가
               date: new Date(reservation.reserveDate).toLocaleDateString(
                 "en-CA"
               ),
@@ -66,14 +68,15 @@ function ManageReserved(props) {
               },
             };
           });
-
+          console.log(events);
           setCalendarEvents(events); // 모든 예약 데이터를 상태로 설정
         })
         .catch((error) => {
           console.error("예약 데이터를 가져오는 중 오류 발생:", error);
         });
     }
-  }, [storeNo, backServer]);
+  }, [storeNo]);
+
   // 예약 데이터를 서버에서 가져옴
   useEffect(() => {
     if (storeNo !== 0) {
@@ -101,7 +104,7 @@ function ManageReserved(props) {
           console.error("예약 데이터를 가져오는 중 오류 발생:", error);
         });
     }
-  }, [storeNo, backServer]);
+  }, [storeNo]);
   // 입금 상태에 따라 뱃지를 보여주는 함수
   const getPayStatusBadge = (payStatus) => {
     console.log("입금 상태:", payStatus); // 상태 확인을 위한 로그
@@ -175,19 +178,26 @@ function ManageReserved(props) {
               (reservation) => reservation.RESERVE_NO !== reserveNo
             )
           );
+          const index = calendarEvents.findIndex(
+            (obj) => obj.extendedProps.reserveNo === reserveNo
+          );
+          const newCalendarEvents = [...calendarEvents];
+          newCalendarEvents.splice(index, 1);
+          setCalendarEvents(newCalendarEvents);
         })
         .catch((error) => {
           console.error("예약 삭제 중 오류 발생:", error);
         });
     }
   };
+  console.log(1);
   return (
     <>
       <div className="dashboard-body">
         <header className="dashboard-head">
           <h1>예약관리</h1>
 
-          <Link to="/usermain">
+          <Link to="/storecheck/storeNoticeList">
             <button className="button-bell">
               <div className="user-box-bell">
                 <div className="user-page-box">
@@ -242,7 +252,7 @@ function ManageReserved(props) {
 
           <div className="info-card">
             <div className="info-text">
-              <h3>금번주 총 예약수</h3>
+              <h3>금주 총 예약수</h3>
               <h2>{weekReservations.length}건</h2>
             </div>
             <div className="info-card-icon-bg">
@@ -327,6 +337,7 @@ function ManageReserved(props) {
               <tr>
                 <th>순번</th>
                 <th>날짜</th>
+                <th>예약 시간</th>
                 <th>입금현황</th>
                 <th>예약현황</th>
                 <th>인원수</th>
@@ -343,6 +354,7 @@ function ManageReserved(props) {
                     <td>
                       {new Date(reservation.RESERVE_DATE).toLocaleDateString()}
                     </td>
+                    <td>{reservation.RESERVE_TIME}</td>
                     <td>{getPayStatusBadge(reservation.RESERVESTATUS)}</td>
                     <td>{calReservationStatus(reservation.RESERVESTATUS)}</td>
                     <td>{reservation.RESERVE_PEOPLE}</td>

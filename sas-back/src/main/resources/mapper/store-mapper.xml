@@ -67,9 +67,12 @@
 			where rnum between #{pi.start} and #{pi.end}
 	
 </select>
+<select id="storeEmailselect" resultType="store">
+	select so_email from store where store_no = #{storeNo}
+</select>
 
 <!-- 안되면 수진 favorite 수정해야함 -->
-	<select id="getStoreinfo" resultMap="store">
+	<select id="getStoreinfo" resultMap="getStore">
 		select store_no, store_name, store_addr, store_introduce, store_time
 		<if test="userNo!=0">
 		, (select count(*) from favorite join favorite_folder using(favorite_folder_no) where store_no=#{storeNo} and user_no = #{userNo}) is_favorite
@@ -77,6 +80,19 @@
 		from store 
 		where store_no = #{storeNo}
 	</select>
+	<resultMap id="getStore" type="store">
+	    <result column="store_no" property="storeNo" />
+	    <result column="store_name" property="storeName" />
+	    <result column="store_time" property="storeTime" />
+	    <result column="store_introduce" property="storeIntroduce" />
+	    <result column="store_addr" property="storeAddr" />
+	    <!-- 
+	    <result column="si_filepath" property="siFilepath" /> : si-filepath가 한개가 아니기 때문에  collection
+	     -->
+	    <result column="is_favorite" property="isFavorite" />
+	    <collection property="siFilepathList" select="selectSiFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
+	</resultMap>
+	
 	
 	<select id="selectOneStoreInfo" resultType="store">
 		select store_no, store_name, store_addr, store_phone, store_time,business_number,so_name,so_phone,map_x,map_y
@@ -108,7 +124,7 @@
 
 	
 	<select id="selectAllPayStore" resultType="store">
-		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
+		select so_email,store_no from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
 	<!-- 
 	이미지등록되면 구현하기로한 올스토얼 ~~~
@@ -118,16 +134,7 @@
 	
 	 -->
 	
-	<resultMap id="store" type="store">
-	    <id column="store" property="storeNo" />
-	    <result column="store_name" property="storeName" />
-	    <result column="store_time" property="storeTime" />
-	    <result column="store_introduce" property="storeIntroduce" />
-	    <result column="store_addr" property="storeAddr" />
-	    <result column="si_filepath" property="siFilepath" />
-	    <result column="is_favorite" property="isFavorite" />
-	    <collection property="siFilepathList" select="selectSiFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
-	</resultMap>
+	
 
 	<select id="selectSiFilepath" resultType="storeFile">
 		select si_filepath from store_image_file where store_no = #{storeNo}
@@ -206,5 +213,25 @@
 	<select id="checkBusinessNumber" resultType="store">
 		select * from store where businessNumber=#{businessNumber}
 	</select>
-
+	<select id="kakaoMapStore" resultType="store">
+		select  store_no,store_name,store_addr,so_name,store_phone,map_x,map_y,(select si_filepath from store_image_file b where b.store_no = s.store_no and rownum =1) as si_filepath from store s
+	</select>
+	
+	
+	<select id="selectStorePayList" resultType="storePayment">
+		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
+	</select>
+	
+	<select id="storeMonthPayCount" resultType="storePayment">
+		select 
+			nvl(sum(reserve_people)*(select service_price from store where store.store_no =r.store_no),0) as store_total_price,
+			nvl(sum(reserve_people),0) as store_total_using_count
+		from reservation r 
+		where store_no =#{storeNo} and 
+		to_char(reserve_date,'yyyy-mm-dd') between to_char(add_months(sysdate-1,-1),'yyyy-mm-dd') and to_char(sysdate-1,'yyyy-mm-dd') 
+		group by store_no
+	</select>
+	<insert id="insertStoreMonthPay">
+		insert into store_pay values(store_pay_seq.nextval,#{storeNo},null,null,#{storeTotalPrice},1,sysdate,#{storeTotalUsingCount})
+	</insert>
 </mapper>

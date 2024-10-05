@@ -102,6 +102,12 @@ public class StoreController {
 		return ResponseEntity.ok(storeList);
 	}
 	
+	@GetMapping(value="/storeEmail/{storeNo}")
+	public ResponseEntity<StoreDTO> storeEmail(@PathVariable int storeNo){
+		StoreDTO store = storeService.storeEmailselect(storeNo);
+		return ResponseEntity.ok(store);
+	}
+	
 	@GetMapping(value="/storeNo/{storeNo}/userNo/{userNo}")
 	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo, @PathVariable int userNo) {
 //		System.out.println(userNo);
@@ -244,5 +250,19 @@ public class StoreController {
 		return ResponseEntity.ok(result);
 	}//checkBusinessNumber
 	
+	@Operation(summary = "카카오맵 데이터 추출")
+	@GetMapping(value = "/kakaoMapStore")
+	public ResponseEntity<List> kakaoMapStore(){
+		List list = storeService.kakaoMapStore();
+		return ResponseEntity.ok(list);
+	}
+	
+	@Operation(summary = "서비스 이용료 결제 내역")
+	@GetMapping(value = "/storePayList/{storeNo}")
+	public ResponseEntity<List> list(@PathVariable int storeNo) {
+		List list = storeService.selectStorePayList(storeNo);
+		System.out.println("결제 내역 : " +list);
+		return ResponseEntity.ok(list);
+	}//list
 	
 }

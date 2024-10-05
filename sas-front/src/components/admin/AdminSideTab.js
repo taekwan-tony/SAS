@@ -10,22 +10,11 @@ const AdminSideTab = () => {
         <li>
           <Link to="#">현황관리</Link>
           <ul className="admin-side-sub-tab">
-            <li>
+            <li className="admin-side-sub-li">
               <Link to="#">매출관리</Link>
             </li>
             <li>
-              <Link to="#">제휴현황</Link>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <Link to="#">회원관리</Link>
-          <ul className="admin-side-sub-tab">
-            <li>
-              <Link to="/admin/user/questionList">1:1문의리스트</Link>
-            </li>
-            <li>
-              <Link to="#">제휴현황</Link>
+              <Link to="/admin/management/storeMap">제휴현황</Link>
             </li>
           </ul>
         </li>
@@ -33,13 +22,16 @@ const AdminSideTab = () => {
           <Link to="/admin/store/approvalList">매장관리</Link>
           <ul className="admin-side-sub-tab">
             <li>
-              <Link to="/admin/store/approvalList">제휴승인목록</Link>
+              <Link to="/admin/store/approvalList">제휴 승인목록</Link>
             </li>
             <li>
-              <Link to="/admin/store/storeList">제휴매장 리스트</Link>
+              <Link to="/admin/store/storeList">제휴 매장리스트</Link>
             </li>
             <li>
-              <Link to="/admin/store/storeReview">리뷰 신고 리스트</Link>
+              <Link to="/admin/store/storeReview">리뷰 신고리스트</Link>
+            </li>
+            <li>
+              <Link to="/admin/store/storeReport">매장 신고리스트</Link>
             </li>
           </ul>
         </li>
