@@ -12,6 +12,9 @@ import { useRecoilState } from "recoil";
 import {
   loginStoreIdState,
   loginStoreNoState,
+  soNameState,
+  soPhoneState,
+  storeAddrState,
   storeTypeState,
 } from "../utils/RecoilData";
 import StorePayment from "./StorePayment";
@@ -26,6 +29,9 @@ const StoreCheckMain = () => {
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
+  const [storeAddr, setStoreAddr] = useRecoilState(storeAddrState); //매장 주소
+  const [soPhone, setSoPhone] = useRecoilState(soPhoneState); //점주 전화번호
+  const [soName, setSoName] = useRecoilState(soNameState); //점주 이름
 
   useEffect(() => {
     storeRefreshLogin();
@@ -43,6 +49,9 @@ const StoreCheckMain = () => {
           setLoginSoEmail(res.data.soEmail);
           setStoreType(res.data.storeType);
           setLoginStoreNo(res.data.storeNo);
+          setStoreAddr(res.data.storeAddr);
+          setSoPhone(res.data.soPhone);
+          setSoName(res.data.soName);
           setStoreName(res.data.storeName); // storeName 설정
           console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
