@@ -63,7 +63,7 @@ const StoreViewMain = () => {
           </div>
         </div>
         <Routes>
-          <Route path="storeViewFrm" element={<StoreViewFrm />} />
+          <Route path="/storeViewFrm" element={<StoreViewFrm />} />
         </Routes>
       </div>
     </>
