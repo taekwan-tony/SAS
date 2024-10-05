@@ -111,6 +111,22 @@ const MypageMain = () => {
 };
 
 const ReservationView = () => {
+  const [storeName, setStoreName] = useState("");
+  const [reservation, setReservation] = useState({});
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
+  useEffect(() => {
+    axios
+      .get(`${backServer}/reservation/view/${loginUserId}`)
+      .then((res) => {
+        console.log(res);
+        setLoginUserId(res.data);
+        setReservation(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
   const navigate = useNavigate();
   return (
     <div className="res-view">
@@ -125,8 +141,10 @@ const ReservationView = () => {
               방문예정
             </button>
             <button
-              className="btn-main
+              className="btn
+              -main
             "
+              disabled
             >
               방문완료
             </button>
@@ -138,6 +156,12 @@ const ReservationView = () => {
             >
               리뷰쓰기
             </button>
+            <button
+              className="btn-main
+            "
+            >
+              신고
+            </button>
           </div>
           <div className="res-content">
             <img
@@ -146,10 +170,10 @@ const ReservationView = () => {
               className="profile-image"
             />
             <div className="res-menu">
-              <h2>가게이르므</h2>
+              <h2>{reservation.storeName}</h2>
               <h2>결제정보</h2>
-              <p>인원수</p>
-              <p>예약시간</p>
+              <p>{reservation.reservationPeople}</p>
+              <p>{reservation.reservationTime}</p>
             </div>
           </div>
           <div className="res-btn2">

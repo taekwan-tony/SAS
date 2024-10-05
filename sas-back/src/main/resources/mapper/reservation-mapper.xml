@@ -237,5 +237,12 @@
 		DELETE FROM reservation
 		WHERE reserve_no = #{reserveNo}
 	</delete>
+	
+	<!--예약내역불러오기-->
+	<select id="reservationView" resultType = "reservation">
+	
+	select * from reservation
+	
+	</select>
 
 </mapper>

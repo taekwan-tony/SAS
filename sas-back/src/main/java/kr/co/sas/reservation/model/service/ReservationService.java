@@ -91,6 +91,10 @@ public class ReservationService {
 	        return reservationDao.deleteReservation(reserveNo);
 	    }
 
+		public List<ReservationDTO> reservationView(ReservationDTO userId) {
+			return reservationDao.reservationView(userId); 
+		}
+
 
 }
 
