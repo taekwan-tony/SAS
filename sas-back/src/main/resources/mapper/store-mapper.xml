@@ -218,9 +218,9 @@
 	</select>
 	
 	
-	<select id="selectStorePayList" resultType="storePayment">
+<!-- 	<select id="selectStorePayList" resultType="storePayment">
 		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
-	</select>
+	</select> -->
 	
 	<select id="storeMonthPayCount" resultType="storePayment">
 		select 
