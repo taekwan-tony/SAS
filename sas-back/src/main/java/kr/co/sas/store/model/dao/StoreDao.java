@@ -75,6 +75,7 @@ public interface StoreDao {
 	StoreDTO selectOneSoEmail(int storeNo);
 
 	
+	int storePaySuccess(int storePayNo);
 
 
 }

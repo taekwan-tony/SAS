@@ -32,6 +32,7 @@ import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
 import kr.co.sas.store.model.dto.StoreMoodDTO;
+import kr.co.sas.store.model.dto.StorePaymentDTO;
 import kr.co.sas.store.model.service.StoreService;
 import kr.co.sas.util.FileUtils;
 
@@ -264,5 +265,13 @@ public class StoreController {
 		System.out.println("결제 내역 : " +list);
 		return ResponseEntity.ok(list);
 	}//list
+	
+	
+	@Operation(summary = "서비스 이용 결제 성공")
+	@PatchMapping(value = "/storePaySuccess/{storePayNo}")
+	public ResponseEntity<Boolean> storePaySuccess(@PathVariable int storePayNo) {
+		int result = storeService.storePaySuccess(storePayNo);
+		return ResponseEntity.ok(result > 0);
+	}//storePaySuccess
 	
 }

@@ -102,7 +102,7 @@ public class JwtUtils {
 		 * 
 		 * */
 		//1시간짜리 토큰생성
-		public String storeCreateAccessToken(String soEmail,int type, int storeNo, String storeName) {
+		public String storeCreateAccessToken(String soEmail,int type, int storeNo, String storeName, String soName, String soPhone, String storeAddr) {
 			//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 			SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 			//2. 토큰 생성시간 및 만료시간 설정
@@ -119,12 +119,15 @@ public class JwtUtils {
 							.claim("type", type) //토큰에 포함할 회원정보 세팅(key = value)
 							.claim("storeNo", storeNo) //토큰에 포함할 회원정보 세팅(key = value)
 							.claim("storeName", storeName)
+							.claim("soName", soName)
+							.claim("soPhone", soPhone)
+							.claim("storeAddr", storeAddr)
 							.compact();
 			return token;
 		}
 		
 		//8760시간(1년)짜리 accessToken
-		public String storeCreateRefreshToken(String soEmail, int type, int storeNo, String storeName) {
+		public String storeCreateRefreshToken(String soEmail, int type, int storeNo, String storeName, String soName, String soPhone, String storeAddr) {
 			//1. 작성해둔 키 값을 이용해서 암호화 코드 생성
 					SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes());
 					//2. 토큰 생성시간 및 만료시간 설정
@@ -141,6 +144,9 @@ public class JwtUtils {
 									.claim("type", type) //토큰에 포함할 회원정보 세팅(key = value)
 									.claim("storeNo", storeNo) //토큰에 포함할 회원정보 세팅(key = value)
 									.claim("storeName", storeName)
+									.claim("soName", soName)
+									.claim("soPhone", soPhone)
+									.claim("storeAddr", storeAddr)
 									.compact();
 					return token;
 		}
@@ -158,11 +164,17 @@ public class JwtUtils {
 				int type = (int)claims.get("type");
 				int storeNo = (int)claims.get("storeNo");
 				String storeName = (String)claims.get("storeName");
+				String soName = (String)claims.get("soName");
+				String soPhone = (String)claims.get("soPhone");
+				String storeAddr = (String)claims.get("storeAddr");
 				LoginStoreDTO loginStore = new LoginStoreDTO();
 				loginStore.setSoEmail(soEmail);
 				loginStore.setType(type);
 				loginStore.setStoreNo(storeNo);
 				loginStore.setStoreName(storeName);
+				loginStore.setSoName(soName);
+				loginStore.setSoPhone(soPhone);
+				loginStore.setStoreAddr(storeAddr);
 				return loginStore;
 			}
 			

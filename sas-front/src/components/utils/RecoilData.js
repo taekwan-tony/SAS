@@ -36,27 +36,52 @@ const isUserLoginState = selector({
 });
 
 // 매장/관리자 저장소
+
+//점주 이메일
 const loginStoreIdState = atom({
   key: "loginStoreIdState",
   default: "",
 });
 
+//매장 타입 (한식 ...)
 const storeTypeState = atom({
   key: "storeTypeState",
   default: 0,
 });
 
+//매장 번호
 const loginStoreNoState = atom({
   key: "loginStoreNoState",
   default: 0,
 });
 
+//매장 이름??
 const storeNameState = atom({
   key: "storeNameState",
   default: 0,
 });
+
+//매장 이름
 const loginStoreNameState = atom({
   key: "loginStoreNameState",
+  default: "",
+});
+
+//매장 주소
+const storeAddrState = atom({
+  key: "storeAddr",
+  default: "",
+});
+
+//매장 점주 전화번호
+const soPhoneState = atom({
+  key: "soPhone",
+  default: "",
+});
+
+//매장 점주 이름
+const soNameState = atom({
+  key: "soName",
   default: "",
 });
 
@@ -67,12 +92,18 @@ const isStoreLoginState = selector({
     const storeType = state.get(storeTypeState);
     const loginStoreNo = state.get(loginStoreNoState);
     const storeName = state.get(storeNameState);
+    const storeAddr = state.get(storeAddrState);
+    const soPhone = state.get(soPhoneState);
+    const soName = state.get(soNameState);
 
     return (
       loginStoreId !== "" &&
       storeType !== 0 &&
       loginStoreNo !== 0 &&
-      storeName !== ""
+      storeName !== "" &&
+      storeAddr !== "" &&
+      soPhone !== "" &&
+      soName !== ""
     );
   },
 });
@@ -89,4 +120,7 @@ export {
   loginStoreNoState,
   storeNameState,
   loginStoreNameState,
+  storeAddrState,
+  soPhoneState,
+  soNameState,
 };
