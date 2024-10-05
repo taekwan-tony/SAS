@@ -19,4 +19,6 @@ public class UserReportDTO {
 	private String reportReason;
 	@Schema(description = "예약 번호", type="int")
 	private int reserveNo;	
+	@Schema(description = "신고 처리 유형", type="int")
+	private int reportType;	
 }

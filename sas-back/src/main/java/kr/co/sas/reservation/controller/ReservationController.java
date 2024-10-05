@@ -118,9 +118,16 @@ public class ReservationController {
     @DeleteMapping("/delete/{reserveNo}")
     public ResponseEntity<String> deleteReservation(@PathVariable int reserveNo) {
         int result = reservationService.deleteReservation(reserveNo);
-        return ResponseEntity.ok("예약 삭제 성공");
-            
+        return ResponseEntity.ok("예약 삭제 성공");        
     }
+    //예약내역가져오기
+    @GetMapping("/view/{userId}")
+    public ResponseEntity<List> reservationView(@PathVariable ReservationDTO userId){
+    	
+    	List list = reservationService.reservationView(userId);
+    	return ResponseEntity.ok(list);
+    }
+    
     
     
     

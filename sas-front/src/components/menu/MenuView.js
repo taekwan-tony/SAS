@@ -440,7 +440,7 @@ const MenuMain = () => {
     <main className="main-menu-home">
       <div className="facilities">
         <h2>편의시설</h2>
-        <div className="amenities">편의시설 이미지</div>
+        <div className="amenities">왜 화를내여;</div>
       </div>
     </main>
   );
@@ -506,28 +506,6 @@ const Menu = () => {
           );
         })}
       </div>
-      <img
-        src="/image/youtube.png"
-        alt="메뉴"
-        style={{ width: "200px", height: "auto" }}
-      />
-      <p>불고기 비빔밥 </p>
-      <p> 가격: 10,500원 </p>
-      <p>
-        달콤한 불고기와 신선한 야채, 고소한 참기름이 조화를 이루는 인기
-        메뉴입니다.
-      </p>
-      <img
-        src="/image/youtube.png"
-        alt="메뉴"
-        style={{ width: "200px", height: "auto" }}
-      />
-      <p>치킨너겟</p>
-      <p>가격: 8,000원 </p>
-      <p>
-        바삭하게 튀긴 치킨너겟과 함께 제공되는 다양한 소스가 매력적인
-        메뉴입니다.
-      </p>
     </div>
   );
 };
@@ -542,13 +520,10 @@ const MenuPhoto = () => {
       <div className="menu-image2">
         <img
           src=""
-          alt="메뉴사진 ?
+          alt="메뉴사진 
         "
         />
-        <img src={store.storePhoto} alt="가게 로고" />
-        <img src="/image/youtube.png" alt="가게 로고" />
-        <img src="/image/youtube.png" alt="가게 로고" />
-        <img src="/image/youtube.png" alt="가게 로고" />
+        <img src={store.storePhoto} alt="메뉴사진" />
       </div>
     </div>
   );

@@ -33,6 +33,7 @@ import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
 import kr.co.sas.store.model.dto.StoreMoodDTO;
+import kr.co.sas.store.model.dto.StorePaymentDTO;
 import kr.co.sas.store.model.service.StoreService;
 import kr.co.sas.util.FileUtils;
 
@@ -251,6 +252,12 @@ public class StoreController {
 		return ResponseEntity.ok(result);
 	}//checkBusinessNumber
 	
+	@Operation(summary = "카카오맵 데이터 추출")
+	@GetMapping(value = "/kakaoMapStore")
+	public ResponseEntity<List> kakaoMapStore(){
+		List list = storeService.kakaoMapStore();
+		return ResponseEntity.ok(list);
+	}
 	
 	@Operation(summary = "서비스 이용료 결제 내역")
 	@GetMapping(value = "/storePayList/{storeNo}")
@@ -267,4 +274,12 @@ public class StoreController {
 		System.out.println(store);
 		return ResponseEntity.ok(store);
 	}
+	
+	@Operation(summary = "서비스 이용 결제 성공")
+	@PatchMapping(value = "/storePaySuccess/{storePayNo}")
+	public ResponseEntity<Boolean> storePaySuccess(@PathVariable int storePayNo) {
+		int result = storeService.storePaySuccess(storePayNo);
+		return ResponseEntity.ok(result > 0);
+	}//storePaySuccess
+	
 }

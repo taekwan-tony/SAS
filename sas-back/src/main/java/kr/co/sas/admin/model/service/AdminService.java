@@ -14,6 +14,8 @@ import kr.co.sas.reservation.model.dao.ReservationDao;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.StoreDTO;
+import kr.co.sas.user.model.dao.UserDao;
+import kr.co.sas.userReport.model.dao.UserReportDao;
 import kr.co.sas.util.EmailSender;
 import kr.co.sas.util.PageInfo;
 import kr.co.sas.util.PageUtil;
@@ -32,6 +34,9 @@ public class AdminService {
 	private EmailSender email;
 	@Autowired
 	private ReservationDao reservationDao;
+	@Autowired
+	private UserReportDao userReportDao;
+	
 	public Map selectApprovalStore(int reqPage,int storeType) {
 		int numPerPage = 12;
 		int pageNaviSize = 5;
@@ -106,6 +111,43 @@ public class AdminService {
 	@Transactional
 	public int contractExpire(int storeNo) {
 		int result = storeDao.contractExpire(storeNo);
+		return result;
+	}
+
+
+	public Map selectReportList(int reqPage) {
+		int numPerPage = 12;
+		int pageNaviSize = 5;
+		int totalCount = userReportDao.totalReportCount(); 
+		PageInfo pi = pageUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, totalCount);
+		List list = userReportDao.selectReportStore(pi);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("pi",pi);
+		return map;
+	}
+
+
+	@Transactional
+	public int storeReportComp(int storeNo) {
+		List<Integer> list = userReportDao.storeReportComp(storeNo);
+		int result = 0;
+		for(int reportNo : list) {
+			result += userReportDao.updateReport(reportNo);
+		}
+		if(result == list.size()) {
+			StoreDTO store = storeDao.selectOneSoEmail(storeNo);
+			System.out.println(store);
+			String receiver = store.getSoEmail();
+			//인증메일 제목 생성
+			String emailTitle = "Spoon & Smiles 매장관리 요청의 건";
+			String emailContent = "<h1>안녕하세요. Spoon & Smiles 입니다 </h1>"
+					+"<h3>매장 이용 신고가 지속 접수되어 연락드립니다.</h3>"
+					+"<h3>매장관리 요청드리며, 지속 신고 발생시 매장 제휴 제재 처리 예정입니다.</h3>"
+					+"<h3>감사합니다.</h3>"
+					+"<h3>Spoon & Smiles를 이용해주셔서 감사합니다.</h3>";
+			email.sendMail(emailTitle, receiver, emailContent);
+		}
 		return result;
 	}
 

@@ -124,7 +124,7 @@
 
 	
 	<select id="selectAllPayStore" resultType="store">
-		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
+		select so_email,store_no from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
 	<!-- 
 	이미지등록되면 구현하기로한 올스토얼 ~~~
@@ -213,11 +213,51 @@
 	<select id="checkBusinessNumber" resultType="store">
 		select * from store where businessNumber=#{businessNumber}
 	</select>
+	<select id="kakaoMapStore" resultType="store">
+		select  store_no,store_name,store_addr,so_name,store_phone,map_x,map_y,(select si_filepath from store_image_file b where b.store_no = s.store_no and rownum =1) as si_filepath from store s
+	</select>
+	
+	
+<!-- 	<select id="selectStorePayList" resultType="storePayment">
+		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
+	</select> -->
+	
+	<select id="storeMonthPayCount" resultType="storePayment">
+		select 
+			nvl(sum(reserve_people)*(select service_price from store where store.store_no =r.store_no),0) as store_total_price,
+			nvl(sum(reserve_people),0) as store_total_using_count
+		from reservation r 
+		where store_no =#{storeNo} and 
+		to_char(reserve_date,'yyyy-mm-dd') between to_char(add_months(sysdate-1,-1),'yyyy-mm-dd') and to_char(sysdate-1,'yyyy-mm-dd') 
+		group by store_no
+	</select>
+	<insert id="insertStoreMonthPay">
+		insert into store_pay values(store_pay_seq.nextval,#{storeNo},null,null,#{storeTotalPrice},1,sysdate,#{storeTotalUsingCount})
+	</insert>
 	
 	
 	<select id="selectStorePayList" resultType="storePayment">
-		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
+	  select rnum, store_pay_no, store_total_price, store_pay_request_date, store_pay_date, store_pay_status
+	  from (
+	    select rownum as rnum, p.* 
+	    from (
+	      select 
+	        store_pay_no,
+	        store_pay_date,
+	        store_total_price,
+	        store_pay_status,
+	        store_pay_request_date
+	      from store_pay 
+	      where store_no=#{storeNo} 
+	      order by store_pay_request_date desc
+	    ) p
+	  )
 	</select>
+	
+	
+	<update id="storePaySuccess">
+		update store_pay set store_pay_date=sysdate, store_pay_status=2 where store_pay_no=#{storePayNo}
+	</update>
 
 
 	<select id="selectStoreFavorite" resultType="favoriteStore">
@@ -230,4 +270,9 @@
 		where store_no = #{storeNo} 
 		group by store_no, store_name, store_time, store_addr, store_introduce
 	</select>
+
+
+<select id="selectOneSoEmail" resultType="store">
+	select so_email from store where store_no = #{storeNo}
+</select>
 </mapper>

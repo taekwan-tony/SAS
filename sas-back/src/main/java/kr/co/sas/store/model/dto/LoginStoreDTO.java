@@ -14,4 +14,7 @@ public class LoginStoreDTO {
 	private int type;
 	private int storeNo;
 	private String storeName;
+	private String soName;
+	private String soPhone;
+	private String storeAddr;
 }

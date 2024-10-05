@@ -42,6 +42,8 @@ public class StoreDTO {
 	private int servicePrice;
 	private String storeRequestDate;
 	private String storeEnrollDate;
+	private String siFilepath;
+	private int reportTotalCount;
 	@Schema(description = "해당 회원이 즐겨찾기 했는지 여부", type="boolean")
 	private boolean isFavorite;
 	@Schema(description="해당 매장에서 등록한 좌석 정보 리스트", type="List")

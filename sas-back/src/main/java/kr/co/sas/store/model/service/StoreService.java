@@ -21,6 +21,7 @@ import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
 import kr.co.sas.store.model.dto.StoreMoodDTO;
+import kr.co.sas.store.model.dto.StorePaymentDTO;
 import kr.co.sas.util.JwtUtils;
 
 @Service
@@ -71,8 +72,11 @@ public class StoreService {
 	            map.put("storeType", loginStore.getType());
 	            map.put("storeNo", loginStore.getStoreNo()); // storeNo 추가
 	            map.put("storeName", loginStore.getStoreName()); // storeName 추가
-	            map.put("accessToken", jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName()));
-	            map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName()));
+	            map.put("soName", loginStore.getSoName());
+	            map.put("soPhone", loginStore.getSoPhone());
+	            map.put("storeAddr", loginStore.getStoreAddr());
+	            map.put("accessToken", jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr()));
+	            map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr()));
 	        } else {
 	        	// 비밀번호 불일치
 	            result = 3;
@@ -89,8 +93,8 @@ public class StoreService {
 		try {
 			LoginStoreDTO loginStore = jwtUtils.storeCheckToken(token);
 			System.out.println("갱신된 storeNo: " + loginStore.getStoreNo()); // storeNo 값 로그로 확인
-			String accessToken = jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName());
-			String refreshToken = jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName());
+			String accessToken = jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr());
+			String refreshToken = jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr());
 			loginStore.setAccessToken(accessToken);
 			loginStore.setRefreshToken(refreshToken);
 			return loginStore;
@@ -110,9 +114,19 @@ public class StoreService {
 		return result;
 	}//changePw
 
-	
+	@Transactional
 	public List<StoreDTO> selectAllPayStore() {
-		List list = storeDao.selectAllPayStore();
+		List<StoreDTO> list = storeDao.selectAllPayStore();
+		int result = 0;
+		
+		for(StoreDTO store : list ) {
+			
+			StorePaymentDTO storePay = storeDao.storeMonthPayCount(store);
+			if(storePay !=null) {
+				storePay.setStoreNo(store.getStoreNo());
+				result += storeDao.insertStoreMonthPay(storePay);				
+			}
+		}
 		return list;
 	}
 
@@ -140,9 +154,9 @@ public class StoreService {
 	public LoginStoreDTO checkPw(StoreDTO store) {
 		StoreDTO checkPw = storeDao.searchStoreOwner(store.getSoEmail());
 		if(checkPw != null && encoder.matches(store.getSoPw(), checkPw.getSoPw())) {
-			String accessToken = jwtUtils.storeCreateAccessToken(checkPw.getSoEmail(), checkPw.getType(), checkPw.getStoreNo(), checkPw.getStoreName());
-			String refreshToken = jwtUtils.storeCreateRefreshToken(checkPw.getSoEmail(), checkPw.getType(), checkPw.getStoreNo(), checkPw.getStoreName());
-			LoginStoreDTO loginStore = new LoginStoreDTO(accessToken, refreshToken, checkPw.getSoEmail(), checkPw.getType(), store.getStoreNo(), store.getStoreName());
+			String accessToken = jwtUtils.storeCreateAccessToken(checkPw.getSoEmail(), checkPw.getType(), checkPw.getStoreNo(), checkPw.getStoreName(), checkPw.getSoName(), checkPw.getSoPhone(), checkPw.getStoreAddr());
+			String refreshToken = jwtUtils.storeCreateRefreshToken(checkPw.getSoEmail(), checkPw.getType(), checkPw.getStoreNo(), checkPw.getStoreName(), checkPw.getSoName(), checkPw.getSoPhone(), checkPw.getStoreAddr());
+			LoginStoreDTO loginStore = new LoginStoreDTO(accessToken, refreshToken, checkPw.getSoEmail(), checkPw.getType(), store.getStoreNo(), store.getStoreName(), store.getSoName(), store.getSoPhone(), store.getStoreAddr());
 			return loginStore;
 		}//if
 		return null;
@@ -215,6 +229,10 @@ public class StoreService {
 	}
 
 
+	public List kakaoMapStore() {
+		List list = storeDao.kakaoMapStore();
+		return list;
+	}
 	public List selectStorePayList(int storeNo) {
 		List list = storeDao.selectStorePayList(storeNo);
 		return list;
@@ -225,6 +243,11 @@ public class StoreService {
 		FavoriteStoreInfoDTO store = storeDao.selectStoreFavorite(storeNo);
 		return store;
 	}
+	@Transactional
+	public int storePaySuccess(int storePayNo) {
+		int result = storeDao.storePaySuccess(storePayNo);
+		return result;
+	}//storePaySuccess
 
 
 }

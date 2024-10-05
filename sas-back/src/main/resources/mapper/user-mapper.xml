@@ -113,4 +113,6 @@
 	<select id="getUserInfoForPay">
 		select user_email, user_phone, user_name from user_tbl where user_no=#{userNo}
 	</select>
+	
+
 </mapper>

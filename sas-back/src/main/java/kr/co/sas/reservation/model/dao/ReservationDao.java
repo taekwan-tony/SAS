@@ -43,4 +43,6 @@ public interface ReservationDao {
 
 	int insertPay(PaymentDTO pay);
 
+	List<ReservationDTO> reservationView(ReservationDTO userId);
+
 }

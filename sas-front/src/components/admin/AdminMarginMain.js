@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import ManagementStore from "./ManagementStore";
 
-const ManagementMain = () => {
+const AdminMarginMain = () => {
   const [adminDetailTitle, setAdminDetailTitle] = useState("");
 
   return (
@@ -26,4 +26,4 @@ const ManagementMain = () => {
   );
 };
 
-export default ManagementMain;
+export default AdminMarginMain;
