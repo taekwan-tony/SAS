@@ -21,6 +21,7 @@ import StorePayment from "./StorePayment";
 import { storeNameState } from "../utils/RecoilData";
 import StoreNoticeList from "./StoreNoticeList";
 import StoreNoticeDetail from "./StoreNoticeDetail";
+import StoreViewMain from "./StoreViewMain";
 
 const StoreCheckMain = () => {
   // 로그인 지속
@@ -89,7 +90,7 @@ const StoreCheckMain = () => {
     {
       text: "매장관리",
       icon: "fas fa-id-card",
-      to: "/storecheck/StoreViewFrm",
+      to: "/storecheck/StoreViewMain",
     },
     {
       text: "메뉴관리",
@@ -122,8 +123,8 @@ const StoreCheckMain = () => {
       <Routes>
         <Route path="storePayList/:storeNo" element={<StorePayment />} />
         <Route
-          path="storeViewFrm"
-          element={<StoreViewFrm setActiveIndex={setActiveIndex} />}
+          path="storeViewMain"
+          element={<StoreViewMain setActiveIndex={setActiveIndex} />}
         />
         <Route
           path="managereserved"

@@ -4,12 +4,16 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import PostCodeApi from "../utils/PostCodeApi";
 import "./modal.css";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SelectMUI from "../utils/SelectMUI";
 import StoreMoodCheckBoxMUI from "../utils/StoreMoodCheckBoxMUI";
 import StoreAmenitiesCheckBoxMUI from "../utils/StoreAmenitiesCheckBoxMUI";
 import { useRecoilState } from "recoil";
-import { loginStoreIdState, storeTypeState } from "../utils/RecoilData";
+import {
+  loginStoreIdState,
+  loginStoreNoState,
+  storeTypeState,
+} from "../utils/RecoilData";
 
 const StoreViewFrm = (props) => {
   const setActiveIndex = props.setActiveIndex;
@@ -17,42 +21,8 @@ const StoreViewFrm = (props) => {
   const navigate = useNavigate();
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
+  const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
-
-  useEffect(() => {
-    setActiveIndex(0);
-    storeRefreshLogin();
-    const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
-
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 정리
-  }, []);
-
-  const storeRefreshLogin = () => {
-    const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
-    if (storeRefreshToken != null) {
-      axios.defaults.headers.common["Authorization"] = storeRefreshToken;
-      axios
-        .post(`${backServer}/store/storeRefresh`)
-        .then((res) => {
-          setLoginSoEmail(res.data.soEmail);
-          setStoreType(res.data.storeType);
-          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
-          setStoreNumber(res.data.storeNo); // storeNumber 상태 업데이트
-          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
-          window.localStorage.setItem(
-            "storeRefreshToken",
-            res.data.refreshToken
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoginSoEmail("");
-          setStoreType(2);
-          delete axios.defaults.headers.common["Authorization"];
-          window.localStorage.removeItem("storeRefreshToken");
-        });
-    }
-  };
 
   const [store, setStore] = useState({
     storeNo: null,
@@ -70,6 +40,8 @@ const StoreViewFrm = (props) => {
     mapX: "",
     mapY: "",
   });
+
+  console.log("매장 정보 : ", store);
 
   // storeNumber가 업데이트될 때마다 실행
   useEffect(() => {
