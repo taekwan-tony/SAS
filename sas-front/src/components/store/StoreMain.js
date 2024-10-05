@@ -83,7 +83,7 @@ function StoreMain() {
                   />
                   <HexagonItem
                     icon="fas fa-id-card"
-                    title="매장등록"
+                    title="매장관리"
                     className="color"
                     to="/storecheck/StoreViewFrm"
                   />

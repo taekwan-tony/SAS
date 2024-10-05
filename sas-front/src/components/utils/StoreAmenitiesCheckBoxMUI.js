@@ -6,7 +6,7 @@ import Checkbox from "@mui/material/Checkbox";
 const StoreAmenitiesCheckBoxMUI = (props) => {
   const setStoreAmenities = props.setStoreAmenities;
   const amenity = [
-    { name: "주차 여부" },
+    { name: "주차 가능" },
     { name: "키즈존" },
     { name: "반려동물 동반" },
     { name: "단체석" },

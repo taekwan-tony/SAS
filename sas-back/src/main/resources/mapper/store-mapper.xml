@@ -234,4 +234,23 @@
 	<insert id="insertStoreMonthPay">
 		insert into store_pay values(store_pay_seq.nextval,#{storeNo},null,null,#{storeTotalPrice},1,sysdate,#{storeTotalUsingCount})
 	</insert>
+<select id="selectStorePayList" resultType="storePayment">
+  select rnum, store_pay_no, store_total_price, store_pay_request_date, store_pay_date, store_pay_status
+  from (
+    select rownum as rnum, p.* 
+    from (
+      select 
+        store_pay_no,
+        store_pay_date,
+        store_total_price,
+        store_pay_status,
+        store_pay_request_date
+      from store_pay 
+      where store_no=#{storeNo} 
+      order by store_pay_request_date desc
+    ) p
+  )
+</select>
+
+
 </mapper>
