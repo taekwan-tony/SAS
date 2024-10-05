@@ -550,7 +550,7 @@ const ReservationModalSecond = (props) => {
   return (
     <div className="reservation-modal-wrap second">
       <div className="modalTitle">
-        <h1>예약화인</h1>
+        <h1>예약확인</h1>
         <p className="text">예약 일정을 다시 한번 확인해 주세요</p>
       </div>
       <div className="modalContent">

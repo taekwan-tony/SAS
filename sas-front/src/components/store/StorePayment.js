@@ -17,6 +17,7 @@ const StorePayment = () => {
   const [storePaymentList, setStorePaymentList] = useState([]);
   const [storePayStatus, setStorePayStatus] = useState(0);
 
+  //결제 내역
   useEffect(() => {
     axios
       .get(`${backServer}/store/storePayList/${storeNo}`)
@@ -31,6 +32,7 @@ const StorePayment = () => {
 
   console.log("이용료 결제 (매장 번호) : ", storeNo);
 
+  //지난 달 예약
   useEffect(() => {
     //지난 달 예약 데이터
     const lastMonthData = async () => {
@@ -147,12 +149,51 @@ const StorePayment = () => {
 const PaymentItem = (props) => {
   const payment = props.payment;
   const storePayStatus = props.storePayStatus;
+  const changeAmount = props.changeAmount;
+
+  //결제 요청
+  const [amount, setAmount] = useState(0);
+
+  const pay = (pg_method, amount, nickname, redirect_url) => {
+    const { IMP } = window;
+    IMP.init("imp45344155"); //가맹점 번호
+    IMP.request_pay(
+      {
+        pg: `${pg_method}`, //결제 방식
+        pay_method: "card",
+        merchant_uid: `mid_${new Date().getTime()}`, //현재 시간
+        name: "결제 품목",
+        amount: `${amount}`, //금액
+        buyer_email: "이메일",
+        buyer_name: `${nickname}`, //닉네임
+        buyer_tel: "010-0000-0000",
+        buyer_addr: "서울특별시 강남구 삼성동",
+        buyer_postcode: "123-456",
+        m_redirect_url: `${redirect_url}`, //결제 후 리다이렉트 주소
+      },
+      function (rsp) {
+        //callback
+        if (rsp.success) {
+          //결제 성공
+          console.log("결제 성공 : ", rsp);
+        } else {
+          //결제 실패
+          console.log("결제 실패");
+        }
+      }
+    );
+  };
+
   return (
     <tr className="storePayment-tr">
       <td className="storePayment-td" style={{ width: "10%" }}>
         {payment.storePayNo}
       </td>
-      <td className="storePayment-td" style={{ width: "20%" }}>
+      <td
+        type="number"
+        className="storePayment-td amount"
+        style={{ width: "20%" }}
+      >
         {payment.storeTotalPrice}
       </td>
       <td className="storePayment-td" style={{ width: "20%" }}>
@@ -165,7 +206,19 @@ const PaymentItem = (props) => {
         {payment.storePayStatus == 1 ? "결제 대기" : "결제 완료"}
       </td>
       <td className="storePayment-td" style={{ width: "10%" }}>
-        <button type="button">결제</button>
+        <button
+          type="button"
+          onClick={() =>
+            pay(
+              "kakaopay",
+              amount,
+              "nickname",
+              "http://localhost:3000/redirect"
+            )
+          }
+        >
+          결제
+        </button>
       </td>
     </tr>
   );
