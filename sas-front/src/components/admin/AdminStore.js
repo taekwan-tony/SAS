@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import AdminStoreList from "./AdminStoreList";
 import AdminStoreDetail from "./AdminStoreDetail";
 import AdminStoreReview from "./AdminStoreReview";
+import AdminStoreReport from "./AdminStoreReport";
 
 const AdminStore = () => {
   const [adminDetailTitle, setAdminDetailTitle] = useState("");
@@ -40,6 +41,12 @@ const AdminStore = () => {
             path="storeReview"
             element={
               <AdminStoreReview setAdminDetailTitle={setAdminDetailTitle} />
+            }
+          />
+          <Route
+            path="storeReport"
+            element={
+              <AdminStoreReport setAdminDetailTitle={setAdminDetailTitle} />
             }
           />
         </Routes>

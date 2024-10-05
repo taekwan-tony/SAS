@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminStoreReport = (props) => {
   const setAdminDetailTitle = props.setAdminDetailTitle;
-  setAdminDetailTitle("제휴 목록");
+  setAdminDetailTitle("매장 신고리스트");
   const [storeList, setStoreList] = useState([]);
   const [reqPage, setReqPage] = useState(1);
   const [changeData, setChangeData] = useState(0);
@@ -14,7 +14,7 @@ const AdminStoreReport = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
     axios
-      .get(`${backServer}/admin/storeList/${reqPage}/${1}`)
+      .get(`${backServer}/admin/storeReportLIst/${reqPage}`)
       .then((res) => {
         setStoreList(res.data.list);
         setPi(res.data.pi);
@@ -28,7 +28,7 @@ const AdminStoreReport = (props) => {
     <div className="admin-store-list-wrap">
       <div className="admin-store-list-menu">
         <div className="admin-store-menu admin-store-menu-check">
-          <span>매장현황</span>
+          <span>신고리스트</span>
         </div>
       </div>
       <div className="admin-store-list-main">
@@ -59,12 +59,7 @@ const StoreItem = (props) => {
   const store = props.store;
   const navigate = useNavigate();
   return (
-    <tr
-      className="admin-store-select-wrap"
-      onClick={() => {
-        navigate(`/admin/store/storeDetail/${store.storeNo}`);
-      }}
-    >
+    <tr className="admin-store-select-wrap">
       <td style={{ width: "10%" }}>{store.storeNo}</td>
       <td style={{ width: "20%" }}>{store.storeEnrollDate}</td>
       <td style={{ width: "15%" }}>{store.soName}</td>
