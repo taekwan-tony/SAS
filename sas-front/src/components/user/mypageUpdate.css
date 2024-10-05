@@ -1,0 +1,52 @@
+div.mypage-main .update-main {
+  width: 100%;
+  height: calc(100vh - 130px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.mypage-main .update-main > .update-content {
+  width: 80%;
+  min-height: 300px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #fff;
+}
+div.mypage-main .update-main > .update-content > h1 {
+  text-align: center;
+  font: bold 3em var(--defaultFont);
+  color: var(--main1);
+}
+
+div.mypage-main .update-main > .update-content .checkPw-wrap {
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.mypage-main .update-main > .update-content .checkPw-wrap > form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+div.mypage-main .update-main > .update-content .checkPw-wrap > form > label {
+  margin: 0;
+  padding: 0;
+}
+div.mypage-main .update-main > .update-content .checkPw-wrap > form > input {
+  outline: none;
+}
+div.mypage-main
+  .update-main
+  > .update-content
+  .checkPw-wrap
+  > form
+  > input:focus {
+  border: 1px solid var(--main1);
+}

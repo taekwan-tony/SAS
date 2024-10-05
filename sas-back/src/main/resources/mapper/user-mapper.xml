@@ -80,12 +80,12 @@
 	<select id="selectFavorite" resultType="favorite">
 		select favorite_no, 
 				favorite_folder_no, 
-				store_name, 
+				favorite.store_no store_no,
 				(select si_filepath from store_image_file 
 					where si_file_no=(select min(si_file_no) 
 										from store_image_file  
 										where store_image_file.store_no=favorite.store_no))store_image 
-		from favorite join store on(favorite.store_no=store.store_no) 
+		from favorite
 		where favorite_folder_no=#{favoriteFolderNo}
 	</select>
 	<select id="selectReservationList" resultType="reservation">

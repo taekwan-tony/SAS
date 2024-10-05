@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.sas.seat.model.dto.SeatDTO;
+import kr.co.sas.store.model.dto.FavoriteStoreInfoDTO;
 import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
@@ -64,6 +65,8 @@ public interface StoreDao {
 	StoreDTO storeEmailselect(int storeNo);
 
 	List selectStorePayList(int storeNo);
+
+	FavoriteStoreInfoDTO selectStoreFavorite(int storeNo);
 
 
 }

@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import kr.co.sas.seat.model.dto.SeatDTO;
+import kr.co.sas.store.model.dto.FavoriteStoreInfoDTO;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
 import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
@@ -259,4 +260,11 @@ public class StoreController {
 		return ResponseEntity.ok(list);
 	}//list
 	
+	@Operation(summary="즐겨찾기 매장 정보 가져오기", description = "즐겨찾기에 등록된 매장번호 가져와서 매장 이름, 평균 별점, 영업시간, 주소, 매장 소개글 매장 객체로 가져오기")
+	@GetMapping(value="/storeNo/{storeNo}/getStoreInfoFavorite")
+	public ResponseEntity<FavoriteStoreInfoDTO> getStoreInfoFavorite(@PathVariable int storeNo){
+		FavoriteStoreInfoDTO store = storeService.selectStoreFavorite(storeNo);
+		System.out.println(store);
+		return ResponseEntity.ok(store);
+	}
 }

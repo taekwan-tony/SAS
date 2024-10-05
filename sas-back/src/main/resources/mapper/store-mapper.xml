@@ -219,4 +219,15 @@
 		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
 	</select>
 
+
+	<select id="selectStoreFavorite" resultType="favoriteStore">
+		select store_name, 
+					store_time, 
+					store_addr, 
+					store_introduce, 
+					nvl(round(avg(review_score),1),0)review_score_avg  
+		from store left outer join review using(store_no)  
+		where store_no = #{storeNo} 
+		group by store_no, store_name, store_time, store_addr, store_introduce
+	</select>
 </mapper>

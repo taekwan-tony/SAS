@@ -232,9 +232,9 @@ function UserMain() {
                       </Link>
                       <ul className="user-navi-submenu">
                         <li>
-                          <a href="#">
+                          <Link to="mypage/update/checkPw">
                             <i className="fa-solid fa-user-pen"></i>내 정보 수정
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <Link to="mypage/myreview">
@@ -254,9 +254,9 @@ function UserMain() {
                       </Link>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to="mypage/favorite">
                         <i className="fa-solid fa-bookmark"></i>즐겨찾기
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -313,8 +313,6 @@ function UserMain() {
             <UserMainView activeTab={activeTab} setActiveTab={setActiveTab} />
           }
         ></Route>
-        {/* 신고 모달 확인용 */}
-        <Route path="report*" element={<ReportMain />}></Route>
       </Routes>
     </div>
   );

@@ -15,6 +15,7 @@ import kr.co.sas.review.model.dao.ReviewDao;
 import kr.co.sas.review.model.dto.ReviewDTO;
 import kr.co.sas.seat.model.dto.SeatDTO;
 import kr.co.sas.store.model.dao.StoreDao;
+import kr.co.sas.store.model.dto.FavoriteStoreInfoDTO;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
 import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
@@ -218,6 +219,12 @@ public class StoreService {
 		List list = storeDao.selectStorePayList(storeNo);
 		return list;
 	}//selectStorePayList
+
+
+	public FavoriteStoreInfoDTO selectStoreFavorite(int storeNo) {
+		FavoriteStoreInfoDTO store = storeDao.selectStoreFavorite(storeNo);
+		return store;
+	}
 
 
 }
