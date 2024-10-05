@@ -252,5 +252,7 @@
   )
 </select>
 
-
+<select id="selectOneSoEmail" resultType="store">
+	select so_email from store where store_no = #{storeNo}
+</select>
 </mapper>

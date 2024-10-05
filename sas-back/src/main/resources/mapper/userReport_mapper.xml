@@ -4,4 +4,40 @@
 	<insert id="insertUserReport">
 		insert into user_report values(user_report_seq.nextval, #{reportReason},#{reserveNo})
 	</insert>
+	
+		<select id="totalReportCount" resultType="int">
+		select count(*) 
+                from(
+                select subs.store_no,store_name,so_name,so_phone,
+                        count(report_no) as report_total_count
+                        from user_report 
+                        join reservation using(reserve_no) 
+                        join store subs on(reservation.store_no = subs.store_no) 
+                        where report_type = 0 
+                        group by subs.store_no,store_name,so_name,so_phone 
+                        order by store_no desc)
+	</select>
+	
+	<select id="selectReportStore" resultType="store">
+		select * from
+            (select rownum as rnum, report.* 
+                from(
+                select subs.store_no as store_no,store_name,so_name,so_phone,store_addr,
+                        count(report_no) as report_total_count
+                        from user_report 
+                        join reservation using(reserve_no) 
+                        join store subs on(reservation.store_no = subs.store_no) 
+                        where report_type = 0
+                        group by subs.store_no,store_name,so_name,so_phone,store_addr
+                        order by store_no desc)report where report_total_count >4) 
+        where rnum between #{start} and #{end}
+	</select>
+	<select id="storeReportComp" resultType="int">
+		select report_no from user_report 
+                        join reservation using(reserve_no)
+                        where reserve_no in (select reserve_no from reservation where store_no =#{storeNo})	
+	</select>
+	<update id="updateReport">
+		update user_report set report_type=1 where report_no =#{reportNo}
+	</update>
 </mapper>

@@ -23,6 +23,7 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	
 	@GetMapping(value="/storeList/{reqPage}/{storeType}")
 	public ResponseEntity<Map> storeList(@PathVariable int reqPage,@PathVariable int storeType){
 		Map map = adminService.selectApprovalStore(reqPage,storeType);
@@ -47,4 +48,15 @@ public class AdminController {
 		return ResponseEntity.ok(result);
 	}
 
+	@GetMapping(value="/storeReportLIst/{reqPage}")
+	public ResponseEntity<Map> storeReportList(@PathVariable int reqPage){
+		Map map = adminService.selectReportList(reqPage);
+		return ResponseEntity.ok(map);
+	}
+	
+	@PatchMapping(value="/storeReportComp/{storeNo}")
+	public ResponseEntity<Integer> storeReportComp(@PathVariable int storeNo){
+		int result = adminService.storeReportComp(storeNo);
+		return ResponseEntity.ok(result);
+	}
 }

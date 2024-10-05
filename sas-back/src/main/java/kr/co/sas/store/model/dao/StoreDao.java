@@ -72,5 +72,9 @@ public interface StoreDao {
 
 	int insertStoreMonthPay(StorePaymentDTO storePay);
 
+	StoreDTO selectOneSoEmail(int storeNo);
+
+	
+
 
 }
