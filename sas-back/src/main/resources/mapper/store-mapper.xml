@@ -124,7 +124,7 @@
 
 	
 	<select id="selectAllPayStore" resultType="store">
-		select so_email from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
+		select so_email,store_no from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
 	<!-- 
 	이미지등록되면 구현하기로한 올스토얼 ~~~
@@ -221,5 +221,17 @@
 	<select id="selectStorePayList" resultType="storePayment">
 		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
 	</select>
-
+	
+	<select id="storeMonthPayCount" resultType="storePayment">
+		select 
+			nvl(sum(reserve_people)*(select service_price from store where store.store_no =r.store_no),0) as store_total_price,
+			nvl(sum(reserve_people),0) as store_total_using_count
+		from reservation r 
+		where store_no =#{storeNo} and 
+		to_char(reserve_date,'yyyy-mm-dd') between to_char(add_months(sysdate-1,-1),'yyyy-mm-dd') and to_char(sysdate-1,'yyyy-mm-dd') 
+		group by store_no
+	</select>
+	<insert id="insertStoreMonthPay">
+		insert into store_pay values(store_pay_seq.nextval,#{storeNo},null,null,#{storeTotalPrice},1,sysdate,#{storeTotalUsingCount})
+	</insert>
 </mapper>

@@ -20,6 +20,7 @@ import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
 import kr.co.sas.store.model.dto.StoreMoodDTO;
+import kr.co.sas.store.model.dto.StorePaymentDTO;
 import kr.co.sas.util.JwtUtils;
 
 @Service
@@ -109,9 +110,19 @@ public class StoreService {
 		return result;
 	}//changePw
 
-	
+	@Transactional
 	public List<StoreDTO> selectAllPayStore() {
-		List list = storeDao.selectAllPayStore();
+		List<StoreDTO> list = storeDao.selectAllPayStore();
+		int result = 0;
+		
+		for(StoreDTO store : list ) {
+			
+			StorePaymentDTO storePay = storeDao.storeMonthPayCount(store);
+			if(storePay !=null) {
+				storePay.setStoreNo(store.getStoreNo());
+				result += storeDao.insertStoreMonthPay(storePay);				
+			}
+		}
 		return list;
 	}
 

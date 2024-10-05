@@ -10,6 +10,7 @@ import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
 import kr.co.sas.store.model.dto.StoreMoodDTO;
+import kr.co.sas.store.model.dto.StorePaymentDTO;
 import kr.co.sas.util.PageInfo;
 
 @Mapper
@@ -66,6 +67,10 @@ public interface StoreDao {
 	List kakaoMapStore();
 	
 	List selectStorePayList(int storeNo);
+
+	StorePaymentDTO storeMonthPayCount(StoreDTO store);
+
+	int insertStoreMonthPay(StorePaymentDTO storePay);
 
 
 }
