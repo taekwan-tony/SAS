@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MypageFavorite } from "./MypageContent";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const FavoriteMain = (props) => {
@@ -70,6 +70,7 @@ const FavoriteList = (props) => {
 };
 
 const Favorite = (props) => {
+  const navigate = useNavigate();
   const favorite = props.favorite;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [store, setStore] = useState({});
@@ -87,7 +88,13 @@ const Favorite = (props) => {
       });
   }, [favorite]);
   return (
-    <div className="favorite-one-content-wrap">
+    <div
+      className="favorite-one-content-wrap"
+      style={{ cursor: "pointer" }}
+      onClick={() => {
+        navigate(`/usermain/menuview/${favorite.storeNo}/menuview`);
+      }}
+    >
       <div className="img">
         <img
           src={

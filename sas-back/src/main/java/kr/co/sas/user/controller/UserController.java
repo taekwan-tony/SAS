@@ -189,4 +189,14 @@ public class UserController {
 		}
 		return ResponseEntity.status(404).build();
 	}
+	
+	@Operation(summary="일반회원 기본 정보 가져오기", description = "정보 수정 위해 개인 정보(아이디, 닉네임, 이름, 성별, 생년월일, 전화번호, 이메일 조회")
+	@GetMapping(value="/userNo/{userNo}/update")
+	public ResponseEntity<UserDTO> getUserInfoForUpdate(@PathVariable int userNo){
+		UserDTO user = userService.getUserInfoForUpdate(userNo);
+		if(user!=null) {
+			return ResponseEntity.ok(user);
+		}
+		return ResponseEntity.status(404).build();
+	}
 }
