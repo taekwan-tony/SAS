@@ -49,4 +49,6 @@ public interface ReservationDao {
 
 	int reservationTotal(String userId);
 
+	int cancelReservation(int reserveNo);
+
 }

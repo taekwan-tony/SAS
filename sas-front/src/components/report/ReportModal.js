@@ -32,7 +32,7 @@ const ReportModal = (props) => {
     if (report.reportReason != null && report.reportReason !== "") {
       console.log(report);
       axios
-        .post(`${backServer}/report`, report)
+        .post(`${backServer}/userReport`, report)
         .then((res) => {
           if (res.data) {
             console.log(res.data);

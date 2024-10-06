@@ -108,6 +108,11 @@ public class ReservationService {
 			map.put("list", list);
 			return map;
 		}
+		@Transactional
+		public int cancelReservation(int reserveNo) {
+			int result = reservationDao.cancelReservation(reserveNo);
+			return result;
+		}
 
 
 }
