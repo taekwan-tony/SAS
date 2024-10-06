@@ -5,7 +5,7 @@ import {
   loginUserNicknameState,
   loginUserNoState,
 } from "../utils/RecoilData";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import "./mypageUpdate.css";
 import axios from "axios";
@@ -108,10 +108,39 @@ const Update = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [loginUserNo]);
+  }, [loginUserNo, checkUpdate]);
   const changeInputVal = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
+  // 정규식 위한 체크
+  const [checkBeforeUpdate, setCheckBeforeUpdate] = useState({
+    checkNickname: true,
+    checkPw: true,
+    checkPhone: true,
+    checkEmail: true,
+  });
+  const [checkMsg, setCheckMsg] = useState({ checkNickname: "" });
+  // 닉네임 중복 체크
+  const checkNickname = () => {
+    setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: false });
+    setCheckMsg({ ...checkMsg, checkNickname: "" });
+    axios
+      .get(`${backServer}/user/userNickname/${user.userNickname}`)
+      .then((res) => {
+        if (res.data) {
+          setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: true });
+          setCheckMsg({
+            ...checkMsg,
+            checkNickname: "사용 가능한 닉네임입니다.",
+          });
+        } else {
+          setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: false });
+          setCheckMsg({ ...checkMsg, checkNickname: "중복된 닉네임입니다." });
+        }
+      });
+  };
+
+  // 업데이트 버튼
   const update = () => {
     if (
       user.userNickname !== "" &&
@@ -130,6 +159,7 @@ const Update = (props) => {
             }).then(() => {
               setLoginUserNickname(user.userNickname);
               setCheckUpdate(!checkUpdate);
+              setCheckMsg({ ...checkMsg, checkNickname: "" });
             });
           }
         })
@@ -156,9 +186,18 @@ const Update = (props) => {
               name="userNickname"
               value={user.userNickname}
               onChange={changeInputVal}
+              onBlur={checkNickname}
               className="update"
             />
-            <p className="msg">이건 닉네임 중복 체크 메세지</p>
+            <p
+              className={
+                checkBeforeUpdate.checkNickname
+                  ? "msg colorGreen"
+                  : "msg colorRed"
+              }
+            >
+              {checkMsg.checkNickname}
+            </p>
           </div>
         </div>
         <div className="input-box">

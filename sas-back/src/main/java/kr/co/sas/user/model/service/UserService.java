@@ -156,7 +156,7 @@ public class UserService {
 			return false;
 		}
 	}
-
+	@Transactional
 	public int updateUser(UserDTO user) {
 		if(user.getUserPw()!=null && !user.getUserPw().equals("")) {
 			user.setUserPw(encoder.encode(user.getUserPw()));
@@ -165,5 +165,10 @@ public class UserService {
 		}
 		int result = userDao.updateUser(user);
 		return result;
+	}
+
+	public boolean checkNickname(String userNickname) {
+		int result = userDao.checkNickname(userNickname);
+		return result==0;
 	}
 }

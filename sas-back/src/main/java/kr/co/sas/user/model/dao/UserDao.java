@@ -31,5 +31,7 @@ public interface UserDao {
 
 	int updateUser(UserDTO user);
 
+	int checkNickname(String userNickname);
+
 
 }

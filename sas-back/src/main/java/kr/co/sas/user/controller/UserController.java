@@ -213,4 +213,11 @@ public class UserController {
 		int result = userService.updateUser(user);
 		return ResponseEntity.ok(result>0);
 	}
+	
+	@Operation(summary="일반회원 닉네임 중복 조회", description = "회원 닉네임을 받아서 중복됐는지 체크")
+	@GetMapping(value="/userNickname/{userNickname}")
+	public ResponseEntity<Boolean> checkNickname(@PathVariable String userNickname){
+		boolean result = userService.checkNickname(userNickname);
+		return ResponseEntity.ok(result);
+	}
 }

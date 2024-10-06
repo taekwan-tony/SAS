@@ -123,4 +123,7 @@
 		</if>
 		 user_phone=#{userPhone}, user_email=#{userEmail} where user_no=#{userNo}
 	</update>
+	<select id="checkNickname" resultType="int">
+		select count(*) from user_tbl where user_nickname=#{userNickname}
+	</select>
 </mapper>
