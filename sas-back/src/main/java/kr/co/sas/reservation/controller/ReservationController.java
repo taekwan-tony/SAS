@@ -121,11 +121,17 @@ public class ReservationController {
         return ResponseEntity.ok("예약 삭제 성공");        
     }
     //예약내역가져오기
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List> reservationView(@PathVariable ReservationDTO userId){
-    	
-    	List list = reservationService.reservationView(userId);
-    	return ResponseEntity.ok(list);
+//    @GetMapping("/view/{userId}")
+//    public ResponseEntity<List> reservationView(@PathVariable String userId){
+//    	List list = reservationService.reservationView(userId);
+//    	System.out.println(list);
+//    	System.out.println(userId);
+//    	return ResponseEntity.ok(list);
+//    }
+    @GetMapping("/view/{reqPage}/{userId}")
+    public ResponseEntity<Map<String,Object>> reservationList(@PathVariable int reqPage, @PathVariable String userId){
+    	Map<String, Object> map = reservationService.reservationList(reqPage, userId);
+    	return ResponseEntity.ok(map);
     }
     
     

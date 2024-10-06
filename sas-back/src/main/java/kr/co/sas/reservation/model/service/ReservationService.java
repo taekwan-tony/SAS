@@ -13,12 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.sas.reservation.model.dao.ReservationDao;
 import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
+import kr.co.sas.util.PageInfo;
+import kr.co.sas.util.PageUtil;
 import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
 @Service
 public class ReservationService {
 	@Autowired
 	private ReservationDao reservationDao;
+	@Autowired
+	private PageUtil pageUtil;
 	
 		
 		public List<ReservationDTO> getAllReservation(int storeNo){
@@ -91,8 +95,18 @@ public class ReservationService {
 	        return reservationDao.deleteReservation(reserveNo);
 	    }
 
-		public List<ReservationDTO> reservationView(ReservationDTO userId) {
-			return reservationDao.reservationView(userId); 
+
+
+		public Map<String, Object> reservationList(int reqPage, String userId) {
+			int numPerPage = 5;
+			int pageNaviSize = 5;
+			int reservationTotal = reservationDao.reservationTotal(userId);
+			PageInfo pi = pageUtil.getPageInfo(reqPage, numPerPage, pageNaviSize, reservationTotal);
+			List list = reservationDao.reservationView(pi, userId);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("pi", pi);
+			map.put("list", list);
+			return map;
 		}
 
 

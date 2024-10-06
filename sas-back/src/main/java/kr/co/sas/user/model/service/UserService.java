@@ -133,7 +133,16 @@ public class UserService {
 	}
 
 	public UserDTO getUserInfoForPay(int userNo) {
-		UserDTO user = userDao.getUserInfoForPay(userNo);
+		UserDTO user = userDao.getUserInfo(userNo);
+		if(user!=null) {
+			user.setUserBirth(null);
+			user.setUserGender(null);
+		}
+		return user;
+	}
+
+	public UserDTO getUserInfoForUpdate(int userNo) {
+		UserDTO user = userDao.getUserInfo(userNo);
 		return user;
 	}
 	

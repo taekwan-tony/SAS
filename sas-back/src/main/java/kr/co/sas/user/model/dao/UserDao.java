@@ -25,7 +25,7 @@ public interface UserDao {
 
 	int updateUserPhoto(UserDTO user);
 
-	UserDTO getUserInfoForPay(int userNo);
+	UserDTO getUserInfo(int userNo);
 
 
 }

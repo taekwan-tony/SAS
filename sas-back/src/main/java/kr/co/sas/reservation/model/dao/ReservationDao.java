@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
+import kr.co.sas.util.PageInfo;
 import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
 @Mapper
@@ -43,6 +44,9 @@ public interface ReservationDao {
 
 	int insertPay(PaymentDTO pay);
 
-	List<ReservationDTO> reservationView(ReservationDTO userId);
+
+	List<ReservationDTO> reservationView(PageInfo pi, String userId);
+
+	int reservationTotal(String userId);
 
 }

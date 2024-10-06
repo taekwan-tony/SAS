@@ -29,6 +29,19 @@ a {
   background-color: var(--main1);
   color: white;
 }
+
+.btn-a {
+  background-color: transparent;
+  color: var(--main1);
+  outline: none;
+  border: none;
+}
+
+.btn-a:hover {
+  color: var(--main1);
+  text-decoration: underline;
+}
+
 .colorGreen {
   color: var(--main1);
 }

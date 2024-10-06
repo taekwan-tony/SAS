@@ -1,4 +1,6 @@
 // 예약 관련 모달창, 즐겨찾기 스낵바 위한 import
+import DatePicker from "../utils/DatePicker";
+import { format } from "date-fns";
 import Modal from "react-modal";
 import "../user/etc.css";
 import "../reservation/reservationModal.css";
@@ -6,7 +8,10 @@ import Swal from "sweetalert2";
 // 끝
 import { Link, Route, Routes, useParams, useNavigate } from "react-router-dom";
 import "./menuview.css";
-import { useEffect, useRef, useState } from "react";
+import { Map } from "react-kakao-maps-sdk";
+import { useEffect, useMemo, useRef, useState } from "react";
+import ReactQuill from "react-quill";
+import { PiArrowFatLeft, PiStarFill, PiStarLight } from "react-icons/pi";
 import axios from "axios";
 import KaKao from "../utils/Kakao";
 import {
@@ -17,9 +22,17 @@ import {
 } from "../utils/RecoilData";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Snackbar from "@mui/material/Snackbar";
-import { ReservationMain } from "../reservation/ReservationMain";
+import {
+  ReservationMain,
+  ReservationModalFirst,
+  ReservationModalSecond,
+} from "../reservation/ReservationMain";
+import { he } from "date-fns/locale";
+import { ReviewContent } from "../user/MypageContent";
 import QuillEditor from "../utils/QuillEditor";
 import { Rating, Stack } from "@mui/material";
+import PageNavi from "../utils/PagiNavi";
+const { kakao } = window;
 
 const MenuView = () => {
   const params = useParams();
@@ -31,7 +44,7 @@ const MenuView = () => {
   useEffect(() => {
     console.log("userNo:", loginUserNo);
     axios
-      .get(`${backServer}/store/storeNo/${storeNo}/userNo/${loginUserNo}`)
+      .get(`${backServer}/store/storeNo/${store.storeNo}/userNo/${loginUserNo}`)
       .then((res) => {
         // console.log(res.data);
         setStore(res.data);
@@ -46,7 +59,7 @@ const MenuView = () => {
         console.log(2);
         axios
           .delete(
-            `${backServer}/favorite/storeNo/${storeNo}/userNo/${loginUserNo}`
+            `${backServer}/favorite/storeNo/${store.storeNo}/userNo/${loginUserNo}`
           )
           .then((res) => {
             // console.log(res);
@@ -64,7 +77,7 @@ const MenuView = () => {
         console.log(3);
         axios
           .post(`${backServer}/favorite`, {
-            storeNo: storeNo,
+            storeNo: store.storeNo,
             userNo: loginUserNo,
           })
           .then((res) => {
@@ -176,16 +189,11 @@ const MenuView = () => {
     userNo: loginUserNo,
     favoriteFolderNo: 0,
   });
-  // 자꾸 loginUserNo가 0으로 뜨므로..
-  useEffect(() => {
-    setChangeFolder({ ...changeFolder, userNo: loginUserNo });
-    setAddFolder({ ...addFolder, userNo: loginUserNo });
-  }, [loginUserNo]);
   // 즐겨찾기 목록 폴더 이동
   const changeFavoriteFolder = () => {
-    // const form = new FormData();
-    // form.append("userNo", changeFolder.userNo);
-    // form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
+    const form = new FormData();
+    form.append("userNo", changeFolder.userNo);
+    form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
     axios
       .patch(`${backServer}/favorite/changeFolder`, changeFolder)
       .then((res) => {
@@ -193,10 +201,6 @@ const MenuView = () => {
         if (res.data) {
           setIsFavoriteModalOpen(false);
           handleOpen("즐겨찾기 이동이 완료되었습니다.");
-          setChangeFolder({
-            ...changeFolder,
-            favoriteFolderNo: 0,
-          });
         }
       })
       .catch((err) => {
@@ -218,40 +222,23 @@ const MenuView = () => {
   };
   const addFavoriteFolder = () => {
     if (
-      addFolder.favoriteFolderName != null &&
+      addFolder.favoriteFolderName !== null &&
       addFolder.favoriteFolderName !== ""
     ) {
       // const form = new FormData();
       // form.append("favoriteFolderName", addFolder.favoriteFolderName);
       // form.append("userNo", addFolder.userNo);
+      console.log(addFolder);
       axios
-        .get(
-          `${backServer}/favorite/userNo/${addFolder.userNo}/favoriteFolderName/${addFolder.favoriteFolderName}/checkFolder`
-        )
+        .post(`${backServer}/favorite/insertFolder`, addFolder)
         .then((res) => {
           if (res.data) {
-            axios
-              .post(`${backServer}/favorite/insertFolder`, addFolder)
-              .then((res) => {
-                if (res.data) {
-                  setAddFolder({
-                    favoriteFolderName: "",
-                    userNo: loginUserNo,
-                  });
-                  setCheckAddFolder(!checkAddFolder);
-                  favoriteRef.current.classList.remove("show");
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          } else {
-            Swal.fire({
-              title: "즐겨찾기 목록 이름 중복",
-              text: "중복된 이름은 사용하실 수 없습니다.",
-              icon: "warning",
-              confirmButtonColor: "var(--main1)",
+            setAddFolder({
+              favoriteFolderName: "",
+              userNo: loginUserNo,
             });
+            setCheckAddFolder(!checkAddFolder);
+            favoriteRef.current.classList.remove("show");
           }
         })
         .catch((err) => {
@@ -293,9 +280,6 @@ const MenuView = () => {
           <Link to="menu">
             <li>메뉴</li>
           </Link>
-          <Link to="photo">
-            <li>사진</li>
-          </Link>
           <Link to="review">
             <li>리뷰</li>
           </Link>
@@ -310,7 +294,7 @@ const MenuView = () => {
           <Route path="menuview" element={<MenuMain store={store} />}></Route>
           <Route path="menunews" element={<Menunews store={store} />}></Route>
           <Route path="menu" element={<Menu store={store} />}></Route>
-          <Route path="photo" element={<MenuPhoto store={store} />}></Route>
+
           <Route path="review" element={<MenuReview store={store} />}></Route>
           <Route path="info" element={<Menuinfo store={store} />}></Route>
         </Routes>
@@ -351,7 +335,7 @@ const MenuView = () => {
           <ReservationMain
             setIsReserveModalOpen={setIsReserveModalOpen}
             isReserveModalOpen={isReserveModalOpen}
-            storeNo={storeNo}
+            storeNo={store.storeNo}
             storeName={store.storeName}
           />
         </Modal>
@@ -387,12 +371,7 @@ const MenuView = () => {
                       type="radio"
                       name="folder-name"
                       id={index}
-                      checked={
-                        changeFolder.favoriteFolderNo === 0
-                          ? index === 0
-                          : changeFolder.favoriteFolderNo ===
-                            folder.favoriteFolderNo
-                      }
+                      value={folder.favoriteFolderName}
                       onChange={changeChecked}
                     />
                     <label className="radio-box-content" htmlFor={index}>
@@ -403,6 +382,7 @@ const MenuView = () => {
               })}
               <form
                 ref={favoriteRef}
+                action=""
                 className="addFolder"
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -435,12 +415,43 @@ const MenuView = () => {
   );
 };
 
-const MenuMain = () => {
+const amenitiesImages = {
+  "주차 여부": "/image/주차가능.png",
+  "반려동물 동반": "/image/반려동물동반.png",
+  단체석: "/image/단체석.png",
+  키즈존: "/image/키즈존.png",
+};
+
+const MenuMain = (props) => {
+  const store = props.store;
+  console.log(store);
+
   return (
     <main className="main-menu-home">
       <div className="facilities">
         <h2>편의시설</h2>
-        <div className="amenities">왜 화를내여;</div>
+        <div className="amenities">
+          {store.storeAmenityList
+            ? store.storeAmenityList.map((amenity, index) => {
+                return (
+                  <div key={"amenity" + index}>
+                    {amenity.amenities}
+                    {amenitiesImages[amenity.amenities] && (
+                      <img
+                        src={amenitiesImages[amenity.amenities]}
+                        alt={amenity.amenities}
+                        style={{
+                          width: "50px",
+                          height: "auto",
+                          marginLeft: "5px",
+                        }}
+                      />
+                    )}
+                  </div>
+                );
+              })
+            : ""}
+        </div>
       </div>
     </main>
   );
@@ -455,8 +466,8 @@ const Menunews = (props) => {
   );
 };
 
-const Menu = () => {
-  const [store, setStore] = useState({ storeNo: 73 });
+const Menu = (props) => {
+  const store = props.store;
   const [menu, setMenu] = useState([]);
   const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
@@ -477,7 +488,7 @@ const Menu = () => {
             return (
               <div className="menu-item">
                 <img
-                  src={menuItem.menuPhoto}
+                  src={`${backServer}/store/storeMenu/${menuItem.menuPhoto}`}
                   alt="메뉴"
                   style={{ width: "200px", height: "auto" }}
                 />
@@ -495,7 +506,7 @@ const Menu = () => {
           return (
             <div className="menu-item">
               <img
-                src={menuItem.menuPhoto}
+                src={`${backServer}/store/storeMenu/${menuItem.menuPhoto}`}
                 alt="메뉴"
                 style={{ width: "200px", height: "auto" }}
               />
@@ -505,25 +516,6 @@ const Menu = () => {
             </div>
           );
         })}
-      </div>
-    </div>
-  );
-};
-//스토어할때 모든걸 다 갖고와 . !!
-const MenuPhoto = () => {
-  const params = useParams();
-  const storeNo = params.storeNo;
-  const [store, setStore] = useState({ storeNo: storeNo });
-  return (
-    <div className="menu-photo">
-      <h2>사진</h2>
-      <div className="menu-image2">
-        <img
-          src=""
-          alt="메뉴사진 
-        "
-        />
-        <img src={store.storePhoto} alt="메뉴사진" />
       </div>
     </div>
   );
@@ -631,7 +623,6 @@ const ModifyReview = (props) => {
                 text: "리뷰를 삭제했습니다",
                 icon: "success",
               });
-
               setChangedReview(!changedReview);
             }
           })
@@ -725,18 +716,7 @@ const ModifyReview = (props) => {
 
 const Menuinfo = (props) => {
   const store = props.store;
-  // const [store, setStore] = useState({ storeNo: 73 });
-  // const backServer = process.env.REACT_APP_BACK_SERVER;
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${backServer}/user/storeNo/${store.storeNo}`)
-  //     .then((res) => {
-  //       setStore(res.data);
-  //     })
-  //     .catch((err) => {});
-  // }, []);
-  // const
   return (
     <div className="menu-info">
       <div className="menu-intro">
@@ -761,15 +741,10 @@ const Menuinfo = (props) => {
           )}
         </div>
       }
-
       <p>{store.storeAddr}</p>
-      <h2>편의시설</h2>
-      <div className="facilities">
-        <div className="amenities">
-          <p>편의시설이미지</p>
-        </div>
-        <h2>전화번호</h2>
-        <p>02-442-5597</p>
+      <h2>전화번호</h2>
+      <div className="storephone">
+        <p>{store.storePhone}</p>
       </div>
     </div>
   );

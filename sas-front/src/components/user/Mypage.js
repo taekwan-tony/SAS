@@ -29,16 +29,40 @@ import { switchClasses } from "@mui/material";
 import { MenuReview } from "../menu/MenuView";
 import ImageResize from "@looop/quill-image-resize-module-react";
 import QuillEditor from "../utils/QuillEditor";
+import PageNavi from "../utils/PagiNavi";
+import { CleaningServices } from "@mui/icons-material";
+import FavoriteMain from "./FavoriteMain";
+import MypageUpdate from "./MypageUpdate";
 
 const Mypage = () => {
-  // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
-
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
+  //유저 정보 한번에 가져오기
+  const [user, setUser] = useState({});
+  const [checkAddFolder, setCheckAddFolder] = useState(false);
+  const [favoriteFolder, setFavoriteFolder] = useState({});
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  useEffect(() => {
+    // console.log(loginUserId);
+    axios
+      .get(`${backServer}/user/userNo/${loginUserNo}`)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data);
+        setFavoriteFolder(
+          res.data.favoriteFolderList ? res.data.favoriteFolderList[0] : {}
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [loginUserNo, checkAddFolder]);
+  // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
+  console.log(favoriteFolder);
   const [addFolder, setAddFolder] = useState({
     favoriteFolderName: "",
     userNo: loginUserNo,
   });
-  const [checkAddFolder, setCheckAddFolder] = useState(false);
+
   useEffect(() => {
     setAddFolder({ ...addFolder, userNo: loginUserNo });
   }, [loginUserNo]);
@@ -84,12 +108,30 @@ const Mypage = () => {
             <MypageMain
               addFolderModalOpen={addFolderModalOpen}
               checkAddFolder={checkAddFolder}
+              user={user}
+              setUser={setUser}
+              favoriteFolder={favoriteFolder}
+              setFavoriteFolder={setFavoriteFolder}
             />
           }
         ></Route>
         <Route path="resview" element={<ReservationView />}></Route>
         <Route path="reviewWrite" element={<ReviewWrite />} />
         <Route path="myreview" element={<MenuReview />} />
+        <Route path="update/*" element={<MypageUpdate />} />
+        <Route
+          path="favorite"
+          element={
+            <FavoriteMain
+              addFolderModalOpen={addFolderModalOpen}
+              checkAddFolder={checkAddFolder}
+              favoriteFolderList={user.favoriteFolderList}
+              favoriteCount={user.favoriteCount}
+              favoriteFolder={favoriteFolder}
+              setFavoriteFolder={setFavoriteFolder}
+            />
+          }
+        ></Route>
       </Routes>
       {isAddFolderModal ? (
         <Modal
@@ -200,24 +242,13 @@ const AddFolderModal = (props) => {
 };
 
 const MypageMain = (props) => {
-  const addFolderModalOpen = props.addFolderModalOpen;
-  const checkAddFolder = props.checkAddFolder;
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
-  const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    // console.log(loginUserId);
-    axios
-      .get(`${backServer}/user/userNo/${loginUserNo}`)
-      .then((res) => {
-        console.log(res.data);
-        setUser(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [loginUserNo, checkAddFolder]);
+  const {
+    user,
+    setUser,
+    addFolderModalOpen,
+    checkAddFolder,
+    setFavoriteFolder,
+  } = props;
   return (
     <>
       <Profile user={user} setUser={setUser} />
@@ -226,7 +257,7 @@ const MypageMain = (props) => {
         <h3 className="title">
           나의 예약{" "}
           <span className="count">
-            {user.reservationList ? user.reservationList.length : 0}
+            {user.reservationCount ? user.reservationCount : 0}
           </span>
         </h3>
         {user.reservationList ? (
@@ -259,6 +290,7 @@ const MypageMain = (props) => {
         <MypageFavorite
           favoriteFolderList={user.favoriteFolderList}
           addFolderModalOpen={addFolderModalOpen}
+          setFavoriteFolder={setFavoriteFolder}
         />
       </section>
       <section className="mypage-list-wrap review-list">
@@ -282,80 +314,124 @@ const MypageMain = (props) => {
 };
 
 const ReservationView = () => {
-  const [storeName, setStoreName] = useState("");
-  const [reservation, setReservation] = useState({});
-  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [reservationList, setReservationList] = useState([]);
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
+  const [reqPage, setReqPage] = useState(1);
+  const [pi, setPi] = useState({});
+  const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
+    console.log(loginUserId);
     axios
-      .get(`${backServer}/reservation/view/${loginUserId}`)
+      .get(`${backServer}/reservation/view/${reqPage}/${loginUserId}`)
       .then((res) => {
         console.log(res);
-        setLoginUserId(res.data);
-        setReservation(res.data);
+        setReservationList(res.data.list);
+        setPi(res.data.pi);
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, [loginUserId, reqPage]);
   const navigate = useNavigate();
   return (
     <div className="res-view">
       <section>
         <div className="res-history">
           <h1>예약내역</h1>
-          <div className="res-btn">
-            <button
-              className="btn-main
+          <div className="res-list-wrap">
+            {reservationList.map((reservation, index) => {
+              const reserveDate = reservation.reserveDate
+                ? new Date(reservation.reserveDate).getTime()
+                : new Date().getTime();
+              const today = new Date().getTime();
+              const dDay = Math.ceil(
+                (reserveDate - today) / (1000 * 60 * 60 * 24)
+              );
+              const date = reservation.reserveDateString
+                ? `${reservation.reserveDateString.substring(
+                    0,
+                    4
+                  )}년 ${reservation.reserveDateString.substring(
+                    5,
+                    7
+                  )}월 ${reservation.reserveDateString.substring(8)}일`
+                : "";
+              const status =
+                reservation.reserveStatus != null
+                  ? reservation.reserveStatus === 0
+                    ? "예약 완료"
+                    : reservation.reserveStatus === 1
+                    ? "방문 완료"
+                    : "예약 취소"
+                  : "";
+              return (
+                <div
+                  className="reservation-content"
+                  key={"reservation" + index}
+                >
+                  <div className="res-btn">
+                    <span
+                      className="reserve-span round
             "
-            >
-              방문예정
-            </button>
-            <button
-              className="btn
+                    >
+                      {status}
+                    </span>
+                    {/* <span
+                      className="btn
               -main
             "
-              disabled
-            >
-              방문완료
-            </button>
-            <button
-              className="btn-main"
-              onClick={() => {
-                navigate("/usermain/mypage/reviewWrite");
-              }}
-            >
-              리뷰쓰기
-            </button>
-            <button
-              className="btn-main
+                      disabled
+                    >
+                      방문완료
+                    </span> */}
+                    <button
+                      className="btn-main round"
+                      onClick={() => {
+                        navigate("/usermain/mypage/reviewWrite");
+                      }}
+                    >
+                      리뷰쓰기
+                    </button>
+                    <button
+                      className="btn-main round
             "
-            >
-              신고
-            </button>
+                    >
+                      신고
+                    </button>
+                  </div>
+                  <div className="res-content">
+                    <img
+                      src="/image/IMG_3238.jpg"
+                      alt="가게사진"
+                      className="profile-image"
+                    />
+                    <div className="res-menu">
+                      <h2>{reservation.storeName}</h2>
+                      <h2>결제정보</h2>
+                      <p>예약인원 : {reservation.reservePeople}명</p>
+                      <p>예약 시간 : {`${date} ${reservation.reserveTime}`}</p>
+                    </div>
+                  </div>
+                  <div className="res-btn2">
+                    <span className="reserve-span round">
+                      {dDay > 0 ? `D-${dDay}` : "d-day"}
+                    </span>
+                    <button className="btn-main round">예약변경</button>
+                    <button className="btn-main round">예약취소</button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          <div className="res-content">
-            <img
-              src="/image/IMG_3238.jpg"
-              alt="가게사진"
-              className="profile-image"
-            />
-            <div className="res-menu">
-              <h2>{reservation.storeName}</h2>
-              <h2>결제정보</h2>
-              <p>{reservation.reservationPeople}</p>
-              <p>{reservation.reservationTime}</p>
-            </div>
-          </div>
-          <div className="res-btn2">
-            <button className="btn-main">D-Day</button>
-            <button className="btn-main">예약취소</button>
-          </div>
+        </div>
+        <div className="mypage-paging-wrap">
+          <PageNavi pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
         </div>
       </section>
     </div>
   );
 };
+
 const labels = {
   1: "최악이에요.",
 
