@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import {
   loginStoreNoState,
   loginUserIdState,
@@ -24,25 +24,50 @@ const MypageUpdate = () => {
 };
 
 const CheckPw = () => {
-  const [loginUserNo, setLoginUserNo] = useRecoilState(loginStoreNoState);
-  const [checkPw, setCheckPw] = useState("");
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const navigate = useNavigate();
+  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
+  const [user, setUser] = useState({ userNo: loginUserNo, userPw: "" });
+  useEffect(() => {
+    setUser({ ...user, userNo: loginUserNo });
+  }, [loginUserNo]);
+  const [pwMsg, setPwMsg] = useState("");
+  const checkUserPw = () => {
+    console.log(user);
+    console.log(loginUserNo);
+    setPwMsg("");
+    axios
+      .post(`${backServer}/user/checkUser`, user)
+      .then((res) => {
+        if (res.data) {
+          navigate("/usermain/mypage/update/updateForm");
+        } else {
+          setPwMsg("비밀번호가 옳지 않습니다.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className="checkPw-wrap">
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          checkUserPw();
         }}
       >
         <label htmlFor="checkPw">회원 비밀번호 : </label>
         <input
           type="password"
           id="checkPw"
-          value={checkPw}
+          value={user.userPw}
           onChange={(e) => {
-            setCheckPw(e.target.value);
+            setUser({ ...user, userPw: e.target.value });
           }}
         />
       </form>
+      <p className="msg colorRed">{pwMsg}</p>
     </div>
   );
 };

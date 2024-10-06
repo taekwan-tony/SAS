@@ -145,5 +145,15 @@ public class UserService {
 		UserDTO user = userDao.getUserInfo(userNo);
 		return user;
 	}
-	
+
+	public boolean checkUserPw(UserDTO user) {
+		UserDTO userPw = userDao.getUserPwInfo(user);
+		System.out.println(user);
+		System.out.println(userPw);
+		if(userPw!=null) {
+			return encoder.matches(user.getUserPw(), userPw.getUserPw());
+		}else {
+			return false;
+		}
+	}
 }

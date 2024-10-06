@@ -8,6 +8,7 @@ div.mypage-main .update-main {
 
 div.mypage-main .update-main > .update-content {
   width: 80%;
+  min-width: 750px;
   min-height: 300px;
   margin: 0 auto;
   padding: 40px 20px;
@@ -25,10 +26,16 @@ div.mypage-main .update-main > .update-content > h1 {
 div.mypage-main .update-main > .update-content .checkPw-wrap {
   min-height: 200px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
-
+div.mypage-main .update-main > .update-content .checkPw-wrap > p.msg {
+  position: absolute;
+  left: 43.5%;
+  top: 115px;
+}
 div.mypage-main .update-main > .update-content .checkPw-wrap > form {
   display: flex;
   justify-content: center;

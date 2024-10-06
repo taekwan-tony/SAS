@@ -110,9 +110,11 @@
 	<update id="updateUserPhoto">
 		update user_tbl set user_photo=#{userPhoto} where user_no = #{userNo}
 	</update>
-	<select id="getUserInfo">
+	<select id="getUserInfo" resultType="user">
 		select user_gender, user_birth, user_email, user_phone, user_name from user_tbl where user_no=#{userNo}
 	</select>
-	
+	<select id="getUserPwInfo" resultType="user">
+		select user_pw from user_tbl where user_no=#{userNo}
+	</select>
 
 </mapper>

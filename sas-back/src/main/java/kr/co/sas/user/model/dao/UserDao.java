@@ -27,5 +27,7 @@ public interface UserDao {
 
 	UserDTO getUserInfo(int userNo);
 
+	UserDTO getUserPwInfo(UserDTO user);
+
 
 }

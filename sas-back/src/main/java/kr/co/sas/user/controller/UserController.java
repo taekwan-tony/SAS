@@ -199,4 +199,11 @@ public class UserController {
 		}
 		return ResponseEntity.status(404).build();
 	}
+	
+	@Operation(summary="일반회원 비밀번호 체크", description="정보 수정 전 회원 비밀번호를 받아와 맞는지 여부를 논리값으로 반환")
+	@PostMapping(value="/checkUser")
+	public ResponseEntity<Boolean> checkUserPw(@RequestBody UserDTO user){
+		boolean result = userService.checkUserPw(user);
+		return ResponseEntity.ok(result);
+	}
 }
