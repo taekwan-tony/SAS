@@ -41,7 +41,7 @@ const Mypage = () => {
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   //유저 정보 한번에 가져오기
   const [user, setUser] = useState({});
-  const [checkAddFolder, setCheckAddFolder] = useState(false);
+  const [checkUpdate, setCheckUpdate] = useState(false);
   const [favoriteFolder, setFavoriteFolder] = useState({});
   const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
@@ -58,7 +58,7 @@ const Mypage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [loginUserNo, checkAddFolder]);
+  }, [loginUserNo, checkUpdate]);
   // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
   console.log(favoriteFolder);
   const [addFolder, setAddFolder] = useState({
@@ -110,7 +110,7 @@ const Mypage = () => {
           element={
             <MypageMain
               addFolderModalOpen={addFolderModalOpen}
-              checkAddFolder={checkAddFolder}
+              checkAddFolder={checkUpdate}
               user={user}
               setUser={setUser}
               favoriteFolder={favoriteFolder}
@@ -124,13 +124,21 @@ const Mypage = () => {
           element={<ReviewWrite />}
         />
         <Route path="myreview" element={<MenuReview />} />
-        <Route path="update/*" element={<MypageUpdate />} />
+        <Route
+          path="update/*"
+          element={
+            <MypageUpdate
+              checkUpdate={checkUpdate}
+              setCheckUpdate={setCheckUpdate}
+            />
+          }
+        />
         <Route
           path="favorite"
           element={
             <FavoriteMain
               addFolderModalOpen={addFolderModalOpen}
-              checkAddFolder={checkAddFolder}
+              checkAddFolder={checkUpdate}
               favoriteFolderList={user.favoriteFolderList}
               favoriteCount={user.favoriteCount}
               favoriteFolder={favoriteFolder}
@@ -152,8 +160,8 @@ const Mypage = () => {
             addFolder={addFolder}
             setAddFolder={setAddFolder}
             addFolderModalClose={addFolderModalClose}
-            setCheckAddFolder={setCheckAddFolder}
-            checkAddFolder={checkAddFolder}
+            setCheckAddFolder={setCheckUpdate}
+            checkAddFolder={checkUpdate}
           />
         </Modal>
       ) : (

@@ -9,14 +9,25 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import "./mypageUpdate.css";
 import axios from "axios";
-const MypageUpdate = () => {
+import Swal from "sweetalert2";
+const MypageUpdate = (props) => {
+  const checkUpdate = props.checkUpdate;
+  const setCheckUpdate = props.setCheckUpdate;
   return (
     <div className="update-main">
       <div className="update-content round">
         <h1>회원 정보 수정</h1>
         <Routes>
           <Route path="checkPw" element={<CheckPw />}></Route>
-          <Route path="updateForm" element={<Update />}></Route>
+          <Route
+            path="updateForm"
+            element={
+              <Update
+                checkUpdate={checkUpdate}
+                setCheckUpdate={setCheckUpdate}
+              />
+            }
+          ></Route>
         </Routes>
       </div>
     </div>
@@ -72,7 +83,9 @@ const CheckPw = () => {
   );
 };
 
-const Update = () => {
+const Update = (props) => {
+  const { checkUpdate, setCheckUpdate } = props;
+  const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
@@ -98,6 +111,32 @@ const Update = () => {
   }, [loginUserNo]);
   const changeInputVal = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+  };
+  const update = () => {
+    if (
+      user.userNickname !== "" &&
+      user.userPhone != "" &&
+      user.userEmail != ""
+    ) {
+      axios
+        .patch(`${backServer}/user`, user)
+        .then((res) => {
+          if (res.data) {
+            Swal.fire({
+              title: "회원 정보 수정 성공",
+              icon: "success",
+              confirmButtonText: "확인",
+              confirmButtonColor: "var(--main1)",
+            }).then(() => {
+              setLoginUserNickname(user.userNickname);
+              setCheckUpdate(!checkUpdate);
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   return (
     <div className="update-frm">
@@ -186,8 +225,17 @@ const Update = () => {
         </div>
       </div>
       <div className="update-footer">
-        <button className="btn-sub round">취 소</button>
-        <button className="btn-main round">수 정</button>
+        <button
+          className="btn-sub round"
+          onClick={() => {
+            navigate("/usermain/mypage");
+          }}
+        >
+          취 소
+        </button>
+        <button className="btn-main round" onClick={update}>
+          수 정
+        </button>
       </div>
     </div>
   );

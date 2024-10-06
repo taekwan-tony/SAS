@@ -206,4 +206,11 @@ public class UserController {
 		boolean result = userService.checkUserPw(user);
 		return ResponseEntity.ok(result);
 	}
+	
+	@Operation(summary="일반회원 정보 수정", description = "회원 번호, 회원 닉네임, (회원 비밀번호), 회원 전화번호, 회원 이메일을 유저 객체로 받아 수정")
+	@PatchMapping
+	public ResponseEntity<Boolean> updateUser(@RequestBody UserDTO user){
+		int result = userService.updateUser(user);
+		return ResponseEntity.ok(result>0);
+	}
 }

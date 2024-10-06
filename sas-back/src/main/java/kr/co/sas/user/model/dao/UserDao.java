@@ -29,5 +29,7 @@ public interface UserDao {
 
 	UserDTO getUserPwInfo(UserDTO user);
 
+	int updateUser(UserDTO user);
+
 
 }

@@ -156,4 +156,14 @@ public class UserService {
 			return false;
 		}
 	}
+
+	public int updateUser(UserDTO user) {
+		if(user.getUserPw()!=null && !user.getUserPw().equals("")) {
+			user.setUserPw(encoder.encode(user.getUserPw()));
+		}else {
+			user.setUserPw(null);
+		}
+		int result = userDao.updateUser(user);
+		return result;
+	}
 }

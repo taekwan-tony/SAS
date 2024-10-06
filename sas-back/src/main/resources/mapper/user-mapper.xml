@@ -116,5 +116,11 @@
 	<select id="getUserPwInfo" resultType="user">
 		select user_pw from user_tbl where user_no=#{userNo}
 	</select>
-
+	<update id="updateUser">
+		update user_tbl set user_nickname=#{userNickname},
+		<if test="userPw!=null">
+			user_pw=#{userPw},
+		</if>
+		 user_phone=#{userPhone}, user_email=#{userEmail} where user_no=#{userNo}
+	</update>
 </mapper>
