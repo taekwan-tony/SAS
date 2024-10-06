@@ -222,9 +222,9 @@
 	</select>
 	
 	
-	<select id="selectStorePayList" resultType="storePayment">
+<!-- 	<select id="selectStorePayList" resultType="storePayment">
 		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
-	</select>
+	</select> -->
 	
 	<select id="storeMonthPayCount" resultType="storePayment">
 		select 
@@ -238,4 +238,45 @@
 	<insert id="insertStoreMonthPay">
 		insert into store_pay values(store_pay_seq.nextval,#{storeNo},null,null,#{storeTotalPrice},1,sysdate,#{storeTotalUsingCount})
 	</insert>
+	
+	
+	<select id="selectStorePayList" resultType="storePayment">
+	  select rnum, store_pay_no, store_total_price, store_pay_request_date, store_pay_date, store_pay_status
+	  from (
+	    select rownum as rnum, p.* 
+	    from (
+	      select 
+	        store_pay_no,
+	        store_pay_date,
+	        store_total_price,
+	        store_pay_status,
+	        store_pay_request_date
+	      from store_pay 
+	      where store_no=#{storeNo} 
+	      order by store_pay_request_date desc
+	    ) p
+	  )
+	</select>
+	
+	
+	<update id="storePaySuccess">
+		update store_pay set store_pay_date=sysdate, store_pay_status=2 where store_pay_no=#{storePayNo}
+	</update>
+
+
+	<select id="selectStoreFavorite" resultType="favoriteStore">
+		select store_name, 
+					store_time, 
+					store_addr, 
+					store_introduce, 
+					nvl(round(avg(review_score),1),0)review_score_avg  
+		from store left outer join review using(store_no)  
+		where store_no = #{storeNo} 
+		group by store_no, store_name, store_time, store_addr, store_introduce
+	</select>
+
+
+<select id="selectOneSoEmail" resultType="store">
+	select so_email from store where store_no = #{storeNo}
+</select>
 </mapper>

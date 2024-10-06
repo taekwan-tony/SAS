@@ -6,6 +6,7 @@ import { loginUserIdState, loginUserNoState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ReserveContent = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -141,6 +142,7 @@ const Profile = (props) => {
 
 const FavoriteBox = (props) => {
   const favorite = props.favorite;
+  const goToFavorite = props.goToFavorite;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [favoriteList, setFavoriteList] = useState(
     favorite.favoriteList
@@ -150,7 +152,11 @@ const FavoriteBox = (props) => {
       : []
   );
   return (
-    <div className="favorite-list-content round mypage-class-for-img">
+    <div
+      className="favorite-list-content round mypage-class-for-img"
+      onClick={goToFavorite}
+      style={{ cursor: "pointer" }}
+    >
       <div className="img favorite-list">
         <img src={"/image/s&s로고.png"} alt="" />
         <div className="img-list">
@@ -159,8 +165,9 @@ const FavoriteBox = (props) => {
               return (
                 <img
                   src={`${backServer}/store/${favoriteBox.storeImage}`}
-                  style={{ left: `${(index + 1) * 20}px` }}
+                  style={{ left: `${index * 20}px` }}
                   alt=""
+                  key={"img" + index}
                 />
               );
             }
@@ -198,8 +205,10 @@ const EmptyBox = (props) => {
   );
 };
 const MypageFavorite = (props) => {
+  const navigate = useNavigate();
   const favoriteFolderList = props.favoriteFolderList;
   const addFolderModalOpen = props.addFolderModalOpen;
+  const setFavoriteFolder = props.setFavoriteFolder;
   const settings = {
     dots: false,
     infinite: false,
@@ -214,10 +223,19 @@ const MypageFavorite = (props) => {
         <Slider {...settings}>
           {favoriteFolderList
             ? favoriteFolderList.map((favorite, index) => {
-                return <FavoriteBox favorite={favorite} />;
+                const goToFavorite = () => {
+                  setFavoriteFolder(favorite);
+                  navigate("/usermain/mypage/favorite");
+                };
+                return (
+                  <FavoriteBox
+                    favorite={favorite}
+                    key={"favoriteBoix" + index}
+                    goToFavorite={goToFavorite}
+                  />
+                );
               })
             : ""}
-
           <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
         </Slider>
       ) : (

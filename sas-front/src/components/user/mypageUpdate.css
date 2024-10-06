@@ -1,0 +1,125 @@
+div.mypage-main .update-main {
+  width: 100%;
+  height: calc(100vh - 130px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.mypage-main .update-main > .update-content {
+  width: 80%;
+  min-height: 300px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #fff;
+}
+div.mypage-main .update-main > .update-content > h1 {
+  text-align: center;
+  font: bold 3em var(--defaultFont);
+  color: var(--main1);
+}
+
+div.mypage-main .update-main > .update-content .checkPw-wrap {
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.mypage-main .update-main > .update-content .checkPw-wrap > form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+div.mypage-main .update-main > .update-content .checkPw-wrap > form > label {
+  margin: 0;
+  padding: 0;
+}
+div.mypage-main .update-main > .update-content .checkPw-wrap > form > input {
+  outline: none;
+}
+div.mypage-main
+  .update-main
+  > .update-content
+  .checkPw-wrap
+  > form
+  > input:focus {
+  border: 1px solid var(--main1);
+}
+/* 회원 정보 수정 폼 */
+div.mypage-main
+  .update-main
+  > .update-content
+  .update-frm
+  > .update-content-frm {
+  padding: 40px 0;
+}
+div.mypage-main .update-main > .update-content .update-frm .input-box {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  align-items: center;
+  gap: 20px;
+}
+div.mypage-main .update-main > .update-content .update-frm .input-box > label,
+div.mypage-main .update-main > .update-content .update-frm .input-box input {
+  margin: 0;
+  padding: 0;
+}
+
+div.mypage-main .update-main > .update-content .update-frm .input-box > label {
+  width: 20%;
+  font: bold 1em var(--defaultFont);
+  color: var(--font1);
+}
+div.mypage-main
+  .update-main
+  > .update-content
+  .update-frm
+  .input-box
+  > .input-item {
+  position: relative;
+  width: 35%;
+}
+div.mypage-main .update-main > .update-content .update-frm .input-box input {
+  outline: none;
+  border: none;
+  width: 100%;
+  border-bottom: 1px solid transparent;
+}
+div.mypage-main
+  .update-main
+  > .update-content
+  .update-frm
+  .input-box
+  input.update {
+  border-bottom: 1px solid var(--font2);
+}
+
+div.mypage-main .update-main > .update-content .update-frm .input-box p.msg {
+  width: 100%;
+  position: absolute;
+  top: 25px;
+  left: 0;
+  font-size: 0.8em;
+}
+
+div.mypage-main .update-main > .update-content .update-frm .update-footer {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+div.mypage-main
+  .update-main
+  > .update-content
+  .update-frm
+  .update-footer
+  > button {
+  width: 30%;
+  height: 40px;
+  font: bold 1.2em var(--defaultFont);
+}

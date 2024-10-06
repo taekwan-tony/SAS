@@ -31,16 +31,38 @@ import ImageResize from "@looop/quill-image-resize-module-react";
 import QuillEditor from "../utils/QuillEditor";
 import PageNavi from "../utils/PagiNavi";
 import { CleaningServices } from "@mui/icons-material";
+import FavoriteMain from "./FavoriteMain";
+import MypageUpdate from "./MypageUpdate";
 
 const Mypage = () => {
-  // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
-
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
+  //유저 정보 한번에 가져오기
+  const [user, setUser] = useState({});
+  const [checkAddFolder, setCheckAddFolder] = useState(false);
+  const [favoriteFolder, setFavoriteFolder] = useState({});
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  useEffect(() => {
+    // console.log(loginUserId);
+    axios
+      .get(`${backServer}/user/userNo/${loginUserNo}`)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data);
+        setFavoriteFolder(
+          res.data.favoriteFolderList ? res.data.favoriteFolderList[0] : {}
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [loginUserNo, checkAddFolder]);
+  // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
+  console.log(favoriteFolder);
   const [addFolder, setAddFolder] = useState({
     favoriteFolderName: "",
     userNo: loginUserNo,
   });
-  const [checkAddFolder, setCheckAddFolder] = useState(false);
+
   useEffect(() => {
     setAddFolder({ ...addFolder, userNo: loginUserNo });
   }, [loginUserNo]);
@@ -86,12 +108,30 @@ const Mypage = () => {
             <MypageMain
               addFolderModalOpen={addFolderModalOpen}
               checkAddFolder={checkAddFolder}
+              user={user}
+              setUser={setUser}
+              favoriteFolder={favoriteFolder}
+              setFavoriteFolder={setFavoriteFolder}
             />
           }
         ></Route>
         <Route path="resview" element={<ReservationView />}></Route>
         <Route path="reviewWrite" element={<ReviewWrite />} />
         <Route path="myreview" element={<MenuReview />} />
+        <Route path="update/*" element={<MypageUpdate />} />
+        <Route
+          path="favorite"
+          element={
+            <FavoriteMain
+              addFolderModalOpen={addFolderModalOpen}
+              checkAddFolder={checkAddFolder}
+              favoriteFolderList={user.favoriteFolderList}
+              favoriteCount={user.favoriteCount}
+              favoriteFolder={favoriteFolder}
+              setFavoriteFolder={setFavoriteFolder}
+            />
+          }
+        ></Route>
       </Routes>
       {isAddFolderModal ? (
         <Modal
@@ -202,24 +242,13 @@ const AddFolderModal = (props) => {
 };
 
 const MypageMain = (props) => {
-  const addFolderModalOpen = props.addFolderModalOpen;
-  const checkAddFolder = props.checkAddFolder;
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
-  const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    // console.log(loginUserId);
-    axios
-      .get(`${backServer}/user/userNo/${loginUserNo}`)
-      .then((res) => {
-        console.log(res.data);
-        setUser(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [loginUserNo, checkAddFolder]);
+  const {
+    user,
+    setUser,
+    addFolderModalOpen,
+    checkAddFolder,
+    setFavoriteFolder,
+  } = props;
   return (
     <>
       <Profile user={user} setUser={setUser} />
@@ -228,7 +257,7 @@ const MypageMain = (props) => {
         <h3 className="title">
           나의 예약{" "}
           <span className="count">
-            {user.reservationList ? user.reservationList.length : 0}
+            {user.reservationCount ? user.reservationCount : 0}
           </span>
         </h3>
         {user.reservationList ? (
@@ -261,6 +290,7 @@ const MypageMain = (props) => {
         <MypageFavorite
           favoriteFolderList={user.favoriteFolderList}
           addFolderModalOpen={addFolderModalOpen}
+          setFavoriteFolder={setFavoriteFolder}
         />
       </section>
       <section className="mypage-list-wrap review-list">
