@@ -80,7 +80,7 @@ const Update = () => {
         <div className="input-box">
           <label htmlFor="userId">아이디</label>
           <div className="input-item">
-            <input type="text" id="userId" value={user.userId} />
+            <input type="text" id="userId" readOnly value={user.userId} />
           </div>
         </div>
         <div className="input-box">
@@ -113,19 +113,24 @@ const Update = () => {
         <div className="input-box">
           <label htmlFor="userName">이름</label>
           <div className="input-item">
-            <input type="text" id="userName" value={user.userName} />
+            <input type="text" id="userName" readOnly value={user.userName} />
           </div>
         </div>
         <div className="input-box">
           <label htmlFor="userGender">성별</label>
           <div className="input-item">
-            <input type="text" id="userGender" value={user.userGender} />
+            <input
+              type="text"
+              id="userGender"
+              readOnly
+              value={user.userGender}
+            />
           </div>
         </div>
         <div className="input-box">
           <label htmlFor="userBirth">생년월일</label>
           <div className="input-item">
-            <input type="text" id="userBirth" value={user.userBirth} />
+            <input type="text" readOnly id="userBirth" value={user.userBirth} />
           </div>
         </div>
         <div className="input-box">
