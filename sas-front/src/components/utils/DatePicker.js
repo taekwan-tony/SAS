@@ -82,7 +82,7 @@ const DatePicker = (props) => {
         disabled={{ before: new Date() }}
         // 처음 시작할 달 설정, 달력 위에 뜨는 연 월 선택여부
         captionLayout="label"
-        defaultMonth={new Date(dayNow)}
+        defaultMonth={new Date(selected)}
         startMonth={new Date(dayNow)}
         endMonth={new Date(dayNow.getFullYear(), dayNow.getMonth() + 2)}
       />

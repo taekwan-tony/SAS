@@ -35,6 +35,7 @@ import { CleaningServices } from "@mui/icons-material";
 import FavoriteMain from "./FavoriteMain";
 import MypageUpdate from "./MypageUpdate";
 import ReportModal from "../report/ReportModal";
+import { ReservationMain } from "../reservation/ReservationMain";
 
 const Mypage = () => {
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
@@ -324,6 +325,7 @@ const ReservationView = () => {
   const [reqPage, setReqPage] = useState(1);
   const [pi, setPi] = useState({});
   const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [isReservationUpdate, setIsReservationUpdate] = useState(false);
   useEffect(() => {
     console.log(loginUserId);
     axios
@@ -336,7 +338,7 @@ const ReservationView = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [loginUserId, reqPage]);
+  }, [loginUserId, reqPage, isReservationUpdate]);
   const navigate = useNavigate();
   // 신고 모달
   const [reserveNo, setReserveNo] = useState(0);
@@ -370,6 +372,37 @@ const ReservationView = () => {
       overflow: "hidden",
     },
   };
+  // 예약변경 모달 위한 설정
+  const [reservationUpdateInfo, setReservationUpdateInfo] = useState({});
+  const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
+
+  // 모달창?
+  const customReserveModal = {
+    overlay: {
+      backgroundColor: " rgba(0, 0, 0, 0.2)",
+      width: "100%",
+      height: "100vh",
+      zIndex: "10",
+      position: "fixed",
+      top: "0",
+      left: "0",
+    },
+    content: {
+      width: "1000px",
+      height: "470px",
+      zIndex: "150",
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "10px",
+      boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+      backgroundColor: "white",
+      justifyContent: "center",
+      overflow: "hidden",
+    },
+  };
+
   return (
     <div className="res-view">
       <section>
@@ -404,6 +437,47 @@ const ReservationView = () => {
               const openReport = () => {
                 setReserveNo(reservation.reserveNo);
                 setReportModalOpen(true);
+              };
+              // 예약 변경 모달창 열기
+              const goTOReserve = () => {
+                setReservationUpdateInfo({
+                  ...reservation,
+                  isUpdate: true,
+                });
+                setIsReserveModalOpen(!isReserveModalOpen);
+              };
+              // 예약취소버튼
+              const reservationCancel = () => {
+                Swal.fire({
+                  title: "예약을 취소하시겠습니까 ?",
+                  icon: "question",
+                  showCancelButton: true,
+                  cancelButtonText: "취소",
+                  cancelButtonColor: "var(--font2)",
+                  confirmButtonText: "확인",
+                  confirmButtonColor: "var(--main1)",
+                }).then((res) => {
+                  if (res.isConfirmed) {
+                    axios
+                      .patch(
+                        `${backServer}/reservation/cancel/${reservation.reserveNo}`
+                      )
+                      .then((res) => {
+                        console.log(res);
+                        if (res.data > 0) {
+                          Swal.fire({
+                            title: "삭제완료",
+                            icon: "success",
+                          }).then(() => {
+                            setIsReservationUpdate(!isReservationUpdate);
+                          });
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }
+                });
               };
               return (
                 <div
@@ -464,8 +538,15 @@ const ReservationView = () => {
                         ? "d-day"
                         : `D+${-dDay}`}
                     </span>
-                    <button className="btn-main round">예약변경</button>
-                    <button className="btn-main round">예약취소</button>
+                    <button className="btn-main round" onClick={goTOReserve}>
+                      예약변경
+                    </button>
+                    <button
+                      className="btn-main round"
+                      onClick={reservationCancel}
+                    >
+                      예약취소
+                    </button>
                   </div>
                 </div>
               );
@@ -491,6 +572,30 @@ const ReservationView = () => {
       ) : (
         ""
       )}
+      {/* 매장 신고 모달-끝 */}
+      {/* 예약 변경 모달 */}
+      {/* 예약 모달창-수진 */}
+      {isReserveModalOpen ? (
+        <Modal
+          isOpen={isUserLogin}
+          ariaHideApp={false}
+          onRequestClose={() => {
+            setIsReserveModalOpen(false);
+          }}
+          style={customReserveModal}
+        >
+          <ReservationMain
+            setIsReserveModalOpen={setIsReserveModalOpen}
+            isReserveModalOpen={isReserveModalOpen}
+            storeNo={reservationUpdateInfo.storeNo}
+            storeName={reservationUpdateInfo.storeName}
+            reservationUpdateInfo={reservationUpdateInfo}
+          />
+        </Modal>
+      ) : (
+        ""
+      )}
+      {/* 예약 모달창 끝 */}
     </div>
   );
 };
