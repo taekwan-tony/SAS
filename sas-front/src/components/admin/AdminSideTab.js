@@ -19,7 +19,7 @@ const AdminSideTab = () => {
           </ul>
         </li>
         <li>
-          <Link to="/admin/store/approvalList">매장관리</Link>
+          <Link to="/admin/store/storeList">매장관리</Link>
           <ul className="admin-side-sub-tab">
             <li>
               <Link to="/admin/store/approvalList">제휴 승인목록</Link>
