@@ -17,6 +17,17 @@ const ReserveContent = (props) => {
   );
   const today = new Date().getTime();
   const dDay = Math.ceil((reserveDate - today) / (1000 * 60 * 60 * 24));
+  const [date, setDate] = useState(
+    reserve.reserveDateString
+      ? `${reserve.reserveDateString.substring(
+          0,
+          4
+        )}년 ${reserve.reserveDateString.substring(
+          5,
+          7
+        )}월 ${reserve.reserveDateString.substring(8)}일`
+      : ""
+  );
   return (
     <div className="reserve-content round mypage-class-for-img">
       <div className="reserve-img">
@@ -29,7 +40,7 @@ const ReserveContent = (props) => {
       <div className="reserve-info">
         <h4 className="reserve-name">{reserve.storeName}</h4>
         <span>{reserve.reservePeople + " 명"}</span>
-        <span>{`${reserve.reserveDateString} ${reserve.reserveTime}`}</span>
+        <span>{`${date} ${reserve.reserveTime}`}</span>
         <span className={dDay > 0 ? "round d-day" : "round d-day ok"}>
           {dDay > 0 ? `d-${dDay}` : "d-day"}
         </span>
