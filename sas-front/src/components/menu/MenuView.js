@@ -149,7 +149,7 @@ const MenuView = () => {
       action: action,
     });
   };
-  // 즐겨찾기 등록시 기본 폴더 외에 다른 폴더로 변경하고 자 할때
+  // 즐겨찾기 등록시 기본 폴더 외에 다른 폴더로 변경하고자 할때
   // 즐겨찾기 폴더 목록 가져오는 useState
   const [favoriteFolderList, setFavoriteFolderList] = useState({});
   const [isFavoriteModalOpen, setIsFavoriteModalOpen] = useState(false);

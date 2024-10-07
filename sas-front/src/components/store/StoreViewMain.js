@@ -1,7 +1,7 @@
 import "./storeView.css";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   loginStoreIdState,
@@ -11,15 +11,17 @@ import {
 import { Link, Route, Routes } from "react-router-dom";
 import StoreViewFrm from "./StoreViewFrm";
 import StoreView from "./StoreView";
+import StoreUpdate from "./StoreUpdate";
 const StoreViewMain = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
   const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
+  const [check, setCheck] = useState(false);
 
   const [store, setStore] = useState({
-    storeNo: loginstoreNo,
+    storeNo: "",
     storeName: "",
     storePhone: "",
     storeAddr: "",
@@ -34,6 +36,8 @@ const StoreViewMain = () => {
     mapX: "",
     mapY: "",
   });
+
+  console.log("storeViewMain 로그인 정보 :", store);
 
   return (
     <>
@@ -62,9 +66,17 @@ const StoreViewMain = () => {
           <div className="owner-background">
             <img src="/image/238.jpg" alt="back" />
           </div>
+          {/* <StoreView
+            store={store}
+            setStore={setStore}
+            loginstoreNo={loginstoreNo}
+          /> */}
+          <StoreUpdate
+            store={store}
+            setStore={setStore}
+            loginstoreNo={loginstoreNo}
+          />
         </div>
-        <StoreView />
-        <div></div>
       </div>
     </>
   );

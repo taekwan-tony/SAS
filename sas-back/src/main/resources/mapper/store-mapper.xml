@@ -298,13 +298,12 @@
 	
 	<select id="storeView" resultMap="selectStoreview">
 		select
-		    store_name, store_phone, store_introduce, store_addr, store_time, store_re_start, store_re_end, break_time_start, break_time_end, deposit, store_class,
-		    seat_capacity, seat_amount
+		    store_no, store_name, store_phone, store_introduce, store_addr, store_time, store_re_start, store_re_end, break_time_start, break_time_end, deposit, store_class
 		from store
-		    join seat using (store_no)
-		where store_no = #{storeNo};
+		where store_no = #{storeNo}
 	</select>
 	<resultMap type="store" id="selectStoreview">
+		<result column="store_no" property="storeNo"/>
 		<result column="store_name" property="storeName"/>
 		<result column="store_phone" property="storePhone"/>
 		<result column="store_introduce" property="storeIntroduce"/>
@@ -316,7 +315,63 @@
 		<result column="break_time_end" property="breakTimeEnd"/>
 		<result column="deposit" property="deposit"/>
 		<result column="store_class" property="storeClass"/>
-		<result column="seat_capacity" property="seatCapacity"/>
-		<result column="seat_amount" property="seatAmount"/>
+		<collection property="seatList" select="selectSeatList" column="store_no" javaType="java.util.List" ofType="seat"/>
+		<collection property="siFilepathList" select="selectSiFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
+		<collection property="storeMoodList" select="selectStoreMood" column="store_no" javaType="java.util.List" ofType="storeMood"/>
+		<collection property="storeAmenityList" select="selectStoreAmenity" column="store_no" javaType="java.util.List" ofType="storeAmenities"/>
 	</resultMap>
+	<select id="selectStoreMood" resultType="storeMood">
+		select mood from store_mood where store_no=#{storeNo}
+	</select>
+	
+	
+	<update id="storeModify">
+		update store set
+			store_name=#{storeName},
+			store_phone=#{storePhone},
+			store_introduce=#{storeIntroduce},
+			store_addr=#{storeAddr},
+			store_re_start=#{storeReStart},
+			store_re_end=#{storeReEnd},
+			break_time_start=#{breakTimeStart},
+			break_time_end=#{breakTimeEnd},
+			deposit=#{deposit},
+			store_class=#{storeClass},
+			map_x = #{mapX},
+			map_y = #{mapY}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<update id="updateSeat">
+		update seat set
+			seat_capacity=#{seatCapacity},
+			seat_amount=#{seatAmount}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<update id="updateStoreFile">
+		update store_image_file set
+			si_filename=#{siFileName},
+			si_filepath=#{siFilepath}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<insert id="updateStoreMood">
+	  insert into store_mood values
+	    (store_mood_seq.nextval, #{mood}, #{storeNo})
+	</insert>
+	
+	
+	<delete id="deleteStoreMood">
+		delete from store_mood where store_no=#{storeNo}
+	</delete>
+	
+	
+	<delete id="deleteStoreAmenities">
+		delete from store_amenities where store_no=#{storeNo}
+	</delete>
+
 </mapper>
