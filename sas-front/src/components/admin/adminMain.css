@@ -171,3 +171,141 @@
   color: var(--main2);
   text-decoration: underline;
 }
+
+.admin-management-sales-wrap {
+  width: 100%;
+}
+
+.admin-management-sales-title-wrap {
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.admin-management-sales-title-wrap > span {
+  font-size: 32px;
+}
+
+.admin-management-sales-content-wrap {
+  width: 100%;
+  height: 350px;
+  margin-top: 15px;
+  padding: 10px 50px;
+  display: flex;
+  justify-content: space-between;
+}
+.admin-management-sales-content-1 {
+  min-width: 100px;
+  width: 30%;
+  min-height: 150px;
+  height: 100%;
+  border: solid 1px var(--font3);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.admin-management-sales-content-2 {
+  min-width: 100px;
+  width: 65%;
+  min-height: 150px;
+  height: 100%;
+  border: solid 1px var(--font3);
+  border-radius: 10px;
+  padding: 10px;
+}
+.admin-management-sales-content-3 {
+  min-width: 100px;
+  width: 30%;
+  min-height: 150px;
+  height: 100%;
+}
+
+.admin-management-sales-content-4 {
+  width: 100%;
+  height: 45%;
+  margin-bottom: 5%;
+  border: solid 1px var(--font3);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.admin-management-sales-content-title {
+  padding: 5px;
+  text-align: left;
+  font-size: 20px;
+}
+
+.admin-management-sales-content-title > span {
+  color: black;
+  font-weight: 700;
+}
+
+.admin-management-sales-content-content {
+  width: 100%;
+  margin: 15px auto;
+}
+.admin-management-sales-content-content > div {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.admin-management-sales-content-content > div:first-child {
+  font-size: 32px;
+  padding-right: 10px;
+  height: 150px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.admin-management-sales-content-content > div:first-child > span {
+  color: var(--main1);
+}
+
+.admin-management-sales-content-content > div:last-child {
+  font-size: 24px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.admin-management-sales-content-doughnutChart {
+  flex: 1;
+  height: 80%;
+
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.admin-management-sales-content-doughnutChart canvas {
+  position: absolute;
+  top: 5;
+  left: 22%;
+  height: 90% !important;
+  width: 54% !important;
+}
+
+.admin-managemnet-sales-content-count {
+  width: 100%;
+  display: flex;
+  padding-left: 5px;
+  height: 70%;
+  font-size: 24px;
+  gap: 5px;
+  justify-content: right;
+  align-items: center;
+}
+
+.admin-managemnet-sales-content-count > span {
+  color: var(--main1);
+  font-weight: 600;
+  font-family: ns-b;
+}
+
+.admin-management-sales-content-ageBarChart {
+  margin-top: 30px;
+}

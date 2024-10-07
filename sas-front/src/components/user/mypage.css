@@ -185,7 +185,25 @@ div.mypage-main .favorite-list > .favorite-list-content-wrap {
   margin-top: 20px;
   padding: 20px;
 }
-
+div.mypage-main .favorite-list > .favorite-list-content-wrap .no-slider {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+}
+div.mypage-main
+  .favorite-list
+  > .favorite-list-content-wrap
+  .no-slider
+  .favorite-list-content,
+div.mypage-main
+  .favorite-list
+  > .favorite-list-content-wrap
+  .no-slider
+  .favorite-list-content.empty {
+  width: 323px;
+  margin: 0;
+}
 div.mypage-main
   .favorite-list
   > .favorite-list-content-wrap
@@ -571,4 +589,12 @@ div.favorite-main-wrap
   > span {
   color: var(--main1);
   font-size: 2em;
+}
+
+.swal-btn-favorite {
+  outline: none;
+  width: 150px;
+}
+.swal-btn-favorite:focus {
+  outline: none;
 }

@@ -28,7 +28,7 @@
 									#{userNickname}||user_seq.currval,
 									#{userName},
 									null,
-									1 )
+									1,to_char(sysdate,'yyyy-mm-dd') )
 	</insert>
 	<select id="findId" resultType="String">
 		select user_id from user_tbl where user_name = #{userName}
@@ -110,9 +110,35 @@
 	<update id="updateUserPhoto">
 		update user_tbl set user_photo=#{userPhoto} where user_no = #{userNo}
 	</update>
-	<select id="getUserInfo">
+	<select id="getUserInfo" resultType="user">
 		select user_gender, user_birth, user_email, user_phone, user_name from user_tbl where user_no=#{userNo}
 	</select>
+	<select id="getUserPwInfo" resultType="user">
+		select user_pw from user_tbl where user_no=#{userNo}
+	</select>
+	<update id="updateUser">
+		update user_tbl set user_nickname=#{userNickname},
+		<if test="userPw!=null">
+			user_pw=#{userPw},
+		</if>
+		 user_phone=#{userPhone}, user_email=#{userEmail} where user_no=#{userNo}
+	</update>
+	<select id="checkNickname" resultType="int">
+		select count(*) from user_tbl where user_nickname=#{userNickname}
+	</select>
 	
-
+	<update id="updateReview">
+		update review set user_nickname=#{userNickname} where user_nickname=#{exNickname}
+	</update>
+	<select id="selectUserGenderPercent" resultType="user">
+		select user_gender,
+				round((count(reserve_no)/(select count(*) from reservation where to_char(reserve_date,'yyyy') = to_char(sysdate,'yyyy'))*100),2) as gender_percent
+		from user_tbl 
+		join reservation on (user_tbl.user_id=reservation.user_id)
+		where to_char(reserve_date,'yyyy') = to_char(sysdate,'yyyy') group by user_gender
+		order by user_gender asc
+	</select>
+	<select id="selectNewCustomerCount" resultType="int">
+		select count(*) from user_tbl where substr(user_enroll_date,1,4) = to_char(sysdate,'yyyy')
+	</select>
 </mapper>

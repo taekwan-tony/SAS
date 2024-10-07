@@ -71,14 +71,31 @@ public interface StoreDao {
 	List selectStorePayList(int storeNo);
 
 	FavoriteStoreInfoDTO selectStoreFavorite(int storeNo);
+	
 	StorePaymentDTO storeMonthPayCount(StoreDTO store);
 
 	int insertStoreMonthPay(StorePaymentDTO storePay);
 
 	StoreDTO selectOneSoEmail(int storeNo);
-
 	
 	int storePaySuccess(int storePayNo);
+
+	StorePaymentDTO currentYearSales();
+
+	int selectNewStoreCount();
+	StoreDTO storeView(int storeNo);
+
+	int storeModify(StoreDTO store);
+
+	int updateSeat(SeatDTO seat);
+
+	int updateStoreFile(StoreFileDTO storeFile);
+
+	int updateStoreMood(StoreMoodDTO mood);
+
+	int deleteStoreMood(int storeNo);
+
+	int deleteStoreAmenities(int storeNo);
 
 
 }

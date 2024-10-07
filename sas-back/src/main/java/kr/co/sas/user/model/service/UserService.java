@@ -145,5 +145,46 @@ public class UserService {
 		UserDTO user = userDao.getUserInfo(userNo);
 		return user;
 	}
-	
+
+	public boolean checkUserPw(UserDTO user) {
+		UserDTO userPw = userDao.getUserPwInfo(user);
+		System.out.println(user);
+		System.out.println(userPw);
+		if(userPw!=null) {
+			return encoder.matches(user.getUserPw(), userPw.getUserPw());
+		}else {
+			return false;
+		}
+	}
+	@Transactional
+	public int updateUser(UserDTO user) {
+		if(user.getUserPw()!=null && !user.getUserPw().equals("")) {
+			user.setUserPw(encoder.encode(user.getUserPw()));
+		}else {
+			user.setUserPw(null);
+		}
+		int result = userDao.updateUser(user);
+		if(result>0) {
+			System.out.println("회원 업데이트"+result);
+			result = userDao.updateReview(user);
+			System.out.println("리뷰업데이트"+result);
+		}
+		return result;
+	}
+
+	public boolean checkNickname(String userNickname) {
+		int result = userDao.checkNickname(userNickname);
+		return result==0;
+	}
+
+	public LoginUserDTO getToken(UserDTO user) {
+		LoginUserDTO loginUser = new LoginUserDTO();
+		loginUser.setAccessToken(jwtUtils.createAccessToken(user.getUserId(), user.getLoginType(), user.getUserNo(), user.getUserNickname()));
+		loginUser.setLoginType(user.getLoginType());
+		loginUser.setRefreshToken(jwtUtils.createRefreshToken(user.getUserId(), user.getLoginType(), user.getUserNo(), user.getUserNickname()));
+		loginUser.setUserId(user.getUserId());
+		loginUser.setUserNickname(user.getUserNickname());
+		loginUser.setUserNo(user.getUserNo());
+		return loginUser;
+	}
 }

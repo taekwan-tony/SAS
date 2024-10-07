@@ -199,4 +199,42 @@ public class UserController {
 		}
 		return ResponseEntity.status(404).build();
 	}
+	
+	@Operation(summary="일반회원 비밀번호 체크", description="정보 수정 전 회원 비밀번호를 받아와 맞는지 여부를 논리값으로 반환")
+	@PostMapping(value="/checkUser")
+	public ResponseEntity<Boolean> checkUserPw(@RequestBody UserDTO user){
+		boolean result = userService.checkUserPw(user);
+		return ResponseEntity.ok(result);
+	}
+	
+	@Operation(summary="일반회원 정보 수정", description = "회원 번호, 회원 닉네임, (회원 비밀번호), 회원 전화번호, 회원 이메일을 유저 객체로 받아 수정")
+	@PatchMapping
+	public ResponseEntity<Boolean> updateUser(@RequestBody UserDTO user){
+		System.out.println("업데이트 값"+user);
+		int result = userService.updateUser(user);
+		System.out.println(result);
+		return ResponseEntity.ok(result>0);
+	}
+	
+	@Operation(summary="일반회원 닉네임 중복 조회", description = "회원 닉네임을 받아서 중복됐는지 체크")
+	@GetMapping(value="/userNickname/{userNickname}")
+	public ResponseEntity<Boolean> checkNickname(@PathVariable String userNickname){
+		boolean result = userService.checkNickname(userNickname);
+		return ResponseEntity.ok(result);
+	}
+	
+	@Operation(summary="일반회원 회원정보 수정시 토큰 재갱신", description="회원 아이디, 번호, 닉네임, 유저타입을 받아서 토큰 재갱신해서 반환")
+	@PostMapping(value="/refreshToken")
+	public ResponseEntity<Map> refreshTokenAfterUpdate(@RequestBody UserDTO user){
+		System.out.println("토큰 값:"+user);
+		LoginUserDTO loginUser = userService.getToken(user);
+		Map map = new HashMap<String, Object>();
+		map.put("loginId", loginUser.getUserId());
+		map.put("userType", loginUser.getLoginType());
+		map.put("userNo", loginUser.getUserNo());
+		map.put("userNickname", loginUser.getUserNickname());
+		map.put("accessToken", loginUser.getAccessToken());
+		map.put("refreshToken", loginUser.getRefreshToken());
+		return ResponseEntity.ok(map);	
+	}
 }

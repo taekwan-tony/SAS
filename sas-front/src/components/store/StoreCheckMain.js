@@ -4,12 +4,13 @@ import ManageReserved from "./ManageReserved";
 import ManageReview from "./ManageReview";
 import Ownerstatistics from "../ownerstatistics/OwnerStatistics";
 import StoreRegist from "./StoreRegist";
-import StorePartnership from "./StorePartnership";
+import StoreDetail from "./StoreDetail";
 import StoreMenuMain from "./StoreMenuMain";
 import StoreViewFrm from "./StoreViewFrm";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  isStoreLoginState,
   loginStoreIdState,
   loginStoreNoState,
   soNameState,
@@ -33,6 +34,7 @@ const StoreCheckMain = () => {
   const [storeAddr, setStoreAddr] = useRecoilState(storeAddrState); //매장 주소
   const [soPhone, setSoPhone] = useRecoilState(soPhoneState); //점주 전화번호
   const [soName, setSoName] = useRecoilState(soNameState); //점주 이름
+  const isStoreLogin = useRecoilValue(isStoreLoginState);
 
   useEffect(() => {
     storeRefreshLogin();
@@ -72,6 +74,8 @@ const StoreCheckMain = () => {
     }
   };
 
+  // console.log("storeNo :", loginStoreNo);
+
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
 
   const handleClick = (index) => {
@@ -85,7 +89,7 @@ const StoreCheckMain = () => {
     {
       text: "매장페이지",
       icon: "fa-solid fa-store",
-      to: "/storecheck/StoreViewFrm",
+      to: "/storecheck/StoreDetail",
     },
     {
       text: "매장관리",
@@ -121,7 +125,10 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
-        <Route path="storePayList/:storeNo" element={<StorePayment />} />
+        <Route
+          path="StorePayment"
+          element={<StorePayment setActiveIndex={setActiveIndex} />}
+        />
         <Route
           path="storeViewMain"
           element={<StoreViewMain setActiveIndex={setActiveIndex} />}
@@ -139,8 +146,8 @@ const StoreCheckMain = () => {
           element={<ManageReview setActiveIndex={setActiveIndex} />}
         />
         <Route
-          path="StorePartnership"
-          element={<StorePartnership setActiveIndex={setActiveIndex} />}
+          path="StoreDetail"
+          element={<StoreDetail setActiveIndex={setActiveIndex} />}
         />
         <Route
           path="StoreMenuMain"

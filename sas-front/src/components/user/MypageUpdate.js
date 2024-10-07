@@ -1,22 +1,34 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import {
   loginStoreNoState,
   loginUserIdState,
   loginUserNicknameState,
   loginUserNoState,
+  userTypeState,
 } from "../utils/RecoilData";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import "./mypageUpdate.css";
 import axios from "axios";
-const MypageUpdate = () => {
+import Swal from "sweetalert2";
+const MypageUpdate = (props) => {
+  const checkUpdate = props.checkUpdate;
+  const setCheckUpdate = props.setCheckUpdate;
   return (
     <div className="update-main">
       <div className="update-content round">
         <h1>회원 정보 수정</h1>
         <Routes>
           <Route path="checkPw" element={<CheckPw />}></Route>
-          <Route path="updateForm" element={<Update />}></Route>
+          <Route
+            path="updateForm"
+            element={
+              <Update
+                checkUpdate={checkUpdate}
+                setCheckUpdate={setCheckUpdate}
+              />
+            }
+          ></Route>
         </Routes>
       </div>
     </div>
@@ -24,38 +36,67 @@ const MypageUpdate = () => {
 };
 
 const CheckPw = () => {
-  const [loginUserNo, setLoginUserNo] = useRecoilState(loginStoreNoState);
-  const [checkPw, setCheckPw] = useState("");
+  const backServer = process.env.REACT_APP_BACK_SERVER;
+  const navigate = useNavigate();
+  const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
+  const [user, setUser] = useState({ userNo: loginUserNo, userPw: "" });
+  useEffect(() => {
+    setUser({ ...user, userNo: loginUserNo });
+  }, [loginUserNo]);
+  const [pwMsg, setPwMsg] = useState("");
+  const checkUserPw = () => {
+    console.log(user);
+    console.log(loginUserNo);
+    setPwMsg("");
+    axios
+      .post(`${backServer}/user/checkUser`, user)
+      .then((res) => {
+        if (res.data) {
+          navigate("/usermain/mypage/update/updateForm");
+        } else {
+          setPwMsg("비밀번호가 옳지 않습니다.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className="checkPw-wrap">
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          checkUserPw();
         }}
       >
         <label htmlFor="checkPw">회원 비밀번호 : </label>
         <input
           type="password"
           id="checkPw"
-          value={checkPw}
+          value={user.userPw}
           onChange={(e) => {
-            setCheckPw(e.target.value);
+            setUser({ ...user, userPw: e.target.value });
           }}
         />
       </form>
+      <p className="msg colorRed">{pwMsg}</p>
     </div>
   );
 };
 
-const Update = () => {
+const Update = (props) => {
+  const { checkUpdate, setCheckUpdate } = props;
+  const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
+  const [userType, setUserType] = useRecoilState(userTypeState);
   const [loginUserNickname, setLoginUserNickname] = useRecoilState(
     loginUserNicknameState
   );
   const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
+    console.log(userType);
     axios
       .get(`${backServer}/user/userNo/${loginUserNo}/update`)
       .then((res) => {
@@ -65,14 +106,97 @@ const Update = () => {
           userNickname: loginUserNickname,
           userId: loginUserId,
           userPw: "",
+          exNickname: loginUserNickname,
+          userType: userType,
         });
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [loginUserNo]);
+  }, [loginUserNickname, checkUpdate]);
   const changeInputVal = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+  };
+  // 정규식 위한 체크
+  const [checkBeforeUpdate, setCheckBeforeUpdate] = useState({
+    checkNickname: true,
+    checkPw: true,
+    checkPhone: true,
+    checkEmail: true,
+  });
+  const [checkMsg, setCheckMsg] = useState({ checkNickname: "" });
+  // 닉네임 중복 체크
+  const checkNickname = () => {
+    setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: false });
+    setCheckMsg({ ...checkMsg, checkNickname: "" });
+    axios
+      .get(`${backServer}/user/userNickname/${user.userNickname}`)
+      .then((res) => {
+        if (res.data) {
+          setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: true });
+          setCheckMsg({
+            ...checkMsg,
+            checkNickname: "사용 가능한 닉네임입니다.",
+          });
+        } else {
+          setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: false });
+          setCheckMsg({ ...checkMsg, checkNickname: "중복된 닉네임입니다." });
+        }
+      });
+  };
+
+  // 업데이트 버튼
+  const update = () => {
+    if (
+      user.userNickname !== "" &&
+      user.userPhone != "" &&
+      user.userEmail != ""
+    ) {
+      axios
+        .patch(`${backServer}/user`, user)
+        .then((res) => {
+          if (res.data) {
+            Swal.fire({
+              title: "회원 정보 수정 성공",
+              icon: "success",
+              confirmButtonText: "확인",
+              confirmButtonColor: "var(--main1)",
+            }).then(() => {
+              setCheckUpdate(!checkUpdate);
+              setCheckMsg({ ...checkMsg, checkNickname: "" });
+              console.log(userType);
+              axios
+                .post(`${backServer}/user/refreshToken`, {
+                  userId: loginUserId,
+                  userNo: loginUserNo,
+                  userNickname: user.userNickname,
+                  loginType: userType,
+                })
+                .then((res) => {
+                  console.log(res);
+                  setLoginUserId(res.data.loginId);
+                  setUserType(res.data.userType);
+                  setLoginUserNo(res.data.userNo);
+                  setLoginUserNickname(res.data.userNickname);
+                  //로그인 이후 axios 요청 시 발급받은 토큰 값을 자동으로 axios에 추가하는 설정 (이 작업을 하지 않으면 매번 header에 token값을 보내줘야함)==>이제ㅡ Authorization을 키값으로 해서 token값을 받을 수 있음
+                  axios.defaults.headers.common["Authorization"] =
+                    res.data.accessToken;
+                  //로그인 이후 상태를 지속적으로 유지시키기 위해 발급받은 refreshToken을 브라우저에 저장==>이제 새로고침을 해도 로그인이 풀리지 않도록 작업할것임 & 자동로그인까지
+                  window.localStorage.setItem(
+                    "userRefreshToken",
+                    res.data.refreshToken
+                  );
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   return (
     <div className="update-frm">
@@ -80,7 +204,7 @@ const Update = () => {
         <div className="input-box">
           <label htmlFor="userId">아이디</label>
           <div className="input-item">
-            <input type="text" id="userId" value={user.userId} />
+            <input type="text" id="userId" readOnly value={user.userId} />
           </div>
         </div>
         <div className="input-box">
@@ -92,9 +216,18 @@ const Update = () => {
               name="userNickname"
               value={user.userNickname}
               onChange={changeInputVal}
+              onBlur={checkNickname}
               className="update"
             />
-            <p className="msg">이건 닉네임 중복 체크 메세지</p>
+            <p
+              className={
+                checkBeforeUpdate.checkNickname
+                  ? "msg colorGreen"
+                  : "msg colorRed"
+              }
+            >
+              {checkMsg.checkNickname}
+            </p>
           </div>
         </div>
         <div className="input-box">
@@ -113,19 +246,24 @@ const Update = () => {
         <div className="input-box">
           <label htmlFor="userName">이름</label>
           <div className="input-item">
-            <input type="text" id="userName" value={user.userName} />
+            <input type="text" id="userName" readOnly value={user.userName} />
           </div>
         </div>
         <div className="input-box">
           <label htmlFor="userGender">성별</label>
           <div className="input-item">
-            <input type="text" id="userGender" value={user.userGender} />
+            <input
+              type="text"
+              id="userGender"
+              readOnly
+              value={user.userGender}
+            />
           </div>
         </div>
         <div className="input-box">
           <label htmlFor="userBirth">생년월일</label>
           <div className="input-item">
-            <input type="text" id="userBirth" value={user.userBirth} />
+            <input type="text" readOnly id="userBirth" value={user.userBirth} />
           </div>
         </div>
         <div className="input-box">
@@ -156,8 +294,17 @@ const Update = () => {
         </div>
       </div>
       <div className="update-footer">
-        <button className="btn-sub round">취 소</button>
-        <button className="btn-main round">수 정</button>
+        <button
+          className="btn-sub round"
+          onClick={() => {
+            navigate("/usermain/mypage");
+          }}
+        >
+          취 소
+        </button>
+        <button className="btn-main round" onClick={update}>
+          수 정
+        </button>
       </div>
     </div>
   );

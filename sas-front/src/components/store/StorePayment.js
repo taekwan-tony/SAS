@@ -14,7 +14,8 @@ import { FaPersonHalfDress } from "react-icons/fa6";
 import { RiReservedFill } from "react-icons/ri";
 import Swal from "sweetalert2";
 
-const StorePayment = () => {
+const StorePayment = (props) => {
+  const setActiveIndex = props.setActiveIndex;
   const [lastMonthReserve, setLastMonthReserve] = useState(0); // 지난 달 예약
   const [lastMonthReservedPeople, setLastMonthReservedPeople] = useState(0); //지난 달 방문자
   const [storeNo, setStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
@@ -42,6 +43,7 @@ const StorePayment = () => {
 
   //지난 달 예약
   useEffect(() => {
+    setActiveIndex(3);
     //지난 달 예약 데이터
     const lastMonthData = async () => {
       try {

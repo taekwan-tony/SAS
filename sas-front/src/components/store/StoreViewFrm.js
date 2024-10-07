@@ -24,6 +24,41 @@ const StoreViewFrm = (props) => {
   const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
 
+  useEffect(() => {
+    setActiveIndex(1);
+    storeRefreshLogin();
+    const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 정리
+  }, []);
+
+  const storeRefreshLogin = () => {
+    const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
+    if (storeRefreshToken != null) {
+      axios.defaults.headers.common["Authorization"] = storeRefreshToken;
+      axios
+        .post(`${backServer}/store/storeRefresh`)
+        .then((res) => {
+          setLoginSoEmail(res.data.soEmail);
+          setStoreType(res.data.storeType);
+          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
+          setStoreNumber(res.data.storeNo); // storeNumber 상태 업데이트
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
+          window.localStorage.setItem(
+            "storeRefreshToken",
+            res.data.refreshToken
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoginSoEmail("");
+          setStoreType(2);
+          delete axios.defaults.headers.common["Authorization"];
+          window.localStorage.removeItem("storeRefreshToken");
+        });
+    }
+  };
+
   const [store, setStore] = useState({
     storeNo: null,
     storeName: "",

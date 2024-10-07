@@ -1,0 +1,140 @@
+.weather-section {
+  position: relative;
+  width: 100%;
+  height: 550px;
+  display: flex;
+  justify-content: center;
+  border-radius: 12px;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.weather-section p,
+.weather-section h2,
+.weather-section h1 {
+  color: #fff;
+}
+.weather-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.sm-weather-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.weather-info {
+  text-align: center;
+  padding: 40px;
+  width: 80%;
+}
+
+.sm-weather-header {
+  display: flex;
+  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  position: absolute;
+  top: 1%;
+  right: 58%;
+  transform: translate(50%, 50%);
+}
+.sm-weather-header h2 {
+  position: absolute;
+  top: -20%;
+  left: -35%; /* 왼쪽으로 이동 */
+  color: #fff;
+}
+.sm-weather-temp {
+  font-size: 96px;
+  font-weight: bold;
+  margin-right: 20%; /* 텍스트와 이미지 사이 간격 */
+  color: #fff;
+}
+.sm-weather-icon {
+  position: absolute; /* 이미지의 위치를 절대적으로 설정 */
+  top: 10%; /* 상단에 위치 */
+  right: -50%; /* 적절히 오른쪽으로 이동 */
+  width: 50%; /* 이미지 크기 조정 */
+  z-index: 2; /* 온도 텍스트보다 위에 오도록 설정 */
+}
+.sm-weather-details {
+  position: relative;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.sm-weather-details p {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.sm-weather-description {
+  margin: 40px 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.sm-weather-graph {
+  margin-top: 40px;
+}
+
+.sm-graph-labels div {
+  text-align: center;
+  font-size: 14px;
+}
+
+.sm-bottom-sections {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sm-customer-management,
+.sm-reservations {
+  width: 48%;
+  background: linear-gradient(120deg, #1d201e 70%, #29482a47 99%);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.sm-customer-management table,
+.sm-reservations table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sm-customer-management th,
+.sm-customer-management td,
+.sm-reservations th,
+.sm-reservations td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #749581;
+  color: #fff;
+}
+
+.sm-customer-management h2,
+.sm-reservations h2 {
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.sm-table th,
+.sm-table td {
+  padding: 10px;
+  color: #fff;
+}
+td.badge.bg-secondary {
+  border: none;
+  background-color: transparent;
+}

@@ -152,7 +152,7 @@ const MenuView = () => {
       action: action,
     });
   };
-  // 즐겨찾기 등록시 기본 폴더 외에 다른 폴더로 변경하고 자 할때
+  // 즐겨찾기 등록시 기본 폴더 외에 다른 폴더로 변경하고자 할때
   // 즐겨찾기 폴더 목록 가져오는 useState
   const [favoriteFolderList, setFavoriteFolderList] = useState({});
   const [isFavoriteModalOpen, setIsFavoriteModalOpen] = useState(false);
@@ -192,11 +192,14 @@ const MenuView = () => {
     userNo: loginUserNo,
     favoriteFolderNo: 0,
   });
+  useEffect(() => {
+    setChangeFolder({ ...changeFolder, userNo: loginUserNo });
+  }, [loginUserNo]);
   // 즐겨찾기 목록 폴더 이동
   const changeFavoriteFolder = () => {
-    const form = new FormData();
-    form.append("userNo", changeFolder.userNo);
-    form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
+    // const form = new FormData();
+    // form.append("userNo", changeFolder.userNo);
+    // form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
     axios
       .patch(`${backServer}/favorite/changeFolder`, changeFolder)
       .then((res) => {

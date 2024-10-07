@@ -5,8 +5,10 @@
 
 	<!-- 모든 리뷰 조회 -->
 	<select id="getAllReview" resultType="review">
-		select * from review where store_no = (select store_no from store where
-		so_email=#{storeId})
+		select * 
+		from review 
+		where store_no = (select store_no from store where so_email=#{storeId})
+		ORDER BY review_date DESC
 	</select>
 	<insert id="insertReview">
 		insert into review
@@ -103,6 +105,7 @@
 		WHERE review_no = #{reviewNo}
 	</update>
 
+	
 
 
 </mapper>

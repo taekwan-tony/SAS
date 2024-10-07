@@ -27,5 +27,18 @@ public interface UserDao {
 
 	UserDTO getUserInfo(int userNo);
 
+	UserDTO getUserPwInfo(UserDTO user);
+
+	int updateUser(UserDTO user);
+
+	int checkNickname(String userNickname);
+
+	int updateReview(UserDTO user);
+	
+	List<UserDTO> selectUserGenderPercent();
+
+	int selectNewCustomerCount();
+
+
 
 }

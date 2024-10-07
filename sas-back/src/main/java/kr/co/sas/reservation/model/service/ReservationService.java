@@ -72,7 +72,7 @@ public class ReservationService {
 //		예약 -수진
 		@Transactional
 		public Map insertReservation(ReservationDTO reservation) {
-//			System.out.println(reservation.getReserveDateString());
+			//System.out.println(reservation.getReserveDateString());
 			int result = reservationDao.insertReservation(reservation);
 			Map map = new HashMap<String, Object>();
 			map.put("result", result>0);
@@ -90,11 +90,28 @@ public class ReservationService {
 			int result = reservationDao.insertPay(pay);
 			return result;
 		}
-//		예약-수진-끝
+		//예약-수진-끝
 	    public int deleteReservation(int reserveNo) {
 	        return reservationDao.deleteReservation(reserveNo);
 	    }
+	    public List<ReservationDTO> getTodayReservation(int storeNo) {
+	        return reservationDao.getTodayReservation(storeNo);
+	    }
+	    
+	    // 노쇼 상태로 변경하는 메서드
+	    public int noShow(int reserveNo) {
+	        return reservationDao.updateReserveStatusNoShow(reserveNo);
+	    }
+	    // 방문 완료 상태로 변경하는 메서드
+	    public int visit(int reserveNo) {
+	        return reservationDao.updateReserveStatusVisit(reserveNo);
+	    }
 
+		public List<ReservationDTO> getTodayCustomer(int storeNo) {
+			return reservationDao.getTodayCustomer(storeNo);
+		}
+
+		
 
 
 		public Map<String, Object> reservationList(int reqPage, String userId) {
@@ -112,6 +129,17 @@ public class ReservationService {
 		public int cancelReservation(int reserveNo) {
 			int result = reservationDao.cancelReservation(reserveNo);
 			return result;
+		}
+		@Transactional
+		public int updateReservation(ReservationDTO reservation) {
+			int result = reservationDao.updateReservation(reservation);
+			return result;
+		}
+
+		public PaymentDTO getPayInfo(int reserveNo) {
+			// TODO Auto-generated method stub
+			PaymentDTO payment = reservationDao.getPayInfo(reserveNo);
+			return payment;
 		}
 
 

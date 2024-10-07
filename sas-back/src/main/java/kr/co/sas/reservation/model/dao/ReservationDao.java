@@ -43,6 +43,14 @@ public interface ReservationDao {
 	int countSameReserve(ReservationDTO reservation);
 
 	int insertPay(PaymentDTO pay);
+	
+	List<ReservationDTO> getTodayReservation(@Param("storeNo") int storeNo);
+
+	int updateReserveStatusNoShow(int reserveNo);
+
+	int updateReserveStatusVisit(int reserveNo);
+
+	List<ReservationDTO> getTodayCustomer(int storeNo);
 
 
 	List<ReservationDTO> reservationView(PageInfo pi, String userId);
@@ -50,5 +58,10 @@ public interface ReservationDao {
 	int reservationTotal(String userId);
 
 	int cancelReservation(int reserveNo);
+
+	int updateReservation(ReservationDTO reservation);
+
+	PaymentDTO getPayInfo(int reserveNo);
+	List<ReservationDTO> selectYearAgrGroup();
 
 }

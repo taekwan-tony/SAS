@@ -59,4 +59,10 @@ public class AdminController {
 		int result = adminService.storeReportComp(storeNo);
 		return ResponseEntity.ok(result);
 	}
+	
+	@GetMapping(value="/yearSalesManagement")
+	public ResponseEntity<Map> yearSalesManagement(){
+		Map map = adminService.yearSalesManagement();
+		return ResponseEntity.ok(map);
+	}
 }

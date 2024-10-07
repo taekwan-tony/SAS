@@ -47,6 +47,7 @@ public class ReviewService {
 
 	public List getReviewList(Object parameter, String type) {
 		List list = reviewDao.getReviewList(parameter, type);
+		System.out.println("닉네임 : "+parameter);
 		System.out.println(list);
 		System.out.println("닉네임:" +parameter);
 		return list;
@@ -116,5 +117,7 @@ public class ReviewService {
         int result = reviewDao.updateReviewReportAdmin(review.getReviewNo());
         return result;
     }
+
+	
 
 }
