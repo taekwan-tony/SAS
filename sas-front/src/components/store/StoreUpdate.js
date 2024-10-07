@@ -26,7 +26,12 @@ const StoreUpdate = (props) => {
   const [seat, setSeat] = useState({});
 
   console.log("매장 정보 : ", store);
-  console.log("좌석 정보 : ", store.seatList);
+  if (store.seatList && store.seatList.length > 0) {
+    console.log("0번째 좌석의 수용 인원: ", store.seatList[0].seatCapacity);
+  } else {
+    console.log("좌석 리스트가 비어 있거나 정의되지 않았습니다.");
+  }
+  // console.log("좌석 정보 : ", store.seatList[0].seatCapacity);
 
   //매장 정보 출력
   useEffect(() => {
