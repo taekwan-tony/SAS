@@ -57,6 +57,7 @@ const DatePicker = (props) => {
 // 선택일자 스타일변경
         background:#FFC9F4;
   `;
+  console.log(selected.getFullYear());
   return (
     <div className="day-picker">
       <button
@@ -82,7 +83,7 @@ const DatePicker = (props) => {
         disabled={{ before: new Date() }}
         // 처음 시작할 달 설정, 달력 위에 뜨는 연 월 선택여부
         captionLayout="label"
-        defaultMonth={new Date(selected)}
+        defaultMonth={new Date(selected.getFullYear(), selected.getMonth())}
         startMonth={new Date(dayNow)}
         endMonth={new Date(dayNow.getFullYear(), dayNow.getMonth() + 2)}
       />

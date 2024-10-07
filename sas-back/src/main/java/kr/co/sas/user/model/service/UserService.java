@@ -165,7 +165,9 @@ public class UserService {
 		}
 		int result = userDao.updateUser(user);
 		if(result>0) {
+			System.out.println("회원 업데이트"+result);
 			result = userDao.updateReview(user);
+			System.out.println("리뷰업데이트"+result);
 		}
 		return result;
 	}
@@ -173,5 +175,16 @@ public class UserService {
 	public boolean checkNickname(String userNickname) {
 		int result = userDao.checkNickname(userNickname);
 		return result==0;
+	}
+
+	public LoginUserDTO getToken(UserDTO user) {
+		LoginUserDTO loginUser = new LoginUserDTO();
+		loginUser.setAccessToken(jwtUtils.createAccessToken(user.getUserId(), user.getLoginType(), user.getUserNo(), user.getUserNickname()));
+		loginUser.setLoginType(user.getLoginType());
+		loginUser.setRefreshToken(jwtUtils.createRefreshToken(user.getUserId(), user.getLoginType(), user.getUserNo(), user.getUserNickname()));
+		loginUser.setUserId(user.getUserId());
+		loginUser.setUserNickname(user.getUserNickname());
+		loginUser.setUserNo(user.getUserNo());
+		return loginUser;
 	}
 }

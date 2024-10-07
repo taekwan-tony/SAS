@@ -4,6 +4,7 @@ import {
   loginUserIdState,
   loginUserNicknameState,
   loginUserNoState,
+  userTypeState,
 } from "../utils/RecoilData";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -89,11 +90,13 @@ const Update = (props) => {
   const [user, setUser] = useState({});
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
+  const [userType, setUserType] = useRecoilState(userTypeState);
   const [loginUserNickname, setLoginUserNickname] = useRecoilState(
     loginUserNicknameState
   );
   const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
+    console.log(userType);
     axios
       .get(`${backServer}/user/userNo/${loginUserNo}/update`)
       .then((res) => {
@@ -104,12 +107,13 @@ const Update = (props) => {
           userId: loginUserId,
           userPw: "",
           exNickname: loginUserNickname,
+          userType: userType,
         });
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [loginUserNo, checkUpdate]);
+  }, [loginUserNickname, checkUpdate]);
   const changeInputVal = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -158,9 +162,34 @@ const Update = (props) => {
               confirmButtonText: "확인",
               confirmButtonColor: "var(--main1)",
             }).then(() => {
-              setLoginUserNickname(user.userNickname);
               setCheckUpdate(!checkUpdate);
               setCheckMsg({ ...checkMsg, checkNickname: "" });
+              console.log(userType);
+              axios
+                .post(`${backServer}/user/refreshToken`, {
+                  userId: loginUserId,
+                  userNo: loginUserNo,
+                  userNickname: user.userNickname,
+                  loginType: userType,
+                })
+                .then((res) => {
+                  console.log(res);
+                  setLoginUserId(res.data.loginId);
+                  setUserType(res.data.userType);
+                  setLoginUserNo(res.data.userNo);
+                  setLoginUserNickname(res.data.userNickname);
+                  //로그인 이후 axios 요청 시 발급받은 토큰 값을 자동으로 axios에 추가하는 설정 (이 작업을 하지 않으면 매번 header에 token값을 보내줘야함)==>이제ㅡ Authorization을 키값으로 해서 token값을 받을 수 있음
+                  axios.defaults.headers.common["Authorization"] =
+                    res.data.accessToken;
+                  //로그인 이후 상태를 지속적으로 유지시키기 위해 발급받은 refreshToken을 브라우저에 저장==>이제 새로고침을 해도 로그인이 풀리지 않도록 작업할것임 & 자동로그인까지
+                  window.localStorage.setItem(
+                    "userRefreshToken",
+                    res.data.refreshToken
+                  );
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             });
           }
         })

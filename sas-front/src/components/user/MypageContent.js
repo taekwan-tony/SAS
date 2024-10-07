@@ -245,7 +245,17 @@ const MypageFavorite = (props) => {
         <div className="no-slider">
           {favoriteFolderList
             ? favoriteFolderList.map((favorite, index) => {
-                return <FavoriteBox favorite={favorite} />;
+                const goToFavorite = () => {
+                  setFavoriteFolder(favorite);
+                  navigate("/usermain/mypage/favorite");
+                };
+                return (
+                  <FavoriteBox
+                    favorite={favorite}
+                    key={"favoriteBox" + index}
+                    goToFavorite={goToFavorite}
+                  />
+                );
               })
             : ""}
           <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
