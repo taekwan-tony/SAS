@@ -189,4 +189,35 @@ public class UserController {
 		}
 		return ResponseEntity.status(404).build();
 	}
+	
+	@Operation(summary="일반회원 기본 정보 가져오기", description = "정보 수정 위해 개인 정보(아이디, 닉네임, 이름, 성별, 생년월일, 전화번호, 이메일 조회")
+	@GetMapping(value="/userNo/{userNo}/update")
+	public ResponseEntity<UserDTO> getUserInfoForUpdate(@PathVariable int userNo){
+		UserDTO user = userService.getUserInfoForUpdate(userNo);
+		if(user!=null) {
+			return ResponseEntity.ok(user);
+		}
+		return ResponseEntity.status(404).build();
+	}
+	
+	@Operation(summary="일반회원 비밀번호 체크", description="정보 수정 전 회원 비밀번호를 받아와 맞는지 여부를 논리값으로 반환")
+	@PostMapping(value="/checkUser")
+	public ResponseEntity<Boolean> checkUserPw(@RequestBody UserDTO user){
+		boolean result = userService.checkUserPw(user);
+		return ResponseEntity.ok(result);
+	}
+	
+	@Operation(summary="일반회원 정보 수정", description = "회원 번호, 회원 닉네임, (회원 비밀번호), 회원 전화번호, 회원 이메일을 유저 객체로 받아 수정")
+	@PatchMapping
+	public ResponseEntity<Boolean> updateUser(@RequestBody UserDTO user){
+		int result = userService.updateUser(user);
+		return ResponseEntity.ok(result>0);
+	}
+	
+	@Operation(summary="일반회원 닉네임 중복 조회", description = "회원 닉네임을 받아서 중복됐는지 체크")
+	@GetMapping(value="/userNickname/{userNickname}")
+	public ResponseEntity<Boolean> checkNickname(@PathVariable String userNickname){
+		boolean result = userService.checkNickname(userNickname);
+		return ResponseEntity.ok(result);
+	}
 }

@@ -27,11 +27,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import kr.co.sas.seat.model.dto.SeatDTO;
+import kr.co.sas.store.model.dto.FavoriteStoreInfoDTO;
 import kr.co.sas.store.model.dto.LoginStoreDTO;
 import kr.co.sas.store.model.dto.StoreAmenitiesDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.store.model.dto.StoreFileDTO;
 import kr.co.sas.store.model.dto.StoreMoodDTO;
+import kr.co.sas.store.model.dto.StorePaymentDTO;
 import kr.co.sas.store.model.service.StoreService;
 import kr.co.sas.util.FileUtils;
 
@@ -250,5 +252,45 @@ public class StoreController {
 		return ResponseEntity.ok(result);
 	}//checkBusinessNumber
 	
+	@Operation(summary = "카카오맵 데이터 추출")
+	@GetMapping(value = "/kakaoMapStore")
+	public ResponseEntity<List> kakaoMapStore(){
+		List list = storeService.kakaoMapStore();
+		return ResponseEntity.ok(list);
+	}
+	
+	@Operation(summary = "서비스 이용료 결제 내역")
+	@GetMapping(value = "/storePayList/{storeNo}")
+	public ResponseEntity<List> list(@PathVariable int storeNo) {
+		List list = storeService.selectStorePayList(storeNo);
+		System.out.println("결제 내역 : " +list);
+		return ResponseEntity.ok(list);
+	}//list
+	
+	@Operation(summary="즐겨찾기 매장 정보 가져오기", description = "즐겨찾기에 등록된 매장번호 가져와서 매장 이름, 평균 별점, 영업시간, 주소, 매장 소개글 매장 객체로 가져오기")
+	@GetMapping(value="/storeNo/{storeNo}/getStoreInfoFavorite")
+	public ResponseEntity<FavoriteStoreInfoDTO> getStoreInfoFavorite(@PathVariable int storeNo){
+		FavoriteStoreInfoDTO store = storeService.selectStoreFavorite(storeNo);
+		System.out.println(store);
+		return ResponseEntity.ok(store);
+	}
+	
+	@Operation(summary = "서비스 이용 결제 성공")
+	@PatchMapping(value = "/storePaySuccess/{storePayNo}")
+	public ResponseEntity<Boolean> storePaySuccess(@PathVariable int storePayNo) {
+		int result = storeService.storePaySuccess(storePayNo);
+		return ResponseEntity.ok(result > 0);
+	}//storePaySuccess
+	
+	
+	@Operation(summary = "매장 정보")
+	@GetMapping(value = "storeView/{storeNo}")
+	public ResponseEntity<StoreDTO> storeView(@PathVariable int storeNo) {
+		StoreDTO store = storeService.storeView(storeNo);
+		if(store != null) {
+			return ResponseEntity.ok(store);
+		}//if
+		return ResponseEntity.status(404).build(); 
+	}//storeView
 	
 }

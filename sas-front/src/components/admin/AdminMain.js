@@ -5,6 +5,7 @@ import "./adminMain.css";
 import AdminStore from "./AdminStore";
 import "./adminStore.css";
 import ManagementMain from "./ManagementMain";
+import AdminMarginMain from "./AdminMarginMain";
 
 const AdminMain = () => {
   return (
@@ -15,6 +16,7 @@ const AdminMain = () => {
           <Route path="notice/*" element={<NoticeMain />} />
           <Route path="store/*" element={<AdminStore />} />
           <Route path="management/*" element={<ManagementMain />} />
+          <Route path="margin/*" element={<AdminMarginMain />} />
         </Routes>
       </div>
     </div>

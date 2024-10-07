@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import ManagementStore from "./ManagementStore";
-import ManagementSaleContent from "./ManagementSaleContent";
 
-const ManagementMain = () => {
+const AdminMarginMain = () => {
   const [adminDetailTitle, setAdminDetailTitle] = useState("");
 
   return (
@@ -21,18 +20,10 @@ const ManagementMain = () => {
               <ManagementStore setAdminDetailTitle={setAdminDetailTitle} />
             }
           />
-          <Route
-            path="saleDashboard"
-            element={
-              <ManagementSaleContent
-                setAdminDetailTitle={setAdminDetailTitle}
-              />
-            }
-          />
         </Routes>
       </div>
     </div>
   );
 };
 
-export default ManagementMain;
+export default AdminMarginMain;

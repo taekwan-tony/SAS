@@ -72,3 +72,157 @@
 .map-cluster-info > .map-cluster-info-title {
   text-align: center;
 }
+
+.admin-management-wrap {
+  width: 100%;
+}
+
+.admin-management-title-wrap {
+  width: 100%;
+  padding: 30px;
+  height: 100px;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+  line-height: 40px;
+}
+
+.admin-management-title-wrap > * {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.admin-management-content-wrap {
+  width: 100%;
+}
+.admin-management-kakao-map-wrap {
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid var(--font3);
+  border-radius: 10px;
+  width: 80%;
+}
+
+.admin-management-kakao-map-title {
+  margin-bottom: 10px;
+}
+
+.admin-management-kakao-map-title > span {
+  font-size: 24px;
+}
+
+.map-cluster-info {
+  width: 100%;
+}
+.map-cluster-info-title {
+  width: 100%;
+  border-bottom: 0.5px solid var(--font3);
+  padding-left: 5px;
+  background-color: var(--main2);
+  display: flex;
+  justify-content: space-between;
+}
+.map-cluster-info-title > span {
+  text-align: left;
+  color: white;
+}
+
+.map-cluster-info-title > span:last-child {
+  cursor: pointer;
+}
+.map-cluster-info-content {
+  width: 100%;
+  display: flex;
+  gap: 5px;
+  height: 150px;
+}
+.map-cluster-info-content-img {
+  width: 30%;
+  border-right: 1px solid var(--font3);
+}
+.map-cluster-info-content-img > div {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-cluster-info-content-img > div > img {
+  width: 80%;
+  border-radius: 10px;
+}
+.map-cluster-info-content-detail {
+  width: 70%;
+}
+
+.map-cluster-info-content-detail > div {
+  margin-bottom: 10px;
+}
+
+.map-cluster-info-content-detail > div > span {
+  font-size: 15px;
+}
+
+.map-cluster-info-content-detail > div > span:last-child {
+  cursor: pointer;
+}
+.map-cluster-info-content-detail > div > span:last-child:hover {
+  color: var(--main2);
+  text-decoration: underline;
+}
+
+.admin-management-sales-wrap {
+  width: 100%;
+}
+
+.admin-management-sales-title-wrap {
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.admin-management-sales-title-wrap > span {
+  font-size: 32px;
+}
+
+.admin-management-sales-content-wrap {
+  width: 100%;
+  height: 350px;
+  margin-top: 15px;
+  padding: 10px 50px;
+  display: flex;
+  justify-content: space-between;
+}
+.admin-management-sales-content-1 {
+  min-width: 100px;
+  width: 30%;
+  min-height: 150px;
+  height: 100%;
+  border: solid 1px var(--font3);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.admin-management-sales-content-2 {
+  min-width: 100px;
+  width: 65%;
+  min-height: 150px;
+  height: 100%;
+  border: solid 1px var(--font3);
+  border-radius: 10px;
+  padding: 10px;
+}
+.admin-management-sales-content-title {
+  padding: 5px;
+  text-align: left;
+  font-size: 20px;
+}
+
+.admin-management-sales-content-title > span {
+  color: black;
+  font-weight: 700;
+}

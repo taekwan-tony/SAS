@@ -55,7 +55,7 @@ const StoreMenuMain = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [check]);
+  }, [check, loginStoreNo]);
 
   //미리보기
   const changeStoreThumbnail = (type, index) => (e) => {

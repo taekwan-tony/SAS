@@ -1,6 +1,7 @@
 div.mypage-main {
   width: 100%;
   height: 100%;
+  min-height: calc(100vh - 30px);
   padding: 50px;
   padding-left: 250px;
   background-color: #efefef;
@@ -98,24 +99,24 @@ div.mypage-main > .profile-wrap > .user-page-info .info-title > span {
   color: var(--main1);
 }
 /* 메인화면-리스트 목록 */
-div.mypage-main > .mypage-list-wrap {
+div.mypage-main .mypage-list-wrap {
   position: relative;
 }
 
-div.mypage-main > .mypage-list-wrap > h3.title {
+div.mypage-main .mypage-list-wrap > h3.title {
   color: var(--main1);
   font-size: 20px;
   font-weight: bold;
 }
 
-div.mypage-main > .mypage-list-wrap > a {
+div.mypage-main .mypage-list-wrap > a {
   position: absolute;
   right: 5px;
   color: var(--main1);
   text-decoration: none;
 }
 
-div.mypage-main > .mypage-list-wrap > .list-content {
+div.mypage-main .mypage-list-wrap > .list-content {
   margin: 20px auto;
 }
 /* 메인화면-리스트목록-예약내역 */
@@ -162,12 +163,21 @@ div.mypage-main
   > .reserve-content
   > .reserve-info
   > span.d-day {
-  background-color: var(--main1);
-  color: #fff;
+  background-color: #eee;
+  color: var(--font2);
   padding: 0 5px;
   width: fit-content;
   text-align: center;
   margin-bottom: 10px;
+}
+
+div.mypage-main
+  .reserve-content-wrap
+  > .reserve-content
+  > .reserve-info
+  > span.d-day.ok {
+  background-color: var(--main1);
+  color: #fff;
 }
 /* 메인화면-리스트목록-즐겨찾기 */
 div.mypage-main .favorite-list > .favorite-list-content-wrap {
@@ -372,4 +382,193 @@ div.addFavoriteFolder-wrap .addFavoriteFolder-modal-footer > button {
   width: 40%;
   height: 40px;
   outline: none;
+}
+
+/* 즐겨찾기 페이지 */
+div.favorite-main-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+div.favorite-main-wrap > section {
+  padding: 10px;
+  width: 98%;
+  min-width: 930px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+div.favorite-main-wrap > section.favorite-contents-list-wrap {
+  flex-grow: 1;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > h3
+  > div.folder-btn-box {
+  position: absolute;
+  top: 27px;
+  right: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > h3
+  > div.folder-btn-box
+  > * {
+  font: 300 0.8em var(--defaultFont);
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap {
+  padding: 10px;
+  background-color: #fff;
+  width: 100%;
+  min-height: 385px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  > .empty-msg {
+  width: 100%;
+  min-height: 385px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap {
+  padding: 10px 30px;
+  display: flex;
+  align-items: center;
+  height: 186px;
+  position: relative;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > div.img {
+  width: 138px;
+  height: 157px;
+  background-color: #d9d9d9;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > div.img
+  > img {
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > .favorite-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > .favorite-info
+  > .info.introduce {
+  width: 80%;
+  max-height: 50px;
+  text-overflow: ellipsis;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > .favorite-info
+  > h3 {
+  font: bold 1.5em var(--defaultFont);
+  color: var(--main1);
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > .favorite-info
+  > h4 {
+  position: relative;
+  font: 400 1.3em var(--defaultFont);
+  padding-left: 30px;
+}
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > .favorite-info
+  > h4
+  > .favorite-star {
+  position: absolute;
+  font-weight: bold;
+  font-size: 1.3em;
+  color: gold;
+  left: 0;
+  top: -3px;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > .favorite-btn-box {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > .favorite-btn-box
+  > button {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+div.favorite-main-wrap
+  > section.favorite-contents-list-wrap
+  > div.favorite-list-content-wrap
+  .favorite-one-content-wrap
+  > .favorite-btn-box
+  > button
+  > span {
+  color: var(--main1);
+  font-size: 2em;
 }

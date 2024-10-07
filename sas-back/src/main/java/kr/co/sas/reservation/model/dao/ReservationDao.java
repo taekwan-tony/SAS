@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
+import kr.co.sas.util.PageInfo;
 import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
 @Mapper
@@ -50,5 +51,12 @@ public interface ReservationDao {
 	int updateReserveStatusVisit(int reserveNo);
 
 	List<ReservationDTO> getTodayCustomer(int storeNo);
+
+
+	List<ReservationDTO> reservationView(PageInfo pi, String userId);
+
+	int reservationTotal(String userId);
+
+	int cancelReservation(int reserveNo);
 
 }

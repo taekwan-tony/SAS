@@ -6,10 +6,29 @@ import { loginUserIdState, loginUserNoState } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ReserveContent = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const reserve = props.reserve;
+  const [reserveDate, setReserveDate] = useState(
+    reserve.reserveDate
+      ? new Date(reserve.reserveDate).getTime()
+      : new Date().getTime()
+  );
+  const today = new Date().getTime();
+  const dDay = Math.ceil((reserveDate - today) / (1000 * 60 * 60 * 24));
+  const [date, setDate] = useState(
+    reserve.reserveDateString
+      ? `${reserve.reserveDateString.substring(
+          0,
+          4
+        )}년 ${reserve.reserveDateString.substring(
+          5,
+          7
+        )}월 ${reserve.reserveDateString.substring(8)}일`
+      : ""
+  );
   return (
     <div className="reserve-content round mypage-class-for-img">
       <div className="reserve-img">
@@ -22,8 +41,10 @@ const ReserveContent = (props) => {
       <div className="reserve-info">
         <h4 className="reserve-name">{reserve.storeName}</h4>
         <span>{reserve.reservePeople + " 명"}</span>
-        <span>{`${reserve.reserveDateString} ${reserve.reserveTime}`}</span>
-        <span className="d-day round">d-day</span>
+        <span>{`${date} ${reserve.reserveTime}`}</span>
+        <span className={dDay > 0 ? "round d-day" : "round d-day ok"}>
+          {dDay > 0 ? `d-${dDay}` : "d-day"}
+        </span>
       </div>
     </div>
   );
@@ -121,6 +142,7 @@ const Profile = (props) => {
 
 const FavoriteBox = (props) => {
   const favorite = props.favorite;
+  const goToFavorite = props.goToFavorite;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [favoriteList, setFavoriteList] = useState(
     favorite.favoriteList
@@ -130,7 +152,11 @@ const FavoriteBox = (props) => {
       : []
   );
   return (
-    <div className="favorite-list-content round mypage-class-for-img">
+    <div
+      className="favorite-list-content round mypage-class-for-img"
+      onClick={goToFavorite}
+      style={{ cursor: "pointer" }}
+    >
       <div className="img favorite-list">
         <img src={"/image/s&s로고.png"} alt="" />
         <div className="img-list">
@@ -139,8 +165,9 @@ const FavoriteBox = (props) => {
               return (
                 <img
                   src={`${backServer}/store/${favoriteBox.storeImage}`}
-                  style={{ left: `${(index + 1) * 20}px` }}
+                  style={{ left: `${index * 20}px` }}
                   alt=""
+                  key={"img" + index}
                 />
               );
             }
@@ -178,8 +205,10 @@ const EmptyBox = (props) => {
   );
 };
 const MypageFavorite = (props) => {
+  const navigate = useNavigate();
   const favoriteFolderList = props.favoriteFolderList;
   const addFolderModalOpen = props.addFolderModalOpen;
+  const setFavoriteFolder = props.setFavoriteFolder;
   const settings = {
     dots: false,
     infinite: false,
@@ -194,10 +223,19 @@ const MypageFavorite = (props) => {
         <Slider {...settings}>
           {favoriteFolderList
             ? favoriteFolderList.map((favorite, index) => {
-                return <FavoriteBox favorite={favorite} />;
+                const goToFavorite = () => {
+                  setFavoriteFolder(favorite);
+                  navigate("/usermain/mypage/favorite");
+                };
+                return (
+                  <FavoriteBox
+                    favorite={favorite}
+                    key={"favoriteBoix" + index}
+                    goToFavorite={goToFavorite}
+                  />
+                );
               })
             : ""}
-
           <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
         </Slider>
       ) : (
