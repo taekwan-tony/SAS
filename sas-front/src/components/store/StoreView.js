@@ -16,11 +16,35 @@ const StoreView = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const isLoginStore = useRecoilValue(isStoreLoginState);
   const [check, setCheck] = useState(false);
-  const { loginstoreNo } = props;
+  const { loginstoreNo, handleEditClick } = props;
   const [store, setStore] = useState({});
-  const [seat, setSeat] = useState({});
+  const [storeSeatCapacity, setStoreSeatCapacity] = useState(""); // 좌석 수용 인원 상태
+  const [storeSeatAmount, setStoreSeatAmount] = useState(""); // 총 좌석 수 상태
+  const [seat, setSeat] = useState({
+    seatCapacity: "",
+    seatAmount: "",
+  });
 
-  console.log("매장", store);
+  // API로부터 데이터 가져오기 (예시)
+  useEffect(() => {
+    if (store.seatList && store.seatList.length > 0) {
+      // store.seatList가 존재하고 배열이 비어 있지 않으면 첫 번째 좌석의 수용 인원 설정
+      setStoreSeatCapacity(store.seatList[0].seatCapacity);
+      setStoreSeatAmount(store.seatList[0].seatAmount);
+      console.log("총 좌석 수 : ", storeSeatAmount);
+      console.log("수용 인원 : ", storeSeatCapacity);
+    }
+  }, [store]);
+
+  // storeSeatCapacity와 storeSeatAmount가 변경되었을 때 seat 상태를 업데이트
+  useEffect(() => {
+    if (storeSeatCapacity && storeSeatAmount) {
+      setSeat({
+        seatCapacity: storeSeatCapacity,
+        seatAmount: storeSeatAmount,
+      });
+    }
+  }, [storeSeatCapacity, storeSeatAmount]);
 
   //매장 정보 출력
   useEffect(() => {
@@ -66,7 +90,9 @@ const StoreView = (props) => {
       {/* section */}
       <div className="top-section">
         <div className="storeView-info-card">
-          <button className="storeView-updateBtn">수정</button>
+          <button className="storeView-updateBtn" onClick={handleEditClick}>
+            수정
+          </button>
           <table className="storeView-table">
             <tbody className="storeView-tbody">
               <tr className="storeView-tr">
@@ -74,7 +100,7 @@ const StoreView = (props) => {
                   <div className="storeView-imgDiv-zone">
                     <div className="storeView-img-zone">
                       <img
-                        className="storeView-img"
+                        className="storeMenuView-img"
                         src="/image/s&s로고.png"
                         alt="Default"
                       />

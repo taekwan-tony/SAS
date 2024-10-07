@@ -83,7 +83,6 @@ public class StoreService {
 	        } //else
 	    } //else
 	    map.put("result", result);
-	    System.out.println("로그인 : " + map);
 	    return map;
 	}//storeLogin
 
@@ -92,7 +91,6 @@ public class StoreService {
 	public LoginStoreDTO storeRefresh(String token) {
 		try {
 			LoginStoreDTO loginStore = jwtUtils.storeCheckToken(token);
-			System.out.println("갱신된 storeNo: " + loginStore.getStoreNo()); // storeNo 값 로그로 확인
 			String accessToken = jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr());
 			String refreshToken = jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr());
 			loginStore.setAccessToken(accessToken);
@@ -171,7 +169,6 @@ public class StoreService {
 
 	@Transactional
 	public int insertStoreFrm(StoreDTO store) {
-		//매장 정보
 		int result = storeDao.insertStoreFrm(store);
 		return result;
 		

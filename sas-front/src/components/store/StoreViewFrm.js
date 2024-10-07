@@ -16,7 +16,7 @@ import {
 } from "../utils/RecoilData";
 
 const StoreViewFrm = (props) => {
-  const setActiveIndex = props.setActiveIndex;
+  //const setActiveIndex = props.setActiveIndex;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
@@ -25,7 +25,7 @@ const StoreViewFrm = (props) => {
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
 
   useEffect(() => {
-    setActiveIndex(1);
+    //setActiveIndex(1);
     storeRefreshLogin();
     const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
 
