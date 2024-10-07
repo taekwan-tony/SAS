@@ -316,7 +316,7 @@
 		<result column="deposit" property="deposit"/>
 		<result column="store_class" property="storeClass"/>
 		<collection property="seatList" select="selectSeatList" column="store_no" javaType="java.util.List" ofType="seat"/>
-		<collection property="siFilepathList" select="selectSiFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
+		<collection property="storeSiFilepathList" select="selectSiFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
 		<collection property="storeMoodList" select="selectStoreMood" column="store_no" javaType="java.util.List" ofType="storeMood"/>
 		<collection property="storeAmenityList" select="selectStoreAmenity" column="store_no" javaType="java.util.List" ofType="storeAmenities"/>
 	</resultMap>
@@ -337,8 +337,6 @@
 			break_time_end=#{breakTimeEnd},
 			deposit=#{deposit},
 			store_class=#{storeClass},
-			map_x = #{mapX},
-			map_y = #{mapY}
 		where store_no=#{storeNo}
 	</update>
 	

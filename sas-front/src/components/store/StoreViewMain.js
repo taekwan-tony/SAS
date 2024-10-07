@@ -37,7 +37,33 @@ const StoreViewMain = () => {
     mapY: "",
   });
 
-  console.log("storeViewMain 로그인 정보 :", store);
+  const [storeSeatCapacity, setStoreSeatCapacity] = useState(""); // 좌석 수용 인원 상태
+  const [storeSeatAmount, setStoreSeatAmount] = useState(""); // 총 좌석 수 상태
+  const [seat, setSeat] = useState({
+    seatCapacity: "",
+    seatAmount: "",
+  });
+
+  // API로부터 데이터 가져오기 (예시)
+  useEffect(() => {
+    if (store.seatList && store.seatList.length > 0) {
+      // store.seatList가 존재하고 배열이 비어 있지 않으면 첫 번째 좌석의 수용 인원 설정
+      setStoreSeatCapacity(store.seatList[0].seatCapacity);
+      setStoreSeatAmount(store.seatList[0].seatAmount);
+      console.log("총 좌석 수 : ", storeSeatAmount);
+      console.log("수용 인원 : ", storeSeatCapacity);
+    }
+  }, [store]);
+
+  // storeSeatCapacity와 storeSeatAmount가 변경되었을 때 seat 상태를 업데이트
+  useEffect(() => {
+    if (storeSeatCapacity && storeSeatAmount) {
+      setSeat({
+        seatCapacity: storeSeatCapacity,
+        seatAmount: storeSeatAmount,
+      });
+    }
+  }, [storeSeatCapacity, storeSeatAmount]);
 
   return (
     <>
@@ -66,16 +92,17 @@ const StoreViewMain = () => {
           <div className="owner-background">
             <img src="/image/238.jpg" alt="back" />
           </div>
-          {/* <StoreView
+          <StoreView
+            store={store}
+            setStore={setStore}
+            loginstoreNo={loginstoreNo}
+            seat={seat}
+          />
+          {/* <StoreUpdate
             store={store}
             setStore={setStore}
             loginstoreNo={loginstoreNo}
           /> */}
-          <StoreUpdate
-            store={store}
-            setStore={setStore}
-            loginstoreNo={loginstoreNo}
-          />
         </div>
       </div>
     </>
