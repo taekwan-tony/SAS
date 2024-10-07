@@ -41,4 +41,6 @@ public interface ReviewDao {
 	int updateReviewReportContent(ReviewDTO review);
 	
 	int updateReviewReportAdmin(int reviewNo);
+
+	
 }

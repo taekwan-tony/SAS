@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.reservation.model.service.ReservationService;
+import kr.co.sas.review.model.dto.ReviewDTO;
 import kr.co.sas.weekcustomer.model.dto.WeekCustomerDTO;
 
 @CrossOrigin("*")
@@ -140,7 +142,32 @@ public class ReservationController {
     	int result = reservationService.cancelReservation(reserveNo);
     	return ResponseEntity.ok(result);
     }
-    
-    
+    @GetMapping("/todayReservation/{storeNo}")
+    public ResponseEntity<List<ReservationDTO>> getTodayReservation(@PathVariable int storeNo) {
+        List<ReservationDTO> todayReservation = reservationService.getTodayReservation(storeNo);
+        return ResponseEntity.ok(todayReservation);
+    }
+    @PatchMapping("/noshow/{reserveNo}")
+    public ResponseEntity<String> noShow(@PathVariable int reserveNo) {
+        int result = reservationService.noShow(reserveNo);
+        if (result > 0) {
+            return ResponseEntity.ok("노쇼 처리 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("노쇼 처리 실패");
+        }
+    }
+    @PatchMapping("/visit/{reserveNo}")
+    public ResponseEntity<String> visit(@PathVariable int reserveNo) {
+        int result = reservationService.visit(reserveNo);
+        if (result > 0) {
+            return ResponseEntity.ok("방문 완료 처리 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("방문 완료 처리 실패");
+        }
+    }
+    @GetMapping("/todaycustomer/{storeNo}")
+    public List<ReservationDTO> getTodayCustomer(@PathVariable int storeNo) {
+        return reservationService.getTodayCustomer(storeNo);
+    }
     
 }

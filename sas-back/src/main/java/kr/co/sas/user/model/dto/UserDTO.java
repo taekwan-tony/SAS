@@ -56,4 +56,8 @@ public class UserDTO {
 //	회원 정보 수정 시 리뷰에 등록된 닉네임을 변경하기 위한 이전 닉네임
 	@Schema(description = "일반 회원 변경 전 닉네임", type="string")
 	private String exNickname;
+	@Schema(description = "전체 성별 비율", type="double")
+	private double genderPercent;
+	@Schema(description = "일반 회원 가입일", type = "string")
+	private String userEnrollDate;
 }

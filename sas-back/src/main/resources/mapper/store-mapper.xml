@@ -222,10 +222,6 @@
 	</select>
 	
 	
-<!-- 	<select id="selectStorePayList" resultType="storePayment">
-		select store_pay_no, store_pay_date, store_total_price, store_pay_status, store_pay_request_date from store_pay where store_no=#{storeNo} order by store_pay_request_date desc
-	</select> -->
-	
 	<select id="storeMonthPayCount" resultType="storePayment">
 		select 
 			nvl(sum(reserve_people)*(select service_price from store where store.store_no =r.store_no),0) as store_total_price,
@@ -235,6 +231,8 @@
 		to_char(reserve_date,'yyyy-mm-dd') between to_char(add_months(sysdate-1,-1),'yyyy-mm-dd') and to_char(sysdate-1,'yyyy-mm-dd') 
 		group by store_no
 	</select>
+	
+	
 	<insert id="insertStoreMonthPay">
 		insert into store_pay values(store_pay_seq.nextval,#{storeNo},null,null,#{storeTotalPrice},1,sysdate,#{storeTotalUsingCount})
 	</insert>
@@ -279,4 +277,46 @@
 <select id="selectOneSoEmail" resultType="store">
 	select so_email from store where store_no = #{storeNo}
 </select>
+
+<select id="currentYearSales" resultType="storePayment">
+	select to_char(store_pay_date,'yyyy') as current_year,to_char(sum(store_total_price),'FM999,999,999,999,999') as current_year_sales,
+        	nvl(round((sum(store_total_price)/
+        	(select sum(store_total_price)
+        	 from store_pay
+        	  where to_char(store_pay_date,'yyyy') = to_char(add_Months(sysdate,-12),'yyyy')))*100,2),0) as year_sales_percent
+	from store_pay
+    where to_char(store_pay_date,'yyyy') = to_char(sysdate,'yyyy') 
+    group by to_char(store_pay_date,'yyyy')
+</select>
+<select id="selectNewStoreCount" resultType="int">
+	select nvl(count(*),0) from store where to_char(store_enroll_date,'yyyy') = to_char(sysdate,'yyyy')
+</select>
+	<select id="selectOneSoEmail" resultType="store">
+		select so_email from store where store_no = #{storeNo}
+	</select>
+	
+	
+	<select id="storeView" resultMap="selectStoreview">
+		select
+		    store_name, store_phone, store_introduce, store_addr, store_time, store_re_start, store_re_end, break_time_start, break_time_end, deposit, store_class,
+		    seat_capacity, seat_amount
+		from store
+		    join seat using (store_no)
+		where store_no = #{storeNo};
+	</select>
+	<resultMap type="store" id="selectStoreview">
+		<result column="store_name" property="storeName"/>
+		<result column="store_phone" property="storePhone"/>
+		<result column="store_introduce" property="storeIntroduce"/>
+		<result column="store_addr" property="storeAddr"/>
+		<result column="store_time" property="storeTime"/>
+		<result column="store_re_start" property="storeReStart"/>
+		<result column="store_re_end" property="storeReEnd"/>
+		<result column="break_time_start" property="breakTimeStart"/>
+		<result column="break_time_end" property="breakTimeEnd"/>
+		<result column="deposit" property="deposit"/>
+		<result column="store_class" property="storeClass"/>
+		<result column="seat_capacity" property="seatCapacity"/>
+		<result column="seat_amount" property="seatAmount"/>
+	</resultMap>
 </mapper>

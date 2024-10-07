@@ -123,27 +123,24 @@
 	<!-- 예약 상태에 따른 필터링과 상태명을 조회하는 쿼리 -->
 	<select id="selectReservationStatus" resultType="map">
 		SELECT
-		reserve_no,
-		TO_CHAR(reserve_date, 'YYYY-MM-DD HH24:MI') AS
-		reserve_date,
-		TO_CHAR(reserve_date, 'HH24:MI') AS reserve_time,
-		reserve_people,
-		store_no,
-		seat_no,
-		user_id,
-		CASE
-		WHEN reserve_pay_status = 0
-		THEN '입금대기'
-		WHEN reserve_pay_status = 1 THEN '결제완료'
-		WHEN
-		reserve_pay_status = 2 THEN '취소'
-		END AS reserveStatus
-		FROM reservation
-		WHERE store_no = #{storeNo}
-		AND TO_CHAR(reserve_date, 'YYYYMMDD')
-		BETWEEN TO_CHAR(SYSDATE, 'YYYYMMDD')
-		AND TO_CHAR(SYSDATE + 7,
-		'YYYYMMDD')
+        reserve_no,
+        TO_CHAR(reserve_date, 'YYYY-MM-DD HH24:MI') AS reserve_date,
+        TO_CHAR(reserve_date, 'HH24:MI') AS reserve_time,
+        reserve_people,
+        store_no,
+        seat_no,
+        user_id,
+        CASE
+            WHEN reserve_pay_status = 0 THEN '결제완료'
+            WHEN reserve_pay_status = 1 THEN '방문완료'
+            WHEN reserve_pay_status = 2 THEN '취소'
+            WHEN reserve_pay_status = 3 THEN '노쇼'
+            WHEN reserve_pay_status = 4 THEN '입금대기'
+        END AS reserveStatus
+    FROM reservation
+    WHERE store_no = #{storeNo}
+    AND TO_CHAR(reserve_date, 'YYYYMMDD') 
+    BETWEEN TO_CHAR(SYSDATE, 'YYYYMMDD') AND TO_CHAR(SYSDATE + 7, 'YYYYMMDD')
 	</select>
 
 	<!-- 남여 비율을 조회하는 쿼리 -->
@@ -252,6 +249,57 @@
 		#{reserveNo}
 	</delete>
 	
+	<select id="getTodayReservation" resultType="reservation">
+    	SELECT 
+        reserve_no,
+        TO_CHAR(reserve_date, ' HH24:MI') AS reserve_time, 
+        reserve_pay_status,
+        reserve_status,
+        reserve_people,
+        store_no,
+        seat_no,
+        user_id
+    FROM reservation
+    WHERE TO_CHAR(reserve_date, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+    AND store_no = #{storeNo}
+	</select>
+	
+	<update id="updateReserveStatusNoShow">
+    	UPDATE reservation
+    	SET reserve_status = 3, reserve_pay_status = 3
+    	WHERE reserve_no = #{reserveNo}
+	</update>
+	
+	<update id="updateReserveStatusVisit">
+    	UPDATE reservation
+    	SET reserve_status = 1, reserve_pay_status = 1
+    	WHERE reserve_no = #{reserveNo}
+	</update>
+	
+	<select id="getTodayCustomer" resultType="map">
+		SELECT 
+    user_id as "userId",
+    CASE 
+        WHEN (SELECT COUNT(*) FROM reservation WHERE reserve_status = 3 AND r.user_id = user_id) > 5 THEN '블랙리스트'
+        WHEN (SELECT COUNT(*) FROM reservation WHERE reserve_status = 1 AND r.user_id = user_id) >= 10 THEN '단골'
+        ELSE '일반'
+    END AS "grade",
+    (SELECT COUNT(*) FROM reservation WHERE reserve_status = 3 AND r.user_id = user_id) AS "noShow",
+    (SELECT COUNT(*) FROM reservation WHERE r.user_id = user_id) AS "totalReservations",
+    CASE 
+        WHEN EXISTS (SELECT 1 FROM reservation WHERE reserve_status = 1 AND r.user_id = user_id AND TRUNC(reserve_date) = TRUNC(SYSDATE)) THEN '방문완료'
+        WHEN EXISTS (SELECT 1 FROM reservation WHERE reserve_status = 0 AND r.user_id = user_id AND TRUNC(reserve_date) = TRUNC(SYSDATE)) THEN '방문예정'
+        ELSE '방문없음'
+    END AS "todayVisit"
+FROM 
+    reservation r 
+WHERE 
+    store_no = #{storeNo}
+GROUP BY 
+    user_id
+	</select>
+	
+
 	<!--예약내역불러오기-->
 	<select id="reservationView" resultType = "reservation">
 	select * from 

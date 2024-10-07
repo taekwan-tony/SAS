@@ -19,4 +19,7 @@ public class StorePaymentDTO {
 	private int storePayStatus;
 	private String storePayRequestDate;
 	private int storeTotalUsingCount;
+	private String currentYear;
+	private String currentYearSales;
+	private double yearSalesPercent;
 }

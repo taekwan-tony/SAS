@@ -282,4 +282,15 @@ public class StoreController {
 		return ResponseEntity.ok(result > 0);
 	}//storePaySuccess
 	
+	
+	@Operation(summary = "매장 정보")
+	@GetMapping(value = "storeView/{storeNo}")
+	public ResponseEntity<StoreDTO> storeView(@PathVariable int storeNo) {
+		StoreDTO store = storeService.storeView(storeNo);
+		if(store != null) {
+			return ResponseEntity.ok(store);
+		}//if
+		return ResponseEntity.status(404).build(); 
+	}//storeView
+	
 }
