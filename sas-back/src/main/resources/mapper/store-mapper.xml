@@ -199,6 +199,7 @@
 		<result column="deposit" property="deposit"/>
 		<collection property="seatList" select="selectSeatList" column="store_no" javaType="java.util.List" ofType="seat"/>
 	</resultMap>
+	
 	<select id="selectSeatList" resultType="seat">
 		select seat_no, seat_capacity, seat_amount from seat where store_no=#{storeNo}
 	</select>
@@ -217,6 +218,7 @@
 	<select id="checkBusinessNumber" resultType="store">
 		select * from store where businessNumber=#{businessNumber}
 	</select>
+	
 	<select id="kakaoMapStore" resultType="store">
 		select  store_no,store_name,store_addr,so_name,store_phone,map_x,map_y,(select si_filepath from store_image_file b where b.store_no = s.store_no and rownum =1) as si_filepath from store s
 	</select>
@@ -274,25 +276,23 @@
 	</select>
 
 
-<select id="selectOneSoEmail" resultType="store">
-	select so_email from store where store_no = #{storeNo}
-</select>
-
-<select id="currentYearSales" resultType="storePayment">
-	select to_char(store_pay_date,'yyyy') as current_year,to_char(sum(store_total_price),'FM999,999,999,999,999') as current_year_sales,
-        	nvl(round((sum(store_total_price)/
-        	(select sum(store_total_price)
-        	 from store_pay
-        	  where to_char(store_pay_date,'yyyy') = to_char(add_Months(sysdate,-12),'yyyy')))*100,2),0) as year_sales_percent
-	from store_pay
-    where to_char(store_pay_date,'yyyy') = to_char(sysdate,'yyyy') 
-    group by to_char(store_pay_date,'yyyy')
-</select>
-<select id="selectNewStoreCount" resultType="int">
-	select nvl(count(*),0) from store where to_char(store_enroll_date,'yyyy') = to_char(sysdate,'yyyy')
-</select>
 	<select id="selectOneSoEmail" resultType="store">
 		select so_email from store where store_no = #{storeNo}
+	</select>
+
+	<select id="currentYearSales" resultType="storePayment">
+		select to_char(store_pay_date,'yyyy') as current_year,to_char(sum(store_total_price),'FM999,999,999,999,999') as current_year_sales,
+	        	nvl(round((sum(store_total_price)/
+	        	(select sum(store_total_price)
+	        	 from store_pay
+	        	  where to_char(store_pay_date,'yyyy') = to_char(add_Months(sysdate,-12),'yyyy')))*100,2),0) as year_sales_percent
+		from store_pay
+	    where to_char(store_pay_date,'yyyy') = to_char(sysdate,'yyyy') 
+	    group by to_char(store_pay_date,'yyyy')
+	</select>
+	
+	<select id="selectNewStoreCount" resultType="int">
+		select nvl(count(*),0) from store where to_char(store_enroll_date,'yyyy') = to_char(sysdate,'yyyy')
 	</select>
 	
 	
