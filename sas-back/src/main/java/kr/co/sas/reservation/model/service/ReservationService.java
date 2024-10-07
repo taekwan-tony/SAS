@@ -136,6 +136,12 @@ public class ReservationService {
 			return result;
 		}
 
+		public PaymentDTO getPayInfo(int reserveNo) {
+			// TODO Auto-generated method stub
+			PaymentDTO payment = reservationDao.getPayInfo(reserveNo);
+			return payment;
+		}
+
 
 }
 

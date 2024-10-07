@@ -61,4 +61,6 @@ public interface ReservationDao {
 
 	int updateReservation(ReservationDTO reservation);
 
+	PaymentDTO getPayInfo(int reserveNo);
+
 }

@@ -330,4 +330,8 @@ GROUP BY
 	<update id="cancelReservation">
 		update reservation set reserve_status = 2 where reserve_no=#{reserveNo}
 	</update>
+	
+	<select id="getPayInfo" resultType="pay">
+		select pay_code, pay_price, pay_method from payment where reserve_no=#{reserveNo}
+	</select>
 </mapper>
