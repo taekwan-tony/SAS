@@ -11,7 +11,7 @@ const AdminSideTab = () => {
           <Link to="#">현황관리</Link>
           <ul className="admin-side-sub-tab">
             <li className="admin-side-sub-li">
-              <Link to="#">매출관리</Link>
+              <Link to="/admin/management/saleDashboard">매출관리</Link>
             </li>
             <li>
               <Link to="/admin/management/storeMap">제휴현황</Link>
