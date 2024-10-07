@@ -170,4 +170,19 @@ public class ReservationController {
         return reservationService.getTodayCustomer(storeNo);
     }
     
+    
+    @Operation(summary="예약 변경", description = "예약객체 받아와서 시간, 인원, 날짜, 좌석 번호 변경")
+    @PatchMapping
+    public ResponseEntity<Boolean> updateReservation(@RequestBody ReservationDTO reservation){
+    	System.out.println(reservation);
+    	int result = 0;
+    	
+    	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		reservation.setReserveDateString(fmt.format(reservation.getReserveDate())+" "+reservation.getReserveTime());
+    	boolean isExist = reservationService.isAlreadyReserved(reservation);
+    	if(!isExist) {    		
+    		result = reservationService.updateReservation(reservation);		
+    	}
+    	return ResponseEntity.ok(result>0);
+    }
 }

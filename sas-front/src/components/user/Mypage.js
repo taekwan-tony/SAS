@@ -613,6 +613,8 @@ const ReservationView = () => {
             storeNo={reservationUpdateInfo.storeNo}
             storeName={reservationUpdateInfo.storeName}
             reservationUpdateInfo={reservationUpdateInfo}
+            isReservationUpdate={isReservationUpdate}
+            setIsReservationUpdate={setIsReservationUpdate}
           />
         </Modal>
       ) : (

@@ -59,4 +59,6 @@ public interface ReservationDao {
 
 	int cancelReservation(int reserveNo);
 
+	int updateReservation(ReservationDTO reservation);
+
 }

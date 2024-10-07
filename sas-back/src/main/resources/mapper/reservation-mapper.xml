@@ -221,6 +221,11 @@
 	<insert id="insertPay">
 		insert into payment values(payment_seq.nextval, sysdate, #{payMethod}, #{reserveNo}, #{payCode}, #{payPrice})
 	</insert>
+	
+	<update id="updateReservation">
+		update reservation set reserve_date=to_date(#{reserveDateString},'yyyy-MM-dd hh24:mi'), 
+		reserve_people=#{reservePeople}, seat_no=#{seatNo} where reserve_no=#{reserveNo}
+	</update>
 <!-- 수진 끝 -->
 
 	<select id="selectWeekCustomer" resultType="map">

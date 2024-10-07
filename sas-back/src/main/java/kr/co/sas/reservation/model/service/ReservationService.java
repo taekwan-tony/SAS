@@ -130,6 +130,11 @@ public class ReservationService {
 			int result = reservationDao.cancelReservation(reserveNo);
 			return result;
 		}
+		@Transactional
+		public int updateReservation(ReservationDTO reservation) {
+			int result = reservationDao.updateReservation(reservation);
+			return result;
+		}
 
 
 }
