@@ -82,5 +82,17 @@ public interface StoreDao {
 
 	StoreDTO storeView(int storeNo);
 
+	int storeModify(StoreDTO store);
+
+	int updateSeat(SeatDTO seat);
+
+	int updateStoreFile(StoreFileDTO storeFile);
+
+	int updateStoreMood(StoreMoodDTO mood);
+
+	int deleteStoreMood(int storeNo);
+
+	int deleteStoreAmenities(int storeNo);
+
 
 }

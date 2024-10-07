@@ -1,4 +1,4 @@
-.storeView-inputBox {
+.storeUpdate-inputBox {
   box-sizing: border-box;
   width: 75%;
   border: none;
@@ -13,32 +13,32 @@
   font-weight: 200;
 }
 
-.storeView-table {
+.storeUpdate-table {
   width: 100%;
   color: #fff;
 }
 
-.storeView-tr {
+.storeUpdate-tr {
   height: 100px;
 }
 
-.storeView-th {
+.storeUpdate-th {
   font-size: 22px;
   text-align: center;
-  width: 50%;
+  width: 30%;
 }
 
-.storeView-th {
+.storeUpdate-th {
   text-align: center;
 }
 
-.storeView-label {
+.storeUpdate-label {
   color: #fff;
   font-weight: 200;
   font-size: 25px;
 }
 
-.storeView-imgDiv-zone {
+.storeUpdate-imgDiv-zone {
   display: flex;
   justify-content: center;
   flex-direction: row;
@@ -46,7 +46,7 @@
   width: 100%;
 }
 
-.storeView-div {
+.storeUpdate-div {
   display: flex;
   align-items: center;
   justify-content: left;
@@ -57,7 +57,7 @@
   text-align: center;
 }
 
-.storeView-imgDiv {
+.storeUpdate-imgDiv {
   width: 80%;
   height: auto;
   object-fit: cover;
@@ -67,25 +67,25 @@
   overflow: auto;
 }
 
-.storeView-img {
+.storeUpdate-img {
   width: 300px;
   height: 300px;
   align-items: center;
   justify-content: center;
 }
 
-.storeView-img-zone {
+.storeUpdate-img-zone {
   width: 90%;
 }
 
-.storeView-btn-zone {
+.storeUpdate-btn-zone {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 125px;
 }
 
-.storeView-storeImg-btn {
+.storeUpdate-storeImg-btn {
   width: 140px;
   height: 50px;
   border: none;
@@ -98,18 +98,18 @@
   padding: 5px;
 }
 
-.storeView-storeImg-btn:hover {
+.storeUpdate-storeImg-btn:hover {
   color: #518142;
   background-color: #fff;
   font-weight: 500;
 }
 
-.storeView-addr {
+.storeUpdate-addr {
   width: 100%;
   margin-left: 45px;
 }
 
-.storeView-btn {
+.storeUpdate-btn {
   width: 130px;
   height: 40px;
   border: none;
@@ -126,7 +126,7 @@
   justify-content: center;
 }
 
-.storeView-btn:hover {
+.storeUpdate-btn:hover {
   border: none;
   color: #518142;
   background-color: #fff;
@@ -158,7 +158,7 @@
   padding: 10px;
 }
 
-.storeView-textarea {
+.storeUpdate-textarea {
   box-sizing: border-box;
   width: 75%;
   height: 30%;
@@ -174,7 +174,7 @@
   resize: none; /* 크기 조절 불가 */
 }
 
-.storeView-modify-btn {
+.storeUpdate-modify-btn {
   width: 300px;
   height: 90px;
   border: none;
@@ -186,20 +186,20 @@
   font-weight: 600;
 }
 
-.storeView-modifyBtn-zone {
+.storeUpdate-modifyBtn-zone {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 125px;
 }
 
-.storeView-modify-btn:hover {
+.storeUpdate-modify-btn:hover {
   color: #518142;
   background-color: #fff;
   font-weight: 900;
 }
 
-.storeView-imgContainer {
+.storeUpdate-imgContainer {
   position: relative; /* 버튼을 이미지 위에 배치하기 위한 설정 */
   display: inline-block;
   border: 2px solid #fff;
@@ -223,7 +223,7 @@
   justify-content: center;
 }
 
-.storeView-updateBtn {
+.storeUpdate-updateBtn {
   position: absolute;
   width: 80px;
   font-size: 20px;
@@ -237,12 +237,12 @@
   cursor: pointer;
 }
 
-.storeView-updateBtn:hover {
+.storeUpdate-updateBtn:hover {
   background-color: #fff;
   color: #518142;
 }
 
-.storeView-info-card {
+.storeUpdate-info-card {
   position: relative;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   background: linear-gradient(35deg, #222623, #1d201e, #29482a47);

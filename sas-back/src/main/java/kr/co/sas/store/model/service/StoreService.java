@@ -114,6 +114,7 @@ public class StoreService {
 		return result;
 	}//changePw
 
+	
 	@Transactional
 	public List<StoreDTO> selectAllPayStore() {
 		List<StoreDTO> list = storeDao.selectAllPayStore();
@@ -136,21 +137,26 @@ public class StoreService {
 		return list;
 	}
 
+	
 	public StoreDTO getStoreinfo(int storeNo, int userNo) {
 		StoreDTO getStoreinfo = storeDao.getStoreinfo(storeNo, userNo);
 		return getStoreinfo;
 			
-		}
+	}
 
+	
 	public List getMenuinfo(int storeNo) {
 		List getMenuinfo = menuDao.getMenuinfo(storeNo);
 		return getMenuinfo;
 	}
 
+	
 	public List<ReviewDTO> getReviewinfo(int storeNo) {
 	    List<ReviewDTO> getReviewinfo = reviewDao.getReviewsByStoreNo(storeNo); 
 	    return getReviewinfo;
 	}
+	
+	
 	public LoginStoreDTO checkPw(StoreDTO store) {
 		StoreDTO checkPw = storeDao.searchStoreOwner(store.getSoEmail());
 		if(checkPw != null && encoder.matches(store.getSoPw(), checkPw.getSoPw())) {
@@ -233,6 +239,8 @@ public class StoreService {
 		List list = storeDao.kakaoMapStore();
 		return list;
 	}
+	
+	
 	public List selectStorePayList(int storeNo) {
 		List list = storeDao.selectStorePayList(storeNo);
 		return list;
@@ -243,6 +251,8 @@ public class StoreService {
 		FavoriteStoreInfoDTO store = storeDao.selectStoreFavorite(storeNo);
 		return store;
 	}
+	
+	
 	@Transactional
 	public int storePaySuccess(int storePayNo) {
 		int result = storeDao.storePaySuccess(storePayNo);
@@ -254,6 +264,56 @@ public class StoreService {
 		StoreDTO store = storeDao.storeView(storeNo);
 		return store;
 	}//storeView
+
+
+	@Transactional
+	public int storeModify(StoreDTO store) {
+		int result = storeDao.storeModify(store);
+		return result;
+	}//storeModify
+
+
+	@Transactional
+	public int updateSeat(SeatDTO seat) {
+		int result = storeDao.updateSeat(seat);
+		return result;
+	}//updateSeat
+
+
+	@Transactional
+	public int updateStoreImg(int storeNo, List<StoreFileDTO> storeFileList) {
+		int result = 0;
+		for(StoreFileDTO storeFile : storeFileList) {
+			storeFile.setStoreNo(storeNo);
+			result += storeDao.updateStoreFile(storeFile);
+		}//for
+		return result;
+	}//updateStoreImg
+
+
+	@Transactional
+	public int updateStoreMood(int storeNo, List<StoreMoodDTO> storeMoodList) {
+		int result = 0;
+		for(StoreMoodDTO mood : storeMoodList) {
+			mood.setStoreNo(storeNo);
+			result += storeDao.updateStoreMood(mood);
+		}//for
+		return result;
+	}//updateStoreMood
+
+
+	@Transactional
+	public int deleteStoreMood(int storeNo) {
+		int result = storeDao.deleteStoreMood(storeNo);
+		return result;
+	}//deleteStoreMood
+
+
+	@Transactional
+	public int deleteStoreAmenities(int storeNo) {
+		int result = storeDao.deleteStoreAmenities(storeNo);
+		return result;
+	}//deleteStoreAmenities
 
 
 }

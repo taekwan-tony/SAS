@@ -11,6 +11,7 @@ import {
 import { Link, Route, Routes } from "react-router-dom";
 import StoreViewFrm from "./StoreViewFrm";
 import StoreView from "./StoreView";
+import StoreUpdate from "./StoreUpdate";
 const StoreViewMain = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
@@ -65,7 +66,12 @@ const StoreViewMain = () => {
           <div className="owner-background">
             <img src="/image/238.jpg" alt="back" />
           </div>
-          <StoreView
+          {/* <StoreView
+            store={store}
+            setStore={setStore}
+            loginstoreNo={loginstoreNo}
+          /> */}
+          <StoreUpdate
             store={store}
             setStore={setStore}
             loginstoreNo={loginstoreNo}

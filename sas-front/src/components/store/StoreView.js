@@ -54,14 +54,12 @@ const StoreView = (props) => {
     }
   };
 
-  const [storeMood, setStoreMood] = useState([]);
-  const [storeAmenities, setStoreAmenities] = useState([]);
-
   return (
     <div className="storeView-main">
       {/* section */}
       <div className="top-section">
-        <div className="info-card">
+        <div className="storeView-info-card">
+          <button className="storeView-updateBtn">수정</button>
           <table className="storeView-table">
             <tbody className="storeView-tbody">
               <tr className="storeView-tr">

@@ -306,4 +306,55 @@
 	<select id="selectStoreMood" resultType="storeMood">
 		select mood from store_mood where store_no=#{storeNo}
 	</select>
+	
+	
+	<update id="storeModify">
+		update store set
+			store_name=#{storeName},
+			store_phone=#{storePhone},
+			store_introduce=#{storeIntroduce},
+			store_addr=#{storeAddr},
+			store_re_start=#{storeReStart},
+			store_re_end=#{storeReEnd},
+			break_time_start=#{breakTimeStart},
+			break_time_end=#{breakTimeEnd},
+			deposit=#{deposit},
+			store_class=#{storeClass},
+			map_x = #{mapX},
+			map_y = #{mapY}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<update id="updateSeat">
+		update seat set
+			seat_capacity=#{seatCapacity},
+			seat_amount=#{seatAmount}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<update id="updateStoreFile">
+		update store_image_file set
+			si_filename=#{siFileName},
+			si_filepath=#{siFilepath}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<insert id="updateStoreMood">
+	  insert into store_mood values
+	    (store_mood_seq.nextval, #{mood}, #{storeNo})
+	</insert>
+	
+	
+	<delete id="deleteStoreMood">
+		delete from store_mood where store_no=#{storeNo}
+	</delete>
+	
+	
+	<delete id="deleteStoreAmenities">
+		delete from store_amenities where store_no=#{storeNo}
+	</delete>
+
 </mapper>
