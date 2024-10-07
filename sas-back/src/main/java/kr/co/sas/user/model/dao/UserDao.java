@@ -27,5 +27,11 @@ public interface UserDao {
 
 	UserDTO getUserInfo(int userNo);
 
+	UserDTO getUserPwInfo(UserDTO user);
+
+	int updateUser(UserDTO user);
+
+	int checkNickname(String userNickname);
+
 
 }

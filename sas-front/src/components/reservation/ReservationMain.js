@@ -17,6 +17,8 @@ const ReservationMain = (props) => {
   const storeName = props.storeName;
   const setIsReserveModalOpen = props.setIsReserveModalOpen;
   const isReserveModalOpen = props.isReserveModalOpen;
+  //예약 변경시 받아올 예약 정보
+  const reservationUpdateInfo = props.reservationUpdateInfo;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   // 예약금
@@ -35,16 +37,42 @@ const ReservationMain = (props) => {
     deposit: 0,
   });
   // 좌석 개수 셀때 쓸 함수
-  const [reservation, setReservation] = useState({
-    reserveTime: "",
-    reserveDate: new Date(),
-    reservePayStatus: 0,
-    reservePeople: 1,
-    storeNo: storeNo,
-    userId: loginUserId,
-    seatNo: 0,
-    payPrice: 0,
-  });
+  const [reservation, setReservation] = useState(
+    reservationUpdateInfo != null
+      ? {
+          reserveTime: reservationUpdateInfo.reserveTime,
+          reserveDate: new Date(reservationUpdateInfo.reserveDate),
+          reservePayStatus: reservationUpdateInfo.reservePayStatus,
+          reservePeople: reservationUpdateInfo.reservePeople,
+          userId: loginUserId,
+          seatNo: reservationUpdateInfo.seatNo,
+          payPrice: 0,
+        }
+      : {
+          reserveTime: "",
+          reserveDate: new Date(),
+          reservePayStatus: 0,
+          reservePeople: 1,
+          storeNo: storeNo,
+          userId: loginUserId,
+          seatNo: 0,
+          payPrice: 0,
+        }
+  );
+  // check: 페이지1에서 2로 넘어가기전 체크할것(인원수)/ time: 2에서 오후/오전 써있는거 쓰려고
+  const get12Hour = (time) => {
+    return `${Number(time.substring(0, 2)) > 11 ? "오후" : "오전"} ${
+      Number(time.substring(0, 2)) > 12
+        ? Number(time.substring(0, 2)) - 12
+        : time.substring(0, 2)
+    }:${time.substring(3)}`;
+  };
+  const [reserveCheck, setReserveCheck] = useState(
+    reservationUpdateInfo != null
+      ? { time: get12Hour(reservationUpdateInfo.reserveTime), check: false }
+      : { time: "", check: false }
+  );
+  //
   // console.log(reservation);
   useEffect(() => {
     axios
@@ -75,8 +103,6 @@ const ReservationMain = (props) => {
         console.log(err);
       });
   }, [reservation]);
-  // check: 페이지1에서 2로 넘어가기전 체크할것(인원수)/ time: 2에서 오후/오전 써있는거 쓰려고
-  const [reserveCheck, setReserveCheck] = useState({ time: "", check: false });
   return (
     <>
       {reservationPage === 1 ? (
@@ -94,6 +120,11 @@ const ReservationMain = (props) => {
           setReserveCheck={setReserveCheck}
           setReserveDeposit={setReserveDeposit}
           reserveDeposit={reserveDeposit}
+          isUpdate={
+            reservationUpdateInfo != null
+              ? reservationUpdateInfo.isUpdate
+              : false
+          }
         />
       ) : reservationPage === 2 ? (
         <ReservationModalSecond
@@ -106,6 +137,11 @@ const ReservationMain = (props) => {
           storeName={storeName}
           reserveCheck={reserveCheck}
           reserveDeposit={reserveDeposit}
+          isUpdate={
+            reservationUpdateInfo != null
+              ? reservationUpdateInfo.isUpdate
+              : false
+          }
         />
       ) : (
         ""
@@ -129,6 +165,7 @@ const ReservationModalFirst = (props) => {
     reserveCheck,
     setReserveCheck,
     reserveDeposit,
+    isUpdate,
   } = props;
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   // 시간박스에 넣을 시간 배열 정의
@@ -350,7 +387,7 @@ const ReservationModalFirst = (props) => {
         </div>
         <div className="btn-box">
           <button className="btn-main round" onClick={reserve}>
-            예약하기
+            {isUpdate ? "예약 변경" : "예약하기"}
           </button>
         </div>
       </div>
@@ -367,6 +404,7 @@ const ReservationModalSecond = (props) => {
     reserveCheck,
     reserveDeposit,
     setReservation,
+    isUpdate,
   } = props;
   const pay = {
     payCode: "",
@@ -425,61 +463,65 @@ const ReservationModalSecond = (props) => {
   // 예약버튼
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const reserve = () => {
-    // console.log(reservation);
+    console.log(reservation);
     // console.log(typeof reservation.reserveDate);
-    axios
-      .post(`${backServer}/reservation`, reservation)
-      .then((res) => {
-        // console.log(res);
-        if (res.data.result) {
-          let isPayed = true;
-          console.log("결제여부", reserveDeposit.payStatus);
-          if (reserveDeposit.payStatus !== 0) {
-            const payCode = `${res.data.reserveNo}-${
-              reservation.reserveDate.getFullYear() +
-              reservation.reserveDate.getMonth() +
-              reservation.reserveDate.getDate()
-            }${reservation.reserveTime}${new Date().getSeconds()}`;
-            console.log(payCode);
-            pay.payCode = payCode;
-            pay.reserveNo = res.data.reserveNo;
-            isPayed = goToPay(pay);
+    if (isUpdate) {
+      console.log("예약 변경 로직");
+    } else {
+      axios
+        .post(`${backServer}/reservation`, reservation)
+        .then((res) => {
+          // console.log(res);
+          if (res.data.result) {
+            let isPayed = true;
+            console.log("결제여부", reserveDeposit.payStatus);
+            if (reserveDeposit.payStatus !== 0) {
+              const payCode = `${res.data.reserveNo}-${
+                reservation.reserveDate.getFullYear() +
+                reservation.reserveDate.getMonth() +
+                reservation.reserveDate.getDate()
+              }${reservation.reserveTime}${new Date().getSeconds()}`;
+              console.log(payCode);
+              pay.payCode = payCode;
+              pay.reserveNo = res.data.reserveNo;
+              isPayed = goToPay(pay);
+            } else {
+              Swal.fire({
+                title: "예약 완료",
+                icon: "success",
+                confirmButtonColor: "var(--main1)",
+              }).then(() => {
+                setReservationPage(1);
+                setIsReserveModalOpen(false);
+              });
+            }
+            if (!isPayed) {
+              Swal.fire({
+                title: "결제 실패",
+                text: "결제에 실패하였습니다. 잠시후에 다시 시도해주세요",
+                icon: "error",
+                confirmButtonColor: "var(--main1)",
+              }).then(() => {
+                setReservationPage(1);
+                setIsReserveModalOpen(false);
+              });
+            }
           } else {
             Swal.fire({
-              title: "예약 완료",
-              icon: "success",
+              title: "이미 예약 내역이 존재합니다",
+              text: "예약 정보를 다시 확인해 주세요",
+              icon: "warning",
+              iconColor: "var(--main1)",
               confirmButtonColor: "var(--main1)",
             }).then(() => {
               setReservationPage(1);
-              setIsReserveModalOpen(false);
             });
           }
-          if (!isPayed) {
-            Swal.fire({
-              title: "결제 실패",
-              text: "결제에 실패하였습니다. 잠시후에 다시 시도해주세요",
-              icon: "error",
-              confirmButtonColor: "var(--main1)",
-            }).then(() => {
-              setReservationPage(1);
-              setIsReserveModalOpen(false);
-            });
-          }
-        } else {
-          Swal.fire({
-            title: "이미 예약 내역이 존재합니다",
-            text: "예약 정보를 다시 확인해 주세요",
-            icon: "warning",
-            iconColor: "var(--main1)",
-            confirmButtonColor: "var(--main1)",
-          }).then(() => {
-            setReservationPage(1);
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   const goToPay = (pay) => {
     console.log("pay 진행중");

@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
 import { styled } from "@mui/material/styles";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useParams } from "react-router-dom";
 import "../menu/menuview.css";
 import "./mypage.css";
 import Swal from "sweetalert2";
@@ -18,11 +18,12 @@ import {
   ReviewContent,
 } from "./MypageContent";
 import {
+  isUserLoginState,
   loginUserIdState,
   loginUserNicknameState,
   loginUserNoState,
 } from "../utils/RecoilData";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { switchClasses } from "@mui/material";
@@ -33,12 +34,14 @@ import PageNavi from "../utils/PagiNavi";
 import { CleaningServices } from "@mui/icons-material";
 import FavoriteMain from "./FavoriteMain";
 import MypageUpdate from "./MypageUpdate";
+import ReportModal from "../report/ReportModal";
+import { ReservationMain } from "../reservation/ReservationMain";
 
 const Mypage = () => {
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   //유저 정보 한번에 가져오기
   const [user, setUser] = useState({});
-  const [checkAddFolder, setCheckAddFolder] = useState(false);
+  const [checkUpdate, setCheckUpdate] = useState(false);
   const [favoriteFolder, setFavoriteFolder] = useState({});
   const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
@@ -55,7 +58,7 @@ const Mypage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [loginUserNo, checkAddFolder]);
+  }, [loginUserNo, checkUpdate]);
   // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
   console.log(favoriteFolder);
   const [addFolder, setAddFolder] = useState({
@@ -107,7 +110,7 @@ const Mypage = () => {
           element={
             <MypageMain
               addFolderModalOpen={addFolderModalOpen}
-              checkAddFolder={checkAddFolder}
+              checkAddFolder={checkUpdate}
               user={user}
               setUser={setUser}
               favoriteFolder={favoriteFolder}
@@ -116,15 +119,26 @@ const Mypage = () => {
           }
         ></Route>
         <Route path="resview" element={<ReservationView />}></Route>
-        <Route path="reviewWrite" element={<ReviewWrite />} />
+        <Route
+          path="reviewWrite/:storeNo/:reserveNo"
+          element={<ReviewWrite />}
+        />
         <Route path="myreview" element={<MenuReview />} />
-        <Route path="update/*" element={<MypageUpdate />} />
+        <Route
+          path="update/*"
+          element={
+            <MypageUpdate
+              checkUpdate={checkUpdate}
+              setCheckUpdate={setCheckUpdate}
+            />
+          }
+        />
         <Route
           path="favorite"
           element={
             <FavoriteMain
               addFolderModalOpen={addFolderModalOpen}
-              checkAddFolder={checkAddFolder}
+              checkAddFolder={checkUpdate}
               favoriteFolderList={user.favoriteFolderList}
               favoriteCount={user.favoriteCount}
               favoriteFolder={favoriteFolder}
@@ -146,8 +160,8 @@ const Mypage = () => {
             addFolder={addFolder}
             setAddFolder={setAddFolder}
             addFolderModalClose={addFolderModalClose}
-            setCheckAddFolder={setCheckAddFolder}
-            checkAddFolder={checkAddFolder}
+            setCheckAddFolder={setCheckUpdate}
+            checkAddFolder={checkUpdate}
           />
         </Modal>
       ) : (
@@ -319,6 +333,7 @@ const ReservationView = () => {
   const [reqPage, setReqPage] = useState(1);
   const [pi, setPi] = useState({});
   const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [isReservationUpdate, setIsReservationUpdate] = useState(false);
   useEffect(() => {
     console.log(loginUserId);
     axios
@@ -331,8 +346,71 @@ const ReservationView = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [loginUserId, reqPage]);
+  }, [loginUserId, reqPage, isReservationUpdate]);
   const navigate = useNavigate();
+  // 신고 모달
+  const [reserveNo, setReserveNo] = useState(0);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const isUserLogin = useRecoilValue(isUserLoginState);
+  const closeReport = () => {
+    setReportModalOpen(false);
+  };
+  const customReportModal = {
+    overlay: {
+      backgroundColor: " rgba(0, 0, 0, 0.2)",
+      width: "100%",
+      height: "100vh",
+      zIndex: "10",
+      position: "fixed",
+      top: "0",
+      left: "0",
+    },
+    content: {
+      width: "500px",
+      height: "370px",
+      zIndex: "150",
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "10px",
+      boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+      backgroundColor: "white",
+      justifyContent: "center",
+      overflow: "hidden",
+    },
+  };
+  // 예약변경 모달 위한 설정
+  const [reservationUpdateInfo, setReservationUpdateInfo] = useState({});
+  const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
+
+  // 모달창?
+  const customReserveModal = {
+    overlay: {
+      backgroundColor: " rgba(0, 0, 0, 0.2)",
+      width: "100%",
+      height: "100vh",
+      zIndex: "10",
+      position: "fixed",
+      top: "0",
+      left: "0",
+    },
+    content: {
+      width: "1000px",
+      height: "470px",
+      zIndex: "150",
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "10px",
+      boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+      backgroundColor: "white",
+      justifyContent: "center",
+      overflow: "hidden",
+    },
+  };
+
   return (
     <div className="res-view">
       <section>
@@ -364,6 +442,51 @@ const ReservationView = () => {
                     ? "방문 완료"
                     : "예약 취소"
                   : "";
+              const openReport = () => {
+                setReserveNo(reservation.reserveNo);
+                setReportModalOpen(true);
+              };
+              // 예약 변경 모달창 열기
+              const goTOReserve = () => {
+                setReservationUpdateInfo({
+                  ...reservation,
+                  isUpdate: true,
+                });
+                setIsReserveModalOpen(!isReserveModalOpen);
+              };
+              // 예약취소버튼
+              const reservationCancel = () => {
+                Swal.fire({
+                  title: "예약을 취소하시겠습니까 ?",
+                  icon: "question",
+                  showCancelButton: true,
+                  cancelButtonText: "취소",
+                  cancelButtonColor: "var(--font2)",
+                  confirmButtonText: "확인",
+                  confirmButtonColor: "var(--main1)",
+                }).then((res) => {
+                  if (res.isConfirmed) {
+                    axios
+                      .patch(
+                        `${backServer}/reservation/cancel/${reservation.reserveNo}`
+                      )
+                      .then((res) => {
+                        console.log(res);
+                        if (res.data > 0) {
+                          Swal.fire({
+                            title: "삭제완료",
+                            icon: "success",
+                          }).then(() => {
+                            setIsReservationUpdate(!isReservationUpdate);
+                          });
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }
+                });
+              };
               return (
                 <div
                   className="reservation-content"
@@ -387,7 +510,9 @@ const ReservationView = () => {
                     <button
                       className="btn-main round"
                       onClick={() => {
-                        navigate("/usermain/mypage/reviewWrite");
+                        navigate(
+                          `/usermain/mypage/reviewWrite/${reservation.storeNo}/${reservation.reserveNo}`
+                        );
                       }}
                     >
                       리뷰쓰기
@@ -395,6 +520,7 @@ const ReservationView = () => {
                     <button
                       className="btn-main round
             "
+                      onClick={openReport}
                     >
                       신고
                     </button>
@@ -414,10 +540,21 @@ const ReservationView = () => {
                   </div>
                   <div className="res-btn2">
                     <span className="reserve-span round">
-                      {dDay > 0 ? `D-${dDay}` : "d-day"}
+                      {dDay > 0
+                        ? `D-${dDay}`
+                        : dDay === 0
+                        ? "d-day"
+                        : `D+${-dDay}`}
                     </span>
-                    <button className="btn-main round">예약변경</button>
-                    <button className="btn-main round">예약취소</button>
+                    <button className="btn-main round" onClick={goTOReserve}>
+                      예약변경
+                    </button>
+                    <button
+                      className="btn-main round"
+                      onClick={reservationCancel}
+                    >
+                      예약취소
+                    </button>
                   </div>
                 </div>
               );
@@ -428,6 +565,45 @@ const ReservationView = () => {
           <PageNavi pi={pi} reqPage={reqPage} setReqPage={setReqPage} />
         </div>
       </section>
+      {/* 매장 신고 모달 */}
+      {reportModalOpen ? (
+        <Modal
+          isOpen={isUserLogin} //로그인, 예약한 매장 방문완료시 누를 수 있도록
+          ariaHideApp={false}
+          onRequestClose={() => {
+            setReportModalOpen(false);
+          }}
+          style={customReportModal}
+        >
+          <ReportModal closeReport={closeReport} reserveNo={reserveNo} />
+        </Modal>
+      ) : (
+        ""
+      )}
+      {/* 매장 신고 모달-끝 */}
+      {/* 예약 변경 모달 */}
+      {/* 예약 모달창-수진 */}
+      {isReserveModalOpen ? (
+        <Modal
+          isOpen={isUserLogin}
+          ariaHideApp={false}
+          onRequestClose={() => {
+            setIsReserveModalOpen(false);
+          }}
+          style={customReserveModal}
+        >
+          <ReservationMain
+            setIsReserveModalOpen={setIsReserveModalOpen}
+            isReserveModalOpen={isReserveModalOpen}
+            storeNo={reservationUpdateInfo.storeNo}
+            storeName={reservationUpdateInfo.storeName}
+            reservationUpdateInfo={reservationUpdateInfo}
+          />
+        </Modal>
+      ) : (
+        ""
+      )}
+      {/* 예약 모달창 끝 */}
     </div>
   );
 };
@@ -480,28 +656,23 @@ const HoverRating = ({ value, setValue, hover, setHover }) => {
   );
 };
 const ReviewWrite = () => {
+  const params = useParams();
+  const storeNo = params.storeNo;
+  const reserveNo = params.reserveNo;
   const navigate = useNavigate();
-  const [loginId, setLoginId] = useRecoilState(loginUserIdState);
+  const [loginUserNickname, setLoginUserNickname] = useRecoilState(
+    loginUserNicknameState
+  );
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  useEffect(() => {
-    axios
-      .get(`${backServer}/user/userId/${loginId}/getUserNickname`)
-      .then((res) => {
-        console.log(res.data);
-        setReview({ ...review, userNickname: res.data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [loginId]);
+
   const [review, setReview] = useState({
     reviewContent: "",
     reviewScore: 2,
-    userNickname: "",
-    // 여기는 예약구현후에 넣는 방법 생각해보겠음
-    storeNo: 93,
-    reserveNo: null,
+    userNickname: loginUserNickname,
+    storeNo: storeNo,
+    reserveNo: reserveNo,
   });
+  console.log(review);
   const setContent = (content) => {
     console.log(content);
     setReview({ ...review, reviewContent: content });

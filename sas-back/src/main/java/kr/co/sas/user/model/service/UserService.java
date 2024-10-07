@@ -145,5 +145,30 @@ public class UserService {
 		UserDTO user = userDao.getUserInfo(userNo);
 		return user;
 	}
-	
+
+	public boolean checkUserPw(UserDTO user) {
+		UserDTO userPw = userDao.getUserPwInfo(user);
+		System.out.println(user);
+		System.out.println(userPw);
+		if(userPw!=null) {
+			return encoder.matches(user.getUserPw(), userPw.getUserPw());
+		}else {
+			return false;
+		}
+	}
+	@Transactional
+	public int updateUser(UserDTO user) {
+		if(user.getUserPw()!=null && !user.getUserPw().equals("")) {
+			user.setUserPw(encoder.encode(user.getUserPw()));
+		}else {
+			user.setUserPw(null);
+		}
+		int result = userDao.updateUser(user);
+		return result;
+	}
+
+	public boolean checkNickname(String userNickname) {
+		int result = userDao.checkNickname(userNickname);
+		return result==0;
+	}
 }
