@@ -41,15 +41,18 @@ const MenuView = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const [isFavoriteChange, setIsFavoriteChange] = useState(false);
+  const [sifilePathList, setSifilepathList] = useState([]);
   useEffect(() => {
     console.log("userNo:", loginUserNo);
     axios
       .get(`${backServer}/store/storeNo/${store.storeNo}/userNo/${loginUserNo}`)
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setStore(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(2);
+      });
   }, [loginUserNo, isFavoriteChange]);
   const changeFavorite = () => {
     console.log(loginUserNo);
@@ -252,7 +255,11 @@ const MenuView = () => {
       <div className="menuview-wrap">
         <section className="section-menu">
           <div className="menu-image">
-            <img src="/image/국빱.jpg" alt="가게 로고" />
+            <img
+              src={`${backServer}/store/${store.siFilepath}`}
+              // {`${backServer}/store/storeMenu/${menuItem.menuPhoto}`}
+              alt="가게 로고"
+            />
           </div>
           <div className="menuview-info">
             <p>{store.storeName}</p>
@@ -416,7 +423,7 @@ const MenuView = () => {
 };
 
 const amenitiesImages = {
-  "주차 여부": "/image/주차가능.png",
+  "주차 가능": "/image/주차가능.png",
   "반려동물 동반": "/image/반려동물동반.png",
   단체석: "/image/단체석.png",
   키즈존: "/image/키즈존.png",
@@ -552,7 +559,7 @@ const MenuReview = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [changedReview]);
+  }, [changedReview, userNickname]);
 
   return (
     <div className="menu-review">
@@ -576,7 +583,7 @@ const MenuReview = (props) => {
 };
 //리뷰수정
 const ModifyReview = (props) => {
-  const review = props.review;
+  const [review, setReview] = useState(props.review);
   const store = props.store;
   const { changedReview, setChangedReview } = props;
   const [userNickname, setUserNickname] = useRecoilState(
@@ -584,22 +591,10 @@ const ModifyReview = (props) => {
   );
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const update = userNickname === review.userNickname;
-
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
   const [modifyType, setModifyType] = useState(0);
-  // const setIsExpanded = (param) => {
-  //   console.log(param);
-  //   review.isExpanded = param;
-  //   console.log(review.isExpanded);
-  //   // console.log(reviewList);
-  //   setReviewList([...reviewList]);
-  // };
-  // const handleToggle = () => {
-  //   console.log(review.isExpanded);
-  //   setIsExpanded(!review.isExpanded);
-  //   // setReviewList([...]);
-  // };
+  const [isModify, setIsModify] = useState(true);
   const regExp = /[</p>]/;
 
   //리뷰삭제
@@ -635,17 +630,19 @@ const ModifyReview = (props) => {
   //의존성배열안에있는 값이 변하면 다시 유즈이펙트가 돈다 .
   const updateReview = () => {
     if (modifyType === 0) {
+      setIsModify(false);
       setModifyType(1);
     } else {
       const form = new FormData();
       form.append("reviewContent", editContent);
       form.append("reviewNo", review.reviewNo);
-
+      form.append("reviewScore", review.reviewScore);
+      console.log(review.reviewScore);
+      console.log(editContent);
       axios
         .patch(`${backServer}/review/usermain/mypage/updateReview`, form)
         .then((res) => {
           console.log(res);
-
           if (res.data > 0) {
             Swal.fire({
               title: "리뷰 수정 완료",
@@ -654,6 +651,7 @@ const ModifyReview = (props) => {
             }).then(() => {
               setModifyType(0);
               setChangedReview(!changedReview);
+              setReview({ ...review, reviewContent: editContent });
               navigate(`/usermain/mypage/myreview`);
             });
           }
@@ -690,7 +688,10 @@ const ModifyReview = (props) => {
             name="half-rating-read"
             defaultValue={review.reviewScore}
             precision={0.5}
-            readOnly
+            readOnly={isModify}
+            onChange={(e) => {
+              setReview({ ...review, reviewScore: e.target.value });
+            }}
           />
         </Stack>
         <br></br>
@@ -716,7 +717,7 @@ const ModifyReview = (props) => {
 
 const Menuinfo = (props) => {
   const store = props.store;
-
+  const mood = props.mood;
   return (
     <div className="menu-info">
       <div className="menu-intro">
@@ -745,6 +746,14 @@ const Menuinfo = (props) => {
       <h2>전화번호</h2>
       <div className="storephone">
         <p>{store.storePhone}</p>
+      </div>
+      <div className="store-mood">
+        <h1>분위기</h1>
+        {store.storeMoodList
+          ? store.storeMoodList.map((mood, index) => {
+              return <div key={"mood" + index}>{mood.mood}</div>;
+            })
+          : ""}
       </div>
     </div>
   );

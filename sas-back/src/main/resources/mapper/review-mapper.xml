@@ -15,7 +15,7 @@
 
 
 	<update id="modifyReview">
-		update review set review_content=#{reviewContent}
+		update review set review_content=#{reviewContent},review_score=#{reviewScore}
 		where review_no= #{reviewNo}
 	</update>
 
