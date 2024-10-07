@@ -79,5 +79,9 @@ public interface StoreDao {
 	
 	int storePaySuccess(int storePayNo);
 
+	StorePaymentDTO currentYearSales();
+
+	int selectNewStoreCount();
+
 
 }

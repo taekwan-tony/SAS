@@ -279,4 +279,18 @@
 <select id="selectOneSoEmail" resultType="store">
 	select so_email from store where store_no = #{storeNo}
 </select>
+
+<select id="currentYearSales" resultType="storePayment">
+	select to_char(store_pay_date,'yyyy') as current_year,to_char(sum(store_total_price),'FM999,999,999,999,999') as current_year_sales,
+        	nvl(round((sum(store_total_price)/
+        	(select sum(store_total_price)
+        	 from store_pay
+        	  where to_char(store_pay_date,'yyyy') = to_char(add_Months(sysdate,-12),'yyyy')))*100,2),0) as year_sales_percent
+	from store_pay
+    where to_char(store_pay_date,'yyyy') = to_char(sysdate,'yyyy') 
+    group by to_char(store_pay_date,'yyyy')
+</select>
+<select id="selectNewStoreCount" resultType="int">
+	select nvl(count(*),0) from store where to_char(store_enroll_date,'yyyy') = to_char(sysdate,'yyyy')
+</select>
 </mapper>

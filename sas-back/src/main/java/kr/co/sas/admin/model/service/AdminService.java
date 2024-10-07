@@ -14,7 +14,9 @@ import kr.co.sas.reservation.model.dao.ReservationDao;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.store.model.dao.StoreDao;
 import kr.co.sas.store.model.dto.StoreDTO;
+import kr.co.sas.store.model.dto.StorePaymentDTO;
 import kr.co.sas.user.model.dao.UserDao;
+import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.userReport.model.dao.UserReportDao;
 import kr.co.sas.util.EmailSender;
 import kr.co.sas.util.PageInfo;
@@ -36,6 +38,8 @@ public class AdminService {
 	private ReservationDao reservationDao;
 	@Autowired
 	private UserReportDao userReportDao;
+	@Autowired
+	private UserDao userDao;
 	
 	public Map selectApprovalStore(int reqPage,int storeType) {
 		int numPerPage = 12;
@@ -149,6 +153,18 @@ public class AdminService {
 			email.sendMail(emailTitle, receiver, emailContent);
 		}
 		return result;
+	}
+
+
+	public Map yearSalesManagement() {
+		StorePaymentDTO currentSales = storeDao.currentYearSales();
+		List<UserDTO> userGender = userDao.selectUserGenderPercent();
+		int newStoreCount = storeDao.selectNewStoreCount();
+		int newCustomerCount = userDao.selectNewCustomerCount();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("currentYearSales", currentSales);
+		map.put("userGenderPercent",userGender);
+		return map;
 	}
 
 

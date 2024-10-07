@@ -126,4 +126,15 @@
 	<select id="checkNickname" resultType="int">
 		select count(*) from user_tbl where user_nickname=#{userNickname}
 	</select>
+	<select id="selectUserGenderPercent" resultType="user">
+		select user_gender,
+				round((count(reserve_no)/(select count(*) from reservation where to_char(reserve_date,'yyyy') = to_char(sysdate,'yyyy'))*100),2) as gender_percent
+		from user_tbl 
+		join reservation on (user_tbl.user_id=reservation.user_id)
+		where to_char(reserve_date,'yyyy') = to_char(sysdate,'yyyy') group by user_gender
+		order by user_gender asc
+	</select>
+	<select id="selectNewCustomerCount" resultType="int">
+		select count(*) from user_tbl where substr(user_enroll_date,1,4) = to_char(sysdate,'yyyy')
+	</select>
 </mapper>

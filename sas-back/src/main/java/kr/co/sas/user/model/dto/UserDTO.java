@@ -53,4 +53,8 @@ public class UserDTO {
 	private List<ReservationDTO> reservationList;
 	@Schema(description = "일반 회원 리뷰 목록", type="list")
 	private List<ReviewDTO> reviewList;
+	@Schema(description = "전체 성별 비율", type="double")
+	private double genderPercent;
+	@Schema(description = "일반 회원 가입일", type = "string")
+	private String userEnrollDate;
 }

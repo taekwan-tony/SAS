@@ -33,5 +33,10 @@ public interface UserDao {
 
 	int checkNickname(String userNickname);
 
+	List<UserDTO> selectUserGenderPercent();
+
+	int selectNewCustomerCount();
+
+
 
 }
