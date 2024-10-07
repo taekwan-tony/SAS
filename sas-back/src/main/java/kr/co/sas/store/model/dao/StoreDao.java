@@ -79,5 +79,7 @@ public interface StoreDao {
 	
 	int storePaySuccess(int storePayNo);
 
+	StoreDTO storeView(int storeNo);
+
 
 }
