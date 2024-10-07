@@ -7,7 +7,8 @@ import axios from "axios";
 import { FaPersonHalfDress } from "react-icons/fa6";
 import { RiReservedFill } from "react-icons/ri";
 
-const StorePayment = () => {
+const StorePayment = (props) => {
+  const setActiveIndex = props.setActiveIndex;
   const [lastMonthReserve, setLastMonthReserve] = useState(0); // 지난 달 예약
   const [lastMonthReservedPeople, setLastMonthReservedPeople] = useState(0); //지난 달 방문자
   const storeNo = useRecoilValue(loginStoreNoState); // 점주 매장 번호
@@ -16,6 +17,7 @@ const StorePayment = () => {
   console.log("이용료 결제 (매장 번호) : ", storeNo);
 
   useEffect(() => {
+    setActiveIndex(3);
     //지난 달 예약 데이터
     const lastMonthData = async () => {
       try {

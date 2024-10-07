@@ -42,5 +42,13 @@ public interface ReservationDao {
 	int countSameReserve(ReservationDTO reservation);
 
 	int insertPay(PaymentDTO pay);
+	
+	List<ReservationDTO> getTodayReservation(@Param("storeNo") int storeNo);
+
+	int updateReserveStatusNoShow(int reserveNo);
+
+	int updateReserveStatusVisit(int reserveNo);
+
+	List<ReservationDTO> getTodayCustomer(int storeNo);
 
 }

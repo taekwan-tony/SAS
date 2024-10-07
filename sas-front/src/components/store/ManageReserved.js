@@ -25,7 +25,9 @@ function ManageReserved(props) {
   // 입금 상태별 예약 건수 상태
   const [pendingCount, setPendingCount] = useState(0); // 입금 대기
   const [completedCount, setCompletedCount] = useState(0); // 결제 완료
+  const [visitCount, setVisitCount] = useState(0); // 방문 완료
   const [cancelledCount, setCancelledCount] = useState(0); // 취소 대기
+  const [noshowCount, setNoShowCount] = useState(0); //노쇼
   const [calendarEvents, setCalendarEvents] = useState([]);
 
   useEffect(() => {
@@ -39,19 +41,24 @@ function ManageReserved(props) {
 
           // 예약 데이터를 달력 형식으로 변환 (필터링 제거)
           const events = response.data.map((reservation) => {
-            console.log("reserveTime: ", reservation.RESERVE_TIME);
             let backgroundColor;
             let borderColor;
             // 상태에 따른 색상 지정
-            if (reservation.reservePayStatus === 0) {
+            if (reservation.reservePayStatus === 4) {
               backgroundColor = "#ffc107"; // 입금 대기 (노란색)
               borderColor = "#e0a800";
-            } else if (reservation.reservePayStatus === 1) {
+            } else if (reservation.reservePayStatus === 0) {
               backgroundColor = "#28a745"; // 결제 완료 (초록색)
               borderColor = "#218838";
+            } else if (reservation.reservePayStatus === 1) {
+              backgroundColor = "#0d6efd"; // 방문 완료 (파란색)
+              borderColor = "#6610f2";
             } else if (reservation.reservePayStatus === 2) {
               backgroundColor = "#dc3545"; // 입금 취소 (빨간색)
               borderColor = "#c82333";
+            } else if (reservation.reservePayStatus === 3) {
+              backgroundColor = "#6c757d"; // 노쇼 (회색)
+              borderColor = "#6c757d";
             }
 
             return {
@@ -68,7 +75,6 @@ function ManageReserved(props) {
               },
             };
           });
-          console.log(events);
           setCalendarEvents(events); // 모든 예약 데이터를 상태로 설정
         })
         .catch((error) => {
@@ -90,14 +96,22 @@ function ManageReserved(props) {
           const completed = response.data.filter(
             (reservation) => reservation.RESERVESTATUS === "결제완료"
           ).length;
+          const visit = response.data.filter(
+            (reservation) => reservation.RESERVESTATUS === "방문완료"
+          ).length;
           const cancelled = response.data.filter(
             (reservation) => reservation.RESERVESTATUS === "취소"
+          ).length;
+          const noshow = response.data.filter(
+            (reservation) => reservation.RESERVESTATUS === "노쇼"
           ).length;
           console.log(response.data);
           // 상태별 카운트 설정
           setPendingCount(pending);
           setCompletedCount(completed);
+          setVisitCount(visit);
           setCancelledCount(cancelled);
+          setNoShowCount(noshow);
           setWeekReservations(response.data);
         })
         .catch((error) => {
@@ -112,21 +126,76 @@ function ManageReserved(props) {
       case "입금대기":
         return <span className="badge bg-warning">입금대기</span>;
       case "결제완료":
-        return <span className="badge bg-success">입금완료</span>;
+        return <span className="badge bg-success">결제완료</span>;
+      case "방문완료":
+        return <span className="badge bg-primary">방문완료</span>;
       case "취소":
         return <span className="badge bg-danger">입금취소</span>;
       default:
-        return <span className="badge bg-secondary">상태 미확인</span>;
+        return <span className="badge bg-secondary">노쇼</span>;
     }
   };
   // 예약 상태와 입금 상태를 결합하여 상태를 계산하는 함수
   const calReservationStatus = (payStatus) => {
+    console.log("입금 상태 (payStatus):", payStatus);
     if (payStatus == "입금대기") {
       return "예약대기"; // 입금 완료이면 예약완료로 설정
     } else if (payStatus == "결제완료") {
       return "예약완료"; // 입금 대기일 경우 예약대기로 설정
+    } else if (payStatus == "방문완료") {
+      return "방문완료"; // 예약완료하고 버튼누르면 방문완료 설정
     } else if (payStatus == "취소") {
       return "예약취소"; // 입금 취소일 경우 예약취소로 설정
+    } else if (payStatus == "노쇼") {
+      return "노쇼"; // 노쇼일 경우 노쇼로 설정
+    }
+  };
+
+  // 방문 완료 처리 함수
+  const visit = (reserveNo) => {
+    if (window.confirm("해당 예약을 방문 완료 처리하시겠습니까?")) {
+      axios
+        .patch(`${backServer}/reservation/visit/${reserveNo}`)
+        .then((response) => {
+          alert("방문 완료 처리되었습니다.");
+          setWeekReservations((prevReservations) => {
+            return prevReservations.map((reservation) => {
+              if (reservation.RESERVE_NO === reserveNo) {
+                return { ...reservation, RESERVESTATUS: "방문완료" };
+              }
+              return reservation;
+            });
+          });
+        })
+        .catch((error) => {
+          console.error(
+            "방문 완료 처리 중 오류 발생:",
+            error.response || error
+          );
+        });
+    }
+  };
+  //노쇼 처리 함수
+  const NoShow = (reserveNo) => {
+    if (window.confirm("해당 예약을 노쇼 처리하시겠습니까?")) {
+      axios
+        .patch(`${backServer}/reservation/noshow/${reserveNo}`)
+        .then((response) => {
+          // 서버 응답을 받은 후 상태 업데이트
+          alert("예약이 노쇼로 처리되었습니다.");
+          setWeekReservations((prevReservations) => {
+            console.log("업데이트 이전 상태:", prevReservations);
+            return prevReservations.map((reservation) => {
+              if (reservation.RESERVE_NO === reserveNo) {
+                return { ...reservation, RESERVESTATUS: "노쇼" };
+              }
+              return reservation;
+            });
+          });
+        })
+        .catch((error) => {
+          console.error("노쇼 처리 중 오류 발생:", error.response || error);
+        });
     }
   };
 
@@ -233,7 +302,7 @@ function ManageReserved(props) {
           <div className="info-card">
             <div className="info-text">
               <h3>결제 완료</h3>
-              <h2>{completedCount}건</h2>
+              <h2>{completedCount + noshowCount + visitCount}건</h2>
             </div>
             <div className="info-card-icon-bg">
               <FaCircleDollarToSlot />
@@ -343,6 +412,8 @@ function ManageReserved(props) {
                 <th>인원수</th>
                 <th>좌석번호</th>
                 <th>손님아이디</th>
+                <th>노쇼/방문 여부</th>
+                <th>삭제여부</th>
               </tr>
             </thead>
             <tbody>
@@ -360,6 +431,24 @@ function ManageReserved(props) {
                     <td>{reservation.RESERVE_PEOPLE}</td>
                     <td>{reservation.SEAT_NO}</td>
                     <td>{reservation.USER_ID}</td>
+                    <td>
+                      {reservation.RESERVESTATUS.trim() === "결제완료" && (
+                        <div>
+                          <button
+                            className="noshow-button"
+                            onClick={() => NoShow(reservation.RESERVE_NO)}
+                          >
+                            노쇼
+                          </button>
+                          <button
+                            className="visit-complete-button"
+                            onClick={() => visit(reservation.RESERVE_NO)}
+                          >
+                            방문완료
+                          </button>
+                        </div>
+                      )}
+                    </td>
                     <td>
                       {reservation.RESERVESTATUS === "취소" && (
                         <button

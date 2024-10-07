@@ -20,7 +20,7 @@ const StoreViewFrm = (props) => {
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
 
   useEffect(() => {
-    setActiveIndex(0);
+    setActiveIndex(1);
     storeRefreshLogin();
     const interval = window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
 

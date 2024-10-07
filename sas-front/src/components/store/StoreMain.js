@@ -79,7 +79,7 @@ function StoreMain() {
                     icon="fas fa-store"
                     title="매장페이지"
                     className="color"
-                    to="/storecheck/StoreViewFrm"
+                    to="/storecheck/StoreDetail"
                   />
                   <HexagonItem
                     icon="fas fa-id-card"
