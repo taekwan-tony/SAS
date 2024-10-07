@@ -10,6 +10,7 @@ import {
 } from "../utils/RecoilData";
 import { Link, Route, Routes } from "react-router-dom";
 import StoreViewFrm from "./StoreViewFrm";
+import StoreView from "./StoreView";
 const StoreViewMain = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
@@ -62,9 +63,8 @@ const StoreViewMain = () => {
             <img src="/image/238.jpg" alt="back" />
           </div>
         </div>
-        <Routes>
-          <Route path="/storeViewFrm" element={<StoreViewFrm />} />
-        </Routes>
+        <StoreView />
+        <div></div>
       </div>
     </>
   );

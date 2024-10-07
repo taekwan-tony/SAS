@@ -4,7 +4,7 @@ import ManageReserved from "./ManageReserved";
 import ManageReview from "./ManageReview";
 import Ownerstatistics from "../ownerstatistics/OwnerStatistics";
 import StoreRegist from "./StoreRegist";
-import StorePartnership from "./StorePartnership";
+import StoreDetail from "./StoreDetail";
 import StoreMenuMain from "./StoreMenuMain";
 import StoreViewFrm from "./StoreViewFrm";
 import axios from "axios";
@@ -85,7 +85,7 @@ const StoreCheckMain = () => {
     {
       text: "매장페이지",
       icon: "fa-solid fa-store",
-      to: "/storecheck/StoreViewFrm",
+      to: "/storecheck/StoreDetail",
     },
     {
       text: "매장관리",
@@ -121,7 +121,10 @@ const StoreCheckMain = () => {
   return (
     <>
       <Routes>
-        <Route path="storePayList/:storeNo" element={<StorePayment />} />
+        <Route
+          path="StorePayment"
+          element={<StorePayment setActiveIndex={setActiveIndex} />}
+        />
         <Route
           path="storeViewMain"
           element={<StoreViewMain setActiveIndex={setActiveIndex} />}
@@ -139,8 +142,8 @@ const StoreCheckMain = () => {
           element={<ManageReview setActiveIndex={setActiveIndex} />}
         />
         <Route
-          path="StorePartnership"
-          element={<StorePartnership setActiveIndex={setActiveIndex} />}
+          path="StoreDetail"
+          element={<StoreDetail setActiveIndex={setActiveIndex} />}
         />
         <Route
           path="StoreMenuMain"

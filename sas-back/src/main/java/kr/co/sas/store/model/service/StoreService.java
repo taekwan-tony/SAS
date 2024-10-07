@@ -249,5 +249,12 @@ public class StoreService {
 		return result;
 	}//storePaySuccess
 
+	
+	public StoreDTO storeView(int storeNo) {
+		StoreDTO store = storeDao.storeView(storeNo);
+		System.out.println("매장 정보 조회 : " + store);
+		return store;
+	}//storeView
+
 
 }

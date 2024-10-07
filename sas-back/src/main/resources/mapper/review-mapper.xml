@@ -103,6 +103,7 @@
 		WHERE review_no = #{reviewNo}
 	</update>
 
+	
 
 
 </mapper>

@@ -196,7 +196,7 @@
   font-family: "Poppins", sans-serif;
   background: linear-gradient(35deg, #222623 20%, #1f2822 50%, #95c29647 99%);
   color: white;
-  text-align: left;
+  text-align: center;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
@@ -207,6 +207,8 @@
 .styled-table th,
 .styled-table td {
   padding: 12px 15px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .styled-table thead tr {
@@ -232,153 +234,26 @@
   color: white;
   border-radius: 7px;
 }
-
-/* 하단 네비 */
-.owner-navi {
-  position: fixed; /* 화면에 고정 */
-  bottom: 0; /* 화면의 하단에 고정 */
-  left: 50%; /* 가운데 정렬 */
-  transform: translateX(-50%); /* 정 가운데 위치 */
-  width: 100%; /* 전체 너비 */
-  max-width: 570px; /* 최대 너비 */
-  background-color: #000; /* 배경 검은색 */
-  padding: 10px; /* 내부 여백 */
-  z-index: 1000; /* 다른 요소 위에 표시 */
-  border-radius: 20px 20px 10px 10px; /* 상단 모서리 둥글게 */
-  height: 72px;
+.reserve-del-button:hover {
+  background: linear-gradient(90deg, #291a1a 10%, #ec0808 90%);
+  cursor: pointer;
 }
-
-.navigation {
-  position: fixed;
-  bottom: 0;
-  width: 550px;
-  height: 60px;
-  background: linear-gradient(45deg, #1d2420, #183e29, #203120);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
+.noshow-button {
+  background: linear-gradient(90deg, #291a1a 10%, #b23a3a 90%);
+  color: white;
+  border-radius: 7px;
+  margin-right: 10px;
 }
-.navigation ul {
-  display: flex;
-  width: 100%;
+.noshow-button:hover {
+  background: linear-gradient(90deg, #291a1a 10%, #ec0808 90%);
+  cursor: pointer;
 }
-.navigation ul li {
-  position: relative;
-  width: 70px;
-  height: 70px;
-  list-style: none;
-  z-index: 1;
+.visit-complete-button {
+  background: linear-gradient(90deg, #291a1a 10%, #2d6ccbbd 90%);
+  color: white;
+  border-radius: 7px;
 }
-.navigation ul li a {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  text-align: center;
-  font-weight: 500;
-}
-.navigation ul li a .icon {
-  padding-top: 5px;
-  position: relative;
-  display: block;
-  line-height: 75px;
-  font-size: 1.5em;
-  text-align: center;
-  color: #fff;
-  transition: 0.5s;
-}
-
-.navigation ul li.active a .icon {
-  transform: translateY(-27px);
-}
-.navigation ul li a .text {
-  position: absolute;
-  color: #fff;
-  font-weight: 400;
-  font-size: 0.75em;
-  letter-spacing: 0.05em;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 0.5s;
-}
-.navigation ul li.active a .text {
-  opacity: 1;
-  padding-top: 25px;
-  transform: translateY(10px);
-}
-.navigation ul li a .circle {
-  position: absolute;
-  display: block;
-  width: 50px; /* 서클의 기본 크기 */
-  height: 50px;
-  background: transparent;
-  border-radius: 50%;
-  border: 1.8px solid #fff;
-  transform: translateY(-37px) scale(0); /* 서클이 0 크기에서 시작 */
-  transition: transform 0.5s ease-in-out; /* 부드럽게 커지도록 */
-}
-/* 
-  .navigation ul li.active a .circle {
-    transform: translateY(-27px) scale(1);
-    transition: none;
-  }
-  */
-.indicator {
-  position: absolute;
-  top: -59%;
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(45deg, #447156, #183e29, #1d2420);
-  border: 6px solid #06021b;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.5s;
-}
-.indicator::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -22px;
-  width: 20px;
-  height: 20px;
-  background: transparent;
-  border-top-right-radius: 20px;
-  box-shadow: 1px -10px 0 #06021b;
-}
-.indicator::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -22px;
-  width: 20px;
-  height: 20px;
-  background: transparent;
-  border-top-left-radius: 20px;
-  box-shadow: -1px -10px 0 #06021b;
-}
-.navigation ul li:nth-child(1).active ~ .indicator {
-  transform: translateX(calc(70px * 0));
-}
-.navigation ul li:nth-child(2).active ~ .indicator {
-  transform: translateX(calc(70px * 1));
-}
-.navigation ul li:nth-child(3).active ~ .indicator {
-  transform: translateX(calc(70px * 2));
-}
-.navigation ul li:nth-child(4).active ~ .indicator {
-  transform: translateX(calc(70px * 3));
-}
-.navigation ul li:nth-child(5).active ~ .indicator {
-  transform: translateX(calc(70px * 4));
-}
-.navigation ul li:nth-child(6).active ~ .indicator {
-  transform: translateX(calc(70px * 5));
-}
-.navigation ul li:nth-child(7).active ~ .indicator {
-  transform: translateX(calc(70px * 6));
+.visit-complete-button:hover {
+  background: linear-gradient(90deg, #291a1a 10%, #0061f3 90%);
+  cursor: pointer;
 }
