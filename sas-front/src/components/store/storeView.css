@@ -25,6 +25,11 @@
 .storeView-th {
   font-size: 22px;
   text-align: center;
+  width: 50%;
+}
+
+.storeView-th {
+  text-align: center;
 }
 
 .storeView-label {
@@ -46,6 +51,10 @@
   align-items: center;
   justify-content: left;
   margin-left: 50px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 200;
+  text-align: center;
 }
 
 .storeView-imgDiv {

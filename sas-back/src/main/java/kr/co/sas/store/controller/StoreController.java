@@ -114,7 +114,7 @@ public class StoreController {
 	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo, @PathVariable int userNo) {
 //		System.out.println(userNo);
 		StoreDTO store = storeService.getStoreinfo(storeNo, userNo);
-		System.out.println(store);
+		System.out.println("매장 : " + store);
 		if(store !=null) {
 			return ResponseEntity.ok(store);
 		}
@@ -151,7 +151,7 @@ public class StoreController {
 	}//checkPw
 	
 	
-	@Operation(summary = "매장 정보")
+	@Operation(summary = "매장 정보 등록")
 	@PostMapping(value = "/insertStore")
 	public ResponseEntity<Boolean> insertStoreFrm(@RequestBody StoreDTO store) {
 		
@@ -284,9 +284,10 @@ public class StoreController {
 	
 	
 	@Operation(summary = "매장 정보")
-	@GetMapping(value = "storeView/{storeNo}")
+	@GetMapping(value = "/storeView/{storeNo}")
 	public ResponseEntity<StoreDTO> storeView(@PathVariable int storeNo) {
 		StoreDTO store = storeService.storeView(storeNo);
+		System.out.println("매장 정보 : " + store);
 		if(store != null) {
 			return ResponseEntity.ok(store);
 		}//if

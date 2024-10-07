@@ -51,4 +51,6 @@ public class StoreDTO {
 	//민규가해놨음 문제될시수정함
 	private List<String> siFilepathList;
 	private List<StoreAmenitiesDTO> storeAmenityList;
+	//+
+	private List<StoreMoodDTO> storeMoodList;
 }

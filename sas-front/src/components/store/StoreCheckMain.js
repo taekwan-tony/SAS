@@ -8,8 +8,9 @@ import StorePartnership from "./StorePartnership";
 import StoreMenuMain from "./StoreMenuMain";
 import StoreViewFrm from "./StoreViewFrm";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  isStoreLoginState,
   loginStoreIdState,
   loginStoreNoState,
   soNameState,
@@ -33,6 +34,7 @@ const StoreCheckMain = () => {
   const [storeAddr, setStoreAddr] = useRecoilState(storeAddrState); //매장 주소
   const [soPhone, setSoPhone] = useRecoilState(soPhoneState); //점주 전화번호
   const [soName, setSoName] = useRecoilState(soNameState); //점주 이름
+  const isStoreLogin = useRecoilValue(isStoreLoginState);
 
   useEffect(() => {
     storeRefreshLogin();
@@ -71,6 +73,8 @@ const StoreCheckMain = () => {
         });
     }
   };
+
+  // console.log("storeNo :", loginStoreNo);
 
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
 
