@@ -157,6 +157,7 @@ public class ReservationController {
     	int result = reservationService.cancelReservation(reserveNo);
     	return ResponseEntity.ok(result);
     }
+    //금일예약
     @GetMapping("/todayReservation/{storeNo}")
     public ResponseEntity<List<ReservationDTO>> getTodayReservation(@PathVariable int storeNo) {
         List<ReservationDTO> todayReservation = reservationService.getTodayReservation(storeNo);
@@ -180,6 +181,7 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("방문 완료 처리 실패");
         }
     }
+    //금일 손님정보
     @GetMapping("/todaycustomer/{storeNo}")
     public List<ReservationDTO> getTodayCustomer(@PathVariable int storeNo) {
         return reservationService.getTodayCustomer(storeNo);

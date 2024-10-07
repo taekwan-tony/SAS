@@ -411,7 +411,7 @@ function ManageReserved(props) {
                 <th>예약현황</th>
                 <th>인원수</th>
                 <th>좌석번호</th>
-                <th>손님아이디</th>
+                <th>손님이름</th>
                 <th>노쇼/방문 여부</th>
                 <th>삭제여부</th>
               </tr>
@@ -430,7 +430,7 @@ function ManageReserved(props) {
                     <td>{calReservationStatus(reservation.RESERVESTATUS)}</td>
                     <td>{reservation.RESERVE_PEOPLE}</td>
                     <td>{reservation.SEAT_NO}</td>
-                    <td>{reservation.USER_ID}</td>
+                    <td>{reservation.USER_NAME}</td>
                     <td>
                       {reservation.RESERVESTATUS.trim() === "결제완료" && (
                         <div>
