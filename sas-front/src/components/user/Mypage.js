@@ -52,7 +52,21 @@ const Mypage = () => {
         console.log(res.data);
         setUser(res.data);
         setFavoriteFolder(
-          res.data.favoriteFolderList ? res.data.favoriteFolderList[0] : {}
+          res.data.favoriteFolderList &&
+            favoriteFolder.favoriteFolderNo &&
+            res.data.favoriteFolderList.filter((favorite, index) => {
+              return (
+                favorite.favoriteFolderNo === favoriteFolder.favoriteFolderNo
+              );
+            })[0] != null
+            ? res.data.favoriteFolderList.filter((favorite, index) => {
+                return (
+                  favorite.favoriteFolderNo === favoriteFolder.favoriteFolderNo
+                );
+              })[0]
+            : res.data.favoriteFolderList
+            ? res.data.favoriteFolderList[0]
+            : {}
         );
       })
       .catch((err) => {
@@ -139,6 +153,7 @@ const Mypage = () => {
             <FavoriteMain
               addFolderModalOpen={addFolderModalOpen}
               checkAddFolder={checkUpdate}
+              setCheckUpdate={setCheckUpdate}
               favoriteFolderList={user.favoriteFolderList}
               favoriteCount={user.favoriteCount}
               favoriteFolder={favoriteFolder}

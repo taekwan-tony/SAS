@@ -53,4 +53,7 @@ public class UserDTO {
 	private List<ReservationDTO> reservationList;
 	@Schema(description = "일반 회원 리뷰 목록", type="list")
 	private List<ReviewDTO> reviewList;
+//	회원 정보 수정 시 리뷰에 등록된 닉네임을 변경하기 위한 이전 닉네임
+	@Schema(description = "일반 회원 변경 전 닉네임", type="string")
+	private String exNickname;
 }

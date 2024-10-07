@@ -164,6 +164,9 @@ public class UserService {
 			user.setUserPw(null);
 		}
 		int result = userDao.updateUser(user);
+		if(result>0) {
+			result = userDao.updateReview(user);
+		}
 		return result;
 	}
 

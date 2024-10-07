@@ -75,4 +75,24 @@ public class FavoriteController {
 		boolean result = favoriteService.checkDuplicate(userNo, favoriteFolderName);
 		return ResponseEntity.ok(result);
 	}
+	
+	@Operation(summary = "즐겨찾기 목록 삭제 1",description = "즐겨찾기 목록 삭제와 그 안의 모든 즐겨찾기 같이 삭제" )
+	@DeleteMapping(value="/favoriteFolderNo/{favoriteFolderNo}")
+	public ResponseEntity<Boolean> deleteFavoriteFolderWithAll(@PathVariable int favoriteFolderNo){
+		int result = favoriteService.deleteFavoriteFolderWithAll(favoriteFolderNo);
+		return ResponseEntity.ok(result>0);
+	}
+	@Operation(summary = "즐겨찾기 목록 삭제 2",description = "즐겨찾기 목록 삭제와 그 안의 모든 즐겨찾기는 기본폴더로 이동" )
+	@DeleteMapping(value="/favoriteFolderNo/{favoriteFolderNo}/userNo/{userNo}/moveFavorite")
+	public ResponseEntity<Boolean> deleteFavoriteFolderWithNo(@PathVariable int favoriteFolderNo, @PathVariable int userNo){
+		System.out.println(userNo);
+		int result = favoriteService.deleteFavoriteFolderWithNo(favoriteFolderNo, userNo);
+		return ResponseEntity.ok(result>0);
+	}
+	@Operation(summary="즐겨찾기 삭제2", description = "즐겨찾기 목록에서 삭제->즐겨찾기 번호 가져와서 삭제")
+	@DeleteMapping(value="/favoriteNo/{favoriteNo}")
+	public ResponseEntity<Boolean> deleteFavorite(@PathVariable int favoriteNo){
+		int result = favoriteService.deleteFavorite(favoriteNo);
+		return ResponseEntity.ok(result>0);
+	}
 }

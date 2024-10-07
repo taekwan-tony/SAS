@@ -144,13 +144,16 @@ const FavoriteBox = (props) => {
   const favorite = props.favorite;
   const goToFavorite = props.goToFavorite;
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [favoriteList, setFavoriteList] = useState(
-    favorite.favoriteList
-      ? favorite.favoriteList.filter((favoriteBox) => {
-          return favoriteBox.storeImage != null;
-        })
-      : []
-  );
+  const [favoriteList, setFavoriteList] = useState([]);
+  useEffect(() => {
+    setFavoriteList(
+      favorite.favoriteList
+        ? favorite.favoriteList.filter((favoriteBox) => {
+            return favoriteBox.storeImage != null;
+          })
+        : []
+    );
+  }, [favorite]);
   return (
     <div
       className="favorite-list-content round mypage-class-for-img"
@@ -230,7 +233,7 @@ const MypageFavorite = (props) => {
                 return (
                   <FavoriteBox
                     favorite={favorite}
-                    key={"favoriteBoix" + index}
+                    key={"favoriteBox" + index}
                     goToFavorite={goToFavorite}
                   />
                 );
@@ -239,14 +242,14 @@ const MypageFavorite = (props) => {
           <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
         </Slider>
       ) : (
-        <>
+        <div className="no-slider">
           {favoriteFolderList
             ? favoriteFolderList.map((favorite, index) => {
                 return <FavoriteBox favorite={favorite} />;
               })
             : ""}
           <FavoriteBoxEmpty addFolderModalOpen={addFolderModalOpen} />
-        </>
+        </div>
       )}
     </div>
   );

@@ -27,4 +27,10 @@ public interface FavoriteDao {
 
 	int countSameName(int userNo, String favoriteFolderName);
 
+	int deleteFavoriteFolderWithAll(int favoriteFolderNo);
+
+	int moveFavorite(int favoriteFolderNo, int userNo);
+
+	int deleteFavoriteWithFavoriteNo(int favoriteNo);
+
 }

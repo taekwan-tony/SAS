@@ -189,11 +189,14 @@ const MenuView = () => {
     userNo: loginUserNo,
     favoriteFolderNo: 0,
   });
+  useEffect(() => {
+    setChangeFolder({ ...changeFolder, userNo: loginUserNo });
+  }, [loginUserNo]);
   // 즐겨찾기 목록 폴더 이동
   const changeFavoriteFolder = () => {
-    const form = new FormData();
-    form.append("userNo", changeFolder.userNo);
-    form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
+    // const form = new FormData();
+    // form.append("userNo", changeFolder.userNo);
+    // form.append("favoriteFolderNo", changeFolder.favoriteFolderNo);
     axios
       .patch(`${backServer}/favorite/changeFolder`, changeFolder)
       .then((res) => {

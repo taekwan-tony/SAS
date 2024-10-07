@@ -103,6 +103,7 @@ const Update = (props) => {
           userNickname: loginUserNickname,
           userId: loginUserId,
           userPw: "",
+          exNickname: loginUserNickname,
         });
       })
       .catch((err) => {

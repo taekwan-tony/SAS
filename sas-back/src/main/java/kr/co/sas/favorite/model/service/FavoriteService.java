@@ -59,4 +59,27 @@ public class FavoriteService {
 		int favoriteFolderCount = favoriteDao.countSameName(userNo, favoriteFolderName);
 		return favoriteFolderCount==0;
 	}
+
+	@Transactional
+	public int deleteFavoriteFolderWithAll(int favoriteFolderNo) {
+		// TODO Auto-generated method stub
+		int result = favoriteDao.deleteFavoriteFolderWithAll( favoriteFolderNo);
+		return result;
+	}
+
+	@Transactional
+	public int deleteFavoriteFolderWithNo(int favoriteFolderNo, int userNo) {
+		// TODO Auto-generated method stub
+		int result = favoriteDao.moveFavorite(favoriteFolderNo, userNo);
+		if(result>0) {
+			result=favoriteDao.deleteFavoriteFolderWithAll(favoriteFolderNo);
+		}
+		return result;
+	}
+
+	@Transactional
+	public int deleteFavorite(int favoriteNo) {
+		int result = favoriteDao.deleteFavoriteWithFavoriteNo(favoriteNo);
+		return result;
+	}
 }
