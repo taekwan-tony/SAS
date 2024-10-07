@@ -323,7 +323,7 @@ function StoreDetail(props) {
             <table>
               <thead>
                 <tr>
-                  <th>아이디</th>
+                  <th>이름</th>
                   <th>방문횟수</th>
                   <th>금일 방문여부</th>
                   <th>등급</th>
@@ -333,7 +333,7 @@ function StoreDetail(props) {
               <tbody>
                 {todayCustomer.map((customer, index) => (
                   <tr key={customer.userId}>
-                    <td>{customer.userId}</td>
+                    <td>{customer.userName}</td>
                     <td>{customer.totalReservations}</td>
                     <td>{customer.todayVisit}</td>
                     <td>{customer.grade}</td>
@@ -355,7 +355,7 @@ function StoreDetail(props) {
                     <th>시간</th>
                     <th>인원수</th>
                     <th>좌석번호</th>
-                    <th>아이디</th>
+                    <th>이름</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -365,7 +365,7 @@ function StoreDetail(props) {
                       <td>{reservation.reserveTime}</td>
                       <td>{reservation.reservePeople}명</td>
                       <td>{reservation.seatNo}번</td>
-                      <td>{reservation.userId}</td>
+                      <td>{reservation.userName}</td>
                     </tr>
                   ))}
                 </tbody>

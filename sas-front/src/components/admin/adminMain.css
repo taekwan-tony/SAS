@@ -296,6 +296,16 @@
   height: 70%;
   font-size: 24px;
   gap: 5px;
-  justify-content: left;
+  justify-content: right;
   align-items: center;
+}
+
+.admin-managemnet-sales-content-count > span {
+  color: var(--main1);
+  font-weight: 600;
+  font-family: ns-b;
+}
+
+.admin-management-sales-content-ageBarChart {
+  margin-top: 30px;
 }

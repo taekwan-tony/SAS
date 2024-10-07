@@ -161,9 +161,13 @@ public class AdminService {
 		List<UserDTO> userGender = userDao.selectUserGenderPercent();
 		int newStoreCount = storeDao.selectNewStoreCount();
 		int newCustomerCount = userDao.selectNewCustomerCount();
+		List<ReservationDTO> ageGroup = reservationDao.selectYearAgrGroup();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("currentYearSales", currentSales);
 		map.put("userGenderPercent",userGender);
+		map.put("newStoreCount", newStoreCount);
+		map.put("newCustomerCount", newCustomerCount);
+		map.put("ageGroup",ageGroup);
 		return map;
 	}
 
