@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Chart, { chartData } from "../store/Chart";
+import AdminAgeBarchart from "./AdminAgeBarchart";
 
 const ManagementSaleContent = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -10,13 +11,22 @@ const ManagementSaleContent = (props) => {
   const currentYear = currentDate.getFullYear();
   const [currentYearSales, setCurrentYearSales] = useState({});
   const [userGenderPercent, setUserGenderPercent] = useState([]);
+  const [newStoreCount, setNewStoreCount] = useState(0);
+  const [newCustomerCount, setNewCustomerCount] = useState(0);
+  const ageLabels = ["10대", "20대", "30대", "40대", "50대", "60대", "70대"];
+  const [ageData, setAgeData] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [updatedChartData, setUpdatedChartData] = useState({
     ...chartData,
     doughnutData: {
       labels: ["남자", "여자"],
       datasets: [{ data: [] }],
     },
+    agedata: {
+      labels: [],
+      datasets: [{ data: [] }],
+    },
   });
+  console.log(ageData);
   useEffect(() => {
     axios
       .get(`${backServer}/admin/yearSalesManagement`)
@@ -44,6 +54,20 @@ const ManagementSaleContent = (props) => {
             ],
           },
         }));
+        setNewCustomerCount(res.data.newCustomerCount);
+        setNewStoreCount(res.data.newStoreCount);
+        const ageGroupData = new Array();
+        for (let i = 0; i < ageLabels.length; i++) {
+          for (let l = 0; l < res.data.ageGroup.length; l++) {
+            if (ageLabels[i] == res.data.ageGroup[l].ageGroup) {
+              ageGroupData.push(res.data.ageGroup[l].totalPeople);
+            }
+          }
+          if (ageGroupData.length == i) {
+            ageGroupData.push(0);
+          }
+        }
+        setAgeData(ageGroupData);
       })
       .catch((err) => {});
   }, []);
@@ -51,7 +75,7 @@ const ManagementSaleContent = (props) => {
     <>
       <div className="admin-management-sales-wrap">
         <div className="admin-management-sales-title-wrap">
-          <span class="material-icons">real_estate_agent</span>
+          <span className="material-icons">real_estate_agent</span>
           <span>매출현황</span>
         </div>
       </div>
@@ -103,26 +127,33 @@ const ManagementSaleContent = (props) => {
         <div className="admin-management-sales-content-3">
           <div className="admin-management-sales-content-4">
             <div className="admin-management-sales-content-title">
-              <span>{currentYear} 신규 매장 현황</span>
+              <span>{currentYear}년 신규 매장 현황</span>
             </div>
             <div className="admin-managemnet-sales-content-count">
               <span>신규 제휴 매장 등록 : </span>
-              <span></span>
+              <span>{newStoreCount} 매장</span>
             </div>
           </div>
           <div className="admin-management-sales-content-4">
             <div className="admin-management-sales-content-title">
-              <span>{currentYear} 신규 이용자 현황</span>
+              <span>{currentYear}년 신규 이용자 현황</span>
             </div>
             <div className="admin-managemnet-sales-content-count">
               <span>신규 이용자 등록 : </span>
-              <span></span>
+              <span>{newCustomerCount} 명</span>
             </div>
           </div>
         </div>
         <div className="admin-management-sales-content-1">
           <div className="admin-management-sales-content-title">
-            <span>{currentYear}년 매출</span>
+            <span>{currentYear}년 연령대별 이용현황</span>
+          </div>
+          <div className="admin-management-sales-content-ageBarChart">
+            {ageData ? (
+              <AdminAgeBarchart ageData={ageData} ageLabels={ageLabels} />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

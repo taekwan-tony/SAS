@@ -37,4 +37,8 @@ public class ReservationDTO {
 	private int seatAmount;
 	@Schema(description = "매장 사진", type="string")
 	private String storeImage;
+	@Schema(description = "연령대",type = "string")
+	private String ageGroup;
+	@Schema(description = "연령대별 이용자수", type="int")
+	private int totalPeople;
 }
