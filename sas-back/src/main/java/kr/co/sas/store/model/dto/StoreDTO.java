@@ -53,4 +53,5 @@ public class StoreDTO {
 	private List<StoreAmenitiesDTO> storeAmenityList;
 	//+
 	private List<StoreMoodDTO> storeMoodList;
+	private List<StoreFileDTO> storeSiFilepathList;
 }

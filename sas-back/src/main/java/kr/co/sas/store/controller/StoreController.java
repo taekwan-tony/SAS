@@ -288,7 +288,7 @@ public class StoreController {
 	@GetMapping(value = "/storeView/{storeNo}")
 	public ResponseEntity<StoreDTO> storeView(@PathVariable int storeNo) {
 		StoreDTO store = storeService.storeView(storeNo);
-		System.out.println("매장 정보 : " + store);
+		System.out.println("매장 정보 조회 : " + store);
 		if(store != null) {
 			return ResponseEntity.ok(store);
 		}//if

@@ -23,15 +23,35 @@ const StoreUpdate = (props) => {
   const [check, setCheck] = useState(false);
   const { loginstoreNo } = props;
   const [store, setStore] = useState({});
-  const [seat, setSeat] = useState({});
+  const [storeSeatCapacity, setStoreSeatCapacity] = useState(""); // 좌석 수용 인원 상태
+  const [storeSeatAmount, setStoreSeatAmount] = useState(""); // 총 좌석 수 상태
+  const [seat, setSeat] = useState({
+    seatCapacity: "",
+    seatAmount: "",
+  });
 
-  console.log("매장 정보 : ", store);
-  if (store.seatList && store.seatList.length > 0) {
-    console.log("0번째 좌석의 수용 인원: ", store.seatList[0].seatCapacity);
-  } else {
-    console.log("좌석 리스트가 비어 있거나 정의되지 않았습니다.");
-  }
-  // console.log("좌석 정보 : ", store.seatList[0].seatCapacity);
+  // API로부터 데이터 가져오기 (예시)
+  useEffect(() => {
+    if (store.seatList && store.seatList.length > 0) {
+      // store.seatList가 존재하고 배열이 비어 있지 않으면 첫 번째 좌석의 수용 인원 설정
+      setStoreSeatCapacity(store.seatList[0].seatCapacity);
+      setStoreSeatAmount(store.seatList[0].seatAmount);
+      console.log("총 좌석 수 : ", storeSeatAmount);
+      console.log("수용 인원 : ", storeSeatCapacity);
+    }
+  }, [store]);
+
+  // storeSeatCapacity와 storeSeatAmount가 변경되었을 때 seat 상태를 업데이트
+  useEffect(() => {
+    if (storeSeatCapacity && storeSeatAmount) {
+      setSeat({
+        seatCapacity: storeSeatCapacity,
+        seatAmount: storeSeatAmount,
+      });
+    }
+  }, [storeSeatCapacity, storeSeatAmount]);
+
+  console.log("매장 좌석 수 : ", seat);
 
   //매장 정보 출력
   useEffect(() => {
@@ -54,6 +74,7 @@ const StoreUpdate = (props) => {
 
   const changeStore = (e) => {
     const name = e.target.name;
+    const value = e.target.value;
     setStore({ ...store, [name]: e.target.value });
     setSeat({ ...seat, [name]: e.target.value });
   };
@@ -539,7 +560,7 @@ const StoreUpdate = (props) => {
                       type="text"
                       id="seatCapacity"
                       name="seatCapacity"
-                      value={store.seatCapacity}
+                      value={seat.seatCapacity}
                       onChange={changeStore}
                     ></input>
                   </div>
@@ -558,7 +579,7 @@ const StoreUpdate = (props) => {
                       type="text"
                       id="seatAmount"
                       name="seatAmount"
-                      value={store.seatList}
+                      value={seat.seatAmount}
                       onChange={changeStore}
                     ></input>
                   </div>

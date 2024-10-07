@@ -18,6 +18,9 @@ const StoreView = (props) => {
   const [check, setCheck] = useState(false);
   const { loginstoreNo } = props;
   const [store, setStore] = useState({});
+  const [seat, setSeat] = useState({});
+
+  console.log("매장", store);
 
   //매장 정보 출력
   useEffect(() => {
@@ -31,6 +34,10 @@ const StoreView = (props) => {
         })
         .catch((err) => {
           console.log("매장 정보 출력 오류 : ", err);
+          console.log(
+            "에러 응답 데이터 : ",
+            err.response ? err.response.data : err.message
+          );
         });
     }
   }, [loginstoreNo, check, isLoginStore]);
@@ -182,7 +189,7 @@ const StoreView = (props) => {
                   </label>
                 </th>
                 <td className="storeView-td">
-                  <div className="storeView-div">{store.seatCapacity}</div>
+                  <div className="storeView-div">{seat.seatCapacity}</div>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -192,7 +199,7 @@ const StoreView = (props) => {
                   </label>
                 </th>
                 <td className="storeView-td">
-                  <div className="storeView-div">{store.seatAmount}</div>
+                  <div className="storeView-div">{seat.seatAmount}</div>
                 </td>
               </tr>
               <tr className="storePartnership-tr">
