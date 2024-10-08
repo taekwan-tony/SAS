@@ -808,7 +808,7 @@ const ReviewWrite = () => {
             text: "다음에 또 이용해주세요",
             icon: "success",
           }).then(() => {
-            navigate("usermain/mypage/myreview");
+            navigate("/usermain/mypage/myreview");
           });
         }
       })

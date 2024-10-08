@@ -360,6 +360,7 @@ const UserMainView = (props) => {
   const handleTabClick = (bestSectionTab) => {
     setActiveTab(bestSectionTab);
   };
+
   return (
     <>
       {/* 메인배너 스와이프 */}
