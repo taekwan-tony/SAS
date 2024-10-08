@@ -136,34 +136,40 @@ function Ownerstatistics(props) {
         .get(`${backServer}/reservation/agereservation/storeNo/${storeNo}`)
         .then((response) => {
           const fetchedData = response.data;
-          const ageLabels = fetchedData.map((item) => item.AGEGROUP);
-          const ageCounts = fetchedData.map((item) => item.TOTALPEOPLE);
 
-          if (ageLabels.length > 0 && ageCounts.length > 0) {
-            setUpdatedChartData((prevData) => ({
-              ...prevData,
-              agedata: {
-                ...prevData.agedata,
-                labels: [
-                  "10대",
-                  "20대",
-                  "30대",
-                  "40대",
-                  "50대",
-                  "60대",
-                  "70대",
-                ],
-                datasets: [
-                  {
-                    ...prevData.agedata.datasets[0],
-                    data: ageCounts,
-                    label: "연령별 손님",
-                    backgroundColor: "rgba(54, 162, 235, 0.5)",
-                  },
-                ],
-              },
-            }));
-          }
+          // 모든 연령대(10대~70대)에 대한 데이터가 없는 경우 0으로 채워줌
+          const fullAgeGroups = [
+            "10대",
+            "20대",
+            "30대",
+            "40대",
+            "50대",
+            "60대",
+            "70대",
+          ];
+          const filledAgeCounts = fullAgeGroups.map((ageGroup) => {
+            const found = fetchedData.find(
+              (item) => item.AGEGROUP === ageGroup
+            );
+            return found ? found.TOTALPEOPLE : 0; // 해당 연령대가 없으면 0으로 채움
+          });
+
+          // 차트 데이터 업데이트
+          setUpdatedChartData((prevData) => ({
+            ...prevData,
+            agedata: {
+              ...prevData.agedata,
+              labels: fullAgeGroups, // 모든 연령대를 라벨에 반영
+              datasets: [
+                {
+                  ...prevData.agedata.datasets[0],
+                  data: filledAgeCounts, // 연령대별 데이터 반영
+                  label: "연령별 손님",
+                  backgroundColor: "rgba(54, 162, 235, 0.5)",
+                },
+              ],
+            },
+          }));
         })
         .catch((error) => {
           console.error("연령대 데이터 가져오기 실패:", error);
@@ -373,7 +379,7 @@ function Ownerstatistics(props) {
               </p>
             </div>
             <div className="main-info-image">
-              <img src="/image/s&s로고.png" alt="main-info-img" />
+              <img src="/image/translogo.png" alt="main-info-image" />
             </div>
           </div>
 

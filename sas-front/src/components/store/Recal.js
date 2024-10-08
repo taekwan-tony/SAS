@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "./recal.css"; // 달력 스타일을 추가할 수 있는 CSS 파일
 
 function Recal({ events }) {
+  console.log(events);
   return (
     <div className="calendar-container">
       <FullCalendar

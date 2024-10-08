@@ -7,8 +7,14 @@ import { MdCancel } from "react-icons/md";
 import axios from "axios";
 import Recal from "./Recal";
 import { Link } from "react-router-dom";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { loginStoreNoState, reservationState } from "../utils/RecoilData";
+import { useRecoilValue } from "recoil";
+import { loginStoreNoState } from "../utils/RecoilData";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 function ManageReserved(props) {
   const setActiveIndex = props.setActiveIndex;
@@ -21,6 +27,7 @@ function ManageReserved(props) {
   const [weekReservations, setWeekReservations] = useState([]);
   const storeNo = useRecoilValue(loginStoreNoState);
   const backServer = process.env.REACT_APP_BACK_SERVER;
+  const numPerPage = 5; // 페이지당 표시할 항목 수
 
   // 입금 상태별 예약 건수 상태
   const [pendingCount, setPendingCount] = useState(0); // 입금 대기
@@ -29,7 +36,6 @@ function ManageReserved(props) {
   const [cancelledCount, setCancelledCount] = useState(0); // 취소 대기
   const [noshowCount, setNoShowCount] = useState(0); //노쇼
   const [calendarEvents, setCalendarEvents] = useState([]);
-
   useEffect(() => {
     setActiveIndex(6);
     if (storeNo !== 0) {
@@ -82,7 +88,6 @@ function ManageReserved(props) {
         });
     }
   }, [storeNo]);
-
   // 예약 데이터를 서버에서 가져옴
   useEffect(() => {
     if (storeNo !== 0) {
@@ -158,13 +163,26 @@ function ManageReserved(props) {
         .patch(`${backServer}/reservation/visit/${reserveNo}`)
         .then((response) => {
           alert("방문 완료 처리되었습니다.");
-          setWeekReservations((prevReservations) => {
-            return prevReservations.map((reservation) => {
-              if (reservation.RESERVE_NO === reserveNo) {
-                return { ...reservation, RESERVESTATUS: "방문완료" };
-              }
-              return reservation;
-            });
+          console.log("reserveNo : " + reserveNo);
+          // 테이블 상태 업데이트
+          setWeekReservations((prevReservations) =>
+            prevReservations.map((reservation) =>
+              reservation.RESERVE_NO === reserveNo
+                ? { ...reservation, RESERVESTATUS: "방문완료" }
+                : reservation
+            )
+          );
+          // 달력 상태 업데이트
+          setCalendarEvents((prevEvents) => {
+            return prevEvents.map((event) =>
+              event.extendedProps.reserveNo === reserveNo
+                ? {
+                    ...event,
+                    backgroundColor: "#0d6efd", // 방문 완료 (파란색)
+                    borderColor: "#6610f2",
+                  }
+                : event
+            );
           });
         })
         .catch((error) => {
@@ -175,6 +193,8 @@ function ManageReserved(props) {
         });
     }
   };
+  console.log("calendarEvents");
+  console.log(calendarEvents);
   //노쇼 처리 함수
   const NoShow = (reserveNo) => {
     if (window.confirm("해당 예약을 노쇼 처리하시겠습니까?")) {
@@ -183,6 +203,26 @@ function ManageReserved(props) {
         .then((response) => {
           // 서버 응답을 받은 후 상태 업데이트
           alert("예약이 노쇼로 처리되었습니다.");
+          // 테이블 상태 업데이트
+          setWeekReservations((prevReservations) =>
+            prevReservations.map((reservation) =>
+              reservation.RESERVE_NO === reserveNo
+                ? { ...reservation, RESERVESTATUS: "노쇼" }
+                : reservation
+            )
+          );
+
+          setCalendarEvents((prevEvents) => {
+            return prevEvents.map((event) =>
+              event.extendedProps.reserveNo === reserveNo
+                ? {
+                    ...event,
+                    backgroundColor: "#6c757d", // 노쇼 (회색)
+                    borderColor: "#6c757d",
+                  }
+                : event
+            );
+          });
           setWeekReservations((prevReservations) => {
             console.log("업데이트 이전 상태:", prevReservations);
             return prevReservations.map((reservation) => {
@@ -259,7 +299,106 @@ function ManageReserved(props) {
         });
     }
   };
-  console.log(1);
+
+  const renderReservationSwiper = () => {
+    if (weekReservations.length > numPerPage) {
+      return (
+        <Swiper
+          modules={[Pagination, Navigation]}
+          spaceBetween={30}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+        >
+          {Array.from({
+            length: Math.ceil(weekReservations.length / numPerPage),
+          }).map((_, slideIndex) => (
+            <SwiperSlide key={slideIndex}>
+              <table className="styled-table">
+                <thead>
+                  <tr>
+                    <th>순번</th>
+                    <th>날짜</th>
+                    <th>예약 시간</th>
+                    <th>입금현황</th>
+                    <th>예약현황</th>
+                    <th>인원수</th>
+                    <th>좌석번호</th>
+                    <th>손님이름</th>
+                    <th>노쇼/방문 여부</th>
+                    <th>삭제여부</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {weekReservations
+                    .slice(
+                      slideIndex * numPerPage,
+                      (slideIndex + 1) * numPerPage
+                    )
+                    .map((reservation, index) => (
+                      <tr key={reservation.RESERVE_NO}>
+                        <td>{index + 1 + slideIndex * numPerPage}</td>
+                        <td>
+                          {new Date(
+                            reservation.RESERVE_DATE
+                          ).toLocaleDateString()}
+                        </td>
+                        <td>{reservation.RESERVE_TIME}</td>
+                        <td>{reservation.RESERVESTATUS}</td>
+                        <td>{reservation.RESERVESTATUS}</td>
+                        <td>{reservation.RESERVE_PEOPLE}</td>
+                        <td>{reservation.SEAT_NO}</td>
+                        <td>{reservation.USER_NAME}</td>
+                        <td>{/* 노쇼 및 방문여부 버튼 */}</td>
+                        <td>{/* 삭제 버튼 */}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      );
+    } else {
+      return (
+        <table className="styled-table">
+          <thead>
+            <tr>
+              <th>순번</th>
+              <th>날짜</th>
+              <th>예약 시간</th>
+              <th>입금현황</th>
+              <th>예약현황</th>
+              <th>인원수</th>
+              <th>좌석번호</th>
+              <th>손님이름</th>
+              <th>노쇼/방문 여부</th>
+              <th>삭제여부</th>
+            </tr>
+          </thead>
+          <tbody>
+            {weekReservations.map((reservation, index) => (
+              <tr key={reservation.RESERVE_NO}>
+                <td>{index + 1}</td>
+                <td>
+                  {new Date(reservation.RESERVE_DATE).toLocaleDateString()}
+                </td>
+                <td>{reservation.RESERVE_TIME}</td>
+                <td>{reservation.RESERVESTATUS}</td>
+                <td>{reservation.RESERVESTATUS}</td>
+                <td>{reservation.RESERVE_PEOPLE}</td>
+                <td>{reservation.SEAT_NO}</td>
+                <td>{reservation.USER_NAME}</td>
+                <td>{/* 노쇼 및 방문여부 버튼 */}</td>
+                <td>{/* 삭제 버튼 */}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    }
+  };
+
   return (
     <>
       <div className="dashboard-body">
@@ -401,69 +540,8 @@ function ManageReserved(props) {
 
         {/* 하단테이블 */}
         <div className="table-container">
-          <table className="styled-table">
-            <thead>
-              <tr>
-                <th>순번</th>
-                <th>날짜</th>
-                <th>예약 시간</th>
-                <th>입금현황</th>
-                <th>예약현황</th>
-                <th>인원수</th>
-                <th>좌석번호</th>
-                <th>손님이름</th>
-                <th>노쇼/방문 여부</th>
-                <th>삭제여부</th>
-              </tr>
-            </thead>
-            <tbody>
-              {weekReservations.map((reservation, index) => {
-                console.log(reservation.RESERVESTATUS);
-                return (
-                  <tr key={reservation.RESERVE_NO}>
-                    <td> {index + 1}</td>
-                    <td>
-                      {new Date(reservation.RESERVE_DATE).toLocaleDateString()}
-                    </td>
-                    <td>{reservation.RESERVE_TIME}</td>
-                    <td>{getPayStatusBadge(reservation.RESERVESTATUS)}</td>
-                    <td>{calReservationStatus(reservation.RESERVESTATUS)}</td>
-                    <td>{reservation.RESERVE_PEOPLE}</td>
-                    <td>{reservation.SEAT_NO}</td>
-                    <td>{reservation.USER_NAME}</td>
-                    <td>
-                      {reservation.RESERVESTATUS.trim() === "결제완료" && (
-                        <div>
-                          <button
-                            className="noshow-button"
-                            onClick={() => NoShow(reservation.RESERVE_NO)}
-                          >
-                            노쇼
-                          </button>
-                          <button
-                            className="visit-complete-button"
-                            onClick={() => visit(reservation.RESERVE_NO)}
-                          >
-                            방문완료
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                    <td>
-                      {reservation.RESERVESTATUS === "취소" && (
-                        <button
-                          className="reserve-del-button"
-                          onClick={() => deleteReserve(reservation.RESERVE_NO)}
-                        >
-                          삭제
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <h2>금주 예약 리스트</h2>
+          {renderReservationSwiper()}
         </div>
       </div>
     </>

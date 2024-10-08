@@ -5,7 +5,11 @@ import "./storedetail.css";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { loginStoreNoState } from "../utils/RecoilData";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 // 날씨 API 호출 함수 (OpenWeather API)
 const fetchWeather = async () => {
   const apiKey = process.env.REACT_APP_WEATHER_KEY;
@@ -42,6 +46,9 @@ const getDayOfWeek = (dateString) => {
 };
 
 function StoreDetail(props) {
+  const [currentReservations, setCurrentReservations] = useState([]); // 현재 페이지에 표시할 데이터
+  const [reqPage, setReqPage] = useState(1); // 현재 페이지 상태
+  const numPerPage = 5; // 페이지당 표시할 항목 수
   const setActiveIndex = props.setActiveIndex;
   const storeNo = useRecoilValue(loginStoreNoState);
   const [weather, setWeather] = useState(null);
@@ -112,6 +119,11 @@ function StoreDetail(props) {
       case "Thunderstorm":
         setVideoUrl(
           "https://videos.pexels.com/video-files/5908584/5908584-hd_1920_1080_25fps.mp4"
+        );
+        break;
+      case "Mist":
+        setVideoUrl(
+          "https://videos.pexels.com/video-files/28647807/12442307_1080_1920_30fps.mp4"
         );
         break;
       default:
@@ -231,6 +243,152 @@ function StoreDetail(props) {
         console.log(err);
       });
   }, [storeNo]);
+
+  const renderCustomerSwiper = () => {
+    if (todayCustomer.length > 5) {
+      return (
+        <Swiper
+          modules={[Pagination, Navigation]}
+          spaceBetween={30}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+        >
+          {Array.from({
+            length: Math.ceil(todayCustomer.length / numPerPage),
+          }).map((_, slideIndex) => (
+            <SwiperSlide key={slideIndex}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>이름</th>
+                    <th>방문횟수</th>
+                    <th>금일 방문여부</th>
+                    <th>등급</th>
+                    <th>노쇼횟수</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {todayCustomer
+                    .slice(
+                      slideIndex * numPerPage,
+                      (slideIndex + 1) * numPerPage
+                    )
+                    .map((customer, index) => (
+                      <tr key={customer.userId}>
+                        <td>{customer.userName}</td>
+                        <td>{customer.totalReservations}</td>
+                        <td>{customer.todayVisit}</td>
+                        <td>{customer.grade}</td>
+                        <td>{customer.noShow}번</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      );
+    } else {
+      return (
+        <table>
+          <thead>
+            <tr>
+              <th>이름</th>
+              <th>방문횟수</th>
+              <th>금일 방문여부</th>
+              <th>등급</th>
+              <th>노쇼횟수</th>
+            </tr>
+          </thead>
+          <tbody>
+            {todayCustomer.map((customer, index) => (
+              <tr key={customer.userId}>
+                <td>{customer.userName}</td>
+                <td>{customer.totalReservations}</td>
+                <td>{customer.todayVisit}</td>
+                <td>{customer.grade}</td>
+                <td>{customer.noShow}번</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    }
+  };
+
+  const renderReservationSwiper = () => {
+    if (reservation.length > 5) {
+      return (
+        <Swiper
+          modules={[Pagination, Navigation]}
+          spaceBetween={30}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+        >
+          {Array.from({
+            length: Math.ceil(reservation.length / numPerPage),
+          }).map((_, slideIndex) => (
+            <SwiperSlide key={slideIndex}>
+              <table className="sm-table">
+                <thead>
+                  <tr>
+                    <th>순번</th>
+                    <th>시간</th>
+                    <th>인원수</th>
+                    <th>좌석번호</th>
+                    <th>이름</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reservation
+                    .slice(
+                      slideIndex * numPerPage,
+                      (slideIndex + 1) * numPerPage
+                    )
+                    .map((reservation, index) => (
+                      <tr key={reservation.reserveNo}>
+                        <td>{index + 1 + slideIndex * numPerPage}</td>
+                        <td>{reservation.reserveTime}</td>
+                        <td>{reservation.reservePeople}명</td>
+                        <td>{reservation.seatNo}번</td>
+                        <td>{reservation.userName}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      );
+    } else {
+      return (
+        <table className="sm-table">
+          <thead>
+            <tr>
+              <th>순번</th>
+              <th>시간</th>
+              <th>인원수</th>
+              <th>좌석번호</th>
+              <th>이름</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reservation.map((reservation, index) => (
+              <tr key={reservation.reserveNo}>
+                <td>{index + 1}</td>
+                <td>{reservation.reserveTime}</td>
+                <td>{reservation.reservePeople}명</td>
+                <td>{reservation.seatNo}번</td>
+                <td>{reservation.userName}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    }
+  };
   return (
     <div className="dashboard-body">
       <header className="dashboard-head">
@@ -320,59 +478,12 @@ function StoreDetail(props) {
           {/* 고객관리 컴포넌트 */}
           <div className="sm-customer-management">
             <h2>금일 주요 고객</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>이름</th>
-                  <th>방문횟수</th>
-                  <th>금일 방문여부</th>
-                  <th>등급</th>
-                  <th>노쇼횟수</th>
-                </tr>
-              </thead>
-              <tbody>
-                {todayCustomer.map((customer, index) => (
-                  <tr key={customer.userId}>
-                    <td>{customer.userName}</td>
-                    <td>{customer.totalReservations}</td>
-                    <td>{customer.todayVisit}</td>
-                    <td>{customer.grade}</td>
-                    <td>{customer.noShow}번</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {renderCustomerSwiper()}
           </div>
 
-          {/* 금일 예약건 컴포넌트 */}
           <div className="sm-reservations">
             <h2>금일 예약건</h2>
-            {reservation.length > 0 ? (
-              <table className="sm-table">
-                <thead>
-                  <tr>
-                    <th>순번</th>
-                    <th>시간</th>
-                    <th>인원수</th>
-                    <th>좌석번호</th>
-                    <th>이름</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {reservation.map((reservation, index) => (
-                    <tr key={reservation.reserveNo}>
-                      <td>{index + 1}</td>
-                      <td>{reservation.reserveTime}</td>
-                      <td>{reservation.reservePeople}명</td>
-                      <td>{reservation.seatNo}번</td>
-                      <td>{reservation.userName}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <p>금일 예약된 건이 없습니다.</p>
-            )}
+            {renderReservationSwiper()}
           </div>
         </div>
       </div>
