@@ -46,19 +46,13 @@ public class MenuController {
 	@Operation(summary = "매장 메뉴 등록")
 	@PostMapping(value = "/insertStoreMenu/{storeNo}")
 	public ResponseEntity<Boolean> insertStoreMenu (@ModelAttribute MenuDTO storeMenu, @ModelAttribute MultipartFile menuThumbnail) {
-		
-		System.out.println(storeMenu);
-		System.out.println(menuThumbnail);
-		
+			
 		if(menuThumbnail != null) {
 			String savepath = root + "/store/storeMenu/";
 			String filepath = fileUtil.upload(savepath, menuThumbnail);
 			storeMenu.setMenuPhoto(filepath);
 		}//if
-		
-		System.out.println(storeMenu);
-		System.out.println(menuThumbnail);
-		
+			
 		int result = menuService.insertStoreMenu(storeMenu);
 		return ResponseEntity.ok(result > 0);
 	}//insertStoreMenu

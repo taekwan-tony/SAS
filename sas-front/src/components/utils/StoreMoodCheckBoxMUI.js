@@ -32,8 +32,6 @@ const StoreMoodCheckBoxMUI = (props) => {
     setStoreMood(checkedList);
   }, [checkedList, setStoreMood]);
 
-  console.log(checkedList);
-
   return (
     <FormGroup row>
       {moods.map((item) => (

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.review.model.dao.ReviewDao;
@@ -83,7 +84,6 @@ public class StoreService {
 	        } //else
 	    } //else
 	    map.put("result", result);
-	    System.out.println("로그인 : " + map);
 	    return map;
 	}//storeLogin
 
@@ -92,7 +92,6 @@ public class StoreService {
 	public LoginStoreDTO storeRefresh(String token) {
 		try {
 			LoginStoreDTO loginStore = jwtUtils.storeCheckToken(token);
-			System.out.println("갱신된 storeNo: " + loginStore.getStoreNo()); // storeNo 값 로그로 확인
 			String accessToken = jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr());
 			String refreshToken = jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr());
 			loginStore.setAccessToken(accessToken);
@@ -171,7 +170,6 @@ public class StoreService {
 
 	@Transactional
 	public int insertStoreFrm(StoreDTO store) {
-		//매장 정보
 		int result = storeDao.insertStoreFrm(store);
 		return result;
 		
@@ -281,13 +279,16 @@ public class StoreService {
 
 
 	@Transactional
-	public int updateStoreImg(int storeNo, List<StoreFileDTO> storeFileList) {
-		int result = 0;
-		for(StoreFileDTO storeFile : storeFileList) {
-			storeFile.setStoreNo(storeNo);
-			result += storeDao.updateStoreFile(storeFile);
-		}//for
-		return result;
+	public boolean updateStoreImg(int storeNo, List<StoreFileDTO> storeFileList) {	    
+
+	    //새 이미지 추가
+	    int result = 0;
+	    for (StoreFileDTO storeFile : storeFileList) {
+	        storeFile.setStoreNo(storeNo);
+	        result += storeDao.insertStoreFile(storeFile);  // 이미지 추가
+	    }//for
+
+	    return result == storeFileList.size();  // 모두 성공했는지 여부 반환
 	}//updateStoreImg
 
 
@@ -314,6 +315,31 @@ public class StoreService {
 		int result = storeDao.deleteStoreAmenities(storeNo);
 		return result;
 	}//deleteStoreAmenities
+
+
+	@Transactional
+	public List<StoreFileDTO> deleteStoreFile(StoreFileDTO storeFiles, List<StoreFileDTO> storeFileList) {
+		int result = 1;
+		if(result > 0) {
+			List<StoreFileDTO> delFileList = new ArrayList<StoreFileDTO>();
+			if(storeFiles.getDelStoreFileNo() != null) {
+				delFileList = storeDao.selectStoreFile(storeFiles.getDelStoreFileNo());
+				result += storeDao.deleteStoreFile(storeFiles.getDelStoreFileNo());
+			}//if
+			
+			int updateTotal = storeFiles.getDelStoreFileNo() == null
+								? 1 + storeFileList.size()
+								: 1 + storeFileList.size() + storeFiles.getDelStoreFileNo().length;
+								
+			if (result == updateTotal) {
+				return delFileList;
+			}//if
+		}//if
+		return null;
+	}//deleteStoreFile
+
+
+
 
 
 }

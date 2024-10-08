@@ -68,14 +68,42 @@
 }
 
 .storeView-img {
-  width: 300px;
-  height: 300px;
-  align-items: center;
-  justify-content: center;
+  width: 100%; /* 각 이미지가 부모 영역을 가득 채우도록 */
+  max-width: 300px; /* 필요에 따라 각 이미지의 최대 크기를 설정 */
+  margin-right: 10px; /* 이미지 간의 간격 */
 }
 
 .storeView-img-zone {
   width: 90%;
+  display: flex;
+  flex-direction: row; /* 이미지들을 가로로 배치 */
+  overflow-x: auto; /* 이미지가 넘칠 경우 가로 스크롤 */
+}
+
+/* WebKit 기반 브라우저에서 스크롤바 디자인 변경 */
+.storeView-img-zone::-webkit-scrollbar {
+  height: 8px; /* 가로 스크롤바의 높이 */
+}
+
+.storeView-img-zone::-webkit-scrollbar-thumb {
+  background-color: transparent; /* 스크롤바의 색상 */
+  border-radius: 10px; /* 스크롤바의 둥근 모서리 */
+}
+
+.storeView-img-zone::-webkit-scrollbar-track {
+  background-color: transparent; /* 스크롤바 배경 */
+  border-radius: 10px;
+}
+
+/* 스크롤바 위에 마우스를 올렸을 때 색상 변경 */
+.storeView-img-zone::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* 기본적인 스크롤바 숨기기 (선택사항) */
+.storeView-img-zone {
+  scrollbar-width: thin; /* Firefox용: 얇은 스크롤바 */
+  scrollbar-color: #222623 #222623; /* 스크롤바 색상(Firefox) */
 }
 
 .storeView-btn-zone {

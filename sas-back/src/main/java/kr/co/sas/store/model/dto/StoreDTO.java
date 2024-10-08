@@ -54,4 +54,5 @@ public class StoreDTO {
 	//+
 	private List<StoreMoodDTO> storeMoodList;
 	private List<StoreFileDTO> storeSiFilepathList;
+	private int[] delStoreFileNo;
 }
