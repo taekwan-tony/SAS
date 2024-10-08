@@ -40,7 +40,7 @@ public interface StoreDao {
 	
 	List selectAllPayStore();
 
-	List selectAllstore();
+	List selectAllstore(String keyword, String[] keywordList);
 	
 	StoreDTO checkPw(StoreDTO store);
 
@@ -96,6 +96,7 @@ public interface StoreDao {
 	int deleteStoreMood(int storeNo);
 
 	int deleteStoreAmenities(int storeNo);
+
 
 
 }

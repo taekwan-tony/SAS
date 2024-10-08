@@ -156,15 +156,55 @@
 	</select>
 
 	<select id ="selectAllstore" resultType="store">
-		select store_no,store_name,store_time,store_introduce,store_addr,
+		 select store.store_no,store_name,store_time,store_introduce,store_addr,
 		(select si_filepath from store_image_file 
-					where si_file_no=(select min(si_file_no) 
-										from store_image_file  
-										where store_image_file.store_no=store.store_no)) si_filepath
-		
+		where si_file_no=(select min(si_file_no) 
+		from store_image_file  
+		where store_image_file.store_no=store.store_no)) si_filepath
 		from store
-		
+        left outer join store_mood on (store.store_no=store_mood.store_no)
+		left outer join store_amenities on (store.store_no=store_mood.store_no)
+        <if test="keyword!=null">
+        where store_name = #{keyword} or mood=#{keyword} or amenities=#{keyword} or store_addr=#{keyword}
+    	union    
+    	select store.store_no,store_name,store_time,store_introduce,store_addr,
+		(select si_filepath from store_image_file 
+		where si_file_no=(select min(si_file_no) 
+		from store_image_file  
+		where store_image_file.store_no=store.store_no)) si_filepath
+		from store
+        left outer join store_mood on (store.store_no=store_mood.store_no)
+		left outer join store_amenities on (store.store_no=store_mood.store_no)
+        where store_name like '%'||#{keyword}||'%' or mood like '%'||#{keyword}||'%' or amenities like '%'||#{keyword}||'%' or store_addr like '%'||#{keyword}||'%'
+		</if>
+        <foreach collection="keywordList" item="keywordItem">
+        union
+        select store.store_no,store_name,store_time,store_introduce,store_addr,
+		(select si_filepath from store_image_file 
+		where si_file_no=(select min(si_file_no) 
+		from store_image_file  
+		where store_image_file.store_no=store.store_no)) si_filepath
+		from store
+        left outer join store_mood on (store.store_no=store_mood.store_no)
+		left outer join store_amenities on (store.store_no=store_mood.store_no)
+        where store_name like '%'||#{keywordItem}||'%' or mood like'%'||#{keywordItem}||'%'or amenities like '%'||#{keywordItem}||'%'  or store_addr like '%'||#{keywordItem}||'%'
+
+        </foreach>
+        <!-- 마이바티스 돌릴거 고민
+        union
+        select store.store_no,store_name,store_time,store_introduce,store_addr,
+		(select si_filepath from store_image_file 
+		where si_file_no=(select min(si_file_no) 
+		from store_image_file  
+		where store_image_file.store_no=store.store_no)) si_filepath
+		from store
+        join store_mood on (store.store_no=store_mood.store_no)
+		join store_amenities on (store.store_no=store_mood.store_no)
+        where store_name like '%보승%' or mood like'%보승%'or amenities like '%보승%';
+        
+         -->
 	</select>
+	
 	 
 	 
 	 

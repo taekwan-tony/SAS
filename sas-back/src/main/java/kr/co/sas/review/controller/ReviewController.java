@@ -73,7 +73,6 @@ public class ReviewController {
     @GetMapping("/usermain/mypage/myreview/{reviewNo}")
     public ResponseEntity<ReviewDTO> selectOneReview(@PathVariable int reviewNo){
     	ReviewDTO selectReview = reviewService.selectOneReview(reviewNo);
-    	//System.out.println("하나가져오는거"+reviewNo);
     	return ResponseEntity.ok(selectReview);
     }
     

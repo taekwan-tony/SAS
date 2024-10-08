@@ -98,9 +98,17 @@ public class StoreController {
 		}//else
 	}//storeRefresh
 	
+	//res.data>0
 	@GetMapping(value="/storeList")
 	public ResponseEntity<List> selectAllstore (){
 		List storeList = storeService.selectAllstore();
+		return ResponseEntity.ok(storeList);
+	}
+	
+	@GetMapping(value="/storeList/keyword/{keyword}")
+	public ResponseEntity<List> selectAllstore (@PathVariable String keyword){
+		String[] keywordList = keyword.split(" ");
+		List storeList = storeService.selectAllstore(keyword, keywordList);
 		return ResponseEntity.ok(storeList);
 	}
 	

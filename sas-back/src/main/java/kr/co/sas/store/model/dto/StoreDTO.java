@@ -51,7 +51,9 @@ public class StoreDTO {
 	//민규가해놨음 문제될시수정함
 	private List<StoreFileDTO> siFilepathList;
 	private List<StoreAmenitiesDTO> storeAmenityList;
-	//+
 	private List<StoreMoodDTO> storeMoodList;
 	private List<StoreFileDTO> storeSiFilepathList;
+	//검색하려고 만든 키워드
+	private String keyword;
+	
 }

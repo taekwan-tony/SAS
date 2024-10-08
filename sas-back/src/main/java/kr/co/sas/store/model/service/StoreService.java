@@ -132,8 +132,8 @@ public class StoreService {
 	}
 
 
-	public List selectAllstore() {
-		List list = storeDao.selectAllstore();
+	public List selectAllstore(String keyword, String[] keywordList) {
+		List list = storeDao.selectAllstore(keyword, keywordList);
 		return list;
 	}
 
@@ -314,6 +314,14 @@ public class StoreService {
 		int result = storeDao.deleteStoreAmenities(storeNo);
 		return result;
 	}//deleteStoreAmenities
+
+
+	public List selectAllstore() {
+		String keyword=null;
+		String[] keywordList = new String[] {null};
+		List list = storeDao.selectAllstore(keyword, keywordList);
+		return list;
+	}
 
 
 }
