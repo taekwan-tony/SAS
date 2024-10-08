@@ -89,6 +89,11 @@ const Login = () => {
         });
     }
   };
+
+  // 소셜 로그인 도전~
+  const goToNaverLogin = () => {
+    return;
+  };
   return (
     <>
       <form
@@ -130,6 +135,9 @@ const Login = () => {
       <div className="link">
         <Link to="find">아이디/비밀번호 찾기</Link>
         <Link to="/usermain/join">회원가입</Link>
+      </div>
+      <div className="social-btn">
+        <button onClick={goToNaverLogin}>네이버로 로그인</button>
       </div>
     </>
   );

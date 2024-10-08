@@ -302,9 +302,9 @@ function UserMain() {
                 </div>
                 {/* 로그아웃 버튼 */}
                 <div className="user-navi-logout-button">
-                  <a href="#">
+                  <Link to="" onClick={logout}>
                     <i className="fa fa-sign-out"></i>Logout
-                  </a>
+                  </Link>
                 </div>
               </>
             ) : (
