@@ -14,7 +14,6 @@ import StoreMenuAdd from "./StoreMenuAdd";
 
 const StoreMenuMain = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const navigate = useNavigate();
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
   const [menuThumbnail, setMenuThumbnail] = useState([]); // 메뉴 사진
   const [existingMenuThumbnail, setExistingMenuThumbnail] = useState([]); // 기존 메뉴 사진
@@ -28,13 +27,8 @@ const StoreMenuMain = () => {
   //미리보기
   const [storeMenuImage, setStoreMenuImage] = useState([]);
 
-  // info-card 가 보이는지 여부를 관리하는 상태
-  const [infoCardVisible, setInfoCardVisible] = useState(true);
-
   // 메뉴 정보 변경 시 storeMenu 배열의 특정 인덱스 메뉴 변경
   const changeStoreMenu = (index) => (e) => {
-    console.log(e);
-    console.log(index);
     const name = e.target.name;
     const value = e.target.value;
     setStoreMenu((prevStoreMenu) =>
@@ -72,7 +66,6 @@ const StoreMenuMain = () => {
           };
           setStoreMenuList(updatedStoreMenuList); // 상태 업데이트
 
-          // 기존 메뉴 썸네일 업데이트
           setExistingMenuThumbnail((prevThumbnails) => {
             const updatedThumbnails = [...prevThumbnails];
             updatedThumbnails[index] = files[0];
@@ -85,9 +78,8 @@ const StoreMenuMain = () => {
             ...updatedStoreMenu[index],
             menuPhoto: reader.result, // 새로운 이미지로 교체
           };
-          setStoreMenu(updatedStoreMenu); // 상태 업데이트
+          setStoreMenu(updatedStoreMenu);
 
-          // 새로운 메뉴 썸네일 업데이트
           setNewMenuThumbnail((prevThumbnails) => {
             const updatedThumbnails = [...prevThumbnails];
             updatedThumbnails[index] = files[0];
@@ -96,13 +88,49 @@ const StoreMenuMain = () => {
 
           setStoreMenuImage((prevImages) => {
             const updatedImages = [...prevImages];
-            updatedImages[index] = reader.result; // 미리보기 이미지 저장
+            updatedImages[index] = reader.result;
             return updatedImages;
           });
         }
       };
       reader.readAsDataURL(files[0]); // 파일을 읽기 시작
     }
+  };
+
+  // 기존 메뉴 수정 시 기존 이미지 유지 로직 추가
+  const updateStoreMenu = (existingMenus) => {
+    storeMenuList.forEach((menu, index) => {
+      if (menu.menuNo) {
+        const form = new FormData();
+        form.append("menuName", menu.menuName);
+        form.append("menuInfo", menu.menuInfo);
+        form.append("menuPrice", menu.menuPrice);
+        form.append("storeNo", menu.storeNo);
+
+        // 새로운 파일이 선택되지 않으면 기존 이미지 그대로 사용
+        if (existingMenuThumbnail[index]) {
+          form.append("menuThumbnail", existingMenuThumbnail[index]);
+        } else {
+          // 기존 이미지가 있으면 기존 이미지를 사용
+          form.append("existingMenuPhoto", menu.menuPhoto);
+        }
+
+        axios
+          .patch(`${backServer}/menu/updateStoreMenu/${menu.menuNo}`, form, {
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+          .then((res) => {
+            Swal.fire({
+              title: "메뉴가 수정되었습니다.",
+              icon: "success",
+              confirmButtonColor: "#518142",
+            });
+          })
+          .catch((err) => {
+            console.error("메뉴 수정 실패:", err);
+          });
+      }
+    });
   };
 
   // X 아이콘 클릭 시 특정 메뉴 삭제
@@ -178,37 +206,37 @@ const StoreMenuMain = () => {
     setStoreMenuImage([]);
   };
 
-  //메뉴 수정
-  const updateStoreMenu = (existingMenus) => {
-    storeMenuList.forEach((menu, index) => {
-      if (menu.menuNo) {
-        const form = new FormData();
-        form.append("menuName", menu.menuName);
-        form.append("menuInfo", menu.menuInfo);
-        form.append("menuPrice", menu.menuPrice);
-        form.append("storeNo", menu.storeNo);
+  // //메뉴 수정
+  // const updateStoreMenu = (existingMenus) => {
+  //   storeMenuList.forEach((menu, index) => {
+  //     if (menu.menuNo) {
+  //       const form = new FormData();
+  //       form.append("menuName", menu.menuName);
+  //       form.append("menuInfo", menu.menuInfo);
+  //       form.append("menuPrice", menu.menuPrice);
+  //       form.append("storeNo", menu.storeNo);
 
-        if (existingMenuThumbnail[index]) {
-          form.append("menuThumbnail", existingMenuThumbnail[index]);
-        }
+  //       if (existingMenuThumbnail[index]) {
+  //         form.append("menuThumbnail", existingMenuThumbnail[index]);
+  //       }
 
-        axios
-          .patch(`${backServer}/menu/updateStoreMenu/${menu.menuNo}`, form, {
-            headers: { "Content-Type": "multipart/form-data" },
-          })
-          .then((res) => {
-            Swal.fire({
-              title: "메뉴가 수정되었습니다.",
-              icon: "success",
-              confirmButtonColor: "#518142",
-            });
-          })
-          .catch((err) => {
-            console.error("메뉴 수정 실패:", err);
-          });
-      }
-    });
-  };
+  //       axios
+  //         .patch(`${backServer}/menu/updateStoreMenu/${menu.menuNo}`, form, {
+  //           headers: { "Content-Type": "multipart/form-data" },
+  //         })
+  //         .then((res) => {
+  //           Swal.fire({
+  //             title: "메뉴가 수정되었습니다.",
+  //             icon: "success",
+  //             confirmButtonColor: "#518142",
+  //           });
+  //         })
+  //         .catch((err) => {
+  //           console.error("메뉴 수정 실패:", err);
+  //         });
+  //     }
+  //   });
+  // };
 
   return (
     <>

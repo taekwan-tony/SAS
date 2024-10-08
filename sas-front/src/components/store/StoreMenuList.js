@@ -16,8 +16,6 @@ const StoreMenuList = (props) => {
   const setCheck = props.setCheck;
   const changeStoreThumbnail = props.changeStoreThumbnail;
 
-  console.log("리스트 매장 정보 : ", menu);
-
   const deleteMenu = () => {
     Swal.fire({
       title: "메뉴를 삭제하시겠습니까?",
