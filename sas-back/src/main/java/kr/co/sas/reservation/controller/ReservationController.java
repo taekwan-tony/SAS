@@ -244,7 +244,7 @@ public class ReservationController {
             JsonNode json = refundOm.readTree(refundResponse.getBody());
             code = json.get("code").asText();
             result = code.equals("0");
-            System.out.println(result);
+//            System.out.println(result);
         } catch (JsonProcessingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

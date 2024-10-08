@@ -309,7 +309,7 @@ const MypageMain = (props) => {
         )}
       </section>
       <section className="mypage-list-wrap favorite-list">
-        <Link to="#">더보기</Link>
+        <Link to="favorite">더보기</Link>
         <h3 className="title">
           즐겨찾기 목록{" "}
           <span className="count">
@@ -323,7 +323,7 @@ const MypageMain = (props) => {
         />
       </section>
       <section className="mypage-list-wrap review-list">
-        <Link to="#">더보기</Link>
+        <Link to="myreview">더보기</Link>
         <h3 className="title">
           나의 리뷰{" "}
           <span className="count">
