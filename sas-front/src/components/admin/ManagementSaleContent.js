@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Chart, { chartData } from "../store/Chart";
 import AdminAgeBarchart from "./AdminAgeBarchart";
+import { Link } from "react-router-dom";
+import AdminSalesBarChart from "./AdminSalesBarChart";
 
 const ManagementSaleContent = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -15,6 +17,7 @@ const ManagementSaleContent = (props) => {
   const [newCustomerCount, setNewCustomerCount] = useState(0);
   const ageLabels = ["10대", "20대", "30대", "40대", "50대", "60대", "70대"];
   const [ageData, setAgeData] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [yearData, setYearData] = useState([]);
   const [updatedChartData, setUpdatedChartData] = useState({
     ...chartData,
     doughnutData: {
@@ -26,7 +29,6 @@ const ManagementSaleContent = (props) => {
       datasets: [{ data: [] }],
     },
   });
-  console.log(ageData);
   useEffect(() => {
     axios
       .get(`${backServer}/admin/yearSalesManagement`)
@@ -68,6 +70,8 @@ const ManagementSaleContent = (props) => {
           }
         }
         setAgeData(ageGroupData);
+        setYearData(res.data.yearData);
+        console.log(res.data.yearData);
       })
       .catch((err) => {});
   }, []);
@@ -107,7 +111,16 @@ const ManagementSaleContent = (props) => {
         </div>
         <div className="admin-management-sales-content-2">
           <div className="admin-management-sales-content-title">
-            <span>{currentYear}년 매출</span>
+            <span>매출 그래프</span>
+            <div>
+              <Link to="#">
+                <span>매출데이터 상세보기</span>
+                <span class="material-icons">chevron_right</span>
+              </Link>
+            </div>
+          </div>
+          <div className="admin-management-sales-content-salesBarChart">
+            <AdminSalesBarChart yearData={yearData} setYearData={setYearData} />
           </div>
         </div>
       </div>

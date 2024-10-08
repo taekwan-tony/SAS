@@ -161,6 +161,7 @@ public class AdminService {
 		List<UserDTO> userGender = userDao.selectUserGenderPercent();
 		int newStoreCount = storeDao.selectNewStoreCount();
 		int newCustomerCount = userDao.selectNewCustomerCount();
+		List<String> yearData = storeDao.yearData();
 		List<ReservationDTO> ageGroup = reservationDao.selectYearAgrGroup();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("currentYearSales", currentSales);
@@ -168,7 +169,14 @@ public class AdminService {
 		map.put("newStoreCount", newStoreCount);
 		map.put("newCustomerCount", newCustomerCount);
 		map.put("ageGroup",ageGroup);
+		map.put("yearData", yearData);
 		return map;
+	}
+
+
+	public List yearSalesBarChart(int salesValue, String yearValue) {
+		List<String> list = storeDao.yearSalesBarChart(salesValue,yearValue);
+		return list;
 	}
 
 

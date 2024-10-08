@@ -56,4 +56,5 @@ public class StoreDTO {
 	//검색하려고 만든 키워드
 	private String keyword;
 	
+	private int[] delStoreFileNo;
 }

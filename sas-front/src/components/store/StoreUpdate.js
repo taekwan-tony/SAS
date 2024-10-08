@@ -21,7 +21,7 @@ const StoreUpdate = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const isLoginStore = useRecoilValue(isStoreLoginState);
   const [check, setCheck] = useState(false);
-  const { loginstoreNo } = props;
+  const { loginstoreNo, isEditing, setIsEditing } = props;
   const [store, setStore] = useState({});
   const [storeSeatCapacity, setStoreSeatCapacity] = useState(""); // 좌석 수용 인원 상태
   const [storeSeatAmount, setStoreSeatAmount] = useState(""); // 총 좌석 수 상태
@@ -36,8 +36,8 @@ const StoreUpdate = (props) => {
       // store.seatList가 존재하고 배열이 비어 있지 않으면 첫 번째 좌석의 수용 인원 설정
       setStoreSeatCapacity(store.seatList[0].seatCapacity);
       setStoreSeatAmount(store.seatList[0].seatAmount);
-      console.log("총 좌석 수 : ", storeSeatAmount);
-      console.log("수용 인원 : ", storeSeatCapacity);
+      // console.log("총 좌석 수 : ", storeSeatAmount);
+      // console.log("수용 인원 : ", storeSeatCapacity);
     }
   }, [store]);
 
@@ -51,7 +51,7 @@ const StoreUpdate = (props) => {
     }
   }, [storeSeatCapacity, storeSeatAmount]);
 
-  console.log("매장 좌석 수 : ", seat);
+  //console.log("매장 좌석 수 : ", seat);
 
   //매장 정보 출력
   useEffect(() => {
@@ -59,12 +59,16 @@ const StoreUpdate = (props) => {
       axios
         .get(`${backServer}/store/storeUpdate/${loginstoreNo}`)
         .then((res) => {
-          console.log("매장 정보 출력 : ", res.data);
+          //console.log("매장 정보 출력 : ", res.data);
           setStore(res.data);
           setCheck(res.data.length);
+
+          if (res.data.storeSiFilepathList) {
+            setStoreSiFilepathList(res.data.storeSiFilepathList);
+          }
         })
         .catch((err) => {
-          console.log("매장 정보 출력 오류 : ", err);
+          //console.log("매장 정보 출력 오류 : ", err);
         });
     }
   }, [loginstoreNo, check, isLoginStore]);
@@ -74,18 +78,16 @@ const StoreUpdate = (props) => {
 
   const changeStore = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
     setStore({ ...store, [name]: e.target.value });
     setSeat({ ...seat, [name]: e.target.value });
   };
 
   //첨부파일
-  const [fileList, setFileList] = useState([]);
-  const [storeFile, setStoreFile] = useState([]); // 실제 업로드용 state
-  const [showStoreFile, setShowStoreFile] = useState([]); // 매장 사진 URL
-  const [delStoreFileNo, setDelStoreFileNo] = useState("");
-  const [storeThumbnail, setStoreThumbnail] = useState(null);
-  const [storeImage, setStoreImage] = useState([]); // 미리보기용
+  const [storeFile, setStoreFile] = useState([]); //사진 저장
+  const [storeImage, setStoreImage] = useState([]); //미리보기용
+  const [storeSiFilepathList, setStoreSiFilepathList] = useState([]); //저장되어 있던 사진 출력용
+  // 기존 첨부파일을 삭제하면 삭제한 파일 번호를 저장할 배열
+  const [delStoreFileNo, setDelStoreFileNo] = useState([]);
 
   //메뉴 썸네일 이미지 첨부파일 변경 시 동작 함수
   const changeStoreThumbnail = (e) => {
@@ -93,9 +95,6 @@ const StoreUpdate = (props) => {
     let urlList = [];
 
     if (files.length !== 0) {
-      setStoreThumbnail(files[0]);
-
-      // 파일을 state에 저장
       setStoreFile((prevFiles) => [...prevFiles, ...files]);
 
       // 미리보기
@@ -109,16 +108,19 @@ const StoreUpdate = (props) => {
           }
         };
       });
-    } else {
-      setStoreThumbnail(null);
-      setStoreImage([]);
-      setStoreFile([]);
     }
   };
 
-  // 이미지 삭제
-  const removeImage = (indexToRemove) => {
-    // storeImage와 storeFile 둘 다 삭제
+  // 기존 이미지 삭제
+  const removeExistingImage = (indexToRemove, imageId) => {
+    setStoreSiFilepathList(
+      (prevList) => prevList.filter((_, index) => index !== indexToRemove) // UI에서 삭제
+    );
+    setDelStoreFileNo((prevIds) => [...prevIds, imageId]); // 삭제할 이미지 ID 저장
+  };
+
+  // 새로 추가된 이미지 삭제 함수
+  const removeNewImage = (indexToRemove) => {
     setStoreImage((prevImages) =>
       prevImages.filter((_, index) => index !== indexToRemove)
     );
@@ -150,14 +152,23 @@ const StoreUpdate = (props) => {
     }));
   };
 
-  // 매장 수정
+  //매장 수정
   const storeModify = () => {
     const form = new FormData();
 
-    // 파일 추가
-    storeFile.forEach((file) => {
-      form.append("storeFile", file);
-    });
+    // 새로 추가된 파일들
+    if (storeFile.length > 0) {
+      storeFile.forEach((file) => {
+        form.append("storeFile", file);
+      });
+    }
+
+    // 삭제할 파일 번호
+    if (delStoreFileNo.length > 0) {
+      delStoreFileNo.forEach((fileNo) => {
+        form.append("delStoreFileNo", fileNo);
+      });
+    }
 
     // 매장 분위기
     for (let i = 0; i < storeMood.length; i++) {
@@ -169,95 +180,42 @@ const StoreUpdate = (props) => {
       form.append("storeAmenities", storeAmenities[i]);
     }
 
-    // 데이터 확인
-    console.log("FormData (Store):", store);
-    console.log("FormData (Files):", storeFile);
-    console.log("FormData (mood):", storeMood);
-    console.log("FormData (amenities):", storeAmenities);
+    // 각 요청을 배열에 담음
+    const promises = [
+      // 매장 정보 수정
+      axios.patch(`${backServer}/store/storeModify/${loginstoreNo}`, store),
 
-    // 매장 정보
-    axios
-      .patch(`${backServer}/store/storeModify/${loginstoreNo}`, store)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          Swal.fire({
-            title: "매장 정보 수정 완료.",
-            text: "매장 정보가 수정되었습니다.",
-            icon: "success",
-            confirmButtonColor: "#5e9960",
-          })
-            .then(() => {
-              //navigate("/storeMain");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      });
+      // 매장 좌석 수정
+      axios.patch(`${backServer}/store/updateSeat/${loginstoreNo}`, seat),
 
-    // 매장 좌석 수
-    axios
-      .patch(`${backServer}/store/updateSeat/${loginstoreNo}`, seat)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          console.log("매장 좌석수 수정 완료");
-        }
-      })
-      .catch((err) => {
-        console.log("좌석 수정 에러 :", err);
-      });
-
-    // 매장 사진
-    axios
-      .patch(`${backServer}/store/updateStoreImg/${loginstoreNo}}`, form, {
+      // 매장 사진 수정
+      axios.patch(`${backServer}/store/updateStoreImg/${loginstoreNo}`, form, {
         headers: {
           contentType: "multipart/form-data",
-          processData: false,
         },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }),
 
-    // 매장 분위기
-    axios
-      .delete(`${backServer}/store/deleteStoreMood/${loginstoreNo}`)
-      .then((res) => {
-        console.log(res);
-        //성공 시 매장 분위기 새로 등록
-        axios
-          .post(`${backServer}/store/updateStoreMood/${loginstoreNo}`, form, {
-            headers: {
-              contentType: "multipart/form-data",
-              processData: false,
-            },
-          })
-          .then((res) => {
-            console.log("매장 분위기 수정 완료");
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log("매장 분위기 수정 오류");
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log("매장 분위기 삭제 실패 : ", err);
-      });
+      // 매장 분위기 삭제 및 등록
+      axios
+        .delete(`${backServer}/store/deleteStoreMood/${loginstoreNo}`)
+        .then(() =>
+          axios.post(
+            `${backServer}/store/updateStoreMood/${loginstoreNo}`,
+            form,
+            {
+              headers: {
+                contentType: "multipart/form-data",
+                processData: false,
+              },
+            }
+          )
+        ),
 
-    // 매장 편의시설
-    axios
-      .delete(`${backServer}/store/deleteStoreAmenities/${loginstoreNo}`)
-      .then((res) => {
-        console.log(res);
-        //성공 시 매장 편의시설 새로 등록
-        axios
-          .post(
+      // 매장 편의시설 삭제 및 등록
+      axios
+        .delete(`${backServer}/store/deleteStoreAmenities/${loginstoreNo}`)
+        .then(() =>
+          axios.post(
             `${backServer}/store/updateStoreAmenities/${loginstoreNo}`,
             form,
             {
@@ -267,17 +225,23 @@ const StoreUpdate = (props) => {
               },
             }
           )
-          .then((res) => {
-            console.log("매장 편의시설 수정 완료");
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log("매장 편의시설 수정 오류");
-            console.log(err);
-          });
+        ),
+    ];
+
+    // 모든 요청이 끝난 후 navigate 실행
+    Promise.all(promises)
+      .then(() => {
+        Swal.fire({
+          title: "매장 정보 수정 완료.",
+          text: "매장 정보가 수정되었습니다.",
+          icon: "success",
+          confirmButtonColor: "#5e9960",
+        }).then(() => {
+          setIsEditing(!isEditing); // 매장 수정 후 storeViewMain으로 이동
+        });
       })
       .catch((err) => {
-        console.log(err);
+        console.error("매장 수정 오류", err);
       });
   };
 
@@ -293,35 +257,42 @@ const StoreUpdate = (props) => {
                   <div className="storeUpdate-imgDiv-zone">
                     <div className="storeUpdate-img-zone">
                       {/* 이미지 미리보기 */}
-                      {storeImage.length > 0 ? (
-                        <div className="storeUpdate-imgDiv">
-                          {storeImage.map((image, index) => (
-                            <div
-                              key={index}
-                              className="storeUpdate-imgContainer"
+                      {storeSiFilepathList.length > 0 &&
+                        storeSiFilepathList.map((image, index) => (
+                          <div key={index} className="storeUpdate-imgContainer">
+                            <img
+                              className="storeUpdate-img"
+                              src={`${backServer}/store/${image.siFilepath}`}
+                              alt={`Existing Preview ${index}`}
+                            />
+                            <button
+                              className="remove-button"
+                              onClick={() => {
+                                removeExistingImage(index, image.siFileNo); // siFileNo 전달
+                              }}
                             >
-                              <img
-                                key={index}
-                                className="storeUpdate-img"
-                                src={image}
-                                alt={`Preview ${index}`}
-                              />
-                              <button
-                                className="remove-button"
-                                onClick={() => removeImage(index)}
-                              >
-                                X
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <img
-                          className="storeUpdate-img"
-                          src="/image/s&s로고.png"
-                          alt="Default"
-                        />
-                      )}
+                              X
+                            </button>
+                          </div>
+                        ))}
+
+                      {/* 새로 추가된 이미지 미리보기 */}
+                      {storeImage.length > 0 &&
+                        storeImage.map((image, index) => (
+                          <div key={index} className="storeUpdate-imgContainer">
+                            <img
+                              className="storeUpdate-img"
+                              src={image}
+                              alt={`New Preview ${index}`}
+                            />
+                            <button
+                              className="remove-button"
+                              onClick={() => removeNewImage(index)}
+                            >
+                              X
+                            </button>
+                          </div>
+                        ))}
                     </div>
                   </div>
                   <div className="storeUpdate-div">
@@ -656,4 +627,5 @@ const StoreUpdate = (props) => {
     </div>
   );
 };
+
 export default StoreUpdate;

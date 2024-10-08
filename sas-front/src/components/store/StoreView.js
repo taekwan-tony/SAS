@@ -16,11 +16,35 @@ const StoreView = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const isLoginStore = useRecoilValue(isStoreLoginState);
   const [check, setCheck] = useState(false);
-  const { loginstoreNo } = props;
+  const { loginstoreNo, handleEditClick } = props;
   const [store, setStore] = useState({});
-  const [seat, setSeat] = useState({});
+  const [storeSeatCapacity, setStoreSeatCapacity] = useState(""); // 좌석 수용 인원 상태
+  const [storeSeatAmount, setStoreSeatAmount] = useState(""); // 총 좌석 수 상태
+  const [seat, setSeat] = useState({
+    seatCapacity: "",
+    seatAmount: "",
+  });
 
-  console.log("매장", store);
+  const [storeSiFilepathList, setStoreSiFilepathList] = useState([]);
+
+  useEffect(() => {
+    if (store.seatList && store.seatList.length > 0) {
+      setStoreSeatCapacity(store.seatList[0].seatCapacity);
+      setStoreSeatAmount(store.seatList[0].seatAmount);
+      // console.log("총 좌석 수 : ", storeSeatAmount);
+      // console.log("수용 인원 : ", storeSeatCapacity);
+    }
+  }, [store]);
+
+  // storeSeatCapacity와 storeSeatAmount가 변경되었을 때 seat 상태를 업데이트
+  useEffect(() => {
+    if (storeSeatCapacity && storeSeatAmount) {
+      setSeat({
+        seatCapacity: storeSeatCapacity,
+        seatAmount: storeSeatAmount,
+      });
+    }
+  }, [storeSeatCapacity, storeSeatAmount]);
 
   //매장 정보 출력
   useEffect(() => {
@@ -28,12 +52,17 @@ const StoreView = (props) => {
       axios
         .get(`${backServer}/store/storeView/${loginstoreNo}`)
         .then((res) => {
-          console.log("매장 정보 출력 : ", res.data);
+          //console.log("매장 정보 출력 : ", res.data);
           setStore(res.data);
           setCheck(res.data.length);
+
+          // 매장 정보에서 이미지 파일 리스트 설정
+          if (res.data.storeSiFilepathList) {
+            setStoreSiFilepathList(res.data.storeSiFilepathList);
+          }
         })
         .catch((err) => {
-          console.log("매장 정보 출력 오류 : ", err);
+          //console.log("매장 정보 출력 오류 : ", err);
           console.log(
             "에러 응답 데이터 : ",
             err.response ? err.response.data : err.message
@@ -66,18 +95,23 @@ const StoreView = (props) => {
       {/* section */}
       <div className="top-section">
         <div className="storeView-info-card">
-          <button className="storeView-updateBtn">수정</button>
+          <button className="storeView-updateBtn" onClick={handleEditClick}>
+            수정
+          </button>
           <table className="storeView-table">
             <tbody className="storeView-tbody">
               <tr className="storeView-tr">
                 <th className="storeView-th" colSpan={2}>
                   <div className="storeView-imgDiv-zone">
                     <div className="storeView-img-zone">
-                      <img
-                        className="storeView-img"
-                        src="/image/s&s로고.png"
-                        alt="Default"
-                      />
+                      {storeSiFilepathList.map((file, index) => (
+                        <img
+                          className="storeView-img"
+                          key={index}
+                          src={`${backServer}/store/${file.siFilepath}`}
+                          alt={`Store Image ${index + 1}`}
+                        />
+                      ))}
                     </div>
                   </div>
                 </th>

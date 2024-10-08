@@ -374,7 +374,7 @@
 		<result column="deposit" property="deposit"/>
 		<result column="store_class" property="storeClass"/>
 		<collection property="seatList" select="selectSeatList" column="store_no" javaType="java.util.List" ofType="seat"/>
-		<collection property="storeSiFilepathList" select="selectSiFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
+		<collection property="storeSiFilepathList" select="selectStoreFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
 		<collection property="storeMoodList" select="selectStoreMood" column="store_no" javaType="java.util.List" ofType="storeMood"/>
 		<collection property="storeAmenityList" select="selectStoreAmenity" column="store_no" javaType="java.util.List" ofType="storeAmenities"/>
 	</resultMap>
@@ -394,7 +394,7 @@
 			break_time_start=#{breakTimeStart},
 			break_time_end=#{breakTimeEnd},
 			deposit=#{deposit},
-			store_class=#{storeClass},
+			store_class=#{storeClass}
 		where store_no=#{storeNo}
 	</update>
 	
@@ -429,5 +429,69 @@
 	<delete id="deleteStoreAmenities">
 		delete from store_amenities where store_no=#{storeNo}
 	</delete>
+	
+	
+	<select id="selectStoreFile" resultType="storeFile">
+		select * from store_image_file
+		where si_file_no in
+		<foreach collection="array" item="siFileNo" open="(" close=")" separator=",">
+			#{siFileNo}
+		</foreach>
+	</select>
+	
+	
+	<select id="selectStoreFilepath" resultType="storeFile">
+		select * from store_image_file where store_no = #{storeNo}
+	</select>
+	
+	
+	<delete id="deleteStoreFile">
+		delete from store_image_file
+		where si_file_no in
+		<foreach collection="array" item="siFileNo" open="(" close=")" separator=",">
+			#{siFileNo}
+		</foreach>
+	</delete>
 
+	<select id="yearData" resultType="String">
+		select to_char(store_pay_date,'yyyy') from store_pay where store_pay_date is not null group by to_char(store_pay_date,'yyyy')
+	</select>
+	
+	<select id="yearSalesBarChart" resultType="String">
+		<choose>
+			<when test="salesValue==0">
+				select store_total_pay
+		            from(select to_char(store_pay_date,'yyyy')||'년',sum(store_total_price) as store_total_pay 
+			            from store_pay 
+			            where store_pay_date is not null 
+			            group by to_char(store_pay_date,'yyyy')
+			            order by to_char(store_pay_date,'yyyy') asc)	
+			</when>
+			<otherwise>
+				with months as (
+                select 1 as month from dual union all
+                select 2 from dual union all
+                select 3 from dual union all
+                select 4 from dual union all
+                select 5 from dual union all
+                select 6 from dual union all
+                select 7 from dual union all
+                select 8 from dual union all
+                select 9 from dual union all
+                select 10 from dual union all
+                select 11 from dual union all
+                select 12 from dual
+            	)
+            	select  store_total_price from
+            		(select month,nvl(sum(store_total_price),0) as store_total_price from months m
+                	left join 
+                    	(select to_char(store_pay_date,'d') as store_pay_month,store_total_price,store_pay_date 
+                        from store_pay 
+                    	where store_pay_date is not null and to_char(store_pay_date,'yyyy') = #{yearValue}) sp
+                    on (m.month = sp.store_pay_month) 
+                    group by month order by 1 asc)
+			</otherwise>
+		</choose>
+	</select>
+	
 </mapper>

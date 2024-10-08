@@ -15,4 +15,5 @@ public class StoreFileDTO {
 	private String siFileName;
 	private String siFilepath;
 	private int storeNo;
+	private int[] delStoreFileNo;
 }
