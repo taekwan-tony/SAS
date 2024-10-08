@@ -334,7 +334,7 @@
 		<result column="deposit" property="deposit"/>
 		<result column="store_class" property="storeClass"/>
 		<collection property="seatList" select="selectSeatList" column="store_no" javaType="java.util.List" ofType="seat"/>
-		<collection property="storeSiFilepathList" select="selectSiFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
+		<collection property="storeSiFilepathList" select="selectStoreFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
 		<collection property="storeMoodList" select="selectStoreMood" column="store_no" javaType="java.util.List" ofType="storeMood"/>
 		<collection property="storeAmenityList" select="selectStoreAmenity" column="store_no" javaType="java.util.List" ofType="storeAmenities"/>
 	</resultMap>
@@ -391,9 +391,26 @@
 	</delete>
 	
 	
-	<!-- 기존 이미지 삭제 -->
+	<select id="selectStoreFile" resultType="storeFile">
+		select * from store_image_file
+		where si_file_no in
+		<foreach collection="array" item="siFileNo" open="(" close=")" separator=",">
+			#{siFileNo}
+		</foreach>
+	</select>
+	
+	
+	<select id="selectStoreFilepath" resultType="storeFile">
+		select * from store_image_file where store_no = #{storeNo}
+	</select>
+	
+	
 	<delete id="deleteStoreFile">
-	    delete from store_image_file where si_file_no = #{fileId}
+		delete from store_image_file
+		where si_file_no in
+		<foreach collection="array" item="siFileNo" open="(" close=")" separator=",">
+			#{siFileNo}
+		</foreach>
 	</delete>
 
 </mapper>

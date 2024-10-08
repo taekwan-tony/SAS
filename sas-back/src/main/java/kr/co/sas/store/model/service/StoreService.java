@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.review.model.dao.ReviewDao;
@@ -278,30 +279,17 @@ public class StoreService {
 
 
 	@Transactional
-	public boolean updateStoreImg(int storeNo, List<StoreFileDTO> storeFileList, List<Integer> delStoreFileIds) {
-		// 1. 기존 이미지 삭제
-	    if (delStoreFileIds != null && !delStoreFileIds.isEmpty()) {
-	        for (Integer fileId : delStoreFileIds) {
-	            storeDao.deleteStoreFile(fileId);  // 이미지 삭제
-	        }
-	    }
+	public boolean updateStoreImg(int storeNo, List<StoreFileDTO> storeFileList) {	    
 
-	    // 2. 새 이미지 추가
+	    //새 이미지 추가
 	    int result = 0;
 	    for (StoreFileDTO storeFile : storeFileList) {
 	        storeFile.setStoreNo(storeNo);
 	        result += storeDao.insertStoreFile(storeFile);  // 이미지 추가
-	    }
+	    }//for
 
 	    return result == storeFileList.size();  // 모두 성공했는지 여부 반환
 	}//updateStoreImg
-
-	
-	@Transactional
-	public void deleteStoreImg(int fileId) {
-	    System.out.println("삭제할 이미지 ID: " + fileId);  // 삭제할 이미지 ID 확인 로그
-	    storeDao.deleteStoreFile(fileId);  // 삭제 처리
-	}//deleteStoreImg
 
 
 	@Transactional
@@ -327,6 +315,31 @@ public class StoreService {
 		int result = storeDao.deleteStoreAmenities(storeNo);
 		return result;
 	}//deleteStoreAmenities
+
+
+	@Transactional
+	public List<StoreFileDTO> deleteStoreFile(StoreFileDTO storeFiles, List<StoreFileDTO> storeFileList) {
+		int result = 1;
+		if(result > 0) {
+			List<StoreFileDTO> delFileList = new ArrayList<StoreFileDTO>();
+			if(storeFiles.getDelStoreFileNo() != null) {
+				delFileList = storeDao.selectStoreFile(storeFiles.getDelStoreFileNo());
+				result += storeDao.deleteStoreFile(storeFiles.getDelStoreFileNo());
+			}//if
+			
+			int updateTotal = storeFiles.getDelStoreFileNo() == null
+								? 1 + storeFileList.size()
+								: 1 + storeFileList.size() + storeFiles.getDelStoreFileNo().length;
+								
+			if (result == updateTotal) {
+				return delFileList;
+			}//if
+		}//if
+		return null;
+	}//deleteStoreFile
+
+
+
 
 
 }

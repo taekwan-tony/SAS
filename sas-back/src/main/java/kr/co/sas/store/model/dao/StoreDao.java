@@ -83,6 +83,7 @@ public interface StoreDao {
 	StorePaymentDTO currentYearSales();
 
 	int selectNewStoreCount();
+	
 	StoreDTO storeView(int storeNo);
 
 	int storeModify(StoreDTO store);
@@ -97,7 +98,9 @@ public interface StoreDao {
 
 	int deleteStoreAmenities(int storeNo);
 
-	void deleteStoreFile(int fileId);
+	List<StoreFileDTO> selectStoreFile(int[] delStoreFileNo);
+
+	int deleteStoreFile(int[] delStoreFileNo);
 
 
 }

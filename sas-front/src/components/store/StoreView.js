@@ -31,8 +31,8 @@ const StoreView = (props) => {
     if (store.seatList && store.seatList.length > 0) {
       setStoreSeatCapacity(store.seatList[0].seatCapacity);
       setStoreSeatAmount(store.seatList[0].seatAmount);
-      console.log("총 좌석 수 : ", storeSeatAmount);
-      console.log("수용 인원 : ", storeSeatCapacity);
+      // console.log("총 좌석 수 : ", storeSeatAmount);
+      // console.log("수용 인원 : ", storeSeatCapacity);
     }
   }, [store]);
 
@@ -52,7 +52,7 @@ const StoreView = (props) => {
       axios
         .get(`${backServer}/store/storeView/${loginstoreNo}`)
         .then((res) => {
-          console.log("매장 정보 출력 : ", res.data);
+          //console.log("매장 정보 출력 : ", res.data);
           setStore(res.data);
           setCheck(res.data.length);
 
@@ -62,7 +62,7 @@ const StoreView = (props) => {
           }
         })
         .catch((err) => {
-          console.log("매장 정보 출력 오류 : ", err);
+          //console.log("매장 정보 출력 오류 : ", err);
           console.log(
             "에러 응답 데이터 : ",
             err.response ? err.response.data : err.message

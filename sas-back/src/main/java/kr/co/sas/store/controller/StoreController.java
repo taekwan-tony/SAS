@@ -329,21 +329,25 @@ public class StoreController {
 	@Operation(summary = "매장 사진 수정")
 	@PatchMapping(value = "/updateStoreImg/{storeNo}")
 	public ResponseEntity<Boolean> updateStoreImg(
-	        @ModelAttribute MultipartFile[] storeFile,
-	        @RequestParam(value = "delStoreFileIds", required = false) List<Integer> delStoreFileIds,  // 삭제할 이미지 ID 목록
+	        @RequestParam(value = "storeFile", required = false) MultipartFile[] storeFile,  // 수정 
+	        @ModelAttribute StoreFileDTO storeFiles,
 	        @PathVariable int storeNo) {
 
-	    // 1. 삭제할 기존 이미지 처리
-	    if (delStoreFileIds != null && !delStoreFileIds.isEmpty()) {
-	        System.out.println("삭제할 이미지 ID들: " + delStoreFileIds);  // 삭제할 ID 확인 로그
-	        for (Integer fileId : delStoreFileIds) {
-	            storeService.deleteStoreImg(fileId);  // 삭제 로직 호출
+	    List<StoreFileDTO> storeFileList = new ArrayList<>();
+
+	    // 삭제할 파일 처리
+	    List<StoreFileDTO> delFileList = storeService.deleteStoreFile(storeFiles, storeFileList);
+	    if (delFileList != null && !delFileList.isEmpty()) {  // 삭제할 파일이 있을 경우 처리
+	        String savePath = root + "/store/";
+	        for (StoreFileDTO deleteFile : delFileList) {
+	            File delFile = new File(savePath + deleteFile.getSiFilepath());
+	            delFile.delete();
 	        }
+	        System.out.println("매장 사진 삭제 : " + delFileList.toString());
 	    }
 
-	    // 2. 새로 추가된 이미지 처리
-	    List<StoreFileDTO> storeFileList = new ArrayList<>();
-	    if (storeFile != null) {
+	    // 새로 추가된 이미지 처리
+	    if (storeFile != null && storeFile.length > 0) {  // 새로 추가된 파일이 있을 경우 처리
 	        String savePath = root + "/store/";
 	        for (MultipartFile file : storeFile) {
 	            StoreFileDTO storeFileDTO = new StoreFileDTO();
@@ -354,12 +358,17 @@ public class StoreController {
 	            storeFileDTO.setStoreNo(storeNo);
 	            storeFileList.add(storeFileDTO);
 	        }
+	        System.out.println("새로 추가된 이미지  : " + storeFileList.toString());
+	    } else {
+	        System.out.println("새로 추가된 파일이 없습니다.");
 	    }
 
-	    // 3. 새로 추가된 이미지 DB 저장
-	    boolean result = storeService.updateStoreImg(storeNo, storeFileList, delStoreFileIds);
+	    // 새로 추가된 이미지 DB 저장 (기존 사진 삭제만 있거나 새로 추가된 사진이 있을 경우 처리)
+	    boolean result = storeService.updateStoreImg(storeNo, storeFileList);
 	    return ResponseEntity.ok(result);
 	}//updateStoreImg
+
+
 
 
 	

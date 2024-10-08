@@ -44,7 +44,7 @@ const StoreViewMain = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => {
-    setIsEditing(true); // 수정 화면으로 전환
+    setIsEditing(!isEditing); // 수정 화면으로 전환
   };
 
   return (
@@ -91,6 +91,8 @@ const StoreViewMain = () => {
                 loginstoreNo={loginstoreNo}
                 seat={seat}
                 handleEditClick={handleEditClick}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
               />
             )}
           </div>

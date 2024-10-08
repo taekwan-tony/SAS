@@ -32,8 +32,6 @@ const StoreAmenitiesCheckBoxMUI = (props) => {
     setStoreAmenities(checkedList);
   }, [checkedList, setStoreAmenities]);
 
-  console.log(checkedList);
-
   return (
     <FormGroup row>
       {amenity.map((item) => (
