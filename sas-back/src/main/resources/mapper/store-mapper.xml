@@ -108,10 +108,7 @@
 	<select id="selectStoreAmenity" resultType="storeAmenities">
 		select amenities from store_amenities where store_no=#{storeNo}
 	</select>
-	<select id="selectStoreMood" resultType="storeMood">
-		select mood from store_mood where store_no=#{storeNo}
-	</select>
-	
+
 	<select id="selectOneStoreInfo" resultType="store">
 		select store_no, store_name, store_addr, store_phone, store_time,business_number,so_name,so_phone,map_x,map_y
 		from store 
