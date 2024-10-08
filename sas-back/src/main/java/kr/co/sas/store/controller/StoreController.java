@@ -329,25 +329,39 @@ public class StoreController {
 	@Operation(summary = "매장 사진 수정")
 	@PatchMapping(value = "/updateStoreImg/{storeNo}")
 	public ResponseEntity<Boolean> updateStoreImg(
-	        @ModelAttribute MultipartFile[] storeFile, @PathVariable int storeNo) {
+	        @ModelAttribute MultipartFile[] storeFile,
+	        @RequestParam(value = "delStoreFileIds", required = false) List<Integer> delStoreFileIds,  // 삭제할 이미지 ID 목록
+	        @PathVariable int storeNo) {
 
-		List<StoreFileDTO> storeFileList = new ArrayList<StoreFileDTO>();
-		if(storeFile != null) {
-			String savepath = root + "/store/";
-			for(MultipartFile file : storeFile) {
-				StoreFileDTO storeFileDTO = new StoreFileDTO();
-				String filename = file.getOriginalFilename();
-				String filepath = fileUtil.upload(savepath, file);
-				storeFileDTO.setSiFileName(filename);
-				storeFileDTO.setSiFilepath(filepath);
-				storeFileDTO.setStoreNo(storeNo);
-				storeFileList.add(storeFileDTO);
-			}//for
-		}//if
-		System.out.println("매장 사진 수정 : " +storeFileList.toString());
-		int result = storeService.updateStoreImg(storeNo, storeFileList);
-		return ResponseEntity.ok(result == 1 + storeFileList.size());
+	    // 1. 삭제할 기존 이미지 처리
+	    if (delStoreFileIds != null && !delStoreFileIds.isEmpty()) {
+	        System.out.println("삭제할 이미지 ID들: " + delStoreFileIds);  // 삭제할 ID 확인 로그
+	        for (Integer fileId : delStoreFileIds) {
+	            storeService.deleteStoreImg(fileId);  // 삭제 로직 호출
+	        }
+	    }
+
+	    // 2. 새로 추가된 이미지 처리
+	    List<StoreFileDTO> storeFileList = new ArrayList<>();
+	    if (storeFile != null) {
+	        String savePath = root + "/store/";
+	        for (MultipartFile file : storeFile) {
+	            StoreFileDTO storeFileDTO = new StoreFileDTO();
+	            String filename = file.getOriginalFilename();
+	            String filepath = fileUtil.upload(savePath, file);
+	            storeFileDTO.setSiFileName(filename);
+	            storeFileDTO.setSiFilepath(filepath);
+	            storeFileDTO.setStoreNo(storeNo);
+	            storeFileList.add(storeFileDTO);
+	        }
+	    }
+
+	    // 3. 새로 추가된 이미지 DB 저장
+	    boolean result = storeService.updateStoreImg(storeNo, storeFileList, delStoreFileIds);
+	    return ResponseEntity.ok(result);
 	}//updateStoreImg
+
+
 	
 	
 	@Operation(summary = "매장 분위기 수정")
@@ -402,13 +416,4 @@ public class StoreController {
 	}//deleteStoreAmenities
 	
 	
-//	@Operation(summary = "매장 사진 조회")
-//	@GetMapping(value = "/selectStoreImg/{storeNo}")
-//	public ResponseEntity<Boolean> selectStoreImg (@ModelAttribute MultipartFile storeThumbnail, @PathVariable int storeNo) {
-//		if (storeThumbnail != null) {
-//			String savepath = root + "/store/";
-//			String filepath = fileUtil.upload(savepath, storeThumbnail);
-//			
-//		}
-//	}
 }

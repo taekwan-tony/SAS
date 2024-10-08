@@ -97,5 +97,7 @@ public interface StoreDao {
 
 	int deleteStoreAmenities(int storeNo);
 
+	void deleteStoreFile(int fileId);
+
 
 }

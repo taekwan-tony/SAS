@@ -354,7 +354,7 @@
 			break_time_start=#{breakTimeStart},
 			break_time_end=#{breakTimeEnd},
 			deposit=#{deposit},
-			store_class=#{storeClass},
+			store_class=#{storeClass}
 		where store_no=#{storeNo}
 	</update>
 	
@@ -388,6 +388,12 @@
 	
 	<delete id="deleteStoreAmenities">
 		delete from store_amenities where store_no=#{storeNo}
+	</delete>
+	
+	
+	<!-- 기존 이미지 삭제 -->
+	<delete id="deleteStoreFile">
+	    delete from store_image_file where si_file_no = #{fileId}
 	</delete>
 
 </mapper>

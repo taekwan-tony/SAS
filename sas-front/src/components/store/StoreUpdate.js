@@ -63,6 +63,10 @@ const StoreUpdate = (props) => {
           console.log("매장 정보 출력 : ", res.data);
           setStore(res.data);
           setCheck(res.data.length);
+
+          if (res.data.storeSiFilepathList) {
+            setStoreSiFilepathList(res.data.storeSiFilepathList);
+          }
         })
         .catch((err) => {
           console.log("매장 정보 출력 오류 : ", err);
@@ -75,18 +79,15 @@ const StoreUpdate = (props) => {
 
   const changeStore = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
     setStore({ ...store, [name]: e.target.value });
     setSeat({ ...seat, [name]: e.target.value });
   };
 
   //첨부파일
-  const [fileList, setFileList] = useState([]);
-  const [storeFile, setStoreFile] = useState([]); // 실제 업로드용 state
-  const [showStoreFile, setShowStoreFile] = useState([]); // 매장 사진 URL
-  const [delStoreFileNo, setDelStoreFileNo] = useState("");
-  const [storeThumbnail, setStoreThumbnail] = useState(null);
-  const [storeImage, setStoreImage] = useState([]); // 미리보기용
+  const [storeFile, setStoreFile] = useState([]); //사진 저장
+  const [storeImage, setStoreImage] = useState([]); //미리보기용
+  const [storeSiFilepathList, setStoreSiFilepathList] = useState([]); //저장되어 있던 사진 출력용
+  const [delStoreFileIds, setDelStoreFileIds] = useState([]); // 삭제할 이미지 ID 목록
 
   //메뉴 썸네일 이미지 첨부파일 변경 시 동작 함수
   const changeStoreThumbnail = (e) => {
@@ -94,9 +95,6 @@ const StoreUpdate = (props) => {
     let urlList = [];
 
     if (files.length !== 0) {
-      setStoreThumbnail(files[0]);
-
-      // 파일을 state에 저장
       setStoreFile((prevFiles) => [...prevFiles, ...files]);
 
       // 미리보기
@@ -110,16 +108,19 @@ const StoreUpdate = (props) => {
           }
         };
       });
-    } else {
-      setStoreThumbnail(null);
-      setStoreImage([]);
-      setStoreFile([]);
     }
   };
 
-  // 이미지 삭제
-  const removeImage = (indexToRemove) => {
-    // storeImage와 storeFile 둘 다 삭제
+  // 기존 이미지 삭제
+  const removeExistingImage = (indexToRemove, imageId) => {
+    setStoreSiFilepathList(
+      (prevList) => prevList.filter((_, index) => index !== indexToRemove) // UI에서 삭제
+    );
+    setDelStoreFileIds((prevIds) => [...prevIds, imageId]); // 삭제할 이미지 ID 저장
+  };
+
+  // 새로 추가된 이미지 삭제 함수
+  const removeNewImage = (indexToRemove) => {
     setStoreImage((prevImages) =>
       prevImages.filter((_, index) => index !== indexToRemove)
     );
@@ -155,9 +156,17 @@ const StoreUpdate = (props) => {
   const storeModify = () => {
     const form = new FormData();
 
-    // 파일 추가
+    // 새로 추가된 파일들
     storeFile.forEach((file) => {
       form.append("storeFile", file);
+    });
+
+    // 삭제할 파일 ID를 FormData에 추가
+    console.log("삭제할 파일 ID들:", delStoreFileIds); // 삭제할 파일 ID 확인
+
+    // 삭제할 파일
+    delStoreFileIds.forEach((fileId) => {
+      form.append("delStoreFileIds", fileId);
     });
 
     // 매장 분위기
@@ -212,17 +221,17 @@ const StoreUpdate = (props) => {
 
     // 매장 사진
     axios
-      .patch(`${backServer}/store/updateStoreImg/${loginstoreNo}}`, form, {
+      .patch(`${backServer}/store/updateStoreImg/${loginstoreNo}`, form, {
         headers: {
           contentType: "multipart/form-data",
           processData: false,
         },
       })
       .then((res) => {
-        console.log(res);
+        console.log("사진 수정 성공", res);
       })
       .catch((err) => {
-        console.log(err);
+        console.error("사진 수정 실패", err);
       });
 
     // 매장 분위기
@@ -294,35 +303,39 @@ const StoreUpdate = (props) => {
                   <div className="storeUpdate-imgDiv-zone">
                     <div className="storeUpdate-img-zone">
                       {/* 이미지 미리보기 */}
-                      {storeImage.length > 0 ? (
-                        <div className="storeUpdate-imgDiv">
-                          {storeImage.map((image, index) => (
-                            <div
-                              key={index}
-                              className="storeUpdate-imgContainer"
+                      {storeSiFilepathList.length > 0 &&
+                        storeSiFilepathList.map((image, index) => (
+                          <div key={index} className="storeUpdate-imgContainer">
+                            <img
+                              className="storeUpdate-img"
+                              src={`${backServer}/store/${image.siFilepath}`}
+                              alt={`Existing Preview ${index}`}
+                            />
+                            <button
+                              className="remove-button"
+                              onClick={() => removeExistingImage(index)}
                             >
-                              <img
-                                key={index}
-                                className="storeUpdate-img"
-                                src={image}
-                                alt={`Preview ${index}`}
-                              />
-                              <button
-                                className="remove-button"
-                                onClick={() => removeImage(index)}
-                              >
-                                X
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <img
-                          className="storeUpdate-img"
-                          src="/image/s&s로고.png"
-                          alt="Default"
-                        />
-                      )}
+                              X
+                            </button>
+                          </div>
+                        ))}
+                      {/* 새로 추가된 이미지 미리보기 */}
+                      {storeImage.length > 0 &&
+                        storeImage.map((image, index) => (
+                          <div key={index} className="storeUpdate-imgContainer">
+                            <img
+                              className="storeUpdate-img"
+                              src={image}
+                              alt={`New Preview ${index}`}
+                            />
+                            <button
+                              className="remove-button"
+                              onClick={() => removeNewImage(index)}
+                            >
+                              X
+                            </button>
+                          </div>
+                        ))}
                     </div>
                   </div>
                   <div className="storeUpdate-div">

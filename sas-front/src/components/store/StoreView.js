@@ -25,10 +25,10 @@ const StoreView = (props) => {
     seatAmount: "",
   });
 
-  // API로부터 데이터 가져오기 (예시)
+  const [storeSiFilepathList, setStoreSiFilepathList] = useState([]);
+
   useEffect(() => {
     if (store.seatList && store.seatList.length > 0) {
-      // store.seatList가 존재하고 배열이 비어 있지 않으면 첫 번째 좌석의 수용 인원 설정
       setStoreSeatCapacity(store.seatList[0].seatCapacity);
       setStoreSeatAmount(store.seatList[0].seatAmount);
       console.log("총 좌석 수 : ", storeSeatAmount);
@@ -55,6 +55,11 @@ const StoreView = (props) => {
           console.log("매장 정보 출력 : ", res.data);
           setStore(res.data);
           setCheck(res.data.length);
+
+          // 매장 정보에서 이미지 파일 리스트 설정
+          if (res.data.storeSiFilepathList) {
+            setStoreSiFilepathList(res.data.storeSiFilepathList);
+          }
         })
         .catch((err) => {
           console.log("매장 정보 출력 오류 : ", err);
@@ -99,11 +104,14 @@ const StoreView = (props) => {
                 <th className="storeView-th" colSpan={2}>
                   <div className="storeView-imgDiv-zone">
                     <div className="storeView-img-zone">
-                      <img
-                        className="storeMenuView-img"
-                        src="/image/s&s로고.png"
-                        alt="Default"
-                      />
+                      {storeSiFilepathList.map((file, index) => (
+                        <img
+                          className="storeView-img"
+                          key={index}
+                          src={`${backServer}/store/${file.siFilepath}`}
+                          alt={`Store Image ${index + 1}`}
+                        />
+                      ))}
                     </div>
                   </div>
                 </th>

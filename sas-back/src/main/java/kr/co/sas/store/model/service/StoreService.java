@@ -278,14 +278,30 @@ public class StoreService {
 
 
 	@Transactional
-	public int updateStoreImg(int storeNo, List<StoreFileDTO> storeFileList) {
-		int result = 0;
-		for(StoreFileDTO storeFile : storeFileList) {
-			storeFile.setStoreNo(storeNo);
-			result += storeDao.updateStoreFile(storeFile);
-		}//for
-		return result;
+	public boolean updateStoreImg(int storeNo, List<StoreFileDTO> storeFileList, List<Integer> delStoreFileIds) {
+		// 1. 기존 이미지 삭제
+	    if (delStoreFileIds != null && !delStoreFileIds.isEmpty()) {
+	        for (Integer fileId : delStoreFileIds) {
+	            storeDao.deleteStoreFile(fileId);  // 이미지 삭제
+	        }
+	    }
+
+	    // 2. 새 이미지 추가
+	    int result = 0;
+	    for (StoreFileDTO storeFile : storeFileList) {
+	        storeFile.setStoreNo(storeNo);
+	        result += storeDao.insertStoreFile(storeFile);  // 이미지 추가
+	    }
+
+	    return result == storeFileList.size();  // 모두 성공했는지 여부 반환
 	}//updateStoreImg
+
+	
+	@Transactional
+	public void deleteStoreImg(int fileId) {
+	    System.out.println("삭제할 이미지 ID: " + fileId);  // 삭제할 이미지 ID 확인 로그
+	    storeDao.deleteStoreFile(fileId);  // 삭제 처리
+	}//deleteStoreImg
 
 
 	@Transactional

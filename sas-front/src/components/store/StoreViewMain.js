@@ -90,7 +90,7 @@ const StoreViewMain = () => {
                 setStore={setStore}
                 loginstoreNo={loginstoreNo}
                 seat={seat}
-                handleEditClick={handleEditClick} // 수정 버튼을 눌렀을 때 실행될 함수 전달
+                handleEditClick={handleEditClick}
               />
             )}
           </div>
