@@ -132,8 +132,10 @@ function UserMain() {
     setSearchInput(e.target.value);
   };
   const search = () => {
-    navigate(`searchlist/${searchInput}`);
-    setSearchInput("");
+    if (searchInput !== "") {
+      navigate(`searchlist/${searchInput}`);
+      setSearchInput("");
+    }
   };
 
   return (
@@ -244,9 +246,9 @@ function UserMain() {
                       </ul>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to={`searchList`}>
                         <i className="fa-solid fa-magnifying-glass"></i>검색하기
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <Link to="mypage/resview">
@@ -302,6 +304,7 @@ function UserMain() {
         <Route path="mypage/*" element={<Mypage />}></Route>
         <Route path="menuview/:storeNo/*" element={<MenuView />} />
         <Route path="searchlist/:searchItem" element={<SearchList />} />
+        <Route path="searchlist" element={<SearchList search={"all"} />} />
         <Route path="noticeList" element={<UserNoticeList />} />
         <Route
           path="noticeDetail/:noticeNo/:userNickname"

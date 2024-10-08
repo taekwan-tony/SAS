@@ -71,16 +71,23 @@
 	select so_email from store where store_no = #{storeNo}
 </select>
 
+<!-- 이미지 사진이 여러개인데 그중에 하나 제일 첫번째 이게 뭔말이야 ? -->
 <!-- 안되면 수진 favorite 수정해야함 -->
 	<select id="getStoreinfo" resultMap="getStore">
-		select store_no, store_name, store_addr, store_introduce, store_time,store_phone
+		select store_no, store_name, store_addr, store_introduce, store_time,store_phone,
 		<if test="userNo!=0">
-		, (select count(*) from favorite join favorite_folder using(favorite_folder_no) where store_no=#{storeNo} and user_no = #{userNo}) is_favorite
+		 (select count(*) from favorite join favorite_folder using(favorite_folder_no) where store_no=#{storeNo} and user_no = #{userNo}) is_favorite,
 		</if>
+		(select si_filepath from store_image_file 
+					where si_file_no=(select min(si_file_no) 
+										from store_image_file  
+										where store_image_file.store_no=store.store_no)) si_filepath
 		from store 
 		
 		where store_no = #{storeNo}
 	</select>
+	
+	
 	<resultMap id="getStore" type="store">
 	    <result column="store_no" property="storeNo" />
 	    <result column="store_name" property="storeName" />
@@ -93,11 +100,15 @@
 	    <result column="is_favorite" property="isFavorite" />
 	    <collection property="siFilepathList" select="selectSiFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
 	    <collection property="storeAmenityList" select="selectStoreAmenity" column="store_no" javaType="java.util.List" ofType="storeAmenities"/>
+		<collection property="storeMoodList" select="selectStoreMood" column="store_no" javaType="java.util.List" ofType="storeMood"/>
+		
+		<!-- 스토어무드 받아오려는중 -->
+	
 	</resultMap>
 	<select id="selectStoreAmenity" resultType="storeAmenities">
 		select amenities from store_amenities where store_no=#{storeNo}
 	</select>
-	
+
 	<select id="selectOneStoreInfo" resultType="store">
 		select store_no, store_name, store_addr, store_phone, store_time,business_number,so_name,so_phone,map_x,map_y
 		from store 
@@ -130,13 +141,13 @@
 	<select id="selectAllPayStore" resultType="store">
 		select so_email,store_no from store where to_char(store_enroll_date,'dd') = to_char(sysdate-1,'dd')
 	</select>
-	<!-- 
-	이미지등록되면 구현하기로한 올스토얼 ~~~
+	 
+	<!--  이미지등록되면 구현하기로한 올스토얼 ~~~
 		<selectKey order="BEFORE" resultType="int" keyProperty="si_file_no">
 			select min(si_file_no) from store_image_file where store_no=#{storeNo}
 		</selectKey>
-	
-	 -->
+	-->
+	 
 	
 	
 
@@ -145,8 +156,55 @@
 	</select>
 
 	<select id ="selectAllstore" resultType="store">
-		select store_no,store_name,store_time,store_introduce,store_addr from store
+		 select store.store_no,store_name,store_time,store_introduce,store_addr,
+		(select si_filepath from store_image_file 
+		where si_file_no=(select min(si_file_no) 
+		from store_image_file  
+		where store_image_file.store_no=store.store_no)) si_filepath
+		from store
+        left outer join store_mood on (store.store_no=store_mood.store_no)
+		left outer join store_amenities on (store.store_no=store_mood.store_no)
+        <if test="keyword!=null">
+        where store_name = #{keyword} or mood=#{keyword} or amenities=#{keyword} or store_addr=#{keyword}
+    	union    
+    	select store.store_no,store_name,store_time,store_introduce,store_addr,
+		(select si_filepath from store_image_file 
+		where si_file_no=(select min(si_file_no) 
+		from store_image_file  
+		where store_image_file.store_no=store.store_no)) si_filepath
+		from store
+        left outer join store_mood on (store.store_no=store_mood.store_no)
+		left outer join store_amenities on (store.store_no=store_mood.store_no)
+        where store_name like '%'||#{keyword}||'%' or mood like '%'||#{keyword}||'%' or amenities like '%'||#{keyword}||'%' or store_addr like '%'||#{keyword}||'%'
+		</if>
+        <foreach collection="keywordList" item="keywordItem">
+        union
+        select store.store_no,store_name,store_time,store_introduce,store_addr,
+		(select si_filepath from store_image_file 
+		where si_file_no=(select min(si_file_no) 
+		from store_image_file  
+		where store_image_file.store_no=store.store_no)) si_filepath
+		from store
+        left outer join store_mood on (store.store_no=store_mood.store_no)
+		left outer join store_amenities on (store.store_no=store_mood.store_no)
+        where store_name like '%'||#{keywordItem}||'%' or mood like'%'||#{keywordItem}||'%'or amenities like '%'||#{keywordItem}||'%'  or store_addr like '%'||#{keywordItem}||'%'
+
+        </foreach>
+        <!-- 마이바티스 돌릴거 고민
+        union
+        select store.store_no,store_name,store_time,store_introduce,store_addr,
+		(select si_filepath from store_image_file 
+		where si_file_no=(select min(si_file_no) 
+		from store_image_file  
+		where store_image_file.store_no=store.store_no)) si_filepath
+		from store
+        join store_mood on (store.store_no=store_mood.store_no)
+		join store_amenities on (store.store_no=store_mood.store_no)
+        where store_name like '%보승%' or mood like'%보승%'or amenities like '%보승%';
+        
+         -->
 	</select>
+	
 	 
 	 
 	 
@@ -216,7 +274,7 @@
 	
 	
 	<select id="checkBusinessNumber" resultType="store">
-		select * from store where businessNumber=#{businessNumber}
+		select * from store where business_number=#{num}
 	</select>
 	
 	<select id="kakaoMapStore" resultType="store">
@@ -298,13 +356,12 @@
 	
 	<select id="storeView" resultMap="selectStoreview">
 		select
-		    store_name, store_phone, store_introduce, store_addr, store_time, store_re_start, store_re_end, break_time_start, break_time_end, deposit, store_class,
-		    seat_capacity, seat_amount
+		    store_no, store_name, store_phone, store_introduce, store_addr, store_time, store_re_start, store_re_end, break_time_start, break_time_end, deposit, store_class
 		from store
-		    join seat using (store_no)
-		where store_no = #{storeNo};
+		where store_no = #{storeNo}
 	</select>
 	<resultMap type="store" id="selectStoreview">
+		<result column="store_no" property="storeNo"/>
 		<result column="store_name" property="storeName"/>
 		<result column="store_phone" property="storePhone"/>
 		<result column="store_introduce" property="storeIntroduce"/>
@@ -316,7 +373,125 @@
 		<result column="break_time_end" property="breakTimeEnd"/>
 		<result column="deposit" property="deposit"/>
 		<result column="store_class" property="storeClass"/>
-		<result column="seat_capacity" property="seatCapacity"/>
-		<result column="seat_amount" property="seatAmount"/>
+		<collection property="seatList" select="selectSeatList" column="store_no" javaType="java.util.List" ofType="seat"/>
+		<collection property="storeSiFilepathList" select="selectStoreFilepath" column="store_no" javaType="java.util.List" ofType="storeFile"/>
+		<collection property="storeMoodList" select="selectStoreMood" column="store_no" javaType="java.util.List" ofType="storeMood"/>
+		<collection property="storeAmenityList" select="selectStoreAmenity" column="store_no" javaType="java.util.List" ofType="storeAmenities"/>
 	</resultMap>
+	<select id="selectStoreMood" resultType="storeMood">
+		select mood from store_mood where store_no=#{storeNo}
+	</select>
+	
+	
+	<update id="storeModify">
+		update store set
+			store_name=#{storeName},
+			store_phone=#{storePhone},
+			store_introduce=#{storeIntroduce},
+			store_addr=#{storeAddr},
+			store_re_start=#{storeReStart},
+			store_re_end=#{storeReEnd},
+			break_time_start=#{breakTimeStart},
+			break_time_end=#{breakTimeEnd},
+			deposit=#{deposit},
+			store_class=#{storeClass}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<update id="updateSeat">
+		update seat set
+			seat_capacity=#{seatCapacity},
+			seat_amount=#{seatAmount}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<update id="updateStoreFile">
+		update store_image_file set
+			si_filename=#{siFileName},
+			si_filepath=#{siFilepath}
+		where store_no=#{storeNo}
+	</update>
+	
+	
+	<insert id="updateStoreMood">
+	  insert into store_mood values
+	    (store_mood_seq.nextval, #{mood}, #{storeNo})
+	</insert>
+	
+	
+	<delete id="deleteStoreMood">
+		delete from store_mood where store_no=#{storeNo}
+	</delete>
+	
+	
+	<delete id="deleteStoreAmenities">
+		delete from store_amenities where store_no=#{storeNo}
+	</delete>
+	
+	
+	<select id="selectStoreFile" resultType="storeFile">
+		select * from store_image_file
+		where si_file_no in
+		<foreach collection="array" item="siFileNo" open="(" close=")" separator=",">
+			#{siFileNo}
+		</foreach>
+	</select>
+	
+	
+	<select id="selectStoreFilepath" resultType="storeFile">
+		select * from store_image_file where store_no = #{storeNo}
+	</select>
+	
+	
+	<delete id="deleteStoreFile">
+		delete from store_image_file
+		where si_file_no in
+		<foreach collection="array" item="siFileNo" open="(" close=")" separator=",">
+			#{siFileNo}
+		</foreach>
+	</delete>
+
+	<select id="yearData" resultType="String">
+		select to_char(store_pay_date,'yyyy') from store_pay where store_pay_date is not null group by to_char(store_pay_date,'yyyy')
+	</select>
+	
+	<select id="yearSalesBarChart" resultType="String">
+		<choose>
+			<when test="salesValue==0">
+				select store_total_pay
+		            from(select to_char(store_pay_date,'yyyy')||'년',sum(store_total_price) as store_total_pay 
+			            from store_pay 
+			            where store_pay_date is not null 
+			            group by to_char(store_pay_date,'yyyy')
+			            order by to_char(store_pay_date,'yyyy') asc)	
+			</when>
+			<otherwise>
+				with months as (
+                select 1 as month from dual union all
+                select 2 from dual union all
+                select 3 from dual union all
+                select 4 from dual union all
+                select 5 from dual union all
+                select 6 from dual union all
+                select 7 from dual union all
+                select 8 from dual union all
+                select 9 from dual union all
+                select 10 from dual union all
+                select 11 from dual union all
+                select 12 from dual
+            	)
+            	select  store_total_price from
+            		(select month,nvl(sum(store_total_price),0) as store_total_price from months m
+                	left join 
+                    	(select to_char(store_pay_date,'d') as store_pay_month,store_total_price,store_pay_date 
+                        from store_pay 
+                    	where store_pay_date is not null and to_char(store_pay_date,'yyyy') = #{yearValue}) sp
+                    on (m.month = sp.store_pay_month) 
+                    group by month order by 1 asc)
+			</otherwise>
+		</choose>
+	</select>
+	
 </mapper>

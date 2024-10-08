@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -97,10 +98,17 @@ public class StoreController {
 		}//else
 	}//storeRefresh
 	
+	//res.data>0
 	@GetMapping(value="/storeList")
 	public ResponseEntity<List> selectAllstore (){
 		List storeList = storeService.selectAllstore();
-		System.out.println("매장이미지보려고"+storeList);
+		return ResponseEntity.ok(storeList);
+	}
+	
+	@GetMapping(value="/storeList/keyword/{keyword}")
+	public ResponseEntity<List> selectAllstore (@PathVariable String keyword){
+		String[] keywordList = keyword.split(" ");
+		List storeList = storeService.selectAllstore(keyword, keywordList);
 		return ResponseEntity.ok(storeList);
 	}
 	
@@ -114,8 +122,10 @@ public class StoreController {
 	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo, @PathVariable int userNo) {
 //		System.out.println(userNo);
 		StoreDTO store = storeService.getStoreinfo(storeNo, userNo);
-		System.out.println(store);
+		System.out.println("파일패스나오는지"+store);
+		System.out.println("매장 : " + store);
 		if(store !=null) {
+			System.out.println(1);
 			return ResponseEntity.ok(store);
 		}
 		return ResponseEntity.status(404).build();
@@ -151,7 +161,7 @@ public class StoreController {
 	}//checkPw
 	
 	
-	@Operation(summary = "매장 정보")
+	@Operation(summary = "매장 정보 등록")
 	@PostMapping(value = "/insertStore")
 	public ResponseEntity<Boolean> insertStoreFrm(@RequestBody StoreDTO store) {
 		
@@ -247,7 +257,7 @@ public class StoreController {
 	
 	@Operation(summary = "사업자 등록 번호 중복 확인")
 	@GetMapping(value = "/businessNumber/{businessNumber}/checkBusinessNumber")
-	public ResponseEntity<Boolean> checkBusinessNumber(@PathVariable int businessNumber) {
+	public ResponseEntity<Boolean> checkBusinessNumber(@PathVariable String businessNumber) {
 		boolean result = storeService.checkBusinessNumber(businessNumber);
 		return ResponseEntity.ok(result);
 	}//checkBusinessNumber
@@ -271,7 +281,6 @@ public class StoreController {
 	@GetMapping(value="/storeNo/{storeNo}/getStoreInfoFavorite")
 	public ResponseEntity<FavoriteStoreInfoDTO> getStoreInfoFavorite(@PathVariable int storeNo){
 		FavoriteStoreInfoDTO store = storeService.selectStoreFavorite(storeNo);
-		System.out.println(store);
 		return ResponseEntity.ok(store);
 	}
 	
@@ -284,13 +293,144 @@ public class StoreController {
 	
 	
 	@Operation(summary = "매장 정보")
-	@GetMapping(value = "storeView/{storeNo}")
+	@GetMapping(value = "/storeView/{storeNo}")
 	public ResponseEntity<StoreDTO> storeView(@PathVariable int storeNo) {
 		StoreDTO store = storeService.storeView(storeNo);
+		System.out.println("매장 정보 조회 : " + store);
 		if(store != null) {
 			return ResponseEntity.ok(store);
 		}//if
 		return ResponseEntity.status(404).build(); 
 	}//storeView
+	
+	
+	@Operation(summary = "매장 정보")
+	@GetMapping(value = "/storeUpdate/{storeNo}")
+	public ResponseEntity<StoreDTO> storeUpdate(@PathVariable int storeNo) {
+		StoreDTO store = storeService.storeView(storeNo);
+		System.out.println("매장 정보 : " + store);
+		if(store != null) {
+			return ResponseEntity.ok(store);
+		}//if
+		return ResponseEntity.status(404).build(); 
+	}//storeUpdate
+	
+	
+	@Operation(summary = "매장 정보 수정")
+	@PatchMapping (value = "/storeModify/{storeNo}")
+	public ResponseEntity<Boolean> storeModify(@RequestBody StoreDTO store, @PathVariable int storeNo) {
+		System.out.println("매장 정보 수정 : " +store.toString());
+		int result = storeService.storeModify(store);
+		return ResponseEntity.ok(result > 0);
+	}//storeModify
+	
+	
+	@Operation(summary = "매장 좌석 수 수정")
+	@PatchMapping(value = "/updateSeat/{storeNo}")
+	public ResponseEntity<Boolean> updateSeat(@RequestBody SeatDTO seat, @PathVariable int storeNo) {
+		System.out.println("매장 좌석 수정 : " + seat.toString());
+		int result = storeService.updateSeat(seat);
+		return ResponseEntity.ok(result > 0);
+	}//updateSeat
+	
+	
+	@Operation(summary = "매장 사진 수정")
+	@PatchMapping(value = "/updateStoreImg/{storeNo}")
+	public ResponseEntity<Boolean> updateStoreImg(
+	        @RequestParam(value = "storeFile", required = false) MultipartFile[] storeFile,  // 수정 
+	        @ModelAttribute StoreFileDTO storeFiles,
+	        @PathVariable int storeNo) {
+
+	    List<StoreFileDTO> storeFileList = new ArrayList<>();
+
+	    // 삭제할 파일 처리
+	    List<StoreFileDTO> delFileList = storeService.deleteStoreFile(storeFiles, storeFileList);
+	    if (delFileList != null && !delFileList.isEmpty()) {  // 삭제할 파일이 있을 경우 처리
+	        String savePath = root + "/store/";
+	        for (StoreFileDTO deleteFile : delFileList) {
+	            File delFile = new File(savePath + deleteFile.getSiFilepath());
+	            delFile.delete();
+	        }
+	        System.out.println("매장 사진 삭제 : " + delFileList.toString());
+	    }
+
+	    // 새로 추가된 이미지 처리
+	    if (storeFile != null && storeFile.length > 0) {  // 새로 추가된 파일이 있을 경우 처리
+	        String savePath = root + "/store/";
+	        for (MultipartFile file : storeFile) {
+	            StoreFileDTO storeFileDTO = new StoreFileDTO();
+	            String filename = file.getOriginalFilename();
+	            String filepath = fileUtil.upload(savePath, file);
+	            storeFileDTO.setSiFileName(filename);
+	            storeFileDTO.setSiFilepath(filepath);
+	            storeFileDTO.setStoreNo(storeNo);
+	            storeFileList.add(storeFileDTO);
+	        }
+	        System.out.println("새로 추가된 이미지  : " + storeFileList.toString());
+	    } else {
+	        System.out.println("새로 추가된 파일이 없습니다.");
+	    }
+
+	    // 새로 추가된 이미지 DB 저장 (기존 사진 삭제만 있거나 새로 추가된 사진이 있을 경우 처리)
+	    boolean result = storeService.updateStoreImg(storeNo, storeFileList);
+	    return ResponseEntity.ok(result);
+	}//updateStoreImg
+
+
+
+
+	
+	
+	@Operation(summary = "매장 분위기 수정")
+	@PostMapping(value = "updateStoreMood/{storeNo}")
+	public ResponseEntity<Boolean> updateStoreMood(@PathVariable int storeNo, @RequestParam List<String> storeMood) {
+		System.out.println("매장 분위기 수정 " + storeMood.toString());
+		
+		List<StoreMoodDTO> storeMoodList = new ArrayList<StoreMoodDTO>();
+		if(storeMoodList != null) {
+			for(String mood : storeMood) {
+				StoreMoodDTO st = new StoreMoodDTO();
+				st.setMood(mood);
+				storeMoodList.add(st);
+			}//for
+		}//if
+		int result = storeService.insertStoreMood(storeNo, storeMoodList);
+		return ResponseEntity.ok(result > 0);
+	}//updateStoreMood
+	
+	
+	@Operation(summary = "매장 분위기 삭제")
+	@DeleteMapping(value = "/deleteStoreMood/{storeNo}")
+	public ResponseEntity<Integer> deleteStoreMood(@PathVariable int storeNo) {
+		int result = storeService.deleteStoreMood(storeNo);
+		return ResponseEntity.ok(result);
+	}//deleteStoreMood
+	
+	
+	@Operation(summary = "매장 편의시설 수정")
+	@PostMapping(value = "updateStoreAmenities/{storeNo}")
+	public ResponseEntity<Boolean> updateStoreAmenities(@PathVariable int storeNo, @RequestParam List<String> storeAmenities) {
+		System.out.println("매장 편의시설 수정" + storeAmenities.toString());
+		
+		List<StoreAmenitiesDTO> storeAMList = new ArrayList<StoreAmenitiesDTO>();
+		if(storeAMList != null) {
+			for(String amenities : storeAmenities) {
+				StoreAmenitiesDTO sa = new StoreAmenitiesDTO();
+				sa.setAmenities(amenities);
+				storeAMList.add(sa);
+			}//for
+		}//if
+		int result = storeService.insertStoreAmenities(storeNo, storeAMList);
+		return ResponseEntity.ok(result > 0);
+	}//updatestoreAmenities
+	
+	
+	@Operation(summary = "매장 편의시설 삭제")
+	@DeleteMapping(value = "/deleteStoreAmenities/{storeNo}")
+	public ResponseEntity<Integer> deleteStoreAmenities(@PathVariable int storeNo) {
+		int result = storeService.deleteStoreAmenities(storeNo);
+		return ResponseEntity.ok(result);
+	}//deleteStoreAmenities
+	
 	
 }

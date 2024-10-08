@@ -18,6 +18,8 @@ const ReservationMain = (props) => {
   const setIsReserveModalOpen = props.setIsReserveModalOpen;
   const isReserveModalOpen = props.isReserveModalOpen;
   //예약 변경시 받아올 예약 정보
+  const isReservationUpdate = props.isReservationUpdate;
+  const setIsReservationUpdate = props.setIsReservationUpdate;
   const reservationUpdateInfo = props.reservationUpdateInfo;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
@@ -40,6 +42,7 @@ const ReservationMain = (props) => {
   const [reservation, setReservation] = useState(
     reservationUpdateInfo != null
       ? {
+          reserveNo: reservationUpdateInfo.reserveNo,
           reserveTime: reservationUpdateInfo.reserveTime,
           reserveDate: new Date(reservationUpdateInfo.reserveDate),
           reservePayStatus: reservationUpdateInfo.reservePayStatus,
@@ -47,6 +50,7 @@ const ReservationMain = (props) => {
           userId: loginUserId,
           seatNo: reservationUpdateInfo.seatNo,
           payPrice: 0,
+          reservePeopleLimit: reservationUpdateInfo.reservePeople,
         }
       : {
           reserveTime: "",
@@ -142,6 +146,8 @@ const ReservationMain = (props) => {
               ? reservationUpdateInfo.isUpdate
               : false
           }
+          isReservationUpdate={isReservationUpdate}
+          setIsReservationUpdate={setIsReservationUpdate}
         />
       ) : (
         ""
@@ -200,13 +206,22 @@ const ReservationModalFirst = (props) => {
   };
   // console.log(reservation.reservePeople, typeof reservation.reservePeople);
   const peoplePlus = () => {
-    setReservation({
-      ...reservation,
-      reservePeople: reservation.reservePeople + 1,
-      reserveTime: "",
-    });
+    setPeopleMsg("");
+    if (
+      reservation.reservePeopleLimit &&
+      reservation.reservePeople === reservation.reservePeopleLimit
+    ) {
+      setPeopleMsg("기존 예약 인원 이하로 변경 가능합니다.");
+    } else {
+      setReservation({
+        ...reservation,
+        reservePeople: reservation.reservePeople + 1,
+        reserveTime: "",
+      });
+    }
   };
   const peopleMinus = () => {
+    setPeopleMsg("");
     if (reservation.reservePeople > 1) {
       setReservation({
         ...reservation,
@@ -289,7 +304,8 @@ const ReservationModalFirst = (props) => {
       });
   }, [reservation]);
   useEffect(() => {
-    msgRef.current.style.setProperty("display", "none");
+    // msgRef.current.style.setProperty("display", "none");
+    setPeopleMsg("");
     let peopleCapacity = 0;
     if (reservationStore.seatList != null) {
       reservationStore.seatList.forEach((seat) => {
@@ -299,11 +315,13 @@ const ReservationModalFirst = (props) => {
       });
     }
     if (reservation.reservePeople > peopleCapacity) {
-      msgRef.current.style.setProperty("display", "block");
+      // msgRef.current.style.setProperty("display", "block");
+      setPeopleMsg("해당 인원 수는 매장에 직접 문의하세요");
     }
   }, [reservationStore, reservation]);
   //메세지 ref
   const msgRef = useRef(null);
+  const [peopleMsg, setPeopleMsg] = useState("");
   return (
     <div className="reservation-modal-wrap first">
       <DatePicker
@@ -318,7 +336,7 @@ const ReservationModalFirst = (props) => {
           </span>
           <div className="input-item">
             <span className="input-text colorRed" ref={msgRef}>
-              매장에 직접 문의하세요
+              {peopleMsg}
             </span>
             <button className="minus" onClick={peopleMinus}>
               -
@@ -405,6 +423,8 @@ const ReservationModalSecond = (props) => {
     reserveDeposit,
     setReservation,
     isUpdate,
+    isReservationUpdate,
+    setIsReservationUpdate,
   } = props;
   const pay = {
     payCode: "",
@@ -466,7 +486,48 @@ const ReservationModalSecond = (props) => {
     console.log(reservation);
     // console.log(typeof reservation.reserveDate);
     if (isUpdate) {
-      console.log("예약 변경 로직");
+      axios.patch(`${backServer}/reservation`, reservation).then((res) => {
+        if (res.data) {
+          if (
+            reserveDeposit.payStatus !== 0 &&
+            reservation.reservePeople !== reservation.reservePeopleLimit
+          ) {
+            Swal.fire({
+              title: "예약 변경 완료",
+              text: "예약금 차액은 해당 매장에서 환불받으실 수 있습니다.",
+              icon: "success",
+              confirmButtonText: "확인",
+              confirmButtonColor: "var(--main1)",
+            }).then(() => {
+              setReservationPage(1);
+              setIsReserveModalOpen(false);
+              setIsReservationUpdate(!isReservationUpdate);
+            });
+          } else {
+            Swal.fire({
+              title: "예약 변경 완료",
+              icon: "success",
+              confirmButtonText: "확인",
+              confirmButtonColor: "var(--main1)",
+            }).then(() => {
+              setReservationPage(1);
+              setIsReserveModalOpen(false);
+              setIsReservationUpdate(!isReservationUpdate);
+            });
+          }
+        } else {
+          Swal.fire({
+            title: "시스템 오류",
+            text: "잠시 후에 다시 시도해주세요",
+            icon: "error",
+            confirmButtonText: "확인",
+            confirmButtonColor: "var(--main1)",
+          }).then(() => {
+            setReservationPage(1);
+            setIsReserveModalOpen(false);
+          });
+        }
+      });
     } else {
       axios
         .post(`${backServer}/reservation`, reservation)
@@ -657,7 +718,6 @@ const ReserveTimeBox = (props) => {
     people,
     setReservation,
     reservation,
-    msgRef,
     reserveCheck,
     setReserveCheck,
     timeBoxSeatList,

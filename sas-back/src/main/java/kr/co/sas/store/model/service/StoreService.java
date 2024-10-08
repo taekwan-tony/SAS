@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.review.model.dao.ReviewDao;
@@ -83,7 +84,6 @@ public class StoreService {
 	        } //else
 	    } //else
 	    map.put("result", result);
-	    System.out.println("로그인 : " + map);
 	    return map;
 	}//storeLogin
 
@@ -92,7 +92,6 @@ public class StoreService {
 	public LoginStoreDTO storeRefresh(String token) {
 		try {
 			LoginStoreDTO loginStore = jwtUtils.storeCheckToken(token);
-			System.out.println("갱신된 storeNo: " + loginStore.getStoreNo()); // storeNo 값 로그로 확인
 			String accessToken = jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr());
 			String refreshToken = jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr());
 			loginStore.setAccessToken(accessToken);
@@ -114,6 +113,7 @@ public class StoreService {
 		return result;
 	}//changePw
 
+	
 	@Transactional
 	public List<StoreDTO> selectAllPayStore() {
 		List<StoreDTO> list = storeDao.selectAllPayStore();
@@ -131,26 +131,31 @@ public class StoreService {
 	}
 
 
-	public List selectAllstore() {
-		List list = storeDao.selectAllstore();
+	public List selectAllstore(String keyword, String[] keywordList) {
+		List list = storeDao.selectAllstore(keyword, keywordList);
 		return list;
 	}
 
+	
 	public StoreDTO getStoreinfo(int storeNo, int userNo) {
 		StoreDTO getStoreinfo = storeDao.getStoreinfo(storeNo, userNo);
 		return getStoreinfo;
 			
-		}
+	}
 
+	
 	public List getMenuinfo(int storeNo) {
 		List getMenuinfo = menuDao.getMenuinfo(storeNo);
 		return getMenuinfo;
 	}
 
+	
 	public List<ReviewDTO> getReviewinfo(int storeNo) {
 	    List<ReviewDTO> getReviewinfo = reviewDao.getReviewsByStoreNo(storeNo); 
 	    return getReviewinfo;
 	}
+	
+	
 	public LoginStoreDTO checkPw(StoreDTO store) {
 		StoreDTO checkPw = storeDao.searchStoreOwner(store.getSoEmail());
 		if(checkPw != null && encoder.matches(store.getSoPw(), checkPw.getSoPw())) {
@@ -165,7 +170,6 @@ public class StoreService {
 
 	@Transactional
 	public int insertStoreFrm(StoreDTO store) {
-		//매장 정보
 		int result = storeDao.insertStoreFrm(store);
 		return result;
 		
@@ -217,8 +221,9 @@ public class StoreService {
 	}//insertStoreAmenities
 
 
-	public boolean checkBusinessNumber(int businessNumber) {
-		StoreDTO store = storeDao.checkBusinessNumber(businessNumber);
+	public boolean checkBusinessNumber(String businessNumber) {
+		long num = Long.parseLong(businessNumber);
+		StoreDTO store = storeDao.checkBusinessNumber(num);
 		return (store == null);
 	}//checkBusinessNumber
 
@@ -233,6 +238,8 @@ public class StoreService {
 		List list = storeDao.kakaoMapStore();
 		return list;
 	}
+	
+	
 	public List selectStorePayList(int storeNo) {
 		List list = storeDao.selectStorePayList(storeNo);
 		return list;
@@ -243,6 +250,8 @@ public class StoreService {
 		FavoriteStoreInfoDTO store = storeDao.selectStoreFavorite(storeNo);
 		return store;
 	}
+	
+	
 	@Transactional
 	public int storePaySuccess(int storePayNo) {
 		int result = storeDao.storePaySuccess(storePayNo);
@@ -252,9 +261,92 @@ public class StoreService {
 	
 	public StoreDTO storeView(int storeNo) {
 		StoreDTO store = storeDao.storeView(storeNo);
-		System.out.println("매장 정보 조회 : " + store);
 		return store;
 	}//storeView
+
+
+	@Transactional
+	public int storeModify(StoreDTO store) {
+		int result = storeDao.storeModify(store);
+		return result;
+	}//storeModify
+
+
+	@Transactional
+	public int updateSeat(SeatDTO seat) {
+		int result = storeDao.updateSeat(seat);
+		return result;
+	}//updateSeat
+
+
+	@Transactional
+	public boolean updateStoreImg(int storeNo, List<StoreFileDTO> storeFileList) {	    
+
+	    //새 이미지 추가
+	    int result = 0;
+	    for (StoreFileDTO storeFile : storeFileList) {
+	        storeFile.setStoreNo(storeNo);
+	        result += storeDao.insertStoreFile(storeFile);  // 이미지 추가
+	    }//for
+
+	    return result == storeFileList.size();  // 모두 성공했는지 여부 반환
+	}//updateStoreImg
+
+
+	@Transactional
+	public int updateStoreMood(int storeNo, List<StoreMoodDTO> storeMoodList) {
+		int result = 0;
+		for(StoreMoodDTO mood : storeMoodList) {
+			mood.setStoreNo(storeNo);
+			result += storeDao.updateStoreMood(mood);
+		}//for
+		return result;
+	}//updateStoreMood
+
+
+	@Transactional
+	public int deleteStoreMood(int storeNo) {
+		int result = storeDao.deleteStoreMood(storeNo);
+		return result;
+	}//deleteStoreMood
+
+
+	@Transactional
+	public int deleteStoreAmenities(int storeNo) {
+		int result = storeDao.deleteStoreAmenities(storeNo);
+		return result;
+	}//deleteStoreAmenities
+
+
+	public List selectAllstore() {
+		String keyword=null;
+		String[] keywordList = new String[] {null};
+		List list = storeDao.selectAllstore(keyword, keywordList);
+		return list;
+	}
+	@Transactional
+	public List<StoreFileDTO> deleteStoreFile(StoreFileDTO storeFiles, List<StoreFileDTO> storeFileList) {
+		int result = 1;
+		if(result > 0) {
+			List<StoreFileDTO> delFileList = new ArrayList<StoreFileDTO>();
+			if(storeFiles.getDelStoreFileNo() != null) {
+				delFileList = storeDao.selectStoreFile(storeFiles.getDelStoreFileNo());
+				result += storeDao.deleteStoreFile(storeFiles.getDelStoreFileNo());
+			}//if
+			
+			int updateTotal = storeFiles.getDelStoreFileNo() == null
+								? 1 + storeFileList.size()
+								: 1 + storeFileList.size() + storeFiles.getDelStoreFileNo().length;
+								
+			if (result == updateTotal) {
+				return delFileList;
+			}//if
+		}//if
+		return null;
+	}//deleteStoreFile
+
+
+
 
 
 }

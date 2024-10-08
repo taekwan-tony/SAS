@@ -11,7 +11,7 @@ const DatePicker = (props) => {
 
   // 오늘 버튼 만들기 위해 달 이동 버튼 구현...
   // const [month, setMonth] = useState(addMonths(dayNow, 0));
-  const [month, setMonth] = useState(dayNow);
+  const [month, setMonth] = useState(selected);
   const css = `
 
   button[class^="rdp"] {
@@ -58,6 +58,7 @@ const DatePicker = (props) => {
         background:#FFC9F4;
   `;
   console.log(selected.getFullYear());
+  console.log(selected);
   return (
     <div className="day-picker">
       <button
@@ -83,7 +84,7 @@ const DatePicker = (props) => {
         disabled={{ before: new Date() }}
         // 처음 시작할 달 설정, 달력 위에 뜨는 연 월 선택여부
         captionLayout="label"
-        defaultMonth={new Date(selected.getFullYear(), selected.getMonth())}
+        defaultMonth={new Date(selected)}
         startMonth={new Date(dayNow)}
         endMonth={new Date(dayNow.getFullYear(), dayNow.getMonth() + 2)}
       />

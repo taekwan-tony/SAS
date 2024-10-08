@@ -31,13 +31,13 @@ function StoreMain() {
       axios
         .post(`${backServer}/store/storeRefresh`)
         .then((res) => {
-          console.log("로그인 유지 :", res);
+          //console.log("로그인 유지 :", res);
           setLoginSoEmail(res.data.soEmail);
           setStoreType(res.data.storeType);
           setLoginStoreNo(res.data.storeNo);
           setStoreName(res.data.storeName);
 
-          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
+          //console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "storeRefreshToken",
@@ -97,7 +97,7 @@ function StoreMain() {
                     icon="fas fa-money-check-alt"
                     title="제휴결제"
                     className="color"
-                    to="/storecheck/storePayList/:storeNo"
+                    to="/storecheck/storePayList"
                   />
                   <HexagonItem
                     icon="far fa-comment-dots"

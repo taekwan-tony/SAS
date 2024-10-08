@@ -59,8 +59,8 @@ public class ReviewController {
     //소비자리뷰수정
     @PatchMapping("/usermain/mypage/updateReview")
     public ResponseEntity<Integer> modifyReview(@ModelAttribute ReviewDTO review){
-    	System.out.println("리뷰로직 : " +review);
     	int result = reviewService.modifyReview(review);
+    	System.out.println("리뷰수정된후 : " +review);
     	return ResponseEntity.ok(result);
     }
     @DeleteMapping("/{reviewNo}")
@@ -73,7 +73,6 @@ public class ReviewController {
     @GetMapping("/usermain/mypage/myreview/{reviewNo}")
     public ResponseEntity<ReviewDTO> selectOneReview(@PathVariable int reviewNo){
     	ReviewDTO selectReview = reviewService.selectOneReview(reviewNo);
-    	//System.out.println("하나가져오는거"+reviewNo);
     	return ResponseEntity.ok(selectReview);
     }
     

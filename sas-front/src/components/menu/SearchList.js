@@ -1,25 +1,48 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "../menu/menuview.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { RecoilState, useRecoilState } from "recoil";
 import { loginUserIdState } from "../utils/RecoilData";
+//분위기 , 음식종류
+const SearchList = (props) => {
+  const search = props.search;
 
-const SearchList = () => {
+  const params = useParams();
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginId, setLoginId] = useRecoilState(loginUserIdState);
   const [storeList, setStoreList] = useState([]);
+  const [keyword, setKeyword] = useState(
+    params.searchItem != null ? params.searchItem : ""
+  );
   useEffect(() => {
-    axios
-      .get(`${backServer}/store/storeList`)
-      .then((res) => {
-        console.log(res);
-        setStoreList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [loginId]);
+    console.log(params.searchItem);
+    setKeyword(params.searchItem ? params.searchItem : "");
+  }, [params]);
+  useEffect(() => {
+    if (search != null) {
+      axios
+        .get(`${backServer}/store/storeList`)
+        .then((res) => {
+          console.log(res);
+          setStoreList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("keyword", keyword);
+      axios
+        .get(`${backServer}/store/storeList/keyword/${keyword}`)
+        .then((res) => {
+          console.log(res);
+          setStoreList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loginId, keyword]);
   const navigate = useNavigate();
   return (
     <div className="searchList">
@@ -35,7 +58,7 @@ const SearchList = () => {
             >
               <div className="searchView">
                 <img
-                  src="/image/s&s로고.png"
+                  src={`${backServer}/store/${store.siFilepath}`}
                   alt="가게 로고"
                   style={{ maxWidth: "100%", height: "auto" }}
                 />
@@ -51,7 +74,6 @@ const SearchList = () => {
                   <span className="material-icons">schedule</span>
                   <p>{store.storeTime}</p>
                 </div>
-                <button>예약하기</button> {/* 예약 버튼 추가 */}
               </div>
             </div>
           );

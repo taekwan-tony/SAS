@@ -1,9 +1,10 @@
 import "./storeView.css";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  isStoreLoginState,
   loginStoreIdState,
   loginStoreNoState,
   storeTypeState,
@@ -11,15 +12,15 @@ import {
 import { Link, Route, Routes } from "react-router-dom";
 import StoreViewFrm from "./StoreViewFrm";
 import StoreView from "./StoreView";
+import StoreUpdate from "./StoreUpdate";
 const StoreViewMain = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
-  const [storeType, setStoreType] = useRecoilState(storeTypeState);
   const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
-  const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
+  const [check, setCheck] = useState(false);
+  const isLoginStore = useRecoilValue(isStoreLoginState);
 
   const [store, setStore] = useState({
-    storeNo: loginstoreNo,
+    storeNo: "",
     storeName: "",
     storePhone: "",
     storeAddr: "",
@@ -34,6 +35,17 @@ const StoreViewMain = () => {
     mapX: "",
     mapY: "",
   });
+
+  const [seat, setSeat] = useState({
+    seatCapacity: "",
+    seatAmount: "",
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditing(!isEditing); // 수정 화면으로 전환
+  };
 
   return (
     <>
@@ -62,9 +74,31 @@ const StoreViewMain = () => {
           <div className="owner-background">
             <img src="/image/238.jpg" alt="back" />
           </div>
+          <div>
+            {/* store_name이 있으면 storeView 컴포넌트 출력, 없으면 storeFrm 컴포넌트 출력 */}
+            {/* `isEditing` 상태에 따라 다른 컴포넌트를 렌더링 */}
+            {isEditing ? (
+              <StoreUpdate
+                store={store}
+                setStore={setStore}
+                loginstoreNo={loginstoreNo}
+                seat={seat}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+              />
+            ) : (
+              <StoreView
+                store={store}
+                setStore={setStore}
+                loginstoreNo={loginstoreNo}
+                seat={seat}
+                handleEditClick={handleEditClick}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+              />
+            )}
+          </div>
         </div>
-        <StoreView />
-        <div></div>
       </div>
     </>
   );

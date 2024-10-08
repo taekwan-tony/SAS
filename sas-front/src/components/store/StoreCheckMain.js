@@ -8,8 +8,9 @@ import StoreDetail from "./StoreDetail";
 import StoreMenuMain from "./StoreMenuMain";
 import StoreViewFrm from "./StoreViewFrm";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  isStoreLoginState,
   loginStoreIdState,
   loginStoreNoState,
   soNameState,
@@ -33,6 +34,7 @@ const StoreCheckMain = () => {
   const [storeAddr, setStoreAddr] = useRecoilState(storeAddrState); //매장 주소
   const [soPhone, setSoPhone] = useRecoilState(soPhoneState); //점주 전화번호
   const [soName, setSoName] = useRecoilState(soNameState); //점주 이름
+  const isStoreLogin = useRecoilValue(isStoreLoginState);
 
   useEffect(() => {
     storeRefreshLogin();
@@ -72,6 +74,8 @@ const StoreCheckMain = () => {
     }
   };
 
+  // console.log("storeNo :", loginStoreNo);
+
   const [activeIndex, setActiveIndex] = useState(0); // 활성화된 리스트 항목을 추적하는 상태
 
   const handleClick = (index) => {
@@ -100,7 +104,7 @@ const StoreCheckMain = () => {
     {
       text: "제휴결제",
       icon: "fas fa-money-check-alt",
-      to: "/storecheck/storePayList/:storeNo",
+      to: "/storecheck/storePayList",
     },
     {
       text: "리뷰관리",
@@ -122,7 +126,7 @@ const StoreCheckMain = () => {
     <>
       <Routes>
         <Route
-          path="StorePayment"
+          path="StorePayList"
           element={<StorePayment setActiveIndex={setActiveIndex} />}
         />
         <Route

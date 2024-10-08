@@ -225,6 +225,11 @@
 	<insert id="insertPay">
 		insert into payment values(payment_seq.nextval, sysdate, #{payMethod}, #{reserveNo}, #{payCode}, #{payPrice})
 	</insert>
+	
+	<update id="updateReservation">
+		update reservation set reserve_date=to_date(#{reserveDateString},'yyyy-MM-dd hh24:mi'), 
+		reserve_people=#{reservePeople}, seat_no=#{seatNo} where reserve_no=#{reserveNo}
+	</update>
 <!-- 수진 끝 -->
 
 	<select id="selectWeekCustomer" resultType="map">
@@ -318,7 +323,7 @@
 
 	<!--예약내역불러오기-->
 	<select id="reservationView" resultType = "reservation">
-	select * from 
+	  select * from 
 		(select rownum as rnum, r.* from 
 		(select reserve_date,
 				to_char(reserve_date, 'yyyy-MM-dd') reserve_date_string, 
@@ -333,6 +338,9 @@
 				seat_no,
         		(select si_filepath from store_image_file where si_file_no=(select min(si_file_no) from store_image_file  where store_image_file.store_no=reservation.store_no)) as store_image 
         from reservation join store on(reservation.store_no=store.store_no) where user_id=#{userId} order by 1 desc)r )rnum_tbl where rnum between #{pi.start} and #{pi.end}
+       
+	
+	
 	</select>
 	<select id="reservationTotal" resultType="int">
 		select count(*) from reservation where user_id = #{userId}
@@ -341,4 +349,62 @@
 	<update id="cancelReservation">
 		update reservation set reserve_status = 2 where reserve_no=#{reserveNo}
 	</update>
+	
+	<select id="getPayInfo" resultType="pay">
+		select pay_code, pay_price, pay_method from payment where reserve_no=#{reserveNo}
+	</select>
+	<select id="selectYearAgrGroup" resultType="reservation">
+		SELECT
+                (CASE
+                    WHEN
+                    FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+                    BETWEEN 10 AND 19 THEN '10대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,
+                    to_date(user_birth,'yyyy-mm-dd')) / 12)
+                    BETWEEN 20 AND 29 THEN '20대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) /
+                    12)
+                    BETWEEN 30 AND 39 THEN '30대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,
+                    to_date(user_birth,'yyyy-mm-dd')) / 12)
+                    BETWEEN 40 AND 49 THEN '40대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) /
+                    12)
+                    BETWEEN 50 AND 59 THEN '50대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,
+                    to_date(user_birth,'yyyy-mm-dd')) / 12)
+                    BETWEEN 60 AND 69 THEN '60대'
+                    ELSE '70대 이상'
+                END) as age_group,
+                count(*) as total_People
+            FROM reservation
+            join user_tbl using (user_id)
+            WHERE to_char(reserve_date,'yyyy') = to_char(sysdate,'yyyy')
+            AND
+            TO_CHAR(reserve_date, 'YYYYMMDD') BETWEEN TO_CHAR(TRUNC(SYSDATE,
+            'MM'), 'YYYYMMDD')
+            AND TO_CHAR(LAST_DAY(SYSDATE), 'YYYYMMDD')
+            group by (CASE
+                    WHEN
+                    FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) / 12)
+                    BETWEEN 10 AND 19 THEN '10대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,
+                    to_date(user_birth,'yyyy-mm-dd')) / 12)
+                    BETWEEN 20 AND 29 THEN '20대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) /
+                    12)
+                    BETWEEN 30 AND 39 THEN '30대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,
+                    to_date(user_birth,'yyyy-mm-dd')) / 12)
+                    BETWEEN 40 AND 49 THEN '40대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, to_date(user_birth,'yyyy-mm-dd')) /
+                    12)
+                    BETWEEN 50 AND 59 THEN '50대'
+                    WHEN FLOOR(MONTHS_BETWEEN(SYSDATE,
+                    to_date(user_birth,'yyyy-mm-dd')) / 12)
+                    BETWEEN 60 AND 69 THEN '60대'
+                    ELSE '70대 이상'
+                END)
+            order by age_group
+	</select>
 </mapper>

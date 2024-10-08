@@ -29,6 +29,7 @@ public interface StoreDao {
 	List selectApprovalStore(PageInfo pi,int storeType);
 
 	StoreDTO getStoreinfo(int storeNo, int userNo);
+	
 	StoreDTO selectOneApprovalStore(int storeNo);
 
 	int approvalStore(StoreDTO store);
@@ -39,7 +40,7 @@ public interface StoreDao {
 	
 	List selectAllPayStore();
 
-	List selectAllstore();
+	List selectAllstore(String keyword, String[] keywordList);
 	
 	StoreDTO checkPw(StoreDTO store);
 
@@ -61,7 +62,7 @@ public interface StoreDao {
 
 	int insertStoreAmenities(StoreAmenitiesDTO amenities);
 
-	StoreDTO checkBusinessNumber(int businessNumber);
+	StoreDTO checkBusinessNumber(long num);
 
 	StoreDTO storeEmailselect(int storeNo);
 
@@ -70,19 +71,42 @@ public interface StoreDao {
 	List selectStorePayList(int storeNo);
 
 	FavoriteStoreInfoDTO selectStoreFavorite(int storeNo);
+	
 	StorePaymentDTO storeMonthPayCount(StoreDTO store);
 
 	int insertStoreMonthPay(StorePaymentDTO storePay);
 
 	StoreDTO selectOneSoEmail(int storeNo);
-
 	
 	int storePaySuccess(int storePayNo);
 
 	StorePaymentDTO currentYearSales();
 
 	int selectNewStoreCount();
+	
 	StoreDTO storeView(int storeNo);
+
+	int storeModify(StoreDTO store);
+
+	int updateSeat(SeatDTO seat);
+
+	int updateStoreFile(StoreFileDTO storeFile);
+
+	int updateStoreMood(StoreMoodDTO mood);
+
+	int deleteStoreMood(int storeNo);
+
+	int deleteStoreAmenities(int storeNo);
+
+	List<String> yearData();
+
+	List yearSalesBarChart(int salesValue, String yearValue);
+
+
+	List<StoreFileDTO> selectStoreFile(int[] delStoreFileNo);
+
+	int deleteStoreFile(int[] delStoreFileNo);
+
 
 
 }

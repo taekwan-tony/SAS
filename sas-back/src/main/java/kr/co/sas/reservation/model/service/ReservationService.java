@@ -130,6 +130,17 @@ public class ReservationService {
 			int result = reservationDao.cancelReservation(reserveNo);
 			return result;
 		}
+		@Transactional
+		public int updateReservation(ReservationDTO reservation) {
+			int result = reservationDao.updateReservation(reservation);
+			return result;
+		}
+
+		public PaymentDTO getPayInfo(int reserveNo) {
+			// TODO Auto-generated method stub
+			PaymentDTO payment = reservationDao.getPayInfo(reserveNo);
+			return payment;
+		}
 
 
 }
