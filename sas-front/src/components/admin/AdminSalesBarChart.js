@@ -13,7 +13,7 @@ const AdminSalesBarChart = (props) => {
   const yearData = props.yearData; // select 사용 value 값
   const setYearData = props.setYearData;
   //바차트 연간 사용 라벨
-  const [yearValue, setYearValue] = useState(yearData[0]); // 쿼리 조건절 값
+  const [yearValue, setYearValue] = useState(null); // 쿼리 조건절 값
   const [barChartData, setBarChartData] = useState([]);
   const monthLabels = [
     "1월",
@@ -45,6 +45,7 @@ const AdminSalesBarChart = (props) => {
         setBarChartData(res.data);
         if (salesValue == 0) {
           setLabels(yearData);
+          setYearValue(yearData[0]);
         } else {
           setLabels(monthLabels);
         }
@@ -52,7 +53,7 @@ const AdminSalesBarChart = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [salesValue, yearValue]);
+  }, [salesValue, yearValue, yearData, backServer]);
 
   const data = {
     labels: labels,
@@ -126,7 +127,7 @@ const AdminSalesBarChart = (props) => {
           </Select>
         </FormControl>
       </div>
-      <div>
+      <div className="admin-management-sales-salesBarChart-chart">
         <Bar data={data} options={options} />
       </div>
     </>

@@ -71,10 +71,10 @@ const ManagementSaleContent = (props) => {
         }
         setAgeData(ageGroupData);
         setYearData(res.data.yearData);
-        console.log(res.data.yearData);
       })
       .catch((err) => {});
   }, []);
+  console.log("dddfasdf", yearData);
   return (
     <>
       <div className="admin-management-sales-wrap">

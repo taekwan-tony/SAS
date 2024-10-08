@@ -332,4 +332,21 @@
 
 .admin-management-sales-salesBarChart-select {
   width: 100%;
+  display: flex;
+  justify-content: right;
+  gap: 5px;
+}
+
+.admin-management-sales-salesBarChart-chart {
+  width: 100%;
+  position: relative;
+  height: 300px;
+}
+
+.admin-management-sales-salesBarChart-chart canvas {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  height: 90% !important;
+  width: 90% !important;
 }
