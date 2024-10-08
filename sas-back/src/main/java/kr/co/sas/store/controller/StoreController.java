@@ -273,7 +273,6 @@ public class StoreController {
 	@GetMapping(value="/storeNo/{storeNo}/getStoreInfoFavorite")
 	public ResponseEntity<FavoriteStoreInfoDTO> getStoreInfoFavorite(@PathVariable int storeNo){
 		FavoriteStoreInfoDTO store = storeService.selectStoreFavorite(storeNo);
-		System.out.println(store);
 		return ResponseEntity.ok(store);
 	}
 	
@@ -401,4 +400,15 @@ public class StoreController {
 		int result = storeService.deleteStoreAmenities(storeNo);
 		return ResponseEntity.ok(result);
 	}//deleteStoreAmenities
+	
+	
+//	@Operation(summary = "매장 사진 조회")
+//	@GetMapping(value = "/selectStoreImg/{storeNo}")
+//	public ResponseEntity<Boolean> selectStoreImg (@ModelAttribute MultipartFile storeThumbnail, @PathVariable int storeNo) {
+//		if (storeThumbnail != null) {
+//			String savepath = root + "/store/";
+//			String filepath = fileUtil.upload(savepath, storeThumbnail);
+//			
+//		}
+//	}
 }

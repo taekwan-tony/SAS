@@ -19,6 +19,7 @@ import {
 const StoreUpdate = (props) => {
   const setActiveIndex = props.setActiveIndex;
   const backServer = process.env.REACT_APP_BACK_SERVER;
+  const navigate = useNavigate;
   const isLoginStore = useRecoilValue(isStoreLoginState);
   const [check, setCheck] = useState(false);
   const { loginstoreNo } = props;
@@ -188,7 +189,7 @@ const StoreUpdate = (props) => {
             confirmButtonColor: "#5e9960",
           })
             .then(() => {
-              //navigate("/storeMain");
+              navigate("/storeViewMain");
             })
             .catch((err) => {
               console.log(err);
