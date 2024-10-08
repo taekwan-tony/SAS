@@ -40,9 +40,10 @@
 
 .storeView-imgDiv-zone {
   display: flex;
-  justify-content: center;
-  flex-direction: row;
-  gap: 10px;
+  justify-content: center; /* 이미지를 가로 방향으로 가운데 정렬 */
+  align-items: center; /* 이미지를 세로 방향으로 가운데 정렬 */
+  position: relative; /* 버튼을 이미지 위에 배치하기 위한 설정 */
+  gap: 10px; /* 이미지 간격 */
   width: 100%;
 }
 
@@ -68,42 +69,18 @@
 }
 
 .storeView-img {
-  width: 100%; /* 각 이미지가 부모 영역을 가득 채우도록 */
-  max-width: 300px; /* 필요에 따라 각 이미지의 최대 크기를 설정 */
-  margin-right: 10px; /* 이미지 간의 간격 */
+  width: 40%; /* 이미지의 가로 크기 자동 조정 */
+  height: auto; /* 자동 높이 조정 */
+  margin: 0 10px; /* 이미지 간의 간격 */
+  object-fit: cover;
 }
 
 .storeView-img-zone {
-  width: 90%;
   display: flex;
-  flex-direction: row; /* 이미지들을 가로로 배치 */
-  overflow-x: auto; /* 이미지가 넘칠 경우 가로 스크롤 */
-}
-
-/* WebKit 기반 브라우저에서 스크롤바 디자인 변경 */
-.storeView-img-zone::-webkit-scrollbar {
-  height: 8px; /* 가로 스크롤바의 높이 */
-}
-
-.storeView-img-zone::-webkit-scrollbar-thumb {
-  background-color: transparent; /* 스크롤바의 색상 */
-  border-radius: 10px; /* 스크롤바의 둥근 모서리 */
-}
-
-.storeView-img-zone::-webkit-scrollbar-track {
-  background-color: transparent; /* 스크롤바 배경 */
-  border-radius: 10px;
-}
-
-/* 스크롤바 위에 마우스를 올렸을 때 색상 변경 */
-.storeView-img-zone::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-/* 기본적인 스크롤바 숨기기 (선택사항) */
-.storeView-img-zone {
-  scrollbar-width: thin; /* Firefox용: 얇은 스크롤바 */
-  scrollbar-color: #222623 #222623; /* 스크롤바 색상(Firefox) */
+  justify-content: center;
+  width: 60%;
+  height: 400px;
+  margin-bottom: 20px;
 }
 
 .storeView-btn-zone {
@@ -282,4 +259,36 @@
   align-items: center; /* 수직 가운데 정렬 */
   padding: 50px;
   margin-top: 50px;
+}
+
+/*추가*/
+
+.storeView-slider-btn {
+  position: absolute; /* 버튼을 이미지 위에 절대 위치 */
+  top: 50%;
+  transform: translateY(-50%); /* 버튼을 세로로 가운데 정렬 */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 5px;
+  z-index: 10;
+  color: #fff;
+  outline: none; /* 클릭 시 테두리 라인 없애기 */
+}
+
+.storeView-slider-btn:focus {
+  outline: none; /* 포커스 상태에서도 테두리 라인 없애기 */
+}
+
+.storeView-slider-btn:hover {
+  color: #518142;
+}
+
+.storeView-slider-btn:first-of-type {
+  left: 500px; /* 왼쪽 버튼 */
+}
+
+.storeView-slider-btn:last-of-type {
+  right: 500px; /* 오른쪽 버튼 */
 }

@@ -44,6 +44,8 @@
   flex-direction: row;
   gap: 10px;
   width: 100%;
+  overflow-x: auto; /* 가로 스크롤을 활성화 */
+  white-space: nowrap; /* 자식 요소들이 한 줄로 나열되도록 설정 */
 }
 
 .storeUpdate-div {
@@ -64,7 +66,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: auto;
 }
 
 .storeUpdate-img {
@@ -72,10 +73,6 @@
   height: 300px;
   align-items: center;
   justify-content: center;
-}
-
-.storeUpdate-img-zone {
-  width: 90%;
 }
 
 .storeUpdate-btn-zone {
@@ -254,4 +251,12 @@
   align-items: center; /* 수직 가운데 정렬 */
   padding: 50px;
   margin-top: 50px;
+}
+
+.img-th {
+  width: 90%;
+}
+
+.img-tr {
+  width: 80%;
 }

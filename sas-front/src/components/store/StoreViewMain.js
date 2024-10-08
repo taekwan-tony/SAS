@@ -13,7 +13,8 @@ import { Link, Route, Routes } from "react-router-dom";
 import StoreViewFrm from "./StoreViewFrm";
 import StoreView from "./StoreView";
 import StoreUpdate from "./StoreUpdate";
-const StoreViewMain = () => {
+const StoreViewMain = (props) => {
+  const setActiveIndex = props.setActiveIndex;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
   const [check, setCheck] = useState(false);
@@ -85,6 +86,7 @@ const StoreViewMain = () => {
                 seat={seat}
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
+                setActiveIndex={setActiveIndex}
               />
             ) : (
               <StoreView
@@ -95,6 +97,7 @@ const StoreViewMain = () => {
                 handleEditClick={handleEditClick}
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
+                setActiveIndex={setActiveIndex}
               />
             )}
           </div>

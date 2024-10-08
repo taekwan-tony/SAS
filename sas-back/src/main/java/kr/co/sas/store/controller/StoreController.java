@@ -167,8 +167,6 @@ public class StoreController {
 		
 	    // 데이터 로그
 	    System.out.println("StoreDTO: " + store.toString());
-	    //System.out.println("Store Mood: " + storeMood);
-	    //System.out.println("Store Amenities: " + storeAmenities);
 
 	    int result = storeService.insertStoreFrm(store);
 	    return ResponseEntity.ok(result > 0);
@@ -328,7 +326,6 @@ public class StoreController {
 	@Operation(summary = "매장 좌석 수 수정")
 	@PatchMapping(value = "/updateSeat/{storeNo}")
 	public ResponseEntity<Boolean> updateSeat(@RequestBody SeatDTO seat, @PathVariable int storeNo) {
-		System.out.println("매장 좌석 수정 : " + seat.toString());
 		int result = storeService.updateSeat(seat);
 		return ResponseEntity.ok(result > 0);
 	}//updateSeat
@@ -351,7 +348,6 @@ public class StoreController {
 	            File delFile = new File(savePath + deleteFile.getSiFilepath());
 	            delFile.delete();
 	        }
-	        System.out.println("매장 사진 삭제 : " + delFileList.toString());
 	    }
 
 	    // 새로 추가된 이미지 처리
@@ -366,7 +362,6 @@ public class StoreController {
 	            storeFileDTO.setStoreNo(storeNo);
 	            storeFileList.add(storeFileDTO);
 	        }
-	        System.out.println("새로 추가된 이미지  : " + storeFileList.toString());
 	    } else {
 	        System.out.println("새로 추가된 파일이 없습니다.");
 	    }
