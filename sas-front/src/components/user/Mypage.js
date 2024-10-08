@@ -481,24 +481,104 @@ const ReservationView = () => {
                   confirmButtonColor: "var(--main1)",
                 }).then((res) => {
                   if (res.isConfirmed) {
-                    axios
-                      .patch(
-                        `${backServer}/reservation/cancel/${reservation.reserveNo}`
-                      )
-                      .then((res) => {
-                        console.log(res);
-                        if (res.data > 0) {
-                          Swal.fire({
-                            title: "삭제완료",
-                            icon: "success",
-                          }).then(() => {
-                            setIsReservationUpdate(!isReservationUpdate);
-                          });
-                        }
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+                    let isRefund = false;
+                    if (reservation.reservePayStatus !== 0) {
+                      //결제 취소 로직(서버에서..)
+                      axios
+                        .post(
+                          `${backServer}/reservation/getRefundInfo`,
+                          reservation
+                        )
+                        .then((res) => {
+                          if (res.data != null) {
+                            const payment = res.data;
+                            Swal.fire({
+                              title: "예약금 환불",
+                              text: `${payment.payPrice} 원이 환불됩니다`,
+                              icon: "info",
+                              iconColor: "var(--main1)",
+                              confirmButtonText: "확인",
+                              confirmButtonColor: "var(--main1)",
+                            }).then(() => {
+                              axios
+                                .post(
+                                  `${backServer}/reservation/refund`,
+                                  payment
+                                )
+                                .then((res) => {
+                                  if (res.data) {
+                                    axios
+                                      .patch(
+                                        `${backServer}/reservation/cancel/${reservation.reserveNo}`
+                                      )
+                                      .then((res) => {
+                                        console.log(res);
+                                        if (res.data > 0) {
+                                          Swal.fire({
+                                            title: "예약취소 완료",
+                                            text: "예약금은 익영업일에 환불 처리됩니다",
+                                            icon: "success",
+                                          }).then(() => {
+                                            setIsReservationUpdate(
+                                              !isReservationUpdate
+                                            );
+                                          });
+                                        }
+                                      })
+                                      .catch((err) => {
+                                        console.log(err);
+                                      });
+                                  } else {
+                                    Swal.fire({
+                                      title: "시스템 오류",
+                                      text: "결제 정보를 찾을 수 없습니다.",
+                                      icon: "error",
+                                      confirmButtonColor: "var(--main1)",
+                                      confirmButtonText: "확인",
+                                    });
+                                  }
+                                })
+                                .catch((err) => {
+                                  console.log(err);
+                                  Swal.fire({
+                                    title: "시스템 오류",
+                                    text: "결제 정보를 찾을 수 없습니다.",
+                                    icon: "error",
+                                    confirmButtonColor: "var(--main1)",
+                                    confirmButtonText: "확인",
+                                  });
+                                });
+                            });
+                          } else {
+                            Swal.fire({
+                              title: "시스템 오류",
+                              text: "결제 정보를 찾을 수 없습니다.",
+                              icon: "error",
+                              confirmButtonColor: "var(--main1)",
+                              confirmButtonText: "확인",
+                            });
+                          }
+                        });
+                    } else {
+                      axios
+                        .patch(
+                          `${backServer}/reservation/cancel/${reservation.reserveNo}`
+                        )
+                        .then((res) => {
+                          console.log(res);
+                          if (res.data > 0) {
+                            Swal.fire({
+                              title: "예약취소 완료",
+                              icon: "success",
+                            }).then(() => {
+                              setIsReservationUpdate(!isReservationUpdate);
+                            });
+                          }
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    }
                   }
                 });
               };
@@ -613,6 +693,8 @@ const ReservationView = () => {
             storeNo={reservationUpdateInfo.storeNo}
             storeName={reservationUpdateInfo.storeName}
             reservationUpdateInfo={reservationUpdateInfo}
+            isReservationUpdate={isReservationUpdate}
+            setIsReservationUpdate={setIsReservationUpdate}
           />
         </Modal>
       ) : (

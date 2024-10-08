@@ -59,6 +59,9 @@ public interface ReservationDao {
 
 	int cancelReservation(int reserveNo);
 
+	int updateReservation(ReservationDTO reservation);
+
+	PaymentDTO getPayInfo(int reserveNo);
 	List<ReservationDTO> selectYearAgrGroup();
 
 }

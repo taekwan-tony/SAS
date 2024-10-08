@@ -49,6 +49,7 @@ public class ReviewService {
 		List list = reviewDao.getReviewList(parameter, type);
 		System.out.println("닉네임 : "+parameter);
 		System.out.println(list);
+		System.out.println("닉네임:" +parameter);
 		return list;
 	}
 

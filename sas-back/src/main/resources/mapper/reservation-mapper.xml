@@ -225,6 +225,11 @@
 	<insert id="insertPay">
 		insert into payment values(payment_seq.nextval, sysdate, #{payMethod}, #{reserveNo}, #{payCode}, #{payPrice})
 	</insert>
+	
+	<update id="updateReservation">
+		update reservation set reserve_date=to_date(#{reserveDateString},'yyyy-MM-dd hh24:mi'), 
+		reserve_people=#{reservePeople}, seat_no=#{seatNo} where reserve_no=#{reserveNo}
+	</update>
 <!-- 수진 끝 -->
 
 	<select id="selectWeekCustomer" resultType="map">
@@ -342,6 +347,9 @@
 		update reservation set reserve_status = 2 where reserve_no=#{reserveNo}
 	</update>
 	
+	<select id="getPayInfo" resultType="pay">
+		select pay_code, pay_price, pay_method from payment where reserve_no=#{reserveNo}
+	</select>
 	<select id="selectYearAgrGroup" resultType="reservation">
 		SELECT
                 (CASE

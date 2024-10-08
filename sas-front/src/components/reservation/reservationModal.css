@@ -85,9 +85,9 @@
   > .input-item
   > span.input-text {
   position: absolute;
-  left: -175px;
+  left: -320px;
   top: 3px;
-  display: none;
+  /* display: none; */
 }
 .reservation-modal-wrap.first
   .reservation-info-wrap
