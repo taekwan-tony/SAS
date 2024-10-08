@@ -41,9 +41,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   //이메일 중복 확인
   const [isSoEmailValid, setIsSoEmailValid] = useState(false);
 
-  //사업자 번호 중복 확인
-  const [isBusinessNumber, setIsBusinessNumber] = useState(false);
-
   {
     /* 비밀번호 찾기 / 변경 창 Modal */
   }
@@ -59,13 +56,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   // 모달 닫기 함수
   const closePwModal = () => {
     setIsPwModalOpen(false);
-  };
-
-  // 모달 외부 클릭 시 모달 닫기
-  const pwHandleOutsideClick = (event) => {
-    if (event.target.className === "storeModal") {
-      closePwModal();
-    }
   };
 
   {
@@ -201,53 +191,50 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
         console.log(res);
         if (res.data) {
           console.log("사용 가능한 사업자 번호");
+
+          //중복 조회 이후
+          // Fetch API를 사용하여 POST 요청 보내기
+          fetch(
+            "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=izDvzK%2FsSEz9bDSkKZ2ITpUtPOjeYOTTFEsMUh%2BOKm%2B1SNrCWoYHCLtDCJ1F184rdJo3an8rhug39mJE4F59Xw%3D%3D",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+                Accept: "application/json",
+              },
+              body: JSON.stringify(data),
+            }
+          )
+            .then((response) => response.json()) // JSON 응답을 파싱
+            .then((result) => {
+              if (result.match_cnt === 1) {
+                // 성공 처리
+                Swal.fire({
+                  title: "사업자등록번호 조회 성공",
+                  icon: "success",
+                  confirmButtonColor: "#5e9960",
+                }).then(setBnMsg("조회에 성공하였습니다."));
+              } else {
+                // 실패 처리
+                Swal.fire({
+                  title: "사업자등록번호 조회 실패",
+                  icon: "warning",
+                  text: "국세청에 등록되지 않은 사업자등록번호입니다.",
+                  confirmButtonColor: "#5e9960",
+                });
+                setBnMsg("");
+              }
+            })
+            .catch((error) => {
+              // 에러 처리
+              setBnMsg("");
+            });
         } else {
           console.log("이미 가입된 사업자 번호");
         }
       })
       .catch((err) => {
         console.log(err);
-      });
-
-    // Fetch API를 사용하여 POST 요청 보내기
-    fetch(
-      "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=izDvzK%2FsSEz9bDSkKZ2ITpUtPOjeYOTTFEsMUh%2BOKm%2B1SNrCWoYHCLtDCJ1F184rdJo3an8rhug39mJE4F59Xw%3D%3D",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    )
-      .then((response) => response.json()) // JSON 응답을 파싱
-      .then((result) => {
-        console.log(result);
-        if (result.match_cnt === 1) {
-          // 성공 처리
-          console.log("success");
-          Swal.fire({
-            title: "사업자등록번호 조회 성공",
-            icon: "success",
-            confirmButtonColor: "#5e9960",
-          }).then(setBnMsg("조회에 성공하였습니다."));
-        } else {
-          // 실패 처리
-          console.log("fail");
-          Swal.fire({
-            title: "사업자등록번호 조회 실패",
-            icon: "warning",
-            text: "국세청에 등록되지 않은 사업자등록번호입니다.",
-            confirmButtonColor: "#5e9960",
-          });
-          setBnMsg("");
-        }
-      })
-      .catch((error) => {
-        // 에러 처리
-        console.error("error", error);
-        setBnMsg("");
       });
   };
 
@@ -263,12 +250,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       return false;
     }
 
-    console.log("이메일 : ", emailCheck);
-
     axios
       .get(`${backServer}/store/soEmail/${emailCheck}/checkEmail`)
       .then((res) => {
-        console.log("응답 : ", res);
         if (res.data) {
           setEmailMsg("사용 가능한 이메일입니다.");
           setIsSoEmailValid(true); // 이메일이 유효하면 true
@@ -279,9 +263,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
           setIsSoEmailValid(false); // 이메일이 중복되면 false
         }
       })
-      .catch((err) => {
-        console.log("에러 : ", err);
-      });
+      .catch((err) => {});
   };
 
   const storePartnership = () => {

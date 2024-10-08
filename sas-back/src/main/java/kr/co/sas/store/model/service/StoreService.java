@@ -221,8 +221,9 @@ public class StoreService {
 	}//insertStoreAmenities
 
 
-	public boolean checkBusinessNumber(int businessNumber) {
-		StoreDTO store = storeDao.checkBusinessNumber(businessNumber);
+	public boolean checkBusinessNumber(String businessNumber) {
+		long num = Long.parseLong(businessNumber);
+		StoreDTO store = storeDao.checkBusinessNumber(num);
 		return (store == null);
 	}//checkBusinessNumber
 

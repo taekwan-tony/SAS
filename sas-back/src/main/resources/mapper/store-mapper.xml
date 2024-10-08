@@ -234,7 +234,7 @@
 	
 	
 	<select id="checkBusinessNumber" resultType="store">
-		select * from store where businessNumber=#{businessNumber}
+		select * from store where business_number=#{num}
 	</select>
 	
 	<select id="kakaoMapStore" resultType="store">
