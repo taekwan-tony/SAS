@@ -83,6 +83,8 @@ const StoreViewMain = () => {
                 setStore={setStore}
                 loginstoreNo={loginstoreNo}
                 seat={seat}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
               />
             ) : (
               <StoreView
