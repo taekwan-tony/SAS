@@ -104,7 +104,7 @@ const StoreCheckMain = () => {
     {
       text: "제휴결제",
       icon: "fas fa-money-check-alt",
-      to: "/storecheck/storePayList/:storeNo",
+      to: "/storecheck/storePayList",
     },
     {
       text: "리뷰관리",
@@ -126,7 +126,7 @@ const StoreCheckMain = () => {
     <>
       <Routes>
         <Route
-          path="StorePayment"
+          path="StorePayList"
           element={<StorePayment setActiveIndex={setActiveIndex} />}
         />
         <Route

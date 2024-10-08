@@ -257,7 +257,7 @@ public class StoreController {
 	
 	@Operation(summary = "사업자 등록 번호 중복 확인")
 	@GetMapping(value = "/businessNumber/{businessNumber}/checkBusinessNumber")
-	public ResponseEntity<Boolean> checkBusinessNumber(@PathVariable int businessNumber) {
+	public ResponseEntity<Boolean> checkBusinessNumber(@PathVariable String businessNumber) {
 		boolean result = storeService.checkBusinessNumber(businessNumber);
 		return ResponseEntity.ok(result);
 	}//checkBusinessNumber

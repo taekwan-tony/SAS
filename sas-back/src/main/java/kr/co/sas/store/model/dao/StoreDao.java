@@ -62,7 +62,7 @@ public interface StoreDao {
 
 	int insertStoreAmenities(StoreAmenitiesDTO amenities);
 
-	StoreDTO checkBusinessNumber(int businessNumber);
+	StoreDTO checkBusinessNumber(long num);
 
 	StoreDTO storeEmailselect(int storeNo);
 
