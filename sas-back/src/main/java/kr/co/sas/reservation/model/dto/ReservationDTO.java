@@ -3,10 +3,12 @@ package kr.co.sas.reservation.model.dto;
 
 
 import java.sql.Date;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import kr.co.sas.store.model.dto.StoreFileDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,4 +43,6 @@ public class ReservationDTO {
 	private String ageGroup;
 	@Schema(description = "연령대별 이용자수", type="int")
 	private int totalPeople;
+	//예약정보이미지파일
+	private List<StoreFileDTO> siFilepathList;
 }

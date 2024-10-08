@@ -149,7 +149,7 @@ const FavoriteList = (props) => {
             </button>
           )}
 
-          <Link to="#" className="btn-a">
+          <Link to="/usermain/searchList" className="btn-a">
             즐겨찾기 추가하러 가기
           </Link>
         </div>

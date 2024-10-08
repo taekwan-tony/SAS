@@ -354,6 +354,7 @@ const MypageMain = (props) => {
 };
 
 const ReservationView = () => {
+  const [store, setStore] = useState("");
   const [reservationList, setReservationList] = useState([]);
   const [loginUserId, setLoginUserId] = useRecoilState(loginUserIdState);
   const [reqPage, setReqPage] = useState(1);
@@ -633,9 +634,9 @@ const ReservationView = () => {
                   </div>
                   <div className="res-content">
                     <img
-                      src="/image/IMG_3238.jpg"
-                      alt="가게사진"
-                      className="profile-image"
+                      src={`${backServer}/reservation/view/${reservation.storeImage}`}
+                      alt="가게 로고"
+                      style={{ maxWidth: "100%", height: "auto" }}
                     />
                     <div className="res-menu">
                       <h2>{reservation.storeName}</h2>
