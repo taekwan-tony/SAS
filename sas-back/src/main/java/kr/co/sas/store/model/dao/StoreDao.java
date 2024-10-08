@@ -97,5 +97,11 @@ public interface StoreDao {
 
 	int deleteStoreAmenities(int storeNo);
 
+	List<String> yearData();
+
+	List yearSalesBarChart(int salesValue, String yearValue);
+
+
+
 
 }

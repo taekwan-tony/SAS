@@ -1,5 +1,6 @@
 package kr.co.sas.admin.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,11 @@ public class AdminController {
 	public ResponseEntity<Map> yearSalesManagement(){
 		Map map = adminService.yearSalesManagement();
 		return ResponseEntity.ok(map);
+	}
+	
+	@GetMapping(value = "/yearSalesBarChart/{salesValue}/{yearValue}")
+	public ResponseEntity<List> yearSalesBarChart(@PathVariable int salesValue, @PathVariable String yearValue){
+		List list = adminService.yearSalesBarChart(salesValue,yearValue);
+		return ResponseEntity.ok(list);
 	}
 }

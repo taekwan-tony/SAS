@@ -390,4 +390,45 @@
 		delete from store_amenities where store_no=#{storeNo}
 	</delete>
 
+	<select id="yearData" resultType="String">
+		select to_char(store_pay_date,'yyyy') from store_pay where store_pay_date is not null group by to_char(store_pay_date,'yyyy')
+	</select>
+	
+	<select id="yearSalesBarChart" resultType="String">
+		<choose>
+			<when test="salesValue==0">
+				select store_total_pay
+		            from(select to_char(store_pay_date,'yyyy')||'년',sum(store_total_price) as store_total_pay 
+			            from store_pay 
+			            where store_pay_date is not null 
+			            group by to_char(store_pay_date,'yyyy')
+			            order by to_char(store_pay_date,'yyyy') asc)	
+			</when>
+			<otherwise>
+				with months as (
+                select 1 as month from dual union all
+                select 2 from dual union all
+                select 3 from dual union all
+                select 4 from dual union all
+                select 5 from dual union all
+                select 6 from dual union all
+                select 7 from dual union all
+                select 8 from dual union all
+                select 9 from dual union all
+                select 10 from dual union all
+                select 11 from dual union all
+                select 12 from dual
+            	)
+            	select  store_total_price from
+            		(select month,nvl(sum(store_total_price),0) as store_total_price from months m
+                	left join 
+                    	(select to_char(store_pay_date,'d') as store_pay_month,store_total_price,store_pay_date 
+                        from store_pay 
+                    	where store_pay_date is not null and to_char(store_pay_date,'yyyy') = #{yearValue}) sp
+                    on (m.month = sp.store_pay_month) 
+                    group by month order by 1 asc)
+			</otherwise>
+		</choose>
+	</select>
+	
 </mapper>
