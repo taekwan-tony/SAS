@@ -124,46 +124,55 @@ const Update = (props) => {
     checkPhone: true,
     checkEmail: true,
   });
-  const [checkMsg, setCheckMsg] = useState({ checkNickname: "" });
+  const [checkMsg, setCheckMsg] = useState({ checkNickname: "", checkPw: "" });
   // 닉네임 중복 체크
   const checkNickname = () => {
     setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: false });
     setCheckMsg({ ...checkMsg, checkNickname: "" });
-    axios
-      .get(`${backServer}/user/userNickname/${user.userNickname}`)
-      .then((res) => {
-        if (res.data) {
-          setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: true });
-          setCheckMsg({
-            ...checkMsg,
-            checkNickname: "사용 가능한 닉네임입니다.",
-          });
-        } else {
-          setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: false });
-          setCheckMsg({ ...checkMsg, checkNickname: "중복된 닉네임입니다." });
-        }
+    const nickNameReg = /^[가-힣0-9\s]{2,10}$/;
+    if (nickNameReg.test(user.userNickname)) {
+      axios
+        .get(`${backServer}/user/userNickname/${user.userNickname}`)
+        .then((res) => {
+          if (res.data) {
+            setCheckBeforeUpdate({ ...checkBeforeUpdate, checkNickname: true });
+            setCheckMsg({
+              ...checkMsg,
+              checkNickname: "사용 가능한 닉네임입니다.",
+            });
+          } else {
+            setCheckBeforeUpdate({
+              ...checkBeforeUpdate,
+              checkNickname: false,
+            });
+            setCheckMsg({ ...checkMsg, checkNickname: "중복된 닉네임입니다." });
+          }
+        });
+    } else {
+      setCheckMsg({
+        ...checkMsg,
+        checkNickname: "한글, 숫자, 띄어쓰기 포함 2-10자 이내여야합니다.",
       });
+    }
   };
-  // //비밀번호 정규식
-  // const [checkPwMsg, setCheckPwMsg] = useState("");
-  // const checkPwReg = () => {
-  //   setCheckBeforeUpdate({ ...checkBeforeUpdate, checkPw: false });
-  //   setCheckPwMsg("");
-  //   const pwReg = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,}$/;
-  //   if (user.userPw !== "" && pwReg.test(user.userPw)) {
-  //     setCheckJoin({ ...checkJoin, checkPw: true });
-  //     setCheckJoinMsg({
-  //       ...checkJoinMsg,
-  //       checkPw: "사용가능한 비밀번호 입니다.",
-  //     });
-  //   } else if (user.userPw !== "") {
-  //     setCheckJoinMsg({
-  //       ...checkJoinMsg,
-  //       checkPw:
-  //         "영소문자, 숫자, @$!%*?& 를 1개 이상 포함한 8자 이상의 문자여야합니다.",
-  //     });
-  //   }
-  // };
+  //비밀번호 정규식
+  const checkPwReg = () => {
+    setCheckBeforeUpdate({ ...checkBeforeUpdate, checkPw: false });
+    setCheckMsg({ ...checkMsg, checkPw: "" });
+    const pwReg = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,}$/;
+    if (user.userPw !== "" && pwReg.test(user.userPw)) {
+      setCheckBeforeUpdate({ ...checkBeforeUpdate, checkPw: true });
+      setCheckMsg({ ...checkMsg, checkPw: "사용가능한 비밀번호 입니다." });
+    } else if (user.userPw !== "") {
+      setCheckMsg({
+        ...checkMsg,
+        checkPw:
+          "영소문자, 숫자, @$!%*?& 를 1개 이상 포함한 8자 이상의 문자여야합니다.",
+      });
+    } else if (user.userPw === "") {
+      setCheckBeforeUpdate({ ...checkBeforeUpdate, checkPw: true });
+    }
+  };
 
   //휴대폰 번호 정규식
   const checkPhone = () => {
@@ -187,7 +196,11 @@ const Update = (props) => {
     if (
       user.userNickname !== "" &&
       user.userPhone != "" &&
-      user.userEmail != ""
+      user.userEmail != "" &&
+      checkBeforeUpdate.checkNickname &&
+      checkBeforeUpdate.checkPw &&
+      checkBeforeUpdate.checkPhone &&
+      checkBeforeUpdate.checkEmail
     ) {
       axios
         .patch(`${backServer}/user`, user)
@@ -233,6 +246,14 @@ const Update = (props) => {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      Swal.fire({
+        title: "수정 실패",
+        text: "형식에 맞지 않는 변경이 존재합니다",
+        icon: "warning",
+        confirmButtonColor: "var(--main1)",
+        confirmButtonText: "확인",
+      });
     }
   };
   return (
@@ -277,7 +298,15 @@ const Update = (props) => {
               value={user.userPw}
               onChange={changeInputVal}
               className="update"
+              onBlur={checkPwReg}
             />
+            <p
+              className={
+                checkBeforeUpdate.checkPw ? "msg colorGreen" : "msg colorRed"
+              }
+            >
+              {checkMsg.checkPw}
+            </p>
           </div>
         </div>
         <div className="input-box">
@@ -313,6 +342,7 @@ const Update = (props) => {
               value={user.userPhone}
               onChange={changeInputVal}
               className="update"
+              onBlur={checkPhone}
             />
           </div>
         </div>
@@ -326,6 +356,7 @@ const Update = (props) => {
               value={user.userEmail}
               onChange={changeInputVal}
               className="update"
+              onBlur={checkEmail}
             />
           </div>
         </div>

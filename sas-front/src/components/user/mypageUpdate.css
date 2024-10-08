@@ -108,7 +108,7 @@ div.mypage-main
 }
 
 div.mypage-main .update-main > .update-content .update-frm .input-box p.msg {
-  width: 100%;
+  width: max-content;
   position: absolute;
   top: 25px;
   left: 0;
