@@ -562,7 +562,7 @@ const MenuReview = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [changedReview, userNickname]);
+  }, [userNickname, changedReview]);
 
   return (
     <div className="menu-review">

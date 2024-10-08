@@ -131,8 +131,8 @@ public class StoreService {
 	}
 
 
-	public List selectAllstore() {
-		List list = storeDao.selectAllstore();
+	public List selectAllstore(String keyword, String[] keywordList) {
+		List list = storeDao.selectAllstore(keyword, keywordList);
 		return list;
 	}
 
@@ -317,6 +317,12 @@ public class StoreService {
 	}//deleteStoreAmenities
 
 
+	public List selectAllstore() {
+		String keyword=null;
+		String[] keywordList = new String[] {null};
+		List list = storeDao.selectAllstore(keyword, keywordList);
+		return list;
+	}
 	@Transactional
 	public List<StoreFileDTO> deleteStoreFile(StoreFileDTO storeFiles, List<StoreFileDTO> storeFileList) {
 		int result = 1;
