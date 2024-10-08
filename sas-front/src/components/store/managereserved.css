@@ -199,11 +199,15 @@
   text-align: center;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  margin-top: 5%;
 }
 .table-container {
-  margin-top: auto; /* 자동으로 여유 공간을 밀어냄 */
+  margin-top: 3%; /* 자동으로 여유 공간을 밀어냄 */
 }
-
+.table-container h2 {
+  text-align: center;
+  margin-bottom: 3%;
+}
 .styled-table th,
 .styled-table td {
   padding: 12px 15px;
@@ -242,7 +246,8 @@
   background: linear-gradient(90deg, #291a1a 10%, #b23a3a 90%);
   color: white;
   border-radius: 7px;
-  margin-right: 10px;
+  margin-right: 3%;
+  padding: 1% 4%;
 }
 .noshow-button:hover {
   background: linear-gradient(90deg, #291a1a 10%, #ec0808 90%);
@@ -252,6 +257,7 @@
   background: linear-gradient(90deg, #291a1a 10%, #2d6ccbbd 90%);
   color: white;
   border-radius: 7px;
+  padding: 1% 4%;
 }
 .visit-complete-button:hover {
   background: linear-gradient(90deg, #291a1a 10%, #0061f3 90%);
@@ -277,13 +283,13 @@
 .table-container .swiper-button-next {
   width: 20px;
   height: 20px;
-  top: 28%;
+  top: 32%;
   transform: translateY(-50%);
 }
 
 .table-container .swiper-pagination {
   position: absolute;
-  bottom: 46%;
+  bottom: 42%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;

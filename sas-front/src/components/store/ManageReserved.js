@@ -349,8 +349,36 @@ function ManageReserved(props) {
                         <td>{reservation.RESERVE_PEOPLE}</td>
                         <td>{reservation.SEAT_NO}</td>
                         <td>{reservation.USER_NAME}</td>
-                        <td>{/* 노쇼 및 방문여부 버튼 */}</td>
-                        <td>{/* 삭제 버튼 */}</td>
+                        <td>
+                          {reservation.RESERVESTATUS.trim() === "결제완료" && (
+                            <div>
+                              <button
+                                className="noshow-button"
+                                onClick={() => NoShow(reservation.RESERVE_NO)}
+                              >
+                                노쇼
+                              </button>
+                              <button
+                                className="visit-complete-button"
+                                onClick={() => visit(reservation.RESERVE_NO)}
+                              >
+                                방문완료
+                              </button>
+                            </div>
+                          )}
+                        </td>
+                        <td>
+                          {reservation.RESERVESTATUS === "취소" && (
+                            <button
+                              className="reserve-del-button"
+                              onClick={() =>
+                                deleteReserve(reservation.RESERVE_NO)
+                              }
+                            >
+                              삭제
+                            </button>
+                          )}
+                        </td>
                       </tr>
                     ))}
                 </tbody>
@@ -377,22 +405,51 @@ function ManageReserved(props) {
             </tr>
           </thead>
           <tbody>
-            {weekReservations.map((reservation, index) => (
-              <tr key={reservation.RESERVE_NO}>
-                <td>{index + 1}</td>
-                <td>
-                  {new Date(reservation.RESERVE_DATE).toLocaleDateString()}
-                </td>
-                <td>{reservation.RESERVE_TIME}</td>
-                <td>{reservation.RESERVESTATUS}</td>
-                <td>{reservation.RESERVESTATUS}</td>
-                <td>{reservation.RESERVE_PEOPLE}</td>
-                <td>{reservation.SEAT_NO}</td>
-                <td>{reservation.USER_NAME}</td>
-                <td>{/* 노쇼 및 방문여부 버튼 */}</td>
-                <td>{/* 삭제 버튼 */}</td>
-              </tr>
-            ))}
+            {weekReservations.map((reservation, index) => {
+              console.log(reservation.RESERVESTATUS);
+              return (
+                <tr key={reservation.RESERVE_NO}>
+                  <td> {index + 1}</td>
+                  <td>
+                    {new Date(reservation.RESERVE_DATE).toLocaleDateString()}
+                  </td>
+                  <td>{reservation.RESERVE_TIME}</td>
+                  <td>{getPayStatusBadge(reservation.RESERVESTATUS)}</td>
+                  <td>{calReservationStatus(reservation.RESERVESTATUS)}</td>
+                  <td>{reservation.RESERVE_PEOPLE}</td>
+                  <td>{reservation.SEAT_NO}</td>
+                  <td>{reservation.USER_NAME}</td>
+                  <td>
+                    {reservation.RESERVESTATUS.trim() === "결제완료" && (
+                      <div>
+                        <button
+                          className="noshow-button"
+                          onClick={() => NoShow(reservation.RESERVE_NO)}
+                        >
+                          노쇼
+                        </button>
+                        <button
+                          className="visit-complete-button"
+                          onClick={() => visit(reservation.RESERVE_NO)}
+                        >
+                          방문완료
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                  <td>
+                    {reservation.RESERVESTATUS === "취소" && (
+                      <button
+                        className="reserve-del-button"
+                        onClick={() => deleteReserve(reservation.RESERVE_NO)}
+                      >
+                        삭제
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       );
