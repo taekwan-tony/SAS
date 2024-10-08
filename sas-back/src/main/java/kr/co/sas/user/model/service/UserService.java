@@ -187,4 +187,9 @@ public class UserService {
 		loginUser.setUserNo(user.getUserNo());
 		return loginUser;
 	}
+
+	public String getUserPhoto(String userId) {
+		UserDTO user = userDao.searchUser(userId);
+		return user.getUserPhoto();
+	}
 }

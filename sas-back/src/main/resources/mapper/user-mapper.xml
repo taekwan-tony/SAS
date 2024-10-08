@@ -93,18 +93,21 @@
 		(select rownum as rnum, r.* from 
 		(select reserve_date,to_char(reserve_date, 'yyyy-MM-dd') reserve_date_string, to_char(reserve_date, 'hh24:mi') reserve_time, reserve_status, reserve_people, store_name,
         (select si_filepath from store_image_file where si_file_no=(select min(si_file_no) from store_image_file  where store_image_file.store_no=reservation.store_no))store_image 
-        from reservation join store on(reservation.store_no=store.store_no) where user_id=#{userId} order by 1 desc)r )rnum_tbl where rnum between 1 and 3
+        from reservation join store on(reservation.store_no=store.store_no) where user_id=#{userId} and reserve_status=0 order by 1)r )rnum_tbl where rnum between 1 and 3
 	</select>
 	<select id="selectReviewList" resultType="review">
-		select review_no, 
-				store_name, 
-				review_score, 
-				(select si_filepath from store_image_file where si_file_no=(select min(si_file_no) 
-																			from store_image_file  
-																			where store_image_file.store_no=review.store_no))
-					store_image 
-		from review join store on(review.store_no=store.store_no) 
-		where user_nickname=#{userNickname}
+		select * from
+				(select rownum as rnum, review.* from
+					(select review_no, 
+							store_name, 
+							review_score, 
+							(select si_filepath from store_image_file where si_file_no=(select min(si_file_no) 
+								from store_image_file  
+								where store_image_file.store_no=review.store_no))
+							store_image 
+					from review join store on(review.store_no=store.store_no) 
+				where user_nickname=#{userNickname} order by review_score desc) review) 
+		where rnum between 1 and 5
 	</select>
 	<!-- 마이페이지 정보 한번에 가져오는 쿼리 끝.. -->
 	<update id="updateUserPhoto">

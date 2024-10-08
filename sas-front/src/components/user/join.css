@@ -13,7 +13,7 @@
 }
 .userJoin-main .join-wrap {
   width: 55%;
-  min-width: 600px;
+  min-width: 665px;
   max-width: 700px;
   background-color: white;
   border-radius: 10px;
@@ -48,6 +48,11 @@
   border: none;
   border-bottom: 1px solid var(--font2);
   margin-bottom: 10px;
+}
+
+.userJoin-main .input-item > input[type="text"].borderBottomRed,
+.userJoin-main .input-item > input[type="password"].borderBottomRed {
+  border-bottom: 3px solid red;
 }
 
 .userJoin-main .input-item > input[type="text"]:focus,

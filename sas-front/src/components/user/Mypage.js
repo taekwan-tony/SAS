@@ -37,7 +37,9 @@ import MypageUpdate from "./MypageUpdate";
 import ReportModal from "../report/ReportModal";
 import { ReservationMain } from "../reservation/ReservationMain";
 
-const Mypage = () => {
+const Mypage = (props) => {
+  // 프로필 업데이트 체크위한 준비
+  const { checkPhotoUpdate, setCheckPhotoUpdate } = props;
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   //유저 정보 한번에 가져오기
   const [user, setUser] = useState({});
@@ -129,6 +131,8 @@ const Mypage = () => {
               setUser={setUser}
               favoriteFolder={favoriteFolder}
               setFavoriteFolder={setFavoriteFolder}
+              checkPhotoUpdate={checkPhotoUpdate}
+              setCheckPhotoUpdate={setCheckPhotoUpdate}
             />
           }
         ></Route>
@@ -277,10 +281,17 @@ const MypageMain = (props) => {
     addFolderModalOpen,
     checkAddFolder,
     setFavoriteFolder,
+    checkPhotoUpdate,
+    setCheckPhotoUpdate,
   } = props;
   return (
     <>
-      <Profile user={user} setUser={setUser} />
+      <Profile
+        user={user}
+        setUser={setUser}
+        checkPhotoUpdate={checkPhotoUpdate}
+        setCheckPhotoUpdate={setCheckPhotoUpdate}
+      />
       <section className="reserve-list mypage-list-wrap">
         <Link to="resview">더보기</Link>
         <h3 className="title">
@@ -291,7 +302,7 @@ const MypageMain = (props) => {
         </h3>
         {user.reservationList ? (
           user.reservationList.length === 0 ? (
-            <EmptyBox text={"진행중인 예약이 존재하지 않습니다"} />
+            <EmptyBox text={"방문 전인 예약이 존재하지 않습니다"} />
           ) : (
             <div className="reserve-content-wrap list-content">
               {user.reservationList.map((reserve, index) => {

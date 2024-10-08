@@ -237,4 +237,11 @@ public class UserController {
 		map.put("refreshToken", loginUser.getRefreshToken());
 		return ResponseEntity.ok(map);	
 	}
+	
+	@Operation(summary="일반회원 프로필사진 가져오기", description = "회원 아이디를 받아서 프로필사진 경로 가져오기")
+	@GetMapping(value="/userId/{userId}/userPhoto")
+	public ResponseEntity<String> getUserPhoto(@PathVariable String userId){
+		String userPhoto = userService.getUserPhoto(userId);
+		return ResponseEntity.ok(userPhoto);
+	}
 }

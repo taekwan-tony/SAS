@@ -144,6 +144,43 @@ const Update = (props) => {
         }
       });
   };
+  // //비밀번호 정규식
+  // const [checkPwMsg, setCheckPwMsg] = useState("");
+  // const checkPwReg = () => {
+  //   setCheckBeforeUpdate({ ...checkBeforeUpdate, checkPw: false });
+  //   setCheckPwMsg("");
+  //   const pwReg = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,}$/;
+  //   if (user.userPw !== "" && pwReg.test(user.userPw)) {
+  //     setCheckJoin({ ...checkJoin, checkPw: true });
+  //     setCheckJoinMsg({
+  //       ...checkJoinMsg,
+  //       checkPw: "사용가능한 비밀번호 입니다.",
+  //     });
+  //   } else if (user.userPw !== "") {
+  //     setCheckJoinMsg({
+  //       ...checkJoinMsg,
+  //       checkPw:
+  //         "영소문자, 숫자, @$!%*?& 를 1개 이상 포함한 8자 이상의 문자여야합니다.",
+  //     });
+  //   }
+  // };
+
+  //휴대폰 번호 정규식
+  const checkPhone = () => {
+    const phoneReg = /^01[016789]-\d{3,4}-\d{4}$/;
+    setCheckBeforeUpdate({ ...checkBeforeUpdate, checkPhone: false });
+    if (phoneReg.test(user.userPhone)) {
+      setCheckBeforeUpdate({ ...checkBeforeUpdate, checkPhone: true });
+    }
+  };
+  //이메일 정규식
+  const checkEmail = () => {
+    const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setCheckBeforeUpdate({ ...checkBeforeUpdate, checkEmail: false });
+    if (emailReg.test(user.userEmail)) {
+      setCheckBeforeUpdate({ ...checkBeforeUpdate, checkEmail: true });
+    }
+  };
 
   // 업데이트 버튼
   const update = () => {

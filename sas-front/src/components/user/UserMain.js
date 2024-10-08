@@ -39,6 +39,7 @@ function UserMain() {
   const [loginUserNickname, setLoginUserNickname] = useRecoilState(
     loginUserNicknameState
   );
+
   useEffect(() => {
     refreshLogin();
     window.setInterval(refreshLogin, 60 * 60 * 1000); //한시간이 지나면 로그인 정보 자동으로 refresh 될수 있게
@@ -80,7 +81,23 @@ function UserMain() {
   };
 
   //일반회원 로그인 지속 구현-수진 끝
-
+  //프로필 사진 용
+  const [userPhoto, setuserPhoto] = useState(null);
+  const [checkPhotoUpdate, setCheckPhotoUpdate] = useState(false); //프로필 업데이트 될때마다 다시 가져오기
+  useEffect(() => {
+    //프로필 사진 가져오기
+    if (isUserLogin) {
+      axios
+        .get(`${backServer}/user/userId/${loginUserId}/userPhoto`)
+        .then((res) => {
+          console.log(res);
+          setuserPhoto(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loginUserId, checkPhotoUpdate]);
   // 로그아웃-수진
   const logout = () => {
     setLoginUserId("");
@@ -217,7 +234,14 @@ function UserMain() {
             {isUserLogin ? (
               <>
                 <header className="header-user">
-                  <img src="/image/IMG_3238.jpg" alt="User" />
+                  <img
+                    src={
+                      userPhoto
+                        ? `${backServer}/userProfile/${userPhoto}`
+                        : "/image/IMG_3238.jpg"
+                    }
+                    alt="User"
+                  />
                   <p>{loginUserId}</p>
                 </header>
                 <div className="sidebar-user-page">
@@ -299,7 +323,15 @@ function UserMain() {
       <Routes>
         <Route path="join" element={<Join />} />
         <Route path="login/*" element={<LoginMain />} />
-        <Route path="mypage/*" element={<Mypage />}></Route>
+        <Route
+          path="mypage/*"
+          element={
+            <Mypage
+              checkPhotoUpdate={checkPhotoUpdate}
+              setCheckPhotoUpdate={setCheckPhotoUpdate}
+            />
+          }
+        ></Route>
         <Route path="menuview/:storeNo/*" element={<MenuView />} />
         <Route path="searchlist/:searchItem" element={<SearchList />} />
         <Route path="noticeList" element={<UserNoticeList />} />
