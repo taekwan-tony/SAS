@@ -614,23 +614,13 @@ const ReservationView = () => {
                     >
                       방문완료
                     </span> */}
-                    <button
-                      className="btn-main round"
-                      onClick={() => {
-                        navigate(
-                          `/usermain/mypage/reviewWrite/${reservation.storeNo}/${reservation.reserveNo}`
-                        );
-                      }}
-                    >
-                      리뷰쓰기
-                    </button>
-                    <button
-                      className="btn-main round
-            "
-                      onClick={openReport}
-                    >
-                      신고
-                    </button>
+                    <span className="reserve-span round">
+                      {dDay > 0
+                        ? `D-${dDay}`
+                        : dDay === 0
+                        ? "d-day"
+                        : `D+${-dDay}`}
+                    </span>
                   </div>
                   <div className="res-content">
                     <img
@@ -646,22 +636,44 @@ const ReservationView = () => {
                     </div>
                   </div>
                   <div className="res-btn2">
-                    <span className="reserve-span round">
-                      {dDay > 0
-                        ? `D-${dDay}`
-                        : dDay === 0
-                        ? "d-day"
-                        : `D+${-dDay}`}
-                    </span>
-                    <button className="btn-main round" onClick={goTOReserve}>
-                      예약변경
-                    </button>
-                    <button
-                      className="btn-main round"
-                      onClick={reservationCancel}
-                    >
-                      예약취소
-                    </button>
+                    {reservation.reserveStatus === 0 ? (
+                      <>
+                        <button
+                          className="btn-main round"
+                          onClick={goTOReserve}
+                        >
+                          예약변경
+                        </button>
+                        <button
+                          className="btn-main round"
+                          onClick={reservationCancel}
+                        >
+                          예약취소
+                        </button>
+                      </>
+                    ) : reservation.reserveStatus === 1 ? (
+                      <>
+                        <button
+                          className="btn-main round"
+                          onClick={() => {
+                            navigate(
+                              `/usermain/mypage/reviewWrite/${reservation.storeNo}/${reservation.reserveNo}`
+                            );
+                          }}
+                        >
+                          리뷰쓰기
+                        </button>
+                        <button
+                          className="btn-main round
+            "
+                          onClick={openReport}
+                        >
+                          신고
+                        </button>
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               );
