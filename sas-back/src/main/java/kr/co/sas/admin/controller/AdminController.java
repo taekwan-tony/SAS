@@ -72,4 +72,10 @@ public class AdminController {
 		List list = adminService.yearSalesBarChart(salesValue,yearValue);
 		return ResponseEntity.ok(list);
 	}
+	
+	@GetMapping(value="/salesDetailList/{startDateValue}/{endDateValue}/{keyword}/{orderBy}")
+	public ResponseEntity<Map> salesDetailList(@PathVariable String startDateValue, @PathVariable String endDateValue, @PathVariable String keyword,@PathVariable int orderBy){
+		Map map = adminService.salesDetailList(startDateValue,endDateValue,keyword,orderBy);
+		return ResponseEntity.ok(map);
+	}
 }
