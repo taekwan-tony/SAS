@@ -144,4 +144,12 @@
 	<select id="selectNewCustomerCount" resultType="int">
 		select count(*) from user_tbl where substr(user_enroll_date,1,4) = to_char(sysdate,'yyyy')
 	</select>
+	
+	<select id="isThereUser" resultType="loginUser">
+		select user_no, user_id, user_nickname, login_type from user_tbl where user_phone=#{userPhone}
+	</select>
+	
+	<insert id="insertNaverUser" >
+		insert into user_tbl values(user_seq.nextval, #{userId}||user_seq.currval,#{userPw}, #{userPhone}, #{userEmail}, #{userGender}, #{userBirth}, #{userNickname}||user_seq.currval, '네이버 가입자', #{userPhoto}, 2, to_char(sysdate, 'yyyy-mm-dd') )
+	</insert>
 </mapper>
