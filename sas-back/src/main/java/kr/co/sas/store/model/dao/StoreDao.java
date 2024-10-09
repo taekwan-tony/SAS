@@ -107,6 +107,12 @@ public interface StoreDao {
 
 	int deleteStoreFile(int[] delStoreFileNo);
 
+	List selectOneStore();
+
+	List selectBestStore();
+
+
+
 
 
 }

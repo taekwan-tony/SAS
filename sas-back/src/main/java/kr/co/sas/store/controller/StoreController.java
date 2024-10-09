@@ -98,12 +98,24 @@ public class StoreController {
 		}//else
 	}//storeRefresh
 	
-	//res.data>0
 	@GetMapping(value="/storeList")
 	public ResponseEntity<List> selectAllstore (){
 		List storeList = storeService.selectAllstore();
 		return ResponseEntity.ok(storeList);
 	}
+	
+	@GetMapping(value="/storeList/view")
+	public ResponseEntity<Map<String, Object>> selectOneStore(){
+		Map<String, Object> map = storeService.selectOneStore();
+		return ResponseEntity.ok(map);
+	}
+	
+	@GetMapping(value="/storeList/view/best")
+	public ResponseEntity<Map<String, Object>>  selectBestStore(){
+		Map<String, Object> map = storeService.selectBestStore();
+		return ResponseEntity.ok(map);
+	}
+	
 	
 	@GetMapping(value="/storeList/keyword/{keyword}")
 	public ResponseEntity<List> selectAllstore (@PathVariable String keyword){

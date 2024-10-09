@@ -205,6 +205,53 @@
          -->
 	</select>
 	
+	<select id="selectOneStore" resultType="store">
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=1 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=2 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=3 and rownum=1
+		
+	</select>
+
+	<select id="selectBestStore" resultType="store">
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=1 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=2 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=3 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=4 and rownum=1
+
+	</select>	
+	
+	
 	 
 	 
 	 

@@ -53,8 +53,9 @@ public class StoreDTO {
 	private List<StoreAmenitiesDTO> storeAmenityList;
 	private List<StoreMoodDTO> storeMoodList;
 	private List<StoreFileDTO> storeSiFilepathList;
+	//가격받기
+	private int menuPrice;
 	//검색하려고 만든 키워드
 	private String keyword;
-	
 	private int[] delStoreFileNo;
 }

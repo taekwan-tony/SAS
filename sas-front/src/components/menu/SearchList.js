@@ -46,7 +46,7 @@ const SearchList = (props) => {
   const navigate = useNavigate();
   return (
     <div className="searchList">
-      <h1 style={{ marginTop: "50px" }}>검색결과</h1>
+      <h1 style={{ marginTop: "50px" }}></h1>
       <section className="section-search">
         {storeList.length > 0 ? (
           storeList.map((store, index) => {
