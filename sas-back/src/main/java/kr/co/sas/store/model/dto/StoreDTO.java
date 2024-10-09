@@ -55,6 +55,9 @@ public class StoreDTO {
 	private List<StoreFileDTO> storeSiFilepathList;
 	//검색하려고 만든 키워드
 	private String keyword;
-	
 	private int[] delStoreFileNo;
+	//매출 상세정보 결과값 받기 위한 정보
+	private int rnum;
+	private long storeTotalPrice;
+	private long storeTotalUsingCount;
 }

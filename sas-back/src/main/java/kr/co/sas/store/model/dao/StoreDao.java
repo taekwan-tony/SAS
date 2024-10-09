@@ -107,6 +107,10 @@ public interface StoreDao {
 
 	int deleteStoreFile(int[] delStoreFileNo);
 
+	List salesDetailList(String startDateValue, String endDateValue, String keyword, int orderBy);
+
+	Map<String, Object> totalSales(String startDateValue, String endDateValue, String keyword);
+
 
 
 }
