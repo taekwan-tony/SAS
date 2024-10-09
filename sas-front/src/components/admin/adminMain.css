@@ -349,4 +349,19 @@
   left: 30px;
   height: 90% !important;
   width: 90% !important;
+  object-fit: contain;
+}
+
+.admin-management-sales-detail-search-wrap {
+  width: 80%;
+  min-width: 700px;
+  padding: 40px;
+  margin: 50px auto;
+  border: 1px solid var(--font3);
+}
+
+#admin-management-input-date {
+  width: 200px;
+  height: 50px;
+  text-align: center;
 }
