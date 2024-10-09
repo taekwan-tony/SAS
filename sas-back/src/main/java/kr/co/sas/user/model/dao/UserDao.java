@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.sas.store.model.dto.StoreDTO;
+import kr.co.sas.user.model.dto.LoginUserDTO;
 import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.util.PageInfo;
 
@@ -38,6 +39,11 @@ public interface UserDao {
 	List<UserDTO> selectUserGenderPercent();
 
 	int selectNewCustomerCount();
+
+	LoginUserDTO isThereUser(String userPhone);
+
+	int insertNaverUser(UserDTO user);
+
 
 
 

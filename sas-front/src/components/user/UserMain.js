@@ -27,7 +27,8 @@ import ReservationMain from "../reservation/ReservationMain";
 import UserNoticeList from "./UserNoticeList";
 import UserNoticeDetail from "./UserNoticeDetail";
 import ReportMain from "../report/ReportMain";
-import { CleaningServices } from "@mui/icons-material";
+
+import LoginNaverCallback from "./LoginNaverCallback";
 
 function UserMain() {
   // 일반회원 로그인 지속 구현-수진(문제 생기면 말씀해주세요..)
@@ -194,12 +195,18 @@ function UserMain() {
         </div>
         <div className="user-main-login-button">
           {isUserLogin ? (
-            <button className="user-main-login-btn" onClick={logout}>
+            <button
+              className="btn-a"
+              style={{ outline: "none" }}
+              onClick={logout}
+            >
               로그아웃
             </button>
           ) : (
             <Link to="/usermain/login">
-              <button className="user-main-login-btn">로그인</button>
+              <button className="btn-a" style={{ outline: "none" }}>
+                로그인
+              </button>
             </Link>
           )}
         </div>
@@ -259,7 +266,13 @@ function UserMain() {
                       </Link>
                       <ul className="user-navi-submenu">
                         <li>
-                          <Link to="mypage/update/checkPw">
+                          <Link
+                            to={
+                              userType === 1
+                                ? "mypage/update/checkPw"
+                                : "mypage/update/updateForm"
+                            }
+                          >
                             <i className="fa-solid fa-user-pen"></i>내 정보 수정
                           </Link>
                         </li>
@@ -316,7 +329,7 @@ function UserMain() {
                   navigate("login");
                 }}
               >
-                <button className="btn-main">로그인</button>
+                <button className="btn-a">로그인</button>
               </div>
             )}
           </div>
@@ -324,6 +337,8 @@ function UserMain() {
         </div>
       </div>
       <Routes>
+        {/* 소셜로그인용 페이지 */}
+        <Route path="login-naver" element={<LoginNaverCallback />}></Route>
         <Route path="join" element={<Join />} />
         <Route path="login/*" element={<LoginMain />} />
         <Route
