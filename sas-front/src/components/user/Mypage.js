@@ -26,12 +26,9 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { switchClasses } from "@mui/material";
 import { MenuReview } from "../menu/MenuView";
-import ImageResize from "@looop/quill-image-resize-module-react";
 import QuillEditor from "../utils/QuillEditor";
 import PageNavi from "../utils/PagiNavi";
-import { CleaningServices } from "@mui/icons-material";
 import FavoriteMain from "./FavoriteMain";
 import MypageUpdate from "./MypageUpdate";
 import ReportModal from "../report/ReportModal";
