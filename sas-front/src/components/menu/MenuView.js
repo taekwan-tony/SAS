@@ -670,34 +670,37 @@ const ModifyReview = (props) => {
   return (
     <section className="review-box-container">
       <div className="review-content">
-        <div className="review-header">
-          <p>{review.userNickname}</p>
-          {update ? (
-            <div className="review-manager-container">
-              <button className="review-manager-update" onClick={updateReview}>
-                수정
-              </button>
-              <button className="review-manager-delete" onClick={deleteReview}>
-                삭제
-              </button>
-            </div>
-          ) : (
-            ""
-          )}
+        <div className="review-content-img">
+          <img src={`${backServer}/userProfile/${review.userPhoto}`}></img>
         </div>
-        <p>{review.storeName}</p>
-        <Stack spacing={1}>
-          <Rating
-            name="half-rating-read"
-            defaultValue={review.reviewScore}
-            precision={0.5}
-            readOnly={isModify}
-            onChange={(e) => {
-              setReview({ ...review, reviewScore: e.target.value });
-            }}
-          />
-        </Stack>
-        <br></br>
+        <div className="review-information-wrap">
+          <div className="review-header">
+            {review.userNickname}
+            {update ? <div className="review-manager-container"></div> : ""}
+          </div>
+          <div className="review-name">{review.storeName}</div>
+          <Stack spacing={1}>
+            <Rating
+              name="half-rating-read"
+              defaultValue={review.reviewScore}
+              precision={0.5}
+              readOnly={isModify}
+              onChange={(e) => {
+                setReview({ ...review, reviewScore: e.target.value });
+              }}
+            />
+          </Stack>
+        </div>
+        <div className="review-manager-status">
+          <button className="review-manager-update" onClick={updateReview}>
+            수정
+          </button>
+          <button className="review-manager-delete" onClick={deleteReview}>
+            삭제
+          </button>
+        </div>
+      </div>
+      <div className="review-content-one-wrap">
         <p>
           {modifyType === 0 ? (
             <p

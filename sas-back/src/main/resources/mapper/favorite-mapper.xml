@@ -23,7 +23,7 @@
 	</insert>
 	
 	<select id="selectFavoriteFolder" resultType="favoriteFolder">
-		select favorite_folder_no, favorite_folder_name from favorite_folder where user_no = #{userNo}
+		select favorite_folder_no, favorite_folder_name from favorite_folder where user_no = #{userNo} order by 1
 	</select>
 	<select id="getFavoriteNo" resultType="int">
 		select max(favorite_no) from favorite where favorite_folder_no=(select min(favorite_folder_no) from favorite_folder where user_no=#{userNo} and favorite_folder_name='기본폴더')
