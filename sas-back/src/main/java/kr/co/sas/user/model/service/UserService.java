@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.favorite.model.dao.FavoriteDao;
+import kr.co.sas.favorite.model.dto.FavoriteFolderDTO;
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.menu.model.dto.MenuDTO;
 import kr.co.sas.review.model.dao.ReviewDao;
@@ -46,7 +47,9 @@ public class UserService {
 //		System.out.println(user.getUserPw());
 		int result = userDao.insertUser(user);
 		if(result>0) {
-			result = favoriteDao.insertStandardFavorieFolder();
+			FavoriteFolderDTO favoriteFolder = new FavoriteFolderDTO();
+			favoriteFolder.setFavoriteFolderName("기본 폴더");
+			result = favoriteDao.insertStandardFavoriteFolder(favoriteFolder);
 		}
 		return result;
 	}
@@ -167,7 +170,7 @@ public class UserService {
 		int result = userDao.updateUser(user);
 		if(result>0) {
 			System.out.println("회원 업데이트"+result);
-			result = userDao.updateReview(user);
+			result += userDao.updateReview(user);
 			System.out.println("리뷰업데이트"+result);
 		}
 		return result;
@@ -259,6 +262,12 @@ public class UserService {
 		user.setUserPw(encoder.encode(userPw));
 		int result = userDao.insertNaverUser(user);
 		if(result>0) {
+			FavoriteFolderDTO favoriteFolder = new FavoriteFolderDTO();
+			favoriteFolder.setFavoriteFolderName("기본 폴더");
+			result = favoriteDao.insertStandardFavoriteFolder(favoriteFolder);
+		}
+		if(result>0) {
+			System.out.println(112);
 			LoginUserDTO loginUser = userDao.isThereUser(user.getUserPhone());
 			loginUser.setAccessToken(jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));
 			loginUser.setRefreshToken(jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));

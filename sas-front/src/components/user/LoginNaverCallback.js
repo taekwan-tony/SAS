@@ -10,6 +10,8 @@ import {
 } from "../utils/RecoilData";
 import { useRecoilState } from "recoil";
 import NicknameData from "./NicknameData.json";
+import "./loginNaverCallback.css";
+
 const LoginNaverCallback = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
@@ -195,13 +197,9 @@ const LoginNaverCallback = () => {
     }
   }, []);
   return (
-    <p style={{ marginTop: "300px" }}>
-      로그인 구현중...
-      <img
-        src="https:\/\/phinf.pstatic.net\/contact\/20241009_224\/17284688174113zw96_JPEG\/image.jpg"
-        alt=""
-      />
-    </p>
+    <div className="naver-loading-main">
+      <span className="naver-login-loader"></span>
+    </div>
   );
 };
 

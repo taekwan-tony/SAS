@@ -125,8 +125,8 @@ const Join = () => {
       });
     }
   };
-  const pwReMsgRef = useRef(null);
-  const [checkPwResult, setCheckPwResult] = useState(false);
+  // const pwReMsgRef = useRef(null);
+  // const [checkPwResult, setCheckPwResult] = useState(false);
   const checkPw = () => {
     // pwReMsgRef.current.classList.remove("valid");
     // pwReMsgRef.current.classList.remove("invalid");
@@ -135,7 +135,7 @@ const Join = () => {
     if (user.userPw !== "" && pwRe === user.userPw) {
       setCheckJoin({ ...checkJoin, checkPwRe: true });
       setCheckJoinMsg({ ...checkJoinMsg, checkPwRe: "비밀번호와 일치합니다." });
-      setCheckPwResult(true);
+      // setCheckPwResult(true);
     } else if (user.userPw !== "") {
       setCheckJoinMsg({
         ...checkJoinMsg,

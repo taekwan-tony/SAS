@@ -150,7 +150,11 @@ const Login = () => {
         <Link to="/usermain/join">회원가입</Link>
       </div>
       <div className="social-btn">
-        <button onClick={goToNaverLogin}>네이버로 로그인</button>
+        <p className="tag-msg">소셜 계정으로 로그인</p>
+        <button className="round" onClick={goToNaverLogin}>
+          <img src="/image/btnG_아이콘사각.png" />
+          <span>네이버로 로그인</span>
+        </button>
       </div>
     </>
   );

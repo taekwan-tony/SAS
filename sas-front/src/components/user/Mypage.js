@@ -335,16 +335,21 @@ const MypageMain = (props) => {
         <h3 className="title">
           나의 리뷰{" "}
           <span className="count">
-            {user.reviewList ? user.reviewList.length : 0}
+            {user.reviewCount ? user.reviewCount : 0}
           </span>
         </h3>
-        <div className="list-content review-content-wrap">
-          {user.reviewList
-            ? user.reviewList.map((review, index) => {
-                return <ReviewContent review={review} />;
-              })
-            : ""}
-        </div>
+        {user.reviewList == null ||
+        (user.reviewList && user.reviewList.length === 0) ? (
+          <EmptyBox text={"작성한 리뷰가 없습니다"} />
+        ) : (
+          <div className="list-content review-content-wrap">
+            {user.reviewList
+              ? user.reviewList.map((review, index) => {
+                  return <ReviewContent review={review} />;
+                })
+              : ""}
+          </div>
+        )}
       </section>
     </>
   );

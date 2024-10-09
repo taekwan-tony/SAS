@@ -8,11 +8,11 @@
 	<delete id="deleteFavoriteWithFavoriteNo">
 		delete from favorite where favorite_no=#{fovoriteNo}
 	</delete>
-	<insert id="insertStandardFavorieFolder">
+	<insert id="insertStandardFavoriteFolder">
 		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
-			select max(user_no) from user_tbl
+			select max(user_no) user_no from user_tbl
 		</selectKey>
-		insert into favorite_folder values(favorite_folder_seq.nextval, #{userNo}, '기본 폴더')
+		insert into favorite_folder values(favorite_folder_seq.nextval, #{userNo}, #{favoriteFolderName})
 	</insert>
 	
 	<insert id="insertFavorite">

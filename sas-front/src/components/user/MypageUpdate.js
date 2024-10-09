@@ -96,7 +96,7 @@ const Update = (props) => {
   );
   const backServer = process.env.REACT_APP_BACK_SERVER;
   useEffect(() => {
-    console.log(userType);
+    // console.log(userType);
     axios
       .get(`${backServer}/user/userNo/${loginUserNo}/update`)
       .then((res) => {
@@ -123,6 +123,7 @@ const Update = (props) => {
     checkPw: true,
     checkPhone: true,
     checkEmail: true,
+    checkName: true,
   });
   const [checkMsg, setCheckMsg] = useState({ checkNickname: "", checkPw: "" });
   // 닉네임 중복 체크
@@ -174,6 +175,18 @@ const Update = (props) => {
     }
   };
 
+  // 이름 정규식
+  const checkName = () => {
+    const nameReg = /^(?!.*[ㄱ-ㅎㅏ-ㅣ])[a-zA-Z가-힣\s]{1,50}$/;
+    setCheckBeforeUpdate({ ...checkBeforeUpdate, checkName: false });
+    if (
+      (user.loginType == 2 && user.userName === "네이버 가입자") ||
+      nameReg.test(user.userName)
+    ) {
+      setCheckBeforeUpdate({ ...checkBeforeUpdate, checkName: true });
+    }
+  };
+
   //휴대폰 번호 정규식
   const checkPhone = () => {
     const phoneReg = /^01[016789]-\d{3,4}-\d{4}$/;
@@ -197,15 +210,20 @@ const Update = (props) => {
       user.userNickname !== "" &&
       user.userPhone != "" &&
       user.userEmail != "" &&
+      user.userName != "" &&
       checkBeforeUpdate.checkNickname &&
       checkBeforeUpdate.checkPw &&
       checkBeforeUpdate.checkPhone &&
-      checkBeforeUpdate.checkEmail
+      checkBeforeUpdate.checkEmail &&
+      checkBeforeUpdate.checkName
     ) {
+      console.log(2);
       axios
         .patch(`${backServer}/user`, user)
         .then((res) => {
+          console.log(res);
           if (res.data) {
+            console.log(1);
             Swal.fire({
               title: "회원 정보 수정 성공",
               icon: "success",
@@ -297,8 +315,9 @@ const Update = (props) => {
               name="userPw"
               value={user.userPw}
               onChange={changeInputVal}
-              className="update"
+              className={user.loginType == 2 ? "" : "update"}
               onBlur={checkPwReg}
+              readOnly={user.loginType == 2}
             />
             <p
               className={
@@ -312,7 +331,16 @@ const Update = (props) => {
         <div className="input-box">
           <label htmlFor="userName">이름</label>
           <div className="input-item">
-            <input type="text" id="userName" readOnly value={user.userName} />
+            <input
+              type="text"
+              id="userName"
+              readOnly={user.loginType == 1}
+              value={user.userName}
+              onChange={changeInputVal}
+              name="userName"
+              className={user.loginType == 1 ? "" : "update"}
+              onBlur={checkName}
+            />
           </div>
         </div>
         <div className="input-box">

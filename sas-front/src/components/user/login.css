@@ -56,14 +56,15 @@ a {
   width: 100%;
 }
 .user-login-main .logo {
+  margin-top: 30px;
   text-align: center;
-  height: 300px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .user-login-main .logo > img {
-  width: 400px;
+  width: 300px;
 }
 .user-login-main .login-content {
   width: 50%;
@@ -118,6 +119,33 @@ a {
 }
 .user-login-main div.link a:hover {
   color: var(--main1);
+}
+
+/* 소셜로그인 버튼 */
+.user-login-main .social-btn > p.tag-msg {
+  padding-bottom: 0;
+  margin-bottom: 5px;
+}
+.user-login-main .social-btn > button {
+  cursor: pointer;
+  width: 100%;
+  height: 50px;
+  outline: none;
+  border: none;
+  background-color: #03c75a;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+.user-login-main .social-btn > button > img {
+  height: 100%;
+}
+.user-login-main .social-btn > button > span {
+  color: white;
+  border-left: 1px solid white;
+  padding-left: 15px;
+  font: bold 20px var(--defaultFont);
 }
 /* 아이디, 비밀번호 찾기 */
 .user-login-main div.find-main-zone {

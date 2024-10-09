@@ -31,7 +31,7 @@
 									1,to_char(sysdate,'yyyy-mm-dd') )
 	</insert>
 	<select id="findId" resultType="String">
-		select user_id from user_tbl where user_name = #{userName}
+		select user_id from user_tbl where user_name = #{userName} and login_type=1 
 		<if test="!userPhone.equals('')">
 			and user_phone=#{userPhone}
 		</if>
@@ -40,7 +40,7 @@
 		</if>	
 	</select>
 	<select id="findUserNo" resultType="user">
-		select user_no from user_tbl where user_id=#{userId} and user_email=#{userEmail}
+		select user_no from user_tbl where user_id=#{userId} and user_email=#{userEmail} and login_type=1
 	</select>
 	<update id="updatePw">
 		update user_tbl set user_pw = #{userPw} where user_no = #{userNo}
@@ -114,7 +114,7 @@
 		update user_tbl set user_photo=#{userPhoto} where user_no = #{userNo}
 	</update>
 	<select id="getUserInfo" resultType="user">
-		select user_gender, user_birth, user_email, user_phone, user_name from user_tbl where user_no=#{userNo}
+		select user_gender, user_birth, user_email, user_phone, user_name, login_type from user_tbl where user_no=#{userNo}
 	</select>
 	<select id="getUserPwInfo" resultType="user">
 		select user_pw from user_tbl where user_no=#{userNo}
@@ -124,7 +124,10 @@
 		<if test="userPw!=null">
 			user_pw=#{userPw},
 		</if>
-		 user_phone=#{userPhone}, user_email=#{userEmail} where user_no=#{userNo}
+			user_name=#{userName},
+		 	user_phone=#{userPhone}, 
+		 	user_email=#{userEmail} 
+		 where user_no=#{userNo}
 	</update>
 	<select id="checkNickname" resultType="int">
 		select count(*) from user_tbl where user_nickname=#{userNickname}
