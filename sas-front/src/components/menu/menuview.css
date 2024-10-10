@@ -361,7 +361,9 @@ div.review-container span.MuiRating-iconFilled path {
 .review-submit {
   background-color: var(--main1);
   width: 450px;
-  border-radius: 10%;
+  border-radius: 10px;
+  color: #fff;
+  border: 2px solid var(--main1);
 }
 /* 검색결과 하는곳~*/
 .searchList {
