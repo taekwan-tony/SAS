@@ -250,11 +250,12 @@ function StoreDetail(props) {
     if (todayCustomer.length > 5) {
       return (
         <Swiper
-          modules={[Pagination, Navigation]}
+          modules={[Pagination, Navigation, Mousewheel]}
           spaceBetween={30}
           slidesPerView={1}
           navigation
           pagination={{ clickable: true }}
+          mousewheel={true}
         >
           {Array.from({
             length: Math.ceil(todayCustomer.length / numPerPage),
