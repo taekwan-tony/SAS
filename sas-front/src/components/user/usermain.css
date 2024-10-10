@@ -449,9 +449,9 @@ a:hover {
 
 .swiper-slide img {
   display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
+  width: 2000px;
+  height: 1400px;
+  margin-top: -14%;
 }
 .kenburns-top {
   animation: kenburns-top 5s ease-out both;
