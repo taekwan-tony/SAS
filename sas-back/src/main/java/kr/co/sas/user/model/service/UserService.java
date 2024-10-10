@@ -44,6 +44,7 @@ public class UserService {
 	public int insertUser(UserDTO user) {
 //		System.out.println(user.getUserPw());
 		user.setUserPw(encoder.encode(user.getUserPw()));
+//		user.setUserPw(encoder.encode("1234"));=>새 테스트용 데이터 넣는 용
 //		System.out.println(user.getUserPw());
 		int result = userDao.insertUser(user);
 		if(result>0) {
