@@ -68,23 +68,22 @@ function StoreDetail(props) {
       axios
         .get(`${backServer}/reservation/todayReservation/${storeNo}`)
         .then((response) => {
-          console.log("예약 데이터: ", response.data);
           setReservation(response.data);
         })
         .catch((error) => {
           if (error.response) {
             // 서버 응답이 있고 에러 발생
-            console.error("서버 응답 에러: ", error.response);
+            //console.error("서버 응답 에러: ", error.response);
           } else if (error.request) {
             // 요청은 보내졌으나 응답을 받지 못함
-            console.error("응답을 받지 못했습니다.", error.request);
+            //console.error("응답을 받지 못했습니다.", error.request);
           } else {
             // 기타 에러
-            console.error("예약을 불러오지 못했습니다.: ", error.message);
+            //console.error("예약을 불러오지 못했습니다.: ", error.message);
           }
         });
     } else {
-      console.error("storeNo가 정의되지 않았습니다.");
+      //console.error("storeNo가 정의되지 않았습니다.");
     }
   }, [storeNo]);
   // 날씨 상태에 따라 배경 비디오 URL 선택 함수
@@ -238,12 +237,9 @@ function StoreDetail(props) {
     axios
       .get(`${backServer}/reservation/todaycustomer/${storeNo}`)
       .then((res) => {
-        console.log(res.data);
         setTodayCumstomer(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, [storeNo]);
 
   const renderCustomerSwiper = () => {
