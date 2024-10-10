@@ -18,7 +18,7 @@ function StoreMain() {
   const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
   const [storeType, setStoreType] = useRecoilState(storeTypeState);
   const [storeName, setStoreName] = useRecoilState(loginStoreNameState);
-
+  console.log(storeName);
   useEffect(() => {
     storeRefreshLogin();
     window.setInterval(storeRefreshLogin, 60 * 60 * 1000);

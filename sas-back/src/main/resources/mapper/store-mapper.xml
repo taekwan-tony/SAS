@@ -124,6 +124,9 @@
 	<select id="searchStoreOwner" resultType="store">
 		select * from store where so_email=#{soEmail}
 	</select>
+	<select id="searchStoreOwner1" resultType="store">
+		select * from store where store_no=#{storeNo}
+	</select>
 	
 	
 	<update id="changePw">

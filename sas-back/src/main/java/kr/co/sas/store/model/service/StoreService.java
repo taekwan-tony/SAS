@@ -81,6 +81,23 @@ public class StoreService {
 	    return map;
 	}//storeLogin
 
+	public Map storeRegist(int storeNo) {
+	    Map map = new HashMap<String, Object>();
+	    StoreDTO loginStore = storeDao.searchStoreOwner1(storeNo);
+	    if (loginStore != null) {
+	        	// 비밀번호 일치: 로그인 성공
+	            map.put("loginSoEmail", loginStore.getSoEmail());
+	            map.put("storeType", loginStore.getType());
+	            map.put("storeNo", loginStore.getStoreNo()); // storeNo 추가
+	            map.put("storeName", loginStore.getStoreName()); // storeName 추가
+	            map.put("soName", loginStore.getSoName());
+	            map.put("soPhone", loginStore.getSoPhone());
+	            map.put("storeAddr", loginStore.getStoreAddr());
+	            map.put("accessToken", jwtUtils.storeCreateAccessToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr()));
+	            map.put("refreshToken", jwtUtils.storeCreateRefreshToken(loginStore.getSoEmail(), loginStore.getType(), loginStore.getStoreNo(), loginStore.getStoreName(), loginStore.getSoName(), loginStore.getSoPhone(), loginStore.getStoreAddr()));
+	    } //else
+	    return map;
+	}//storeLogin
 
 
 	public LoginStoreDTO storeRefresh(String token) {

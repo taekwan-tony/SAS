@@ -121,6 +121,8 @@ public interface StoreDao {
 	List selectBest3();
 
 	List selectBest4();
+
+	StoreDTO searchStoreOwner1(int storeNo);
 	
 	
 

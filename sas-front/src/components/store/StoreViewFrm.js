@@ -10,21 +10,49 @@ import StoreMoodCheckBoxMUI from "../utils/StoreMoodCheckBoxMUI";
 import StoreAmenitiesCheckBoxMUI from "../utils/StoreAmenitiesCheckBoxMUI";
 import { useRecoilState } from "recoil";
 import {
+  isStoreLoginState,
   loginStoreIdState,
   loginStoreNoState,
+  soNameState,
+  soPhoneState,
+  storeAddrState,
   storeTypeState,
+  storeNameState,
+  loginStoreNameState,
 } from "../utils/RecoilData";
 
 const StoreViewFrm = (props) => {
   const setActiveIndex = props.setActiveIndex;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
-  // const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
-  // const [storeType, setStoreType] = useRecoilState(storeTypeState);
-  // const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
+  const [loginSoEMail, setLoginSoEmail] = useRecoilState(loginStoreIdState);
+  const [storeType, setStoreType] = useRecoilState(storeTypeState);
+  const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
+  const [storeAddr, setStoreAddr] = useRecoilState(storeAddrState); //매장 주소
+  const [soPhone, setSoPhone] = useRecoilState(soPhoneState); //점주 전화번호
+  const [soName, setSoName] = useRecoilState(soNameState); //점주 이름
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
-  const { loginstoreNo } = props;
-  const [store, setStore] = useState({});
+  const [storeName, setStoreName] = useRecoilState(loginStoreNameState);
+  // const { loginstoreNo } = props;
+  // //const [store, setStore] = useState({});
+
+  const [store, setStore] = useState({
+    storeNo: "",
+    storeName: "",
+    storePhone: "",
+    storeAddr: "",
+    StoreDetailAddr: "",
+    storeTime: "",
+    storeClass: "",
+    storeReStart: "",
+    storeReEnd: "",
+    breakTimeStart: "",
+    breakTimeEnd: "",
+    deposit: "",
+    storeIntroduce: "",
+    mapX: "",
+    mapY: "",
+  });
 
   // storeNumber가 업데이트될 때마다 실행
   useEffect(() => {
@@ -36,6 +64,12 @@ const StoreViewFrm = (props) => {
       }));
     }
   }, [storeNumber]);
+
+  useEffect(() => {
+    if (storeName) {
+      console.log("매장 이름:", storeName);
+    }
+  }, [storeName]);
 
   const [storeMood, setStoreMood] = useState([]);
   const [storeAmenities, setStoreAmenities] = useState([]);
@@ -217,12 +251,36 @@ const StoreViewFrm = (props) => {
     for (let i = 0; i < storeAmenities.length; i++) {
       form.append("storeAmenities", storeAmenities[i]);
     }
-
     // 매장 정보
     axios
       .post(`${backServer}/store/insertStoreFrm/${loginstoreNo}`, store)
       .then((res) => {
         if (res.data) {
+          axios
+            .get(`${backServer}/store/storeRegist/${loginstoreNo}`)
+            .then((res) => {
+              const {
+                result,
+                storeType,
+                loginSoEmail,
+                storeNo,
+                accessToken,
+                refreshToken,
+                storeName,
+              } = res.data;
+              setLoginSoEmail(res.data.soEmail);
+              setStoreType(res.data.storeType);
+              setLoginStoreNo(res.data.storeNo);
+              setStoreName(res.data.storeName); // 점주 이름 저장
+
+              axios.defaults.headers.common["Authorization"] =
+                res.data.accessToken;
+              window.localStorage.setItem(
+                "storeRefreshToken",
+                res.data.refreshToken
+              );
+            });
+          console.log("데이터 : ", res);
           Swal.fire({
             title: "매장 등록 완료.",
             text: "매장 정보가 등록되었습니다.",
@@ -230,12 +288,17 @@ const StoreViewFrm = (props) => {
             confirmButtonColor: "#5e9960",
           })
             .then(() => {
+              console.log(store.storeNo);
+
               navigate("/storeMain");
             })
             .catch((err) => {});
         }
+      })
+      .catch((err) => {
+        console.log("매장 정보 등록 에러 : ", err);
       });
-    console.log(loginstoreNo);
+
     // 매장 좌석 정보 등록
     axios
       .post(`${backServer}/store/insertSeatList/${loginstoreNo}`, seatList) // seatList를 서버로 전송

@@ -76,6 +76,12 @@ public class StoreController {
 		return ResponseEntity.ok(map);
 	}//storeLogin
 	
+	@Operation(summary ="매장 이름 등록", description = "storeNo 가져와서 처리")
+	@GetMapping(value = "/storeRegist/{storeNo}")
+	public ResponseEntity<Map> storeRegist(@PathVariable int storeNo){
+		Map map = storeService.storeRegist(storeNo);
+		return ResponseEntity.ok(map);
+	}
 	
 	@Operation(summary = "매장 로그인 갱신", description = "토큰으로 로그인 갱신")
 	@PostMapping(value = "/storeRefresh")
@@ -165,7 +171,9 @@ public class StoreController {
 	
 	@Operation(summary = "매장 정보 등록")
 	@PostMapping(value = "/insertStoreFrm/{storeNo}")
-	public ResponseEntity<Boolean> insertStoreFrm(@RequestBody StoreDTO store) {
+	public ResponseEntity<Boolean> insertStoreFrm(@RequestBody StoreDTO store, @PathVariable int storeNo) {
+		store.setStoreNo(storeNo);
+		
 	    int result = storeService.insertStoreFrm(store);
 	    return ResponseEntity.ok(result > 0);
 	}//insertStore

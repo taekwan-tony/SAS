@@ -108,15 +108,18 @@ const StoreMenuList = (props) => {
                 </div>
               </div>
               <div className="storeMenuView-btn-zone">
-                <label htmlFor="menuPhoto" className="storeMenu-img-label">
+                <label
+                  htmlFor={`menuPhoto-${index}`} // 고유한 id 부여
+                  className="storeMenu-img-label"
+                >
                   파일 선택
                 </label>
                 <input
                   className="storeMenuView-inputBox"
                   type="file"
-                  id="menuPhoto"
+                  id={`menuPhoto-${index}`} // 고유한 id로 설정
                   name="menuPhoto"
-                  onChange={changeStoreThumbnail(1, index)}
+                  onChange={changeStoreThumbnail(1, index)} // index를 이용하여 각 메뉴별로 구분
                   accept="image/*"
                   style={{ display: "none" }}
                 />

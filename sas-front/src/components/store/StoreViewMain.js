@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import StoreViewFrm from "./StoreViewFrm";
 import StoreView from "./StoreView";
 import StoreUpdate from "./StoreUpdate"; // StoreUpdate 컴포넌트 임포트
+import StoreDetail from "./StoreDetail";
 
 const StoreViewMain = (props) => {
   const setActiveIndex = props.setActiveIndex;
@@ -19,6 +20,7 @@ const StoreViewMain = (props) => {
     storeName: "",
     storePhone: "",
     storeAddr: "",
+    StoreDetailAddr: "",
     storeTime: "",
     storeClass: "",
     storeReStart: "",

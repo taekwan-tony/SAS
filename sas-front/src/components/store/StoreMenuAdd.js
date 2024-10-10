@@ -85,15 +85,18 @@ const StoreMenuAdd = (props) => {
                   </div>
                 </div>
                 <div className="storeMenuView-btn-zone">
-                  <label htmlFor="storeFile" className="storeUpdate-img-label">
+                  <label
+                    htmlFor={`storeFile-${index}`} // 고유한 id로 변경
+                    className="storeUpdate-img-label"
+                  >
                     파일 선택
                   </label>
                   <input
                     className="storeMenuView-inputBox"
                     type="file"
-                    id="menuPhoto"
+                    id={`storeFile-${index}`} // 고유한 id로 변경
                     name="menuPhoto"
-                    onChange={changeStoreThumbnail(2, index)}
+                    onChange={changeStoreThumbnail(2, index)} // 파일 선택 핸들러
                     accept="image/*"
                     style={{ display: "none" }}
                   ></input>

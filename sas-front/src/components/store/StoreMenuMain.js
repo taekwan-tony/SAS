@@ -86,7 +86,6 @@ const StoreMenuMain = () => {
             menuPhoto: reader.result, // 새로운 이미지로 교체
           };
           setStoreMenu(updatedStoreMenu); // 상태 업데이트
-          setStoreMenu(updatedStoreMenu);
 
           // 새로운 메뉴 썸네일 업데이트
           setNewMenuThumbnail((prevThumbnails) => {
@@ -98,7 +97,6 @@ const StoreMenuMain = () => {
           setStoreMenuImage((prevImages) => {
             const updatedImages = [...prevImages];
             updatedImages[index] = reader.result; // 미리보기 이미지 저장
-            updatedImages[index] = reader.result;
             return updatedImages;
           });
         }
@@ -217,65 +215,48 @@ const StoreMenuMain = () => {
   };
 
   // //메뉴 수정
-  // const updateStoreMenu = (existingMenus) => {
-  //   storeMenuList.forEach((menu, index) => {
-  //     if (menu.menuNo) {
-  //       const form = new FormData();
-  //       form.append("menuName", menu.menuName);
-  //       form.append("menuInfo", menu.menuInfo);
-  //       form.append("menuPrice", menu.menuPrice);
-  //       form.append("storeNo", menu.storeNo);
-  // // //메뉴 수정
-  // // const updateStoreMenu = (existingMenus) => {
-  // //   storeMenuList.forEach((menu, index) => {
-  // //     if (menu.menuNo) {
-  // //       const form = new FormData();
-  // //       form.append("menuName", menu.menuName);
-  // //       form.append("menuInfo", menu.menuInfo);
-  // //       form.append("menuPrice", menu.menuPrice);
-  // //       form.append("storeNo", menu.storeNo);
+  const updateStoreMenu1 = (existingMenus) => {
+    storeMenuList.forEach((menu, index) => {
+      if (menu.menuNo) {
+        const form = new FormData();
+        form.append("menuName", menu.menuName);
+        form.append("menuInfo", menu.menuInfo);
+        form.append("menuPrice", menu.menuPrice);
+        form.append("storeNo", menu.storeNo);
+        // //메뉴 수정
+        // const updateStoreMenu = (existingMenus) => {
+        //   storeMenuList.forEach((menu, index) => {
+        //     if (menu.menuNo) {
+        //       const form = new FormData();
+        //       form.append("menuName", menu.menuName);
+        //       form.append("menuInfo", menu.menuInfo);
+        //       form.append("menuPrice", menu.menuPrice);
+        //       form.append("storeNo", menu.storeNo);
 
-  //       if (existingMenuThumbnail[index]) {
-  //         form.append("menuThumbnail", existingMenuThumbnail[index]);
-  //       }
-  // //       if (existingMenuThumbnail[index]) {
-  // //         form.append("menuThumbnail", existingMenuThumbnail[index]);
-  // //       }
+        if (existingMenuThumbnail[index]) {
+          form.append("menuThumbnail", existingMenuThumbnail[index]);
+        }
+        //       if (existingMenuThumbnail[index]) {
+        //         form.append("menuThumbnail", existingMenuThumbnail[index]);
+        //       }
 
-  //       axios
-  //         .patch(`${backServer}/menu/updateStoreMenu/${menu.menuNo}`, form, {
-  //           headers: { "Content-Type": "multipart/form-data" },
-  //         })
-  //         .then((res) => {
-  //           Swal.fire({
-  //             title: "메뉴가 수정되었습니다.",
-  //             icon: "success",
-  //             confirmButtonColor: "#518142",
-  //           });
-  //         })
-  //         .catch((err) => {
-  //           console.error("메뉴 수정 실패:", err);
-  //         });
-  //     }
-  //   });
-  // };
-  //       axios
-  //         .patch(`${backServer}/menu/updateStoreMenu/${menu.menuNo}`, form, {
-  //           headers: { "Content-Type": "multipart/form-data" },
-  //         })
-  //         .then((res) => {
-  //           Swal.fire({
-  //             title: "메뉴가 수정되었습니다.",
-  //             icon: "success",
-  //             confirmButtonColor: "#518142",
-  //           });
-  //         })
-  //         .catch((err) => {
-  //           console.error("메뉴 수정 실패:", err);
-  //         });
-  //     }
-  //   });
-  // };
+        axios
+          .patch(`${backServer}/menu/updateStoreMenu/${menu.menuNo}`, form, {
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+          .then((res) => {
+            Swal.fire({
+              title: "메뉴가 수정되었습니다.",
+              icon: "success",
+              confirmButtonColor: "#518142",
+            });
+          })
+          .catch((err) => {
+            console.error("메뉴 수정 실패:", err);
+          });
+      }
+    });
+  };
 
   return (
     <>
@@ -337,6 +318,7 @@ const StoreMenuMain = () => {
               changeStoreThumbnail={changeStoreThumbnail}
               type={2}
               setCheck={setCheck}
+              key={"menu-" + index}
             />
           ))}
         </div>
