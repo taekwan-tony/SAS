@@ -110,13 +110,21 @@ public interface StoreDao {
 
 	List selectOneStore();
 
-	List selectBestStore();
-
 
 
 	List salesDetailList(String startDateValue, String endDateValue, String keyword, int orderBy);
 
 	Map<String, Object> totalSales(String startDateValue, String endDateValue, String keyword);
+
+	List selectBest1();
+
+	List selectBest2();
+
+	List selectBest3();
+
+	List selectBest4();
+	
+	
 
 
 

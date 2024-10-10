@@ -357,3 +357,13 @@
   display: flex;
   align-items: center;
 }
+
+.storeLogin-p {
+  margin-left: 16px;
+  font-size: 14px;
+}
+
+.storePartnership-p {
+  margin-left: 2px;
+  font-size: 13px;
+}

@@ -480,3 +480,11 @@ div.review-container span.MuiRating-iconFilled path {
 .store-mood {
   margin-bottom: 50px;
 }
+
+.search-result {
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  height: 100vh; /* 화면 높이의 100% 설정 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+}

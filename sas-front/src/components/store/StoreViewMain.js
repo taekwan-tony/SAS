@@ -17,8 +17,6 @@ const StoreViewMain = (props) => {
   const setActiveIndex = props.setActiveIndex;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
-  const [check, setCheck] = useState(false);
-  const isLoginStore = useRecoilValue(isStoreLoginState);
 
   const [store, setStore] = useState({
     storeNo: "",
@@ -75,26 +73,25 @@ const StoreViewMain = (props) => {
           <div className="owner-background">
             <img src="/image/238.jpg" alt="back" />
           </div>
-          <div>
+          <div className="storeUpdate-main">
             {/* store_name이 있으면 storeView 컴포넌트 출력, 없으면 storeFrm 컴포넌트 출력 */}
-            {/* `isEditing` 상태에 따라 다른 컴포넌트를 렌더링 */}
             {isEditing ? (
-              <StoreUpdate
-                store={store}
-                setStore={setStore}
-                loginstoreNo={loginstoreNo}
-                seat={seat}
-                isEditing={isEditing}
-                setIsEditing={setIsEditing}
-                setActiveIndex={setActiveIndex}
-              />
-            ) : (
               <StoreView
                 store={store}
                 setStore={setStore}
                 loginstoreNo={loginstoreNo}
                 seat={seat}
                 handleEditClick={handleEditClick}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+                setActiveIndex={setActiveIndex}
+              />
+            ) : (
+              <StoreViewFrm
+                store={store}
+                setStore={setStore}
+                loginstoreNo={loginstoreNo}
+                seat={seat}
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
                 setActiveIndex={setActiveIndex}

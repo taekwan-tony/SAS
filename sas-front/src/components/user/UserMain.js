@@ -372,6 +372,11 @@ function UserMain() {
 
 const UserMainView = (props) => {
   const [store, setStore] = useState([]);
+  const [storeClass, setStoreClass] = useState();
+  const [korea, setKorea] = useState([]);
+  const [china, setChina] = useState([]);
+  const [yang, setYang] = useState([]);
+  const [japan, setJapan] = useState([]);
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const activeTab = props.activeTab;
   const setActiveTab = props.setActiveTab;
@@ -383,20 +388,24 @@ const UserMainView = (props) => {
     axios
       .get(`${backServer}/store/storeList/view`)
       .then((res) => {
-        // console.log(res);
+        //console.log(res);
         setStore(res.data.list);
       })
       .catch((err) => {
-        console.log("왜에러임");
+        console.log(err);
       });
   }, []);
 
   useEffect(() => {
     axios
-      .get(`${backServer}/store/storeList/view/best`)
+      .get(`${backServer}/store/storeList/best`)
       .then((res) => {
-        // console.log(res);
-        setStore(res.data.list);
+        console.log(res);
+        setStoreClass(res.data);
+        setKorea(res.data.korea);
+        setJapan(res.data.japan);
+        setYang(res.data.yang);
+        setChina(res.data.china);
       })
       .catch((err) => {
         console.log(err);
@@ -646,114 +655,122 @@ const UserMainView = (props) => {
           </div>
 
           <div className="best-list-container">
-            {/* 3만원 이하 섹션 */}
+            {/* 한식 */}
             {activeTab === "below-30" && (
               <ul className="best-list">
                 <div className="dining-deal-content">
-                  {store.map((item, index) => (
-                    <div className="store-item" key={index}>
-                      <img
-                        src={
-                          item
-                            ? `${backServer}/store/storeList/view/${item.siFilepath}`
-                            : ""
-                        }
-                      />
-                      <div className="dining-deal-info">
-                        <span>{item ? item.storeAddr : ""}</span>
-                        <h3>{item ? item.storeName : ""}</h3>
-                        <p>
-                          <span className="original-price">
-                            {item ? `${item.menuPrice} 원` : ""}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                  {korea && korea.length > 0
+                    ? korea.map((item, index) => (
+                        <div className="store-item" key={index}>
+                          <img
+                            src={
+                              item && item
+                                ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                                : ""
+                            }
+                          />
+                          <div className="dining-deal-info">
+                            <span>{item && item ? item.storeAddr : ""}</span>
+                            <h3>{item && item ? item.storeName : ""}</h3>
+                            <p>
+                              <span className="original-price">
+                                {item && item ? `${item.menuPrice} 원` : ""}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    : ""}
                 </div>
               </ul>
             )}
 
-            {/* 3-5만원 섹션 */}
+            {/* 중식 섹션 */}
             {activeTab === "30-50" && (
               <ul className="best-list">
                 <div className="dining-deal-content">
-                  {store.map((item, index) => (
-                    <div className="store-item" key={index}>
-                      <img
-                        src={
-                          item
-                            ? `${backServer}/store/storeList/view/${item.siFilepath}`
-                            : ""
-                        }
-                      />
-                      <div className="dining-deal-info">
-                        <span>{item ? item.storeAddr : ""}</span>
-                        <h3>{item ? item.storeName : ""}</h3>
-                        <p>
-                          <span className="original-price">
-                            {item ? `${item.menuPrice} 원` : ""}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                  {china && china.length > 0
+                    ? china.map((item, index) => (
+                        <div className="store-item" key={index}>
+                          <img
+                            src={
+                              item && item
+                                ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                                : ""
+                            }
+                          />
+                          <div className="dining-deal-info">
+                            <span>{item && item ? item.storeAddr : ""}</span>
+                            <h3>{item && item ? item.storeName : ""}</h3>
+                            <p>
+                              <span className="original-price">
+                                {item && item ? `${item.menuPrice} 원` : ""}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    : ""}
                 </div>
               </ul>
             )}
 
-            {/* 5-10만원 섹션 */}
+            {/* 일식 섹션 */}
             {activeTab === "50-100" && (
               <ul className="best-list">
                 <div className="dining-deal-content">
-                  {store.map((item, index) => (
-                    <div className="store-item" key={index}>
-                      <img
-                        src={
-                          item
-                            ? `${backServer}/store/storeList/view/${item.siFilepath}`
-                            : ""
-                        }
-                      />
-                      <div className="dining-deal-info">
-                        <span>{item ? item.storeAddr : ""}</span>
-                        <h3>{item ? item.storeName : ""}</h3>
-                        <p>
-                          <span className="original-price">
-                            {item ? `${item.menuPrice} 원` : ""}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                  {japan && japan.length > 0
+                    ? japan.map((item, index) => (
+                        <div className="store-item" key={index}>
+                          <img
+                            src={
+                              item && item
+                                ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                                : ""
+                            }
+                          />
+                          <div className="dining-deal-info">
+                            <span>{item && item ? item.storeAddr : ""}</span>
+                            <h3>{item && item ? item.storeName : ""}</h3>
+                            <p>
+                              <span className="original-price">
+                                {item && item ? `${item.menuPrice} 원` : ""}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    : ""}
                 </div>
               </ul>
             )}
 
-            {/* 10만원 이상 섹션 */}
+            {/* 양식 */}
             {activeTab === "above-100" && (
               <ul className="best-list">
                 <div className="dining-deal-content">
-                  {store.map((item, index) => (
-                    <div className="store-item" key={index}>
-                      <img
-                        src={
-                          item
-                            ? `${backServer}/store/storeList/view/${item.siFilepath}`
-                            : ""
-                        }
-                      />
-                      <div className="dining-deal-info">
-                        <span>{item ? item.storeAddr : ""}</span>
-                        <h3>{item ? item.storeName : ""}</h3>
-                        <p>
-                          <span className="original-price">
-                            {item ? `${item.menuPrice} 원` : ""}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                  {yang && yang.length > 0
+                    ? yang.map((item, index) => (
+                        <div className="store-item" key={index}>
+                          <img
+                            src={
+                              item && item
+                                ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                                : ""
+                            }
+                          />
+                          <div className="dining-deal-info">
+                            <span>{item && item ? item.storeAddr : ""}</span>
+                            <h3>{item && item ? item.storeName : ""}</h3>
+                            <p>
+                              <span className="original-price">
+                                {item && item ? `${item.menuPrice} 원` : ""}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    : ""}
                 </div>
               </ul>
             )}

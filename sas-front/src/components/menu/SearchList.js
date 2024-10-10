@@ -84,7 +84,9 @@ const SearchList = (props) => {
             );
           })
         ) : (
-          <p>검색결과가없습니다</p>
+          <div className="search-result">
+            <p>검색결과가없습니다</p>
+          </div>
         )}
       </section>
     </div>
