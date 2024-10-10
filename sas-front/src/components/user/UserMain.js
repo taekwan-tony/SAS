@@ -108,6 +108,7 @@ function UserMain() {
     setLoginUserNickname("");
     delete axios.defaults.headers.common["Authorization"];
     window.localStorage.removeItem("userRefreshToken");
+    navigate("/usermain");
   };
   // 로그아웃 -수진 끝
 
