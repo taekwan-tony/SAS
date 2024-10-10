@@ -33,6 +33,7 @@
 							    1, 
 							    null,
 							    to_char(sysdate,'yyyy-mm-dd'),
+							    null,
 							    null)
 	</insert>
 	
