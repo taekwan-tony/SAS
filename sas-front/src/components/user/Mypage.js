@@ -46,48 +46,32 @@ const Mypage = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const isUserLogin = useRecoilValue(isUserLoginState);
   useEffect(() => {
-    if (isUserLogin) {
-      // console.log(loginUserId);
-      axios
-        .get(`${backServer}/user/userNo/${loginUserNo}`)
-        .then((res) => {
-          // console.log(res.data);
-          setUser(res.data);
-          setFavoriteFolder(
-            res.data.favoriteFolderList &&
-              favoriteFolder.favoriteFolderNo &&
-              res.data.favoriteFolderList.filter((favorite, index) => {
+    axios
+      .get(`${backServer}/user/userNo/${loginUserNo}`)
+      .then((res) => {
+        // console.log(res.data);
+        setUser(res.data);
+        setFavoriteFolder(
+          res.data.favoriteFolderList &&
+            favoriteFolder.favoriteFolderNo &&
+            res.data.favoriteFolderList.filter((favorite, index) => {
+              return (
+                favorite.favoriteFolderNo === favoriteFolder.favoriteFolderNo
+              );
+            })[0] != null
+            ? res.data.favoriteFolderList.filter((favorite, index) => {
                 return (
                   favorite.favoriteFolderNo === favoriteFolder.favoriteFolderNo
                 );
-              })[0] != null
-              ? res.data.favoriteFolderList.filter((favorite, index) => {
-                  return (
-                    favorite.favoriteFolderNo ===
-                    favoriteFolder.favoriteFolderNo
-                  );
-                })[0]
-              : res.data.favoriteFolderList
-              ? res.data.favoriteFolderList[0]
-              : {}
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      Swal.fire({
-        title: "로그인해주세요",
-        icon: "warning",
-        confirmButtonColor: "var(--main1)",
-        confirmButtonText: "로그인 화면으로",
-        customClass: {
-          confirmButton: "swal-btn",
-        },
-      }).then(() => {
-        navigate("/usermain/login");
+              })[0]
+            : res.data.favoriteFolderList
+            ? res.data.favoriteFolderList[0]
+            : {}
+        );
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    }
   }, [loginUserNo, checkUpdate]);
   // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
   // console.log(favoriteFolder);

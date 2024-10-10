@@ -6,7 +6,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const selectMUI = ({ value, onChange }) => {
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: "130px" }}>
       <FormControl fullWidth>
         <InputLabel
           id="demo-simple-select-label"
@@ -15,7 +15,7 @@ const selectMUI = ({ value, onChange }) => {
             fontFamily: "ns-r",
             "&.Mui-focused": {
               color: "#fff", // 선택(포커스) 상태에서의 색상
-              fontSize: "18px",
+              fontSize: "24px",
             },
           }}
         >
@@ -29,7 +29,7 @@ const selectMUI = ({ value, onChange }) => {
           onChange={onChange}
           sx={{
             fontFamily: "ns-r",
-            fontSize: "16px",
+            fontSize: "24px",
             color: "#544f4f",
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: "#fff", // 보더 색상

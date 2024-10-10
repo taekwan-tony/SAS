@@ -55,7 +55,7 @@ const StoreAmenitiesCheckBoxMUI = (props) => {
           sx={{
             "& .MuiFormControlLabel-label": {
               color: "#fff",
-              fontSize: "20px",
+              fontSize: "24px",
               fontFamily: "ns-r",
             },
             marginRight: "100px",

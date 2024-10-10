@@ -176,11 +176,15 @@ public class StoreService {
 	}//insertStoreFrm
 
 
-	@Transactional
-	public int insertSeat(SeatDTO seat) {
-		int result = storeDao.insertSeat(seat);
+	public int insertSeatList(int storeNo, List<SeatDTO> seatList) {
+		int result = 0;
+		for (SeatDTO seat : seatList) {
+	        seat.setStoreNo(storeNo);
+	        result += storeDao.insertSeat(seat);
+	    }
 		return result;
 	}//insertSeat
+
 
 
 	@Transactional
@@ -356,10 +360,17 @@ public class StoreService {
 
 	public Map<String, Object> selectBestStore() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List list = storeDao.selectBestStore();
-		map.put("list", list);
+		List korea = storeDao.selectBest1();	
+		List china = storeDao.selectBest2();
+		List japan = storeDao.selectBest3();
+		List yang = storeDao.selectBest4();
+		map.put("korea", korea);
+		map.put("china", china);
+		map.put("japan", japan);
+		map.put("yang", yang);
 		return map;
 	}
+	
 	
 	
 

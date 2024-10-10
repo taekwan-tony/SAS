@@ -9,7 +9,7 @@ import SelectMUI from "../utils/SelectMUI";
 import StoreMoodCheckBoxMUI from "../utils/StoreMoodCheckBoxMUI";
 import StoreAmenitiesCheckBoxMUI from "../utils/StoreAmenitiesCheckBoxMUI";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { isStoreLoginState } from "../utils/RecoilData";
+import { isStoreLoginState, isStoreUpdateState } from "../utils/RecoilData";
 import {
   loginStoreIdState,
   loginStoreNoState,
@@ -30,15 +30,11 @@ const StoreUpdate = (props) => {
     seatAmount: "",
   });
 
-  // API로부터 데이터 가져오기 (예시)
   useEffect(() => {
     setActiveIndex(1);
     if (store.seatList && store.seatList.length > 0) {
-      // store.seatList가 존재하고 배열이 비어 있지 않으면 첫 번째 좌석의 수용 인원 설정
       setStoreSeatCapacity(store.seatList[0].seatCapacity);
       setStoreSeatAmount(store.seatList[0].seatAmount);
-      // console.log("총 좌석 수 : ", storeSeatAmount);
-      // console.log("수용 인원 : ", storeSeatCapacity);
     }
   }, [store]);
 
@@ -52,15 +48,12 @@ const StoreUpdate = (props) => {
     }
   }, [storeSeatCapacity, storeSeatAmount]);
 
-  //console.log("매장 좌석 수 : ", seat);
-
   //매장 정보 출력
   useEffect(() => {
     if (isLoginStore) {
       axios
         .get(`${backServer}/store/storeUpdate/${loginstoreNo}`)
         .then((res) => {
-          //console.log("매장 정보 출력 : ", res.data);
           setStore(res.data);
           setCheck(res.data.length);
 
@@ -79,8 +72,59 @@ const StoreUpdate = (props) => {
 
   const changeStore = (e) => {
     const name = e.target.name;
-    setStore({ ...store, [name]: e.target.value });
-    setSeat({ ...seat, [name]: e.target.value });
+    const value = e.target.value;
+
+    setStore({ ...store, [name]: value });
+
+    // 검증
+    if (name === "storeName" && !storeNameRegex.test(value)) {
+      if (storeNameRef.current) {
+        storeNameRef.current.innerText =
+          "한글 20자, 영문 40자 이하로 입력해주세요.";
+      }
+    } else if (storeNameRef.current) {
+      storeNameRef.current.innerText = "";
+    }
+
+    if (name === "storePhone" && !storePhoneRegex.test(value)) {
+      if (storePhoneRef.current) {
+        storePhoneRef.current.innerText = "-을 포함해서 입력해주세요.";
+      }
+    } else if (storePhoneRef.current) {
+      storePhoneRef.current.innerText = "";
+    }
+
+    if (name === "storeDetailAddr" && !storeDetailAddrRegex.test(value)) {
+      if (storeDetailAddrRef.current) {
+        storeDetailAddrRef.current.innerText = "50자 이하로 입력해주세요.";
+      }
+    } else if (storeDetailAddrRef.current) {
+      storeDetailAddrRef.current.innerText = "";
+    }
+
+    if (name === "deposit" && !depositRegex.test(value)) {
+      if (depositRef.current) {
+        depositRef.current.innerText = "숫자만 입력해주세요.";
+      }
+    } else if (depositRef.current) {
+      depositRef.current.innerText = "";
+    }
+
+    if (name === "seatCapacity" && !seatRegex.test(value)) {
+      if (seatRef.current) {
+        seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
+      }
+    } else if (seatRef.current) {
+      seatRef.current.innerText = "";
+    }
+
+    if (name === "seatAmount" && !seatRegex.test(value)) {
+      if (seatRef.current) {
+        seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
+      }
+    } else if (seatRef.current) {
+      seatRef.current.innerText = "";
+    }
   };
 
   //첨부파일
@@ -137,13 +181,6 @@ const StoreUpdate = (props) => {
     setIsModalOpen((prevOpenState) => !prevOpenState);
   };
 
-  // 주소
-  const [detailAddress, setDetailedAddress] = useState("");
-
-  // const inputChangeHandler = (event) => {
-  //   setDetailedAddress(event.target.value);
-  // };
-
   // 매장 유형 변경 핸들러
   const handleChange = (event) => {
     const { value } = event.target;
@@ -153,178 +190,31 @@ const StoreUpdate = (props) => {
     }));
   };
 
+  const [seatList, setSeatList] = useState([{ seatType: "", seatCount: "" }]);
+
+  const changeSeatType = (index, value) => {
+    const updatedSeatList = [...seatList];
+    updatedSeatList[index].seatType = value;
+    setSeatList(updatedSeatList);
+  };
+
+  const changeSeatCount = (index, value) => {
+    const updatedSeatList = [...seatList];
+    updatedSeatList[index].seatCount = value;
+    setSeatList(updatedSeatList);
+  };
+
+  const addSeatRow = () => {
+    setSeatList([...seatList, { seatType: "", seatCount: "" }]);
+  };
+
+  const removeSeatRow = (index) => {
+    const updatedSeatList = seatList.filter((_, i) => i !== index);
+    setSeatList(updatedSeatList);
+  };
+
   //매장 수정
   const storeModify = () => {
-    // 매장 이름 검증 (변경된 경우에만)
-    if (store.storeName !== originalStoreName) {
-      console.log("변경된 매장 이름:", store.storeName); // 현재 매장 이름
-      console.log(
-        "정규 표현식 테스트 결과:",
-        storeNameRegex.test(store.storeName)
-      ); // 정규 표현식 결과
-
-      if (!storeNameRegex.test(store.storeName)) {
-        Swal.fire({
-          title: "매장 이름 오류",
-          text: "매장 이름은 한글 20자 이하, 영문 및 숫자는 40자 이하로 설정해주세요.",
-          icon: "warning",
-          confirmButtonColor: "#5e9960",
-        });
-        return; // 검증에 실패하면 수정 요청을 보내지 않음
-      }
-    }
-
-    // 매장 전화번호 검증 (변경된 경우에만)
-    if (
-      store.storePhone !== originalStorePhone && // 기존 전화번호와 비교
-      !storePhoneRegex.test(store.storePhone)
-    ) {
-      Swal.fire({
-        title: "전화번호 오류",
-        text: "전화번호는 xxx-xxxx-xxxx 형식으로 입력해주세요 (x는 숫자).",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
-    // 매장 소개가 4000 BYTE 이하인지 확인
-    if (!isValidStoreIntroduce(store.storeIntroduce)) {
-      Swal.fire({
-        title: "소개 오류",
-        text: "매장 소개는 4000 BYTE 이하로 입력해주세요.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 조건을 만족하지 않으면 수정 요청을 보내지 않음
-    }
-
-    // 상세 주소 검증 (변경된 경우에만)
-    if (
-      store.storeDetailAddr !== originalStoreDetailAddr &&
-      !storeDetailAddrRegex.test(store.storeDetailAddr)
-    ) {
-      Swal.fire({
-        title: "상세 주소 오류",
-        text: "상세 주소는 1자 이상, 50자 이하로 입력해주세요.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
-    // // 영업 시간 검증 (변경된 경우에만)
-    // if (
-    //   store.storeTime !== originalStoreTime &&
-    //   !storeTimeRegex.test(store.storeTime)
-    // ) {
-    //   Swal.fire({
-    //     title: "영업 시간 오류",
-    //     text: "영업 시간은 'HH:MM - HH:MM' 형식으로 입력해주세요.",
-    //     icon: "warning",
-    //     confirmButtonColor: "#5e9960",
-    //   });
-    //   return; // 검증 실패 시 수정 요청을 보내지 않음
-    // }
-
-    // 예약 가능 시작 시간 검증 (변경된 경우에만)
-    if (
-      store.storeReStart !== originalStoreReStart &&
-      !storeReStartRegex.test(store.storeReStart)
-    ) {
-      Swal.fire({
-        title: "예약 가능 시작 시간 오류",
-        text: "예약 가능 시작 시간은 'HH:MM' 형식으로 입력해주세요.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
-    // 예약 가능 마감 시간 검증 (변경된 경우에만)
-    if (
-      store.storeReEnd !== originalStoreReEnd &&
-      !storeReEndRegex.test(store.storeReEnd)
-    ) {
-      Swal.fire({
-        title: "예약 가능 마감 시간 오류",
-        text: "예약 가능 마감 시간은 'HH:MM' 형식으로 입력해주세요.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
-    // 브레이크 타임 시작 시간 검증 (변경된 경우에만)
-    if (
-      store.breakTimeStart !== originalBreakTimeStart &&
-      !breakTimeStartRegex.test(store.breakTimeStart)
-    ) {
-      Swal.fire({
-        title: "브레이크 타임 시작 시간 오류",
-        text: "브레이크 타임 시작 시간은 'HH:MM' 형식으로 입력해주세요.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
-    // 브레이크 타임 마감 시간 검증 (변경된 경우에만)
-    if (
-      store.breakTimeEnd !== originalBreakTimeEnd &&
-      !breakTimeEndRegex.test(store.breakTimeEnd)
-    ) {
-      Swal.fire({
-        title: "브레이크 타임 마감 시간 오류",
-        text: "브레이크 타임 마감 시간은 'HH:MM' 형식으로 입력해주세요.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
-    // 예약금 검증 (변경된 경우에만)
-    if (
-      store.deposit !== originalDeposit &&
-      !depositRegex.test(store.deposit)
-    ) {
-      Swal.fire({
-        title: "예약금 오류",
-        text: "예약금은 숫자만 입력 가능하며, 100,000 이하로 설정해주세요.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
-    // 좌석 수용 인원 검증 (변경된 경우에만)
-    if (
-      seat.seatCapacity !== originalSeatCapacity &&
-      !seatCapacityRegex.test(seat.seatCapacity)
-    ) {
-      Swal.fire({
-        title: "좌석 수용 인원 오류",
-        text: "좌석 수용 인원은 1 이상 99 이하의 숫자만 입력 가능합니다.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
-    // 총 좌석 수 검증 (변경된 경우에만)
-    if (
-      seat.seatAmount !== originalSeatAmount &&
-      !seatAmountRegex.test(seat.seatAmount)
-    ) {
-      Swal.fire({
-        title: "총 좌석 수 오류",
-        text: "총 좌석 수는 1 이상 99 이하의 숫자만 입력 가능합니다.",
-        icon: "warning",
-        confirmButtonColor: "#5e9960",
-      });
-      return; // 검증 실패 시 수정 요청을 보내지 않음
-    }
-
     const form = new FormData();
 
     // 새로 추가된 파일들
@@ -415,68 +305,31 @@ const StoreUpdate = (props) => {
       });
   };
 
-  // 매장 소개 최대 4000 BYTE 확인 함수
-  const isValidStoreIntroduce = (text) => {
-    // 4000 BYTE 이하인지 확인 (UTF-8 기준, 한글은 3 BYTE로 계산)
-    let byteLength = 0;
-    for (let i = 0; i < text.length; i++) {
-      byteLength += text.charCodeAt(i) > 127 ? 3 : 1;
-      if (byteLength > 4000) return false;
-    }
-    return true;
-  };
-
   // 정규표현식
   const storeNameRegex = /^[가-힣]{1,20}$|^[a-zA-Z0-9\s]{1,40}$/;
-  const storePhoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+  const storePhoneRegex = /^\d{1,3}-\d{3,4}-\d{4}$/;
   const storeDetailAddrRegex = /^.{1,50}$/;
-  const storeTimeRegex =
-    /^(0[0-9]|1[0-9]|2[0-2]):[0-5][0-9]\s*-\s*(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-  const storeReStartRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-  const storeReEndRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-  const breakTimeStartRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-  const breakTimeEndRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
   const depositRegex = /^(100000|[1-9][0-9]{0,4}|0)$/;
-  const seatCapacityRegex = /^(99|[1-8]?[0-9])$/;
-  const seatAmountRegex = /^(99|[1-8]?[0-9])$/;
+  const seatRegex = /^(99|[1-8]?[0-9])$/;
 
-  const [originalStoreName, setOriginalStoreName] = useState(store.storeName);
-  const [originalStorePhone, setOriginalStorePhone] = useState(
-    store.storePhone
-  );
-  const [originalStoreDetailAddr, setOriginalStoreDetailAddr] = useState(
-    store.storeDetailAddr
-  );
-  const [originalStoreTime, setOriginalStoreTime] = useState(store.storeTime);
-  const [originalStoreReStart, setOriginalStoreReStart] = useState(
-    store.storeReStart
-  );
-  const [originalStoreReEnd, setOriginalStoreReEnd] = useState(
-    store.storeReEnd
-  );
-  const [originalBreakTimeStart, setOriginalBreakTimeStart] = useState(
-    store.breakTimeStart
-  );
-  const [originalBreakTimeEnd, setOriginalBreakTimeEnd] = useState(
-    store.breakTimeEnd
-  );
-  const [originalDeposit, setOriginalDeposit] = useState(store.deposit);
-  const [originalSeatCapacity, setOriginalSeatCapacity] = useState(
-    store.seatCapacity
-  );
-  const [originalSeatAmount, setOriginalSeatAmount] = useState(
-    store.seatAmount
-  );
+  const storeNameRef = useRef(null);
+  const storePhoneRef = useRef(null);
+  const storeDetailAddrRef = useRef(null);
+  const storeTimeRef = useRef(null);
+  const storeReTimeRef = useRef(null);
+  const breakTimeRef = useRef(null);
+  const depositRef = useRef(null);
+  const seatRef = useRef(null);
 
   return (
-    <div className="storeUpdate-main">
+    <>
       {/* section */}
       <div className="top-section">
-        <div className="info-card">
+        <div className="storeUpdate-info-card">
           <table className="storeUpdate-table">
             <tbody className="storeUpdate-tbody">
-              <tr className="storeUpdate-tr img-tr">
-                <th className="storeUpdate-th img-th" colSpan={2}>
+              <tr className="storeUpdate-img-tr">
+                <th className="storeUpdate-img-th" colSpan={2}>
                   <div className="storeUpdate-imgDiv-zone">
                     {/* 이미지 미리보기 */}
                     {storeSiFilepathList.length > 0 &&
@@ -497,7 +350,6 @@ const StoreUpdate = (props) => {
                           </button>
                         </div>
                       ))}
-
                     {/* 새로 추가된 이미지 미리보기 */}
                     {storeImage.length > 0 &&
                       storeImage.map((image, index) => (
@@ -516,8 +368,11 @@ const StoreUpdate = (props) => {
                         </div>
                       ))}
                   </div>
-                  <div className="storeUpdate-div">
-                    <label htmlFor="storeFile" className="storeUpdate-label">
+                  <div className="storeUpdate-img-div">
+                    <label
+                      htmlFor="storeFile"
+                      className="storeUpdate-img-label"
+                    >
                       파일 선택
                     </label>
                     <input
@@ -537,7 +392,7 @@ const StoreUpdate = (props) => {
                     매장 상호명
                   </label>
                 </th>
-                <td>
+                <td className="storeUpdate-td">
                   <div className="storeUpdate-div">
                     <input
                       className="storeUpdate-inputBox"
@@ -548,6 +403,7 @@ const StoreUpdate = (props) => {
                       onChange={changeStore}
                     ></input>
                   </div>
+                  <p className="storeUpdate-p" ref={storeNameRef}></p>
                 </td>
               </tr>
               <tr className="storeUpdate-tr">
@@ -556,7 +412,7 @@ const StoreUpdate = (props) => {
                     매장 전화번호
                   </label>
                 </th>
-                <td>
+                <td className="storeUpdate-td">
                   <div className="storeUpdate-div">
                     <input
                       className="storeUpdate-inputBox"
@@ -567,6 +423,7 @@ const StoreUpdate = (props) => {
                       onChange={changeStore}
                     ></input>
                   </div>
+                  <p className="storeUpdate-p" ref={storePhoneRef}></p>
                 </td>
               </tr>
               <tr className="storeUpdate-tr">
@@ -593,7 +450,7 @@ const StoreUpdate = (props) => {
                     매장 위치
                   </label>
                 </th>
-                <td>
+                <td className="storeUpdate-td">
                   <div className="storeUpdate-div">
                     <input
                       className="storeUpdate-inputBox"
@@ -622,6 +479,7 @@ const StoreUpdate = (props) => {
                       우편번호 찾기
                     </button>
                   </div>
+                  <p className="storeUpdate-p" ref={storeDetailAddrRef}></p>
                 </td>
               </tr>
               <tr className="storeUpdate-tr">
@@ -630,7 +488,7 @@ const StoreUpdate = (props) => {
                     영업 시간
                   </label>
                 </th>
-                <td>
+                <td className="storeUpdate-td">
                   <div className="storeUpdate-div">
                     <input
                       className="storeUpdate-inputBox"
@@ -642,6 +500,7 @@ const StoreUpdate = (props) => {
                       placeholder="ex) 09:00 - 22:00"
                     ></input>
                   </div>
+                  <p className="storeUpdate-p" ref={storeTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeUpdate-tr">
@@ -659,8 +518,10 @@ const StoreUpdate = (props) => {
                       name="storeReStart"
                       value={store.storeReStart}
                       onChange={changeStore}
+                      placeholder="ex) 09:00 "
                     ></input>
                   </div>
+                  <p className="storeUpdate-p" ref={storeReTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeUpdate-tr">
@@ -678,8 +539,10 @@ const StoreUpdate = (props) => {
                       name="storeReEnd"
                       value={store.storeReEnd}
                       onChange={changeStore}
+                      placeholder="ex) 22:00 "
                     ></input>
                   </div>
+                  <p className="storeUpdate-p" ref={storeReTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeUpdate-tr">
@@ -697,8 +560,10 @@ const StoreUpdate = (props) => {
                       name="breakTimeStart"
                       value={store.breakTimeStart}
                       onChange={changeStore}
+                      placeholder="ex) 15:00 "
                     ></input>
                   </div>
+                  <p className="storeUpdate-p" ref={breakTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeUpdate-tr">
@@ -716,8 +581,10 @@ const StoreUpdate = (props) => {
                       name="breakTimeEnd"
                       value={store.breakTimeEnd}
                       onChange={changeStore}
+                      placeholder="ex) 17:00 "
                     ></input>
                   </div>
+                  <p className="storeUpdate-p" ref={breakTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeUpdate-tr">
@@ -737,44 +604,69 @@ const StoreUpdate = (props) => {
                       onChange={changeStore}
                     ></input>
                   </div>
+                  <p className="storeUpdate-p" ref={depositRef}></p>
                 </td>
               </tr>
-              <tr className="storeUpdate-tr">
-                <th className="storeUpdate-th">
-                  <label htmlFor="seatCapacity" className="storeUpdate-label">
-                    좌석 수용 인원
+              <tr className="storeView-tr">
+                <th className="storeView-th">
+                  <label htmlFor="seatType" className="storeView-label">
+                    좌석
                   </label>
                 </th>
-                <td className="storeUpdate-td">
-                  <div className="storeUpdate-div">
-                    <input
-                      className="storeUpdate-inputBox"
-                      type="text"
-                      id="seatCapacity"
-                      name="seatCapacity"
-                      value={seat.seatCapacity}
-                      onChange={changeStore}
-                    ></input>
-                  </div>
-                </td>
-              </tr>
-              <tr className="storeUpdate-tr">
-                <th className="storeUpdate-th">
-                  <label htmlFor="seatAmount" className="storeUpdate-label">
-                    총 좌석 수
-                  </label>
-                </th>
-                <td className="storeUpdate-td">
-                  <div className="storeUpdate-div">
-                    <input
-                      className="storeUpdate-inputBox"
-                      type="text"
-                      id="seatAmount"
-                      name="seatAmount"
-                      value={seat.seatAmount}
-                      onChange={changeStore}
-                    ></input>
-                  </div>
+                <td className="storeView-td">
+                  <table className="seatTable">
+                    <thead>
+                      <tr className="seat-tr">
+                        <th className="seat-th">좌석 유형</th>
+                        <th className="seat-th">좌석 수</th>
+                        <th className="seat-th">삭제</th>
+                        <th className="seat-th">
+                          {" "}
+                          <button className="seat-btn" onClick={addSeatRow}>
+                            + 좌석 추가
+                          </button>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {seatList.map((seat, index) => (
+                        <tr key={index}>
+                          <td className="seat-td">
+                            <input
+                              className="storeView-inputBox"
+                              type="text"
+                              name="seatType"
+                              placeholder="ex) 2인용"
+                              value={seat.seatType}
+                              onChange={(e) =>
+                                changeSeatType(index, e.target.value)
+                              }
+                            />
+                          </td>
+                          <td className="seat-td">
+                            <input
+                              className="storeView-inputBox"
+                              type="text"
+                              name="seatCount"
+                              placeholder="ex) 5"
+                              value={seat.seatCount}
+                              onChange={(e) =>
+                                changeSeatCount(index, e.target.value)
+                              }
+                            />
+                          </td>
+                          <td className="seat-td">
+                            <button
+                              className="seat-remove-button"
+                              onClick={() => removeSeatRow(index)}
+                            >
+                              X
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </td>
               </tr>
               <tr className="storePartnership-tr">
@@ -786,8 +678,8 @@ const StoreUpdate = (props) => {
                     매장 유형
                   </label>
                 </th>
-                <td>
-                  <div className="storePartnership-div">
+                <td className="storeUpdate-td">
+                  <div className="storeUpdate-div">
                     <SelectMUI
                       value={store.storeClass}
                       onChange={handleChange}
@@ -845,7 +737,7 @@ const StoreUpdate = (props) => {
           수정
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

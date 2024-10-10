@@ -627,7 +627,8 @@ const ReservationModalSecond = (props) => {
           pay_method: "card",
           merchant_uid: pay.payCode, //상점에서 생성한 고유 주문번호(primary key 이므로 고정값을 두면 안됨>>보통 현재시간을 둠)
           name: "Spoon&Smiles 예약 결제",
-          amount: pay.payPrice,
+          // amount: pay.payPrice,
+          amount: 100,
           buyer_email: user.userEmail,
           buyer_name: user.userName,
           buyer_tel: user.userPhone,

@@ -23,13 +23,28 @@
 }
 
 .storeView-th {
-  font-size: 22px;
+  font-size: 26px;
   text-align: center;
+  width: 30%;
+}
+
+.seat-th {
+  font-size: 24px;
+  text-align: center;
+  color: #fff;
+  font-weight: 300;
+  width: 266px;
+}
+
+.storeView-td {
+  text-align: center;
+  font-size: 26px;
+  color: #fff;
   width: 50%;
 }
 
-.storeView-th {
-  text-align: center;
+.seat-td {
+  color: #fff;
 }
 
 .storeView-label {
@@ -40,11 +55,34 @@
 
 .storeView-imgDiv-zone {
   display: flex;
-  justify-content: center; /* 이미지를 가로 방향으로 가운데 정렬 */
-  align-items: center; /* 이미지를 세로 방향으로 가운데 정렬 */
-  position: relative; /* 버튼을 이미지 위에 배치하기 위한 설정 */
-  gap: 10px; /* 이미지 간격 */
+  align-items: center;
+  justify-content: center; /* 이미지가 가운데에 위치하도록 변경 */
+  gap: 10px;
   width: 100%;
+  max-width: 1300px; /* 이미지 컨테이너의 너비를 적당한 크기로 설정 (조정 가능) */
+  overflow-x: auto; /* 이미지들을 가로 스크롤할 수 있도록 설정 */
+  white-space: nowrap; /* 이미지들이 한 줄로 나열되도록 설정 */
+  padding: 20px 0; /* 이미지가 상하로 적당히 띄워져 보이도록 패딩 추가 */
+  margin: 0 auto; /* 가운데 정렬 */
+  position: relative;
+}
+
+.storeView-img-label {
+  color: #fff;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  background-color: #518142;
+  padding: 10px;
+  width: 180px;
+  cursor: pointer;
+  display: inline-block; /* 라벨을 블록 요소로 변경 */
+  text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+.storeView-img-label:hover {
+  color: #518142;
+  background-color: #fff;
 }
 
 .storeView-div {
@@ -58,60 +96,23 @@
   text-align: center;
 }
 
-.storeView-imgDiv {
-  width: 80%;
-  height: auto;
-  object-fit: cover;
+.storeView-img-div {
   display: flex;
   align-items: center;
-  justify-content: center;
-  overflow: auto;
+  justify-content: center; /* 파일 선택 라벨을 중앙으로 배치 */
+  color: #fff;
+  font-size: 20px;
+  font-weight: 200;
+  text-align: center;
 }
 
 .storeView-img {
-  width: 40%; /* 이미지의 가로 크기 자동 조정 */
-  height: auto; /* 자동 높이 조정 */
-  margin: 0 10px; /* 이미지 간의 간격 */
-  object-fit: cover;
-}
-
-.storeView-img-zone {
+  width: 250px;
+  height: 250px;
+  object-fit: cover; /* 이미지 크기를 유지하면서 비율 맞추기 */
   display: flex;
   justify-content: center;
-  width: 60%;
-  height: 400px;
-  margin-bottom: 20px;
-}
-
-.storeView-btn-zone {
-  display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 125px;
-}
-
-.storeView-storeImg-btn {
-  width: 140px;
-  height: 50px;
-  border: none;
-  background-color: #518142;
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 19px;
-  font-weight: 590;
-  padding: 5px;
-}
-
-.storeView-storeImg-btn:hover {
-  color: #518142;
-  background-color: #fff;
-  font-weight: 500;
-}
-
-.storeView-addr {
-  width: 100%;
-  margin-left: 45px;
 }
 
 .storeView-btn {
@@ -131,36 +132,49 @@
   justify-content: center;
 }
 
+.seat-btn {
+  width: 130px;
+  height: 40px;
+  border: none;
+  background-color: #518142;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 19px;
+  font-weight: 590;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat-btn:hover {
+  background-color: #fff;
+  color: #518142;
+  cursor: pointer;
+}
+
+.seat-tr {
+  margin-left: 15px;
+}
+
+.seatTable {
+  margin-left: 15px;
+}
+
+.seat-view-th {
+  color: #fff;
+  font-weight: 300;
+}
+
+.seat-view-table {
+  margin: 0 auto;
+}
+
 .storeView-btn:hover {
   border: none;
   color: #518142;
   background-color: #fff;
   font-weight: 500;
-}
-
-.store-regist-btn {
-  width: 300px;
-  height: 90px;
-  border: none;
-  background-color: #518142;
-  color: #fff;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 40px;
-  font-weight: 600;
-}
-
-.store-regist-btn:hover {
-  border: none;
-  background-color: #fff;
-  color: #518142;
-}
-
-/* 추가 */
-.info-header-h3 {
-  font-size: 16px;
-  color: #bfbfbf;
-  padding: 10px;
 }
 
 .storeView-textarea {
@@ -196,6 +210,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 125px;
+  margin-top: 40px;
 }
 
 .storeView-modify-btn:hover {
@@ -228,23 +243,12 @@
   justify-content: center;
 }
 
-.storeView-updateBtn {
-  position: absolute;
-  width: 80px;
+.seat-remove-button {
+  color: #fff;
+  background-color: transparent;
   font-size: 20px;
-  top: 15px; /* info-card 상단에서 10px 만큼 내림 */
-  right: 15px; /* info-card 오른쪽에서 10px 만큼 왼쪽으로 이동 */
-  background-color: #518142;
-  color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.storeView-updateBtn:hover {
-  background-color: #fff;
-  color: #518142;
+  box-sizing: border-box;
 }
 
 .storeView-info-card {
@@ -291,4 +295,26 @@
 
 .storeView-slider-btn:last-of-type {
   right: 500px; /* 오른쪽 버튼 */
+}
+
+.storeView-updateBtn {
+  position: absolute;
+  width: 80px;
+  color: #fff;
+  background-color: transparent;
+  font-size: 20px;
+  top: 15px; /* info-card 상단에서 10px 만큼 내림 */
+  right: 15px; /* info-card 오른쪽에서 10px 만큼 왼쪽으로 이동 */
+  background-color: #518142;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.storeView-updateBtn:hover {
+  background-color: #fff;
+  color: #518142;
+  cursor: pointer;
 }

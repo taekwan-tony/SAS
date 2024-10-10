@@ -2,23 +2,28 @@ import "./storeView.css";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  isStoreLoginState,
-  loginStoreIdState,
-  loginStoreNoState,
-  storeTypeState,
-} from "../utils/RecoilData";
-import { Link, Route, Routes } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { loginStoreNameState, loginStoreNoState } from "../utils/RecoilData";
+import { Link } from "react-router-dom";
 import StoreViewFrm from "./StoreViewFrm";
 import StoreView from "./StoreView";
-import StoreUpdate from "./StoreUpdate";
+import StoreUpdate from "./StoreUpdate"; // StoreUpdate 컴포넌트 임포트
+
 const StoreViewMain = (props) => {
   const setActiveIndex = props.setActiveIndex;
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
-  const [check, setCheck] = useState(false);
-  const isLoginStore = useRecoilValue(isStoreLoginState);
+  const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 로그인된 매장 번호
+  const [storeName, setStoreName] = useRecoilState(loginStoreNameState); // 로그인된 매장 이름
+
+  useEffect(() => {
+    // 새로 고침 시 LocalStorage에서 storeName 값을 불러옴
+    const savedStoreName = localStorage.getItem("storeName");
+    if (savedStoreName) {
+      setStoreName(savedStoreName);
+    } else if (storeName) {
+      // storeName이 변경되면 LocalStorage에 저장
+      localStorage.setItem("storeName", storeName);
+    }
+  }, [storeName]);
 
   const [store, setStore] = useState({
     storeNo: "",
@@ -42,10 +47,10 @@ const StoreViewMain = (props) => {
     seatAmount: "",
   });
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // 수정 상태 확인
 
   const handleEditClick = () => {
-    setIsEditing(!isEditing); // 수정 화면으로 전환
+    setIsEditing(true); // 수정 모드로 전환
   };
 
   return (
@@ -75,28 +80,32 @@ const StoreViewMain = (props) => {
           <div className="owner-background">
             <img src="/image/238.jpg" alt="back" />
           </div>
-          <div>
-            {/* store_name이 있으면 storeView 컴포넌트 출력, 없으면 storeFrm 컴포넌트 출력 */}
-            {/* `isEditing` 상태에 따라 다른 컴포넌트를 렌더링 */}
+          <div className="storeUpdate-main">
+            {/* isEditing 상태에 따라 StoreView 또는 StoreUpdate 렌더링 */}
             {isEditing ? (
               <StoreUpdate
                 store={store}
                 setStore={setStore}
                 loginstoreNo={loginstoreNo}
                 seat={seat}
-                isEditing={isEditing}
-                setIsEditing={setIsEditing}
                 setActiveIndex={setActiveIndex}
+                setIsEditing={setIsEditing} // 수정 모드 취소 가능하게
               />
-            ) : (
+            ) : storeName ? (
               <StoreView
                 store={store}
                 setStore={setStore}
                 loginstoreNo={loginstoreNo}
                 seat={seat}
-                handleEditClick={handleEditClick}
-                isEditing={isEditing}
-                setIsEditing={setIsEditing}
+                handleEditClick={handleEditClick} // 수정 버튼 클릭 핸들러
+                setActiveIndex={setActiveIndex}
+              />
+            ) : (
+              <StoreViewFrm
+                store={store}
+                setStore={setStore}
+                loginstoreNo={loginstoreNo}
+                seat={seat}
                 setActiveIndex={setActiveIndex}
               />
             )}

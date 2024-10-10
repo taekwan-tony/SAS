@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import "./storeView.css";
-import Swal from "sweetalert2";
 import axios from "axios";
-import PostCodeApi from "../utils/PostCodeApi";
 import "./modal.css";
-import { Link, useNavigate } from "react-router-dom";
-import SelectMUI from "../utils/SelectMUI";
-import StoreMoodCheckBoxMUI from "../utils/StoreMoodCheckBoxMUI";
-import StoreAmenitiesCheckBoxMUI from "../utils/StoreAmenitiesCheckBoxMUI";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isStoreLoginState } from "../utils/RecoilData";
 
@@ -18,31 +12,39 @@ const StoreView = (props) => {
   const [check, setCheck] = useState(false);
   const { loginstoreNo, handleEditClick } = props;
   const [store, setStore] = useState({});
-  const [storeSeatCapacity, setStoreSeatCapacity] = useState("");
-  const [storeSeatAmount, setStoreSeatAmount] = useState("");
-  const [seat, setSeat] = useState({
-    seatCapacity: "",
-    seatAmount: "",
-  });
+
+  useEffect(() => {
+    storeRefreshLogin();
+    window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
+  }, [isLoginStore]);
+
+  const storeRefreshLogin = () => {
+    const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
+    if (storeRefreshToken != null) {
+      axios.defaults.headers.common["Authorization"] = storeRefreshToken;
+      axios
+        .post(`${backServer}/store/storeRefresh`)
+        .then((res) => {
+          console.log("로그인 유지 :", res);
+          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
+          window.localStorage.setItem(
+            "storeRefreshToken",
+            res.data.refreshToken
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          delete axios.defaults.headers.common["Authorization"];
+          window.localStorage.removeItem("storeRefreshToken");
+        });
+    }
+  };
+
+  const [seatList, setSeatList] = useState([{ seatAmount: "", seatCount: "" }]);
 
   const [storeSiFilepathList, setStoreSiFilepathList] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // 현재 이미지 인덱스 상태
-
-  useEffect(() => {
-    if (store.seatList && store.seatList.length > 0) {
-      setStoreSeatCapacity(store.seatList[0].seatCapacity);
-      setStoreSeatAmount(store.seatList[0].seatAmount);
-    }
-  }, [store]);
-
-  useEffect(() => {
-    if (storeSeatCapacity && storeSeatAmount) {
-      setSeat({
-        seatCapacity: storeSeatCapacity,
-        seatAmount: storeSeatAmount,
-      });
-    }
-  }, [storeSeatCapacity, storeSeatAmount]);
 
   useEffect(() => {
     setActiveIndex(1);
@@ -143,9 +145,7 @@ const StoreView = (props) => {
                     매장 상호명
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.storeName}</div>
-                </td>
+                <td className="storeView-td">{store.storeName}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -153,9 +153,7 @@ const StoreView = (props) => {
                     매장 전화번호
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">{store.storePhone}</div>
-                </td>
+                <td className="storeView-td">{store.storePhone}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -163,9 +161,7 @@ const StoreView = (props) => {
                     매장 소개
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.storeIntroduce}</div>
-                </td>
+                <td className="storeView-td">{store.storeIntroduce}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -173,10 +169,8 @@ const StoreView = (props) => {
                     매장 위치
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">
-                    {store.storeAddr} {store.storeDetailAddr}
-                  </div>
+                <td className="storeView-td">
+                  {store.storeAddr} {store.storeDetailAddr}
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -185,9 +179,7 @@ const StoreView = (props) => {
                     영업 시간
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">{store.storeTime}</div>
-                </td>
+                <td className="storeView-td">{store.storeTime}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -195,9 +187,7 @@ const StoreView = (props) => {
                     예약 가능 시작 시간
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.storeReStart}</div>
-                </td>
+                <td className="storeView-td">{store.storeReStart}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -205,9 +195,7 @@ const StoreView = (props) => {
                     예약 가능 마감 시간
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.storeReEnd}</div>
-                </td>
+                <td className="storeView-td">{store.storeReEnd}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -215,9 +203,7 @@ const StoreView = (props) => {
                     브레이크 타임 시작
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.breakTimeStart}</div>
-                </td>
+                <td className="storeView-td">{store.breakTimeStart}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -225,9 +211,7 @@ const StoreView = (props) => {
                     브레이크 타임 마감
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.breakTimeEnd}</div>
-                </td>
+                <td className="storeView-td">{store.breakTimeEnd}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -235,43 +219,55 @@ const StoreView = (props) => {
                     예약금
                   </label>
                 </th>
+                <td className="storeView-td">{store.deposit}</td>
+              </tr>
+              <tr className="storeView-tr">
+                <th className="storeView-th">
+                  <label htmlFor="seatType" className="storeView-label">
+                    좌석
+                  </label>
+                </th>
                 <td className="storeView-td">
-                  <div className="storeView-div">{store.deposit}</div>
+                  <table className="seat-view-table">
+                    <thead>
+                      <tr className="seat-view-tr">
+                        <th className="seat-view-th">좌석 유형</th>
+                        <th className="seat-view-th">좌석 수</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {seatList.map((seat, index) => (
+                        <tr key={index}>
+                          <td className="seat-view-td">
+                            <input
+                              className="storeView-inputBox"
+                              type="text"
+                              name="seatType"
+                              value={seat.seatCapacity}
+                            />
+                          </td>
+                          <td className="seat-td">
+                            <input
+                              className="storeView-inputBox"
+                              type="text"
+                              name="seatCount"
+                              value={seat.seatAmount}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
-                  <label htmlFor="seatCapacity" className="storeView-label">
-                    좌석 수용 인원
-                  </label>
-                </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{seat.seatCapacity}</div>
-                </td>
-              </tr>
-              <tr className="storeView-tr">
-                <th className="storeView-th">
-                  <label htmlFor="seatAmount" className="storeView-label">
-                    총 좌석 수
-                  </label>
-                </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{seat.seatAmount}</div>
-                </td>
-              </tr>
-              <tr className="storePartnership-tr">
-                <th className="storePartnership-th">
-                  <label
-                    htmlFor="storeClass"
-                    className="storePartnership-label"
-                  >
+                  <label htmlFor="storeClass" className="storeView-label">
                     매장 유형
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">
-                    {storeClassLabel(store.storeClass)}
-                  </div>
+                <td className="storeView-td">
+                  {storeClassLabel(store.storeClass)}
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -280,15 +276,11 @@ const StoreView = (props) => {
                     매장 분위기
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">
-                    {store.storeMoodList
-                      ?.map((moodItem) => moodItem.mood)
-                      .filter(
-                        (mood, index, self) => self.indexOf(mood) === index
-                      )
-                      .join(" / ")}
-                  </div>
+                <td className="storeView-td">
+                  {store.storeMoodList
+                    ?.map((moodItem) => moodItem.mood)
+                    .filter((mood, index, self) => self.indexOf(mood) === index)
+                    .join(" / ")}
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -297,16 +289,14 @@ const StoreView = (props) => {
                     편의 시설
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">
-                    {store.storeAmenityList
-                      ?.map((amenityItem) => amenityItem.amenities)
-                      .filter(
-                        (amenities, index, self) =>
-                          self.indexOf(amenities) === index
-                      )
-                      .join(" / ")}
-                  </div>
+                <td className="storeView-td">
+                  {store.storeAmenityList
+                    ?.map((amenityItem) => amenityItem.amenities)
+                    .filter(
+                      (amenities, index, self) =>
+                        self.indexOf(amenities) === index
+                    )
+                    .join(" / ")}
                 </td>
               </tr>
             </tbody>

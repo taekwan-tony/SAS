@@ -1,11 +1,11 @@
 .storeUpdate-inputBox {
   box-sizing: border-box;
-  width: 75%;
+  width: 65%;
   border: none;
   border-radius: 0%;
   background: none;
   color: #fff;
-  font-size: 20px;
+  font-size: 26px;
   outline: 0;
   transition: none;
   transform: none;
@@ -16,6 +16,7 @@
 .storeUpdate-table {
   width: 100%;
   color: #fff;
+  padding: 20px;
 }
 
 .storeUpdate-tr {
@@ -23,87 +24,70 @@
 }
 
 .storeUpdate-th {
-  font-size: 22px;
+  font-size: 26px;
   text-align: center;
   width: 30%;
 }
 
-.storeUpdate-th {
-  text-align: center;
+.storeUpdate-td {
+  font-size: 26px;
+  width: 100%; /* 고정값 대신 100%로 변경 */
+  max-width: 100%; /* 화면 너비에 맞게 조정 */
+}
+
+.storeUpdate-main {
+  width: 100%;
+  max-width: 100vw; /* 뷰포트 너비를 넘지 않도록 설정 */
 }
 
 .storeUpdate-label {
   color: #fff;
   font-weight: 200;
-  font-size: 25px;
+  font-size: 26px;
+}
+
+.storeUpdate-img-label {
+  color: #fff;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  background-color: #518142;
+  padding: 10px;
+  width: 180px;
+  cursor: pointer;
+  display: inline-block; /* 라벨을 블록 요소로 변경 */
+  text-align: center; /* 텍스트를 가운데 정렬 */
 }
 
 .storeUpdate-imgDiv-zone {
   display: flex;
-  justify-content: center;
-  flex-direction: row;
+  align-items: center;
+  justify-content: center; /* 이미지가 가운데에 위치하도록 변경 */
   gap: 10px;
   width: 100%;
-  overflow-x: auto; /* 가로 스크롤을 활성화 */
-  white-space: nowrap; /* 자식 요소들이 한 줄로 나열되도록 설정 */
+  max-width: 1300px; /* 이미지 컨테이너의 너비를 적당한 크기로 설정 (조정 가능) */
+  overflow-x: auto; /* 이미지들을 가로 스크롤할 수 있도록 설정 */
+  white-space: nowrap; /* 이미지들이 한 줄로 나열되도록 설정 */
+  padding: 20px 0; /* 이미지가 상하로 적당히 띄워져 보이도록 패딩 추가 */
+  margin: 0 auto; /* 가운데 정렬 */
 }
 
 .storeUpdate-div {
   display: flex;
   align-items: center;
-  justify-content: left;
-  margin-left: 50px;
   color: #fff;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 200;
   text-align: center;
 }
 
-.storeUpdate-imgDiv {
-  width: 80%;
-  height: auto;
-  object-fit: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .storeUpdate-img {
-  width: 300px;
-  height: 300px;
-  align-items: center;
-  justify-content: center;
-}
-
-.storeUpdate-btn-zone {
+  width: 250px;
+  height: 250px;
+  object-fit: cover; /* 이미지 크기를 유지하면서 비율 맞추기 */
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin-bottom: 125px;
-}
-
-.storeUpdate-storeImg-btn {
-  width: 140px;
-  height: 50px;
-  border: none;
-  background-color: #518142;
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 19px;
-  font-weight: 590;
-  padding: 5px;
-}
-
-.storeUpdate-storeImg-btn:hover {
-  color: #518142;
-  background-color: #fff;
-  font-weight: 500;
-}
-
-.storeUpdate-addr {
-  width: 100%;
-  margin-left: 45px;
+  align-items: center;
 }
 
 .storeUpdate-btn {
@@ -116,7 +100,7 @@
   cursor: pointer;
   font-size: 19px;
   font-weight: 590;
-  margin-left: 77px;
+  margin-left: 17px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -130,39 +114,14 @@
   font-weight: 500;
 }
 
-.store-regist-btn {
-  width: 300px;
-  height: 90px;
-  border: none;
-  background-color: #518142;
-  color: #fff;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 40px;
-  font-weight: 600;
-}
-
-.store-regist-btn:hover {
-  border: none;
-  background-color: #fff;
-  color: #518142;
-}
-
-/* 추가 */
-.info-header-h3 {
-  font-size: 16px;
-  color: #bfbfbf;
-  padding: 10px;
-}
-
 .storeUpdate-textarea {
   box-sizing: border-box;
-  width: 75%;
+  width: 65%;
   height: 30%;
   border-radius: 0%;
   background: none;
   color: #fff;
-  font-size: 20px;
+  font-size: 26px;
   outline: 0;
   transition: none;
   transform: none;
@@ -188,6 +147,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 125px;
+  margin-top: 40px;
 }
 
 .storeUpdate-modify-btn:hover {
@@ -220,27 +180,13 @@
   justify-content: center;
 }
 
-.storeUpdate-updateBtn {
-  position: absolute;
-  width: 80px;
-  font-size: 20px;
-  top: 15px; /* info-card 상단에서 10px 만큼 내림 */
-  right: 15px; /* info-card 오른쪽에서 10px 만큼 왼쪽으로 이동 */
-  background-color: #518142;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.storeUpdate-updateBtn:hover {
-  background-color: #fff;
-  color: #518142;
+.storeUpdate-p {
+  margin-left: 49px;
+  font-size: 15px;
+  color: #bfbfbf;
 }
 
 .storeUpdate-info-card {
-  position: relative;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   background: linear-gradient(35deg, #222623, #1d201e, #29482a47);
   border-radius: 12px;
@@ -251,12 +197,15 @@
   align-items: center; /* 수직 가운데 정렬 */
   padding: 50px;
   margin-top: 50px;
+  width: 100%;
 }
 
-.img-th {
-  width: 90%;
-}
-
-.img-tr {
-  width: 80%;
+.storeUpdate-img-div {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 파일 선택 라벨을 중앙으로 배치 */
+  color: #fff;
+  font-size: 20px;
+  font-weight: 200;
+  text-align: center;
 }
