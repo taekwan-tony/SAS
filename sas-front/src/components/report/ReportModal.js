@@ -30,12 +30,12 @@ const ReportModal = (props) => {
   };
   const goReport = () => {
     if (report.reportReason != null && report.reportReason !== "") {
-      console.log(report);
+      // console.log(report);
       axios
         .post(`${backServer}/userReport`, report)
         .then((res) => {
           if (res.data) {
-            console.log(res.data);
+            // console.log(res.data);
             Swal.fire({
               title: "신고 접수가 완료되었습니다",
               text: "불편을 드려 죄송합니다",

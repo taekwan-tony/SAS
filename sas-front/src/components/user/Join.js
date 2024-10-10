@@ -78,7 +78,7 @@ const Join = () => {
         .then((res) => {
           //console.log(res);
           if (res.data) {
-            console.log("사용 가능");
+            // console.log("사용 가능");
             setCheckJoin({ ...checkJoin, checkId: true });
             setCheckJoinMsg({
               ...checkJoinMsg,
@@ -183,7 +183,7 @@ const Join = () => {
   const [sec, setSec] = useState("00");
   const [timer, setTimer] = useState(0);
   useEffect(() => {
-    console.log(timer);
+    // console.log(timer);
     if (!checkCode && user.userEmail !== "") {
       intervalId = setInterval(function () {
         if (timer + 1 === 0) {
@@ -246,7 +246,7 @@ const Join = () => {
         .post(`${backServer}/user/sendCode`, { userEmail: user.userEmail })
         .then((res) => {
           setCode(res.data);
-          console.log(res.data);
+          console.log(res.data); //인증코드 출력이므로 이메일 임의로 넣을거에 대비하여 일단 살려놓겠음
           setTimer(180);
           setEmailMsg("");
           setCheckCode(false);
@@ -322,6 +322,11 @@ const Join = () => {
           Swal.fire({
             title: "회원가입 완료",
             icon: "success",
+            confirmButtonColor: "var(--main1)",
+            confirmButtonText: "확인",
+            customClass: {
+              confirmButton: "swal-btn",
+            },
           }).then(() => {
             navigate("/usermain/login");
           });

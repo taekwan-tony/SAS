@@ -71,12 +71,12 @@ const SearchList = (props) => {
                 <div className="searchview-info">
                   <span>{store.storeName}</span>
                   <div className="searchPlace">
-                    <span className="material-icons">place</span>
+                    <span className="material-icons menuView">place</span>
                     <span>{store.storeAddr}</span>
                   </div>
                   <span>{store.storeIntroduce}</span>
                   <div className="searchTime">
-                    <span className="material-icons">schedule</span>
+                    <span className="material-icons menuView">schedule</span>
                     <span>{store.storeTime}</span>
                   </div>
                 </div>

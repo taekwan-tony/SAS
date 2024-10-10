@@ -10,6 +10,8 @@ const UpdatePw = () => {
   const userNo = params.userNo;
   const [user, setUser] = useState({ userNo: userNo, userPw: "" });
   const [userPwRe, setUserPwRe] = useState("");
+  const [isPwRegRight, setIsPwRegRight] = useState(false);
+  const [isPwRegRightMsg, setIsPwRegRightMsg] = useState("");
   const changePwRe = (e) => {
     setUserPwRe(e.target.value);
   };
@@ -36,16 +38,33 @@ const UpdatePw = () => {
       }
     }
   };
+  const checkPwReg = () => {
+    setIsPwRegRight(false);
+    setIsPwRegRightMsg("");
+    const pwReg = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,}$/;
+    if (user.userPw !== "" && pwReg.test(user.userPw)) {
+      setIsPwRegRight(true);
+      setIsPwRegRightMsg("사용가능한 비밀번호 입니다.");
+    } else {
+      setIsPwRegRightMsg(
+        "영소문자, 숫자, @$!%*?&를 포함한 8자 이상이어야합니다."
+      );
+    }
+  };
   const updatePw = () => {
     if (checkPwRe) {
       axios.post(`${backServer}/user/updatePw`, user).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data) {
           Swal.fire({
             title: "비밀번호 재생성 완료",
             text: "로그인 화면으로 돌아가세요",
             icon: "success",
             confirmButtonColor: "var(--main1)",
+            confirmButtonText: "확인",
+            customClass: {
+              confirmButton: "swal-btn",
+            },
           }).then(() => {
             navigate("/usermain/login");
           });
@@ -78,7 +97,11 @@ const UpdatePw = () => {
                 placeholder="새 비밀번호를 입력하세요"
                 value={user.userPw}
                 onChange={changeInputVal}
+                onBlur={checkPwReg}
               />
+              <p className={isPwRegRight ? "colorGreen" : "colorRed"}>
+                {isPwRegRightMsg}
+              </p>
             </div>
             <div className="input-item">
               <span className="input-title">

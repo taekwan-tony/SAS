@@ -19,7 +19,7 @@ const FindPw = () => {
     // console.log(timer);
     if (!checkCode && user.userNo !== 0) {
       intervalId = setInterval(function () {
-        console.log(2);
+        // console.log(2);
         setTimer(timer - 1);
         if (sec == "00") {
           //0초 다음은 분을 내려야 하므로
@@ -84,7 +84,7 @@ const FindPw = () => {
             .post(`${backServer}/user/sendCode`, { userEmail: user.userEmail })
             .then((res) => {
               setCode(res.data);
-              console.log(res.data);
+              // console.log(res.data);
               setMin(3);
               setSec("00");
               setTimer(180);

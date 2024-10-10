@@ -58,7 +58,7 @@ function UserMain() {
       axios
         .post(`${backServer}/user/refresh`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           //refresh 토큰을 전송해서 로그인 정보를 새로 갱신해옴
           setLoginUserId(res.data.loginId);
           setUserType(res.data.userType);
@@ -71,7 +71,7 @@ function UserMain() {
           );
         })
         .catch((err) => {
-          console.log(err, "자동로그인 안됨");
+          // console.log(err, "자동로그인 안됨");
           setLoginUserId("");
           setUserType(0);
           setLoginUserNo(0);
@@ -92,7 +92,7 @@ function UserMain() {
       axios
         .get(`${backServer}/user/userId/${loginUserId}/userPhoto`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setuserPhoto(res.data);
         })
         .catch((err) => {
@@ -382,7 +382,7 @@ const UserMainView = (props) => {
     axios
       .get(`${backServer}/store/storeList/view`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setStore(res.data.list);
       })
       .catch((err) => {
@@ -394,7 +394,7 @@ const UserMainView = (props) => {
     axios
       .get(`${backServer}/store/storeList/view/best`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setStore(res.data.list);
       })
       .catch((err) => {

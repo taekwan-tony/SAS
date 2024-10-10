@@ -86,7 +86,7 @@ public class ReservationController {
     @Operation(summary = "예약 좌석 수 비교", description = "해당 날짜의 예약명단에서 시간과 좌석코드 가져와 반환")
     @GetMapping(value="/reserveDate/{date}/storeNo/{storeNo}/selectReservationForCount")
     public ResponseEntity<List> selectReservationForCount(@PathVariable String date, @PathVariable int storeNo){
-    	System.out.println(date);
+//    	System.out.println(date);
     	List list = reservationService.selectReservationForCount(date, storeNo);
     	return ResponseEntity.ok(list);
     }
@@ -191,7 +191,7 @@ public class ReservationController {
     @Operation(summary="예약 변경", description = "예약객체 받아와서 시간, 인원, 날짜, 좌석 번호 변경")
     @PatchMapping
     public ResponseEntity<Boolean> updateReservation(@RequestBody ReservationDTO reservation){
-    	System.out.println(reservation);
+//    	System.out.println(reservation);
     	int result = 0;
     	
     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
@@ -238,7 +238,7 @@ public class ReservationController {
             HttpEntity<Map<String, Object>> refundEntity = new HttpEntity(refundMap, refundHeader);
             
             ResponseEntity<String> refundResponse = restTemplate.postForEntity("https://api.iamport.kr/payments/cancel", refundEntity, String.class);
-            System.out.println(refundResponse);
+//            System.out.println(refundResponse);
             ObjectMapper refundOm = new ObjectMapper();
             String code = "-1";
             JsonNode json = refundOm.readTree(refundResponse.getBody());

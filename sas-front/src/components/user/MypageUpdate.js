@@ -45,8 +45,8 @@ const CheckPw = () => {
   }, [loginUserNo]);
   const [pwMsg, setPwMsg] = useState("");
   const checkUserPw = () => {
-    console.log(user);
-    console.log(loginUserNo);
+    // console.log(user);
+    // console.log(loginUserNo);
     setPwMsg("");
     axios
       .post(`${backServer}/user/checkUser`, user)
@@ -217,22 +217,25 @@ const Update = (props) => {
       checkBeforeUpdate.checkEmail &&
       checkBeforeUpdate.checkName
     ) {
-      console.log(2);
+      // console.log(2);
       axios
         .patch(`${backServer}/user`, user)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.data) {
-            console.log(1);
+            // console.log(1);
             Swal.fire({
               title: "회원 정보 수정 성공",
               icon: "success",
               confirmButtonText: "확인",
               confirmButtonColor: "var(--main1)",
+              customClass: {
+                confirmButton: "swal-btn",
+              },
             }).then(() => {
               setCheckUpdate(!checkUpdate);
               setCheckMsg({ ...checkMsg, checkNickname: "" });
-              console.log(userType);
+              // console.log(userType);
               axios
                 .post(`${backServer}/user/refreshToken`, {
                   userId: loginUserId,
@@ -241,7 +244,7 @@ const Update = (props) => {
                   loginType: userType,
                 })
                 .then((res) => {
-                  console.log(res);
+                  // console.log(res);
                   setLoginUserId(res.data.loginId);
                   setUserType(res.data.userType);
                   setLoginUserNo(res.data.userNo);
@@ -271,6 +274,9 @@ const Update = (props) => {
         icon: "warning",
         confirmButtonColor: "var(--main1)",
         confirmButtonText: "확인",
+        customClass: {
+          confirmButton: "swal-btn",
+        },
       });
     }
   };

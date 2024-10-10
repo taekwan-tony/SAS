@@ -437,7 +437,7 @@ div.review-container span.MuiRating-iconFilled path {
   color: #777;
 }
 
-.material-icons {
+.material-icons.menuView {
   margin-right: 8px; /* 아이콘과 텍스트 간격 증가 */
 }
 

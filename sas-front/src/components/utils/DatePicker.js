@@ -57,8 +57,8 @@ const DatePicker = (props) => {
 // 선택일자 스타일변경
         background:#FFC9F4;
   `;
-  console.log(selected.getFullYear());
-  console.log(selected);
+  // console.log(selected.getFullYear());
+  // console.log(selected);
   return (
     <div className="day-picker">
       <button

@@ -58,7 +58,7 @@ const Profile = (props) => {
   const changeUserPhoto = (e) => {
     const files = e.currentTarget.files;
     // console.log(files);
-    console.log(files[0]);
+    // console.log(files[0]);
     if (files.length !== 0 && files[0] !== 0) {
       const form = new FormData();
       form.append("userImageFile", files[0]);
@@ -70,7 +70,7 @@ const Profile = (props) => {
           processData: false, //보내는 데이터를 쿼리 문자열로 처리할건지 여부(default=true)
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.result) {
             setUser({ ...user, userPhoto: res.data.userPhoto });
             setCheckPhotoUpdate(!checkPhotoUpdate);

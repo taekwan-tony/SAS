@@ -343,18 +343,6 @@ const Main = () => {
                 <span className="material-icons arrow">arrow_forward</span>
               </button>
             </Link>
-            <Link to="/admin">
-              <button className="button2">
-                admin Test
-                <span className="material-icons arrow">arrow_forward</span>
-              </button>
-            </Link>
-            <Link to="/storemain">
-              <button className="button2">
-                store Test
-                <span className="material-icons arrow">arrow_forward</span>
-              </button>
-            </Link>
           </div>
         </div>
       </div>

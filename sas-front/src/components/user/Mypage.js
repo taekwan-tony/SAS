@@ -35,6 +35,7 @@ import ReportModal from "../report/ReportModal";
 import { ReservationMain } from "../reservation/ReservationMain";
 
 const Mypage = (props) => {
+  const navigate = useNavigate();
   // 프로필 업데이트 체크위한 준비
   const { checkPhotoUpdate, setCheckPhotoUpdate } = props;
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
@@ -43,37 +44,53 @@ const Mypage = (props) => {
   const [checkUpdate, setCheckUpdate] = useState(false);
   const [favoriteFolder, setFavoriteFolder] = useState({});
   const backServer = process.env.REACT_APP_BACK_SERVER;
+  const isUserLogin = useRecoilValue(isUserLoginState);
   useEffect(() => {
-    // console.log(loginUserId);
-    axios
-      .get(`${backServer}/user/userNo/${loginUserNo}`)
-      .then((res) => {
-        console.log(res.data);
-        setUser(res.data);
-        setFavoriteFolder(
-          res.data.favoriteFolderList &&
-            favoriteFolder.favoriteFolderNo &&
-            res.data.favoriteFolderList.filter((favorite, index) => {
-              return (
-                favorite.favoriteFolderNo === favoriteFolder.favoriteFolderNo
-              );
-            })[0] != null
-            ? res.data.favoriteFolderList.filter((favorite, index) => {
+    if (isUserLogin) {
+      // console.log(loginUserId);
+      axios
+        .get(`${backServer}/user/userNo/${loginUserNo}`)
+        .then((res) => {
+          // console.log(res.data);
+          setUser(res.data);
+          setFavoriteFolder(
+            res.data.favoriteFolderList &&
+              favoriteFolder.favoriteFolderNo &&
+              res.data.favoriteFolderList.filter((favorite, index) => {
                 return (
                   favorite.favoriteFolderNo === favoriteFolder.favoriteFolderNo
                 );
-              })[0]
-            : res.data.favoriteFolderList
-            ? res.data.favoriteFolderList[0]
-            : {}
-        );
-      })
-      .catch((err) => {
-        console.log(err);
+              })[0] != null
+              ? res.data.favoriteFolderList.filter((favorite, index) => {
+                  return (
+                    favorite.favoriteFolderNo ===
+                    favoriteFolder.favoriteFolderNo
+                  );
+                })[0]
+              : res.data.favoriteFolderList
+              ? res.data.favoriteFolderList[0]
+              : {}
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Swal.fire({
+        title: "로그인해주세요",
+        icon: "warning",
+        confirmButtonColor: "var(--main1)",
+        confirmButtonText: "로그인 화면으로",
+        customClass: {
+          confirmButton: "swal-btn",
+        },
+      }).then(() => {
+        navigate("/usermain/login");
       });
+    }
   }, [loginUserNo, checkUpdate]);
   // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
-  console.log(favoriteFolder);
+  // console.log(favoriteFolder);
   const [addFolder, setAddFolder] = useState({
     favoriteFolderName: "",
     userNo: loginUserNo,
@@ -215,6 +232,9 @@ const AddFolderModal = (props) => {
                     title: "즐겨찾기 목록 추가 완료",
                     icon: "success",
                     confirmButtonColor: "var(--main1)",
+                    customClass: {
+                      confirmButton: "swal-btn",
+                    },
                   }).then(() => {
                     addFolderModalClose();
                     setCheckAddFolder(!checkAddFolder);
@@ -230,6 +250,9 @@ const AddFolderModal = (props) => {
               text: "중복된 이름은 사용하실 수 없습니다.",
               icon: "warning",
               confirmButtonColor: "var(--main1)",
+              customClass: {
+                confirmButton: "swal-btn",
+              },
             });
           }
         })
@@ -364,11 +387,11 @@ const ReservationView = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [isReservationUpdate, setIsReservationUpdate] = useState(false);
   useEffect(() => {
-    console.log(loginUserId);
+    // console.log(loginUserId);
     axios
       .get(`${backServer}/reservation/view/${reqPage}/${loginUserId}`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setReservationList(res.data.list);
         setPi(res.data.pi);
       })
@@ -493,6 +516,10 @@ const ReservationView = () => {
                   cancelButtonColor: "var(--font2)",
                   confirmButtonText: "확인",
                   confirmButtonColor: "var(--main1)",
+                  customClass: {
+                    confirmButton: "swal-btn",
+                    cancelButton: "swal-btn",
+                  },
                 }).then((res) => {
                   if (res.isConfirmed) {
                     let isRefund = false;
@@ -513,6 +540,9 @@ const ReservationView = () => {
                               iconColor: "var(--main1)",
                               confirmButtonText: "확인",
                               confirmButtonColor: "var(--main1)",
+                              customClass: {
+                                confirmButton: "swal-btn",
+                              },
                             }).then(() => {
                               axios
                                 .post(
@@ -526,12 +556,17 @@ const ReservationView = () => {
                                         `${backServer}/reservation/cancel/${reservation.reserveNo}`
                                       )
                                       .then((res) => {
-                                        console.log(res);
+                                        // console.log(res);
                                         if (res.data > 0) {
                                           Swal.fire({
                                             title: "예약취소 완료",
                                             text: "예약금은 익영업일에 환불 처리됩니다",
                                             icon: "success",
+                                            confirmButtonText: "확인",
+                                            confirmButtonColor: "var(--main1)",
+                                            customClass: {
+                                              confirmButton: "swal-btn",
+                                            },
                                           }).then(() => {
                                             setIsReservationUpdate(
                                               !isReservationUpdate
@@ -549,6 +584,9 @@ const ReservationView = () => {
                                       icon: "error",
                                       confirmButtonColor: "var(--main1)",
                                       confirmButtonText: "확인",
+                                      customClass: {
+                                        confirmButton: "swal-btn",
+                                      },
                                     });
                                   }
                                 })
@@ -560,6 +598,9 @@ const ReservationView = () => {
                                     icon: "error",
                                     confirmButtonColor: "var(--main1)",
                                     confirmButtonText: "확인",
+                                    customClass: {
+                                      confirmButton: "swal-btn",
+                                    },
                                   });
                                 });
                             });
@@ -570,6 +611,9 @@ const ReservationView = () => {
                               icon: "error",
                               confirmButtonColor: "var(--main1)",
                               confirmButtonText: "확인",
+                              customClass: {
+                                confirmButton: "swal-btn",
+                              },
                             });
                           }
                         });
@@ -579,11 +623,16 @@ const ReservationView = () => {
                           `${backServer}/reservation/cancel/${reservation.reserveNo}`
                         )
                         .then((res) => {
-                          console.log(res);
+                          // console.log(res);
                           if (res.data > 0) {
                             Swal.fire({
                               title: "예약취소 완료",
                               icon: "success",
+                              confirmButtonColor: "var(--main1)",
+                              confirmButtonText: "확인",
+                              customClass: {
+                                confirmButton: "swal-btn",
+                              },
                             }).then(() => {
                               setIsReservationUpdate(!isReservationUpdate);
                             });
@@ -795,12 +844,12 @@ const ReviewWrite = () => {
     storeNo: storeNo,
     reserveNo: reserveNo,
   });
-  console.log(review);
+  // console.log(review);
   const setContent = (content) => {
-    console.log(content);
+    // console.log(content);
     setReview({ ...review, reviewContent: content });
   };
-  console.log(review.reviewContent);
+  // console.log(review.reviewContent);
   const [title, setTitle] = useState("");
   const handleTitleChange = (e) => {
     setTitle(e.currentTarget.value);
@@ -815,7 +864,7 @@ const ReviewWrite = () => {
     axios
       .post(`${backServer}/review/usermain/mypage/myreview`, review)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data > 0) {
           Swal.fire({
             title: "감사합니다",

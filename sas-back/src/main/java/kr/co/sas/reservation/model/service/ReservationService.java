@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.reservation.model.dao.ReservationDao;
+import kr.co.sas.reservation.model.dto.CountReserveDTO;
 import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.util.PageInfo;
@@ -73,16 +74,23 @@ public class ReservationService {
 		@Transactional
 		public Map insertReservation(ReservationDTO reservation) {
 			//System.out.println(reservation.getReserveDateString());
-			int result = reservationDao.insertReservation(reservation);
 			Map map = new HashMap<String, Object>();
-			map.put("result", result>0);
-			map.put("reserveNo", reservation.getReserveNo());
-			System.out.println(reservation.getReserveNo());
+			CountReserveDTO countReserve = reservationDao.isThereAvailable(reservation);
+//			System.out.println("좌석 수:"+countReserve.getSeatAmount());
+//			System.out.println("예약 수:"+countReserve.getReserveCount());
+			if(countReserve.getSeatAmount()>countReserve.getReserveCount()) {
+				int result = reservationDao.insertReservation(reservation);
+				map.put("result", result>0);
+				map.put("reserveNo", reservation.getReserveNo());				
+			}else {
+				map.put("result", false);
+			}
+//			System.out.println(reservation.getReserveNo());
 			return map;
 		}
 		public boolean isAlreadyReserved(ReservationDTO reservation) {
 			int isExist = reservationDao.countSameReserve(reservation);
-			System.out.println("개수 :"+isExist+(isExist>0));
+//			System.out.println("개수 :"+isExist+(isExist>0));
 			return isExist>0;
 		}
 		@Transactional
@@ -132,7 +140,13 @@ public class ReservationService {
 		}
 		@Transactional
 		public int updateReservation(ReservationDTO reservation) {
-			int result = reservationDao.updateReservation(reservation);
+			CountReserveDTO countReserve = reservationDao.isThereAvailable(reservation);
+			int result=0;
+//			System.out.println("좌석 수:"+countReserve.getSeatAmount());
+//			System.out.println("예약 수:"+countReserve.getReserveCount());
+			if(countReserve.getSeatAmount()>countReserve.getReserveCount()) {
+				result = reservationDao.updateReservation(reservation);
+			}
 			return result;
 		}
 

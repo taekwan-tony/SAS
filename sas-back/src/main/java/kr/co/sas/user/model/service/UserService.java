@@ -44,6 +44,7 @@ public class UserService {
 	public int insertUser(UserDTO user) {
 //		System.out.println(user.getUserPw());
 		user.setUserPw(encoder.encode(user.getUserPw()));
+//		user.setUserPw(encoder.encode("1234"));=>새 테스트용 데이터 넣는 용
 //		System.out.println(user.getUserPw());
 		int result = userDao.insertUser(user);
 		if(result>0) {
@@ -91,7 +92,7 @@ public class UserService {
 			return loginUser;
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("에러임 ");
+//			System.out.println("에러임 ");
 		}
 		return null;
 	}
@@ -120,7 +121,7 @@ public class UserService {
 
 	public UserDTO selectOneUser(int userNo) {
 		UserDTO user = userDao.selectOneUser(userNo);
-		System.out.println(user);
+//		System.out.println(user);
 		return user;
 	}
 
@@ -152,8 +153,8 @@ public class UserService {
 
 	public boolean checkUserPw(UserDTO user) {
 		UserDTO userPw = userDao.getUserPwInfo(user);
-		System.out.println(user);
-		System.out.println(userPw);
+//		System.out.println(user);
+//		System.out.println(userPw);
 		if(userPw!=null) {
 			return encoder.matches(user.getUserPw(), userPw.getUserPw());
 		}else {
@@ -169,9 +170,9 @@ public class UserService {
 		}
 		int result = userDao.updateUser(user);
 		if(result>0) {
-			System.out.println("회원 업데이트"+result);
+//			System.out.println("회원 업데이트"+result);
 			result += userDao.updateReview(user);
-			System.out.println("리뷰업데이트"+result);
+//			System.out.println("리뷰업데이트"+result);
 		}
 		return result;
 	}
@@ -267,7 +268,7 @@ public class UserService {
 			result = favoriteDao.insertStandardFavoriteFolder(favoriteFolder);
 		}
 		if(result>0) {
-			System.out.println(112);
+//			System.out.println(112);
 			LoginUserDTO loginUser = userDao.isThereUser(user.getUserPhone());
 			loginUser.setAccessToken(jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));
 			loginUser.setRefreshToken(jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));

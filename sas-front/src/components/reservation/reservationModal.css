@@ -230,7 +230,7 @@
   > .reservation-info-wrap
   > .reservation-info-content
   > .content-wrap {
-  width: 95px;
+  width: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
