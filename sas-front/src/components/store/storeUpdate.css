@@ -100,11 +100,11 @@
   cursor: pointer;
   font-size: 19px;
   font-weight: 590;
-  margin-left: 17px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 83px;
 }
 
 .storeUpdate-btn:hover {
@@ -184,6 +184,22 @@
   margin-left: 49px;
   font-size: 15px;
   color: #bfbfbf;
+}
+
+.storeView-seat {
+  box-sizing: border-box;
+  width: 75%;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #fff;
+  font-size: 25px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #fff;
+  font-weight: 200;
+  text-align: center;
 }
 
 .storeUpdate-info-card {
