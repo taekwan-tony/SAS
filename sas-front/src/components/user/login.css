@@ -51,6 +51,12 @@ a {
 .borderBottomRed {
   border-bottom: 1px solid red;
 }
+.swal-btn {
+  outline: none;
+}
+.swal-btn:focus {
+  outline: none;
+}
 /* 로그인 메인 */
 .user-login-main {
   width: 100%;

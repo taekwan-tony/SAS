@@ -499,6 +499,9 @@ const ReservationModalSecond = (props) => {
               icon: "success",
               confirmButtonText: "확인",
               confirmButtonColor: "var(--main1)",
+              customClass: {
+                confirmButton: "swal-btn",
+              },
             }).then(() => {
               setReservationPage(1);
               setIsReserveModalOpen(false);
@@ -510,6 +513,9 @@ const ReservationModalSecond = (props) => {
               icon: "success",
               confirmButtonText: "확인",
               confirmButtonColor: "var(--main1)",
+              customClass: {
+                confirmButton: "swal-btn",
+              },
             }).then(() => {
               setReservationPage(1);
               setIsReserveModalOpen(false);
@@ -523,6 +529,9 @@ const ReservationModalSecond = (props) => {
             icon: "error",
             confirmButtonText: "확인",
             confirmButtonColor: "var(--main1)",
+            customClass: {
+              confirmButton: "swal-btn",
+            },
           }).then(() => {
             setReservationPage(1);
             setIsReserveModalOpen(false);
@@ -552,6 +561,10 @@ const ReservationModalSecond = (props) => {
                 title: "예약 완료",
                 icon: "success",
                 confirmButtonColor: "var(--main1)",
+                confirmButtonText: "확인",
+                customClass: {
+                  confirmButton: "swal-btn",
+                },
               }).then(() => {
                 setReservationPage(1);
                 setIsReserveModalOpen(false);
@@ -563,6 +576,9 @@ const ReservationModalSecond = (props) => {
                 text: "결제에 실패하였습니다. 잠시후에 다시 시도해주세요",
                 icon: "error",
                 confirmButtonColor: "var(--main1)",
+                customClass: {
+                  confirmButton: "swal-btn",
+                },
               }).then(() => {
                 setReservationPage(1);
                 setIsReserveModalOpen(false);
@@ -575,6 +591,9 @@ const ReservationModalSecond = (props) => {
               icon: "warning",
               iconColor: "var(--main1)",
               confirmButtonColor: "var(--main1)",
+              customClass: {
+                confirmButton: "swal-btn",
+              },
             }).then(() => {
               setReservationPage(1);
             });
