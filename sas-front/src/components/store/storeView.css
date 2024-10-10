@@ -334,3 +334,9 @@
   color: #518142;
   cursor: pointer;
 }
+
+.storeViewFrm-p {
+  margin-left: 52px;
+  font-size: 15px;
+  color: #bfbfbf;
+}

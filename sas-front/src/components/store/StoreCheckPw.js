@@ -242,7 +242,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
                                   <input
                                     className="storeCheckPw-inputBox"
                                     placeholder="기존 비밀번호를 입력해주세요."
-                                    type="text"
+                                    type="password"
                                     id="soPw"
                                     name="soPw"
                                     value={store.soPw}
@@ -296,7 +296,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
                                       <input
                                         className="storechangePw-inputBox"
                                         placeholder="새 비밀번호를 입력해주세요."
-                                        type="text"
+                                        type="password"
                                         id="soPw"
                                         name="soPw"
                                         value={newSoPw}
@@ -324,7 +324,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
                                       <input
                                         className="storechangePw-inputBox"
                                         placeholder="새 비밀번호를 다시 입력해주세요."
-                                        type="text"
+                                        type="password"
                                         id="newSoPwRe"
                                         name="newSoPwRe"
                                         value={newSoPwRe}

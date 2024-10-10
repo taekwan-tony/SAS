@@ -14,17 +14,6 @@ const StoreViewMain = (props) => {
   const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 로그인된 매장 번호
   const [storeName, setStoreName] = useRecoilState(loginStoreNameState); // 로그인된 매장 이름
 
-  useEffect(() => {
-    // 새로 고침 시 LocalStorage에서 storeName 값을 불러옴
-    const savedStoreName = localStorage.getItem("storeName");
-    if (savedStoreName) {
-      setStoreName(savedStoreName);
-    } else if (storeName) {
-      // storeName이 변경되면 LocalStorage에 저장
-      localStorage.setItem("storeName", storeName);
-    }
-  }, [storeName]);
-
   const [store, setStore] = useState({
     storeNo: "",
     storeName: "",

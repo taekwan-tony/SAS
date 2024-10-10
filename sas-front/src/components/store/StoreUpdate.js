@@ -292,7 +292,7 @@ const StoreUpdate = (props) => {
 
   // 정규표현식
   const storeNameRegex = /^[가-힣\s]{1,20}$|^[a-zA-Z0-9\s]{1,40}$/;
-  const storePhoneRegex = /^\d{1,3}-\d{3,4}-\d{4}$/;
+  const storePhoneRegex = /^\d{1,4}-\d{3,4}-\d{4}$/;
   const storeDetailAddrRegex = /^.{1,50}$/;
   const depositRegex = /^(100000|[1-9][0-9]{0,4}|0)$/;
   const seatRegex = /^(99|[1-8]?[0-9])$/;

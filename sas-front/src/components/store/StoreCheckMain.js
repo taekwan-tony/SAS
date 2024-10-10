@@ -55,6 +55,7 @@ const StoreCheckMain = () => {
           setSoPhone(res.data.soPhone);
           setSoName(res.data.soName);
           setStoreName(res.data.storeName); // storeName 설정
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "storeRefreshToken",
             res.data.refreshToken

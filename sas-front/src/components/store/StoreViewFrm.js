@@ -98,8 +98,8 @@ const StoreViewFrm = (props) => {
   };
 
   // 정규표현식
-  const storeNameRegex = /^[가-힣]{1,20}$|^[a-zA-Z0-9\s]{1,40}$/;
-  const storePhoneRegex = /^\d{1,3}-\d{3,4}-\d{4}$/;
+  const storeNameRegex = /^[가-힣\s]{1,20}$|^[a-zA-Z0-9\s]{1,40}$/;
+  const storePhoneRegex = /^\d{1,4}-\d{3,4}-\d{4}$/;
   const storeDetailAddrRegex = /^.{1,50}$/;
   const depositRegex = /^(100000|[1-9][0-9]{0,4}|0)$/;
   const seatRegex = /^(99|[1-8]?[0-9])$/;
@@ -348,7 +348,7 @@ const StoreViewFrm = (props) => {
                       onChange={changeStore}
                     ></input>
                   </div>
-                  <p className="storeUpdate-p" ref={storeNameRef}></p>
+                  <p className="storeViewFrm-p" ref={storeNameRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -368,7 +368,7 @@ const StoreViewFrm = (props) => {
                       onChange={changeStore}
                     ></input>
                   </div>
-                  <p className="storeUpdate-p" ref={storePhoneRef}></p>
+                  <p className="storeViewFrm-p" ref={storePhoneRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -424,7 +424,7 @@ const StoreViewFrm = (props) => {
                       우편번호 찾기
                     </button>
                   </div>
-                  <p className="storeUpdate-p" ref={storeDetailAddrRef}></p>
+                  <p className="storeViewFrm-p" ref={storeDetailAddrRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -445,7 +445,7 @@ const StoreViewFrm = (props) => {
                       placeholder="ex) 09:00 - 22:00"
                     ></input>
                   </div>
-                  <p className="storeUpdate-p" ref={storeTimeRef}></p>
+                  <p className="storeViewFrm-p" ref={storeTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -466,7 +466,7 @@ const StoreViewFrm = (props) => {
                       placeholder="ex) 09:00 "
                     ></input>
                   </div>
-                  <p className="storeUpdate-p" ref={storeReTimeRef}></p>
+                  <p className="storeViewFrm-p" ref={storeReTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -487,7 +487,7 @@ const StoreViewFrm = (props) => {
                       placeholder="ex) 22:00 "
                     ></input>
                   </div>
-                  <p className="storeUpdate-p" ref={storeReTimeRef}></p>
+                  <p className="storeViewFrm-p" ref={storeReTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -508,7 +508,7 @@ const StoreViewFrm = (props) => {
                       placeholder="ex) 15:00 "
                     ></input>
                   </div>
-                  <p className="storeUpdate-p" ref={breakTimeRef}></p>
+                  <p className="storeViewFrm-p" ref={breakTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -529,7 +529,7 @@ const StoreViewFrm = (props) => {
                       placeholder="ex) 17:00 "
                     ></input>
                   </div>
-                  <p className="storeUpdate-p" ref={breakTimeRef}></p>
+                  <p className="storeViewFrm-p" ref={breakTimeRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -549,7 +549,7 @@ const StoreViewFrm = (props) => {
                       onChange={changeStore}
                     ></input>
                   </div>
-                  <p className="storeUpdate-p" ref={depositRef}></p>
+                  <p className="storeViewFrm-p" ref={depositRef}></p>
                 </td>
               </tr>
               <tr className="storeView-tr">
