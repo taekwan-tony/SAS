@@ -206,7 +206,6 @@
 }
 .table-container h2 {
   text-align: center;
-  margin-bottom: 3%;
 }
 .styled-table th,
 .styled-table td {
@@ -277,21 +276,24 @@
   justify-content: center;
   align-items: center;
   background-color: transparent; /* 슬라이드 배경색 설정 */
-  height: 50%; /* 슬라이드가 컨테이너 높이에 맞게 설정 */
+  height: 80%; /* 슬라이드가 컨테이너 높이에 맞게 설정 */
 }
 .table-container .swiper-button-prev,
 .table-container .swiper-button-next {
   width: 20px;
   height: 20px;
-  top: 32%;
+  top: 50%;
   transform: translateY(-50%);
 }
 
 .table-container .swiper-pagination {
   position: absolute;
-  bottom: 42%;
+  bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
   font-size: 12px;
+}
+.table-container .swiper {
+  height: 50vh;
 }

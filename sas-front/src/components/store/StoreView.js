@@ -18,25 +18,23 @@ const StoreView = (props) => {
   const [check, setCheck] = useState(false);
   const { loginstoreNo, handleEditClick } = props;
   const [store, setStore] = useState({});
-  const [storeSeatCapacity, setStoreSeatCapacity] = useState(""); // 좌석 수용 인원 상태
-  const [storeSeatAmount, setStoreSeatAmount] = useState(""); // 총 좌석 수 상태
+  const [storeSeatCapacity, setStoreSeatCapacity] = useState("");
+  const [storeSeatAmount, setStoreSeatAmount] = useState("");
   const [seat, setSeat] = useState({
     seatCapacity: "",
     seatAmount: "",
   });
 
   const [storeSiFilepathList, setStoreSiFilepathList] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // 현재 이미지 인덱스 상태
 
   useEffect(() => {
     if (store.seatList && store.seatList.length > 0) {
       setStoreSeatCapacity(store.seatList[0].seatCapacity);
       setStoreSeatAmount(store.seatList[0].seatAmount);
-      // console.log("총 좌석 수 : ", storeSeatAmount);
-      // console.log("수용 인원 : ", storeSeatCapacity);
     }
   }, [store]);
 
-  // storeSeatCapacity와 storeSeatAmount가 변경되었을 때 seat 상태를 업데이트
   useEffect(() => {
     if (storeSeatCapacity && storeSeatAmount) {
       setSeat({
@@ -46,23 +44,19 @@ const StoreView = (props) => {
     }
   }, [storeSeatCapacity, storeSeatAmount]);
 
-  //매장 정보 출력
   useEffect(() => {
+    setActiveIndex(1);
     if (isLoginStore) {
       axios
         .get(`${backServer}/store/storeView/${loginstoreNo}`)
         .then((res) => {
-          //console.log("매장 정보 출력 : ", res.data);
           setStore(res.data);
           setCheck(res.data.length);
-
-          // 매장 정보에서 이미지 파일 리스트 설정
           if (res.data.storeSiFilepathList) {
             setStoreSiFilepathList(res.data.storeSiFilepathList);
           }
         })
         .catch((err) => {
-          //console.log("매장 정보 출력 오류 : ", err);
           console.log(
             "에러 응답 데이터 : ",
             err.response ? err.response.data : err.message
@@ -71,7 +65,6 @@ const StoreView = (props) => {
     }
   }, [loginstoreNo, check, isLoginStore]);
 
-  // storeClass
   const storeClassLabel = (storeClass) => {
     switch (storeClass) {
       case 1:
@@ -90,9 +83,20 @@ const StoreView = (props) => {
     }
   };
 
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? storeSiFilepathList.length - 1 : prevIndex - 1
+    );
+  };
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === storeSiFilepathList.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   return (
     <div className="storeView-main">
-      {/* section */}
       <div className="top-section">
         <div className="storeView-info-card">
           <button className="storeView-updateBtn" onClick={handleEditClick}>
@@ -104,18 +108,35 @@ const StoreView = (props) => {
                 <th className="storeView-th" colSpan={2}>
                   <div className="storeView-imgDiv-zone">
                     <div className="storeView-img-zone">
-                      {storeSiFilepathList.map((file, index) => (
+                      {storeSiFilepathList.length > 0 && (
                         <img
                           className="storeView-img"
-                          key={index}
-                          src={`${backServer}/store/${file.siFilepath}`}
-                          alt={`Store Image ${index + 1}`}
+                          src={`${backServer}/store/${storeSiFilepathList[currentImageIndex]?.siFilepath}`}
+                          alt={`Store Image ${currentImageIndex + 1}`}
                         />
-                      ))}
+                      )}
                     </div>
+                    {/* 화살표 버튼 추가 */}
+                    {storeSiFilepathList.length > 1 && (
+                      <>
+                        <button
+                          onClick={prevImage}
+                          className="storeView-slider-btn"
+                        >
+                          ◀
+                        </button>
+                        <button
+                          onClick={nextImage}
+                          className="storeView-slider-btn"
+                        >
+                          ▶
+                        </button>
+                      </>
+                    )}
                   </div>
                 </th>
               </tr>
+              {/* 매장 정보 출력 */}
               <tr className="storeView-tr">
                 <th className="storeView-th">
                   <label htmlFor="storeName" className="storeView-label">
@@ -153,7 +174,9 @@ const StoreView = (props) => {
                   </label>
                 </th>
                 <td>
-                  <div className="storeView-div">{store.storeAddr}</div>
+                  <div className="storeView-div">
+                    {store.storeAddr} {store.storeDetailAddr}
+                  </div>
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -264,7 +287,7 @@ const StoreView = (props) => {
                       .filter(
                         (mood, index, self) => self.indexOf(mood) === index
                       )
-                      .join(" / ")}{" "}
+                      .join(" / ")}
                   </div>
                 </td>
               </tr>
@@ -283,7 +306,6 @@ const StoreView = (props) => {
                           self.indexOf(amenities) === index
                       )
                       .join(" / ")}
-                    {""}
                   </div>
                 </td>
               </tr>

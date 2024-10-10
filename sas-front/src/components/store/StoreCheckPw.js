@@ -1,18 +1,16 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import "./storeCheckPw.css";
 import Swal from "sweetalert2";
 import axios from "axios";
 import StoreChangePw from "./StoreChangePw";
 
-const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
+const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const navigate = useNavigate();
   const params = useParams();
   const storeNo = params.storeNo;
-
   const [soPwMsg, setsoPwMsg] = useState("");
-  const [newSoPwMsg, setNewSoPwMsg] = useState("");
   const [newSoPwReMsg, setNewSoPwReMsg] = useState("");
   const [isChecked, setIsChecked] = useState(false); // 체크박스 상태 관리
 
@@ -27,6 +25,9 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
     soEmail: "",
     soPw: "",
   });
+
+  const soEmailRef = useRef(null);
+  const soPwRef = useRef(null);
 
   const changeStorePw = () => {
     console.log(store);
@@ -140,6 +141,34 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
   if (!isPwModalOpen) {
     return null; // 모달이 열리지 않았을 경우 null을 반환하여 아무것도 렌더링하지 않음
   }
+
+  const handleKeyDown = (e) => {
+    const { name, value } = e.target;
+
+    if (e.key === "Enter") {
+      e.preventDefault(); // 기본 폼 제출 방지
+      soPwChange(); // 로그인 함수 호출
+    }
+
+    // 비밀번호 길이 제한
+    if (name === "soPw" && value.length > 12) {
+      e.preventDefault();
+      soPwRef.current.innerText = "비밀번호는 12자 이하로 입력해주세요.";
+      return;
+    }
+
+    //비밀번호 검증
+    if (name === "soPw" && !passwordRegex.test(value)) {
+      soPwRef.current.innerText = "비밀번호는 최대 12자까지 입력 가능합니다.";
+    } else {
+      soPwRef.current.innerText = "";
+    }
+  };
+
+  //정규표현식
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const passwordRegex = /^.{1,12}$/;
+
   return (
     <>
       <div className="storeCheckPw-wrap">
@@ -192,7 +221,20 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                                     name="soEmail"
                                     value={store.soEmail}
                                     onChange={changeSoPw}
+                                    onBlur={(e) => {
+                                      // 입력 후 포커스를 잃을 때도 정규표현식 검증
+                                      if (!emailRegex.test(e.target.value)) {
+                                        soEmailRef.current.innerText =
+                                          "유효한 이메일 형식을 입력해주세요.";
+                                      } else {
+                                        soEmailRef.current.innerText = "";
+                                      }
+                                    }}
                                   ></input>
+                                  <p
+                                    className="storeLogin-p"
+                                    ref={soEmailRef}
+                                  ></p>
                                 </div>
                               </td>
                             </tr>
@@ -216,7 +258,9 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                                     value={store.soPw}
                                     onChange={changeSoPw}
                                     onKeyUp={soPwCheck}
+                                    onKeyDown={handleKeyDown} // Enter 키 감지
                                   ></input>
+                                  <p className="storeLogin-p" ref={soPwRef}></p>
                                 </div>
                               </td>
                             </tr>
@@ -267,7 +311,12 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                                         name="soPw"
                                         value={newSoPw}
                                         onChange={changeNewSoPw}
+                                        onKeyDown={handleKeyDown} // Enter 키 감지
                                       ></input>
+                                      <p
+                                        className="storeLogin-p"
+                                        ref={soPwRef}
+                                      ></p>
                                     </div>
                                   </td>
                                 </tr>
@@ -291,7 +340,12 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal }) => {
                                         value={newSoPwRe}
                                         onChange={changeNewSoPwRe}
                                         onKeyUp={newSoPwReCheck}
+                                        onKeyDown={handleKeyDown} // Enter 키 감지
                                       ></input>
+                                      <p
+                                        className="storeLogin-p"
+                                        ref={soPwRef}
+                                      ></p>
                                     </div>
                                     <p
                                       className="storechangePw-msg"
