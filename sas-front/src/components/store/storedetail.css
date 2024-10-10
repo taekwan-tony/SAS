@@ -130,10 +130,21 @@
   color: #fff;
 }
 
+.sm-customer-table th,
+.sm-customer-table td {
+  padding: 1.1%;
+  color: #fff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .sm-table th,
 .sm-table td {
   padding: 1.1%;
   color: #fff;
+  white-space: nowrap; /* 텍스트가 여러 줄로 나뉘는 것을 방지 */
+  text-overflow: ellipsis; /* 텍스트가 넘칠 경우 말줄임 표시(...) 추가 */
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
 }
 
 .sm-bottom-sections.swiper-container {

@@ -191,7 +191,7 @@
 .styled-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 25px 0;
+  margin: 1% 0;
   font-size: 0.9em;
   font-family: "Poppins", sans-serif;
   background: linear-gradient(35deg, #222623 20%, #1f2822 50%, #95c29647 99%);
@@ -209,9 +209,12 @@
 }
 .styled-table th,
 .styled-table td {
-  padding: 12px 15px;
+  padding: 0.7% 1.2%;
   text-align: center;
   vertical-align: middle;
+  white-space: nowrap; /* 텍스트가 여러 줄로 나뉘는 것을 방지 */
+  text-overflow: ellipsis; /* 텍스트가 넘칠 경우 말줄임 표시(...) 추가 */
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
 }
 
 .styled-table thead tr {
@@ -282,7 +285,7 @@
 .table-container .swiper-button-next {
   width: 20px;
   height: 20px;
-  top: 50%;
+  top: 51%;
   transform: translateY(-50%);
 }
 
