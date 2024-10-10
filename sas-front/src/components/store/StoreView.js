@@ -143,9 +143,7 @@ const StoreView = (props) => {
                     매장 상호명
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.storeName}</div>
-                </td>
+                <td className="storeView-td">{store.storeName}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -153,9 +151,7 @@ const StoreView = (props) => {
                     매장 전화번호
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">{store.storePhone}</div>
-                </td>
+                <td className="storeView-td">{store.storePhone}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -163,9 +159,7 @@ const StoreView = (props) => {
                     매장 소개
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.storeIntroduce}</div>
-                </td>
+                <td className="storeView-td">{store.storeIntroduce}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -173,10 +167,8 @@ const StoreView = (props) => {
                     매장 위치
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">
-                    {store.storeAddr} {store.storeDetailAddr}
-                  </div>
+                <td className="storeView-td">
+                  {store.storeAddr} {store.storeDetailAddr}
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -185,9 +177,7 @@ const StoreView = (props) => {
                     영업 시간
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">{store.storeTime}</div>
-                </td>
+                <td className="storeView-td">{store.storeTime}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -195,9 +185,7 @@ const StoreView = (props) => {
                     예약 가능 시작 시간
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.storeReStart}</div>
-                </td>
+                <td className="storeView-td">{store.storeReStart}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -205,9 +193,7 @@ const StoreView = (props) => {
                     예약 가능 마감 시간
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.storeReEnd}</div>
-                </td>
+                <td className="storeView-td">{store.storeReEnd}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -215,9 +201,7 @@ const StoreView = (props) => {
                     브레이크 타임 시작
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.breakTimeStart}</div>
-                </td>
+                <td className="storeView-td">{store.breakTimeStart}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -225,9 +209,7 @@ const StoreView = (props) => {
                     브레이크 타임 마감
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.breakTimeEnd}</div>
-                </td>
+                <td className="storeView-td">{store.breakTimeEnd}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -235,9 +217,7 @@ const StoreView = (props) => {
                     예약금
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{store.deposit}</div>
-                </td>
+                <td className="storeView-td">{store.deposit}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -245,9 +225,7 @@ const StoreView = (props) => {
                     좌석 수용 인원
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{seat.seatCapacity}</div>
-                </td>
+                <td className="storeView-td">{seat.seatCapacity}</td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
@@ -255,23 +233,16 @@ const StoreView = (props) => {
                     총 좌석 수
                   </label>
                 </th>
-                <td className="storeView-td">
-                  <div className="storeView-div">{seat.seatAmount}</div>
-                </td>
+                <td className="storeView-td">{seat.seatAmount}</td>
               </tr>
-              <tr className="storePartnership-tr">
-                <th className="storePartnership-th">
-                  <label
-                    htmlFor="storeClass"
-                    className="storePartnership-label"
-                  >
+              <tr className="storeView-tr">
+                <th className="storeView-th">
+                  <label htmlFor="storeClass" className="storeView-label">
                     매장 유형
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">
-                    {storeClassLabel(store.storeClass)}
-                  </div>
+                <td className="storeView-td">
+                  {storeClassLabel(store.storeClass)}
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -280,15 +251,11 @@ const StoreView = (props) => {
                     매장 분위기
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">
-                    {store.storeMoodList
-                      ?.map((moodItem) => moodItem.mood)
-                      .filter(
-                        (mood, index, self) => self.indexOf(mood) === index
-                      )
-                      .join(" / ")}
-                  </div>
+                <td className="storeView-td">
+                  {store.storeMoodList
+                    ?.map((moodItem) => moodItem.mood)
+                    .filter((mood, index, self) => self.indexOf(mood) === index)
+                    .join(" / ")}
                 </td>
               </tr>
               <tr className="storeView-tr">
@@ -297,16 +264,14 @@ const StoreView = (props) => {
                     편의 시설
                   </label>
                 </th>
-                <td>
-                  <div className="storeView-div">
-                    {store.storeAmenityList
-                      ?.map((amenityItem) => amenityItem.amenities)
-                      .filter(
-                        (amenities, index, self) =>
-                          self.indexOf(amenities) === index
-                      )
-                      .join(" / ")}
-                  </div>
+                <td className="storeView-td">
+                  {store.storeAmenityList
+                    ?.map((amenityItem) => amenityItem.amenities)
+                    .filter(
+                      (amenities, index, self) =>
+                        self.indexOf(amenities) === index
+                    )
+                    .join(" / ")}
                 </td>
               </tr>
             </tbody>
