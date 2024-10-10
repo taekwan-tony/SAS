@@ -73,44 +73,56 @@ const StoreUpdate = (props) => {
   const changeStore = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setStore({ ...store, [name]: e.target.value });
-    setSeat({ ...seat, [name]: e.target.value });
 
-    //검증
+    setStore({ ...store, [name]: value });
+
+    // 검증
     if (name === "storeName" && !storeNameRegex.test(value)) {
-      storeNameRef.current.innerText =
-        "한글 20자, 영문 40자 이하로 입력해주세요.";
-    } else {
+      if (storeNameRef.current) {
+        storeNameRef.current.innerText =
+          "한글 20자, 영문 40자 이하로 입력해주세요.";
+      }
+    } else if (storeNameRef.current) {
       storeNameRef.current.innerText = "";
     }
 
     if (name === "storePhone" && !storePhoneRegex.test(value)) {
-      storePhoneRef.current.innerText = "-을 포함해서 입력해주세요.";
-    } else {
+      if (storePhoneRef.current) {
+        storePhoneRef.current.innerText = "-을 포함해서 입력해주세요.";
+      }
+    } else if (storePhoneRef.current) {
       storePhoneRef.current.innerText = "";
     }
 
     if (name === "storeDetailAddr" && !storeDetailAddrRegex.test(value)) {
-      storeDetailAddrRef.current.innerText = "50자 이하로 입력해주세요.";
-    } else {
+      if (storeDetailAddrRef.current) {
+        storeDetailAddrRef.current.innerText = "50자 이하로 입력해주세요.";
+      }
+    } else if (storeDetailAddrRef.current) {
       storeDetailAddrRef.current.innerText = "";
     }
 
     if (name === "deposit" && !depositRegex.test(value)) {
-      depositRef.current.innerText = "숫자만 입력해주세요.";
-    } else {
+      if (depositRef.current) {
+        depositRef.current.innerText = "숫자만 입력해주세요.";
+      }
+    } else if (depositRef.current) {
       depositRef.current.innerText = "";
     }
 
     if (name === "seatCapacity" && !seatRegex.test(value)) {
-      seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
-    } else {
+      if (seatRef.current) {
+        seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
+      }
+    } else if (seatRef.current) {
       seatRef.current.innerText = "";
     }
 
     if (name === "seatAmount" && !seatRegex.test(value)) {
-      seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
-    } else {
+      if (seatRef.current) {
+        seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
+      }
+    } else if (seatRef.current) {
       seatRef.current.innerText = "";
     }
   };

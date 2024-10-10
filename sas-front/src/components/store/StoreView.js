@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import "./storeView.css";
-import Swal from "sweetalert2";
 import axios from "axios";
-import PostCodeApi from "../utils/PostCodeApi";
 import "./modal.css";
-import { Link, useNavigate } from "react-router-dom";
-import SelectMUI from "../utils/SelectMUI";
-import StoreMoodCheckBoxMUI from "../utils/StoreMoodCheckBoxMUI";
-import StoreAmenitiesCheckBoxMUI from "../utils/StoreAmenitiesCheckBoxMUI";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isStoreLoginState } from "../utils/RecoilData";
 
@@ -18,31 +12,39 @@ const StoreView = (props) => {
   const [check, setCheck] = useState(false);
   const { loginstoreNo, handleEditClick } = props;
   const [store, setStore] = useState({});
-  const [storeSeatCapacity, setStoreSeatCapacity] = useState("");
-  const [storeSeatAmount, setStoreSeatAmount] = useState("");
-  const [seat, setSeat] = useState({
-    seatCapacity: "",
-    seatAmount: "",
-  });
+
+  useEffect(() => {
+    storeRefreshLogin();
+    window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
+  }, []);
+
+  const storeRefreshLogin = () => {
+    const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
+    if (storeRefreshToken != null) {
+      axios.defaults.headers.common["Authorization"] = storeRefreshToken;
+      axios
+        .post(`${backServer}/store/storeRefresh`)
+        .then((res) => {
+          console.log("로그인 유지 :", res);
+          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
+          window.localStorage.setItem(
+            "storeRefreshToken",
+            res.data.refreshToken
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          delete axios.defaults.headers.common["Authorization"];
+          window.localStorage.removeItem("storeRefreshToken");
+        });
+    }
+  };
+
+  const [seatList, setSeatList] = useState([{ seatAmount: "", seatCount: "" }]);
 
   const [storeSiFilepathList, setStoreSiFilepathList] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // 현재 이미지 인덱스 상태
-
-  useEffect(() => {
-    if (store.seatList && store.seatList.length > 0) {
-      setStoreSeatCapacity(store.seatList[0].seatCapacity);
-      setStoreSeatAmount(store.seatList[0].seatAmount);
-    }
-  }, [store]);
-
-  useEffect(() => {
-    if (storeSeatCapacity && storeSeatAmount) {
-      setSeat({
-        seatCapacity: storeSeatCapacity,
-        seatAmount: storeSeatAmount,
-      });
-    }
-  }, [storeSeatCapacity, storeSeatAmount]);
 
   useEffect(() => {
     setActiveIndex(1);
@@ -221,19 +223,42 @@ const StoreView = (props) => {
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
-                  <label htmlFor="seatCapacity" className="storeView-label">
-                    좌석 수용 인원
+                  <label htmlFor="seatType" className="storeView-label">
+                    좌석
                   </label>
                 </th>
-                <td className="storeView-td">{seat.seatCapacity}</td>
-              </tr>
-              <tr className="storeView-tr">
-                <th className="storeView-th">
-                  <label htmlFor="seatAmount" className="storeView-label">
-                    총 좌석 수
-                  </label>
-                </th>
-                <td className="storeView-td">{seat.seatAmount}</td>
+                <td className="storeView-td">
+                  <table className="seat-view-table">
+                    <thead>
+                      <tr className="seat-view-tr">
+                        <th className="seat-view-th">좌석 유형</th>
+                        <th className="seat-view-th">좌석 수</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {seatList.map((seat, index) => (
+                        <tr key={index}>
+                          <td className="seat-view-td">
+                            <input
+                              className="storeView-inputBox"
+                              type="text"
+                              name="seatType"
+                              value={seat.seatCapacity}
+                            />
+                          </td>
+                          <td className="seat-td">
+                            <input
+                              className="storeView-inputBox"
+                              type="text"
+                              name="seatCount"
+                              value={seat.seatAmount}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </td>
               </tr>
               <tr className="storeView-tr">
                 <th className="storeView-th">
