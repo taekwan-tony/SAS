@@ -39,7 +39,7 @@ const UpdatePw = () => {
   const updatePw = () => {
     if (checkPwRe) {
       axios.post(`${backServer}/user/updatePw`, user).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data) {
           Swal.fire({
             title: "비밀번호 재생성 완료",

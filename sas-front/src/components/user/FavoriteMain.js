@@ -107,7 +107,7 @@ const FavoriteList = (props) => {
             console.log(err);
           });
       } else if (res.isDenied) {
-        console.log(loginUserNo);
+        // console.log(loginUserNo);
         axios
           .delete(
             `${backServer}/favorite/favoriteFolderNo/${favoriteFolder.favoriteFolderNo}/userNo/${loginUserNo}/moveFavorite`

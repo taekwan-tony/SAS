@@ -48,7 +48,7 @@ const Mypage = (props) => {
     axios
       .get(`${backServer}/user/userNo/${loginUserNo}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setUser(res.data);
         setFavoriteFolder(
           res.data.favoriteFolderList &&
@@ -73,7 +73,7 @@ const Mypage = (props) => {
       });
   }, [loginUserNo, checkUpdate]);
   // 즐겨찾기 폴더 추가 위한 모달 구현(즐겨찾기 페이지, 마이페이지 메인에 모두 들어갈것이므로 그냥 여기서 만들고 여는 함수만 보내주겠음)
-  console.log(favoriteFolder);
+  // console.log(favoriteFolder);
   const [addFolder, setAddFolder] = useState({
     favoriteFolderName: "",
     userNo: loginUserNo,
@@ -364,11 +364,11 @@ const ReservationView = () => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [isReservationUpdate, setIsReservationUpdate] = useState(false);
   useEffect(() => {
-    console.log(loginUserId);
+    // console.log(loginUserId);
     axios
       .get(`${backServer}/reservation/view/${reqPage}/${loginUserId}`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setReservationList(res.data.list);
         setPi(res.data.pi);
       })
@@ -526,7 +526,7 @@ const ReservationView = () => {
                                         `${backServer}/reservation/cancel/${reservation.reserveNo}`
                                       )
                                       .then((res) => {
-                                        console.log(res);
+                                        // console.log(res);
                                         if (res.data > 0) {
                                           Swal.fire({
                                             title: "예약취소 완료",
@@ -579,7 +579,7 @@ const ReservationView = () => {
                           `${backServer}/reservation/cancel/${reservation.reserveNo}`
                         )
                         .then((res) => {
-                          console.log(res);
+                          // console.log(res);
                           if (res.data > 0) {
                             Swal.fire({
                               title: "예약취소 완료",
@@ -795,12 +795,12 @@ const ReviewWrite = () => {
     storeNo: storeNo,
     reserveNo: reserveNo,
   });
-  console.log(review);
+  // console.log(review);
   const setContent = (content) => {
-    console.log(content);
+    // console.log(content);
     setReview({ ...review, reviewContent: content });
   };
-  console.log(review.reviewContent);
+  // console.log(review.reviewContent);
   const [title, setTitle] = useState("");
   const handleTitleChange = (e) => {
     setTitle(e.currentTarget.value);
@@ -815,7 +815,7 @@ const ReviewWrite = () => {
     axios
       .post(`${backServer}/review/usermain/mypage/myreview`, review)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data > 0) {
           Swal.fire({
             title: "감사합니다",

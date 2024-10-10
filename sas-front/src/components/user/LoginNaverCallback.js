@@ -31,11 +31,20 @@ const LoginNaverCallback = () => {
       const error_description = new URL(window.location.href).searchParams.get(
         "error_description"
       );
-      console.log(error);
-      console.log(error_description);
+      // console.log(error);
+      // console.log(error_description);
+      Swal.fire({
+        title: `에러코드 : ${error}`,
+        text: error_description,
+        icon: "error",
+        confirmButtonText: "로그인 화면으로",
+        confirmButtonColor: "var(--main1)",
+      }).then(() => {
+        navigate("/usermain/login");
+      });
     } else {
-      console.log(code);
-      console.log(state);
+      // console.log(code);
+      // console.log(state);
       const clientId = process.env.REACT_APP_NAVER_ID;
       const clientSecret = process.env.REACT_APP_NAVER_SECRET;
       const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -56,7 +65,7 @@ const LoginNaverCallback = () => {
           }
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.data.result === 0) {
             //회원가입해줘야함
             const user = res.data.joinUser;
@@ -71,7 +80,7 @@ const LoginNaverCallback = () => {
             axios
               .post(`${backServer}/user/joinNaver`, user)
               .then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.data.result) {
                   Swal.fire({
                     title: "네이버 아이디와 연동됩니다",

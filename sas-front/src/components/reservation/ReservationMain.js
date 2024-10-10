@@ -83,7 +83,7 @@ const ReservationMain = (props) => {
     axios
       .get(`${backServer}/store/storeNo/${storeNo}/getReserveInfo`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setReservationStore({
           ...reservationStore,
           storeNo: res.data.storeNo,
@@ -484,7 +484,7 @@ const ReservationModalSecond = (props) => {
   // 예약버튼
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const reserve = () => {
-    console.log(reservation);
+    // console.log(reservation);
     // console.log(typeof reservation.reserveDate);
     if (isUpdate) {
       axios.patch(`${backServer}/reservation`, reservation).then((res) => {
@@ -536,14 +536,14 @@ const ReservationModalSecond = (props) => {
           // console.log(res);
           if (res.data.result) {
             let isPayed = true;
-            console.log("결제여부", reserveDeposit.payStatus);
+            // console.log("결제여부", reserveDeposit.payStatus);
             if (reserveDeposit.payStatus !== 0) {
               const payCode = `${res.data.reserveNo}-${
                 reservation.reserveDate.getFullYear() +
                 reservation.reserveDate.getMonth() +
                 reservation.reserveDate.getDate()
               }${reservation.reserveTime}${new Date().getSeconds()}`;
-              console.log(payCode);
+              // console.log(payCode);
               pay.payCode = payCode;
               pay.reserveNo = res.data.reserveNo;
               isPayed = goToPay(pay);
@@ -586,7 +586,7 @@ const ReservationModalSecond = (props) => {
     }
   };
   const goToPay = (pay) => {
-    console.log("pay 진행중");
+    // console.log("pay 진행중");
     let payResult = true;
     const user = {};
     axios
@@ -601,7 +601,7 @@ const ReservationModalSecond = (props) => {
         payResult = false;
       });
     if (payResult) {
-      console.log("pay 결제창 떠야함");
+      // console.log("pay 결제창 떠야함");
       window.IMP.request_pay(
         {
           pg: "html5_inicis.INIpayTest", //테스트 시 html5_inicis.INIpayTest 기재
@@ -639,7 +639,7 @@ const ReservationModalSecond = (props) => {
             axios
               .delete(`${backServer}/reservation/delete/${pay.reserveNo}`)
               .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
               })
               .catch((err) => {
                 console.log(err);
