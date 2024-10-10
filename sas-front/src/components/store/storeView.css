@@ -123,8 +123,8 @@
 }
 
 .storeView-img {
-  width: 300px;
-  height: 300px;
+  width: 450px;
+  height: 450px;
   object-fit: cover; /* 이미지 크기를 유지하면서 비율 맞추기 */
   display: flex;
   justify-content: center;
@@ -306,11 +306,11 @@
 }
 
 .storeView-slider-btn:first-of-type {
-  left: 500px; /* 왼쪽 버튼 */
+  left: 350px; /* 왼쪽 버튼 */
 }
 
 .storeView-slider-btn:last-of-type {
-  right: 500px; /* 오른쪽 버튼 */
+  right: 350px; /* 오른쪽 버튼 */
 }
 
 .storeView-updateBtn {
