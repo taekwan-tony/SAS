@@ -399,7 +399,7 @@ const UserMainView = (props) => {
     axios
       .get(`${backServer}/store/storeList/best`)
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         setStoreClass(res.data);
         setKorea(res.data.korea);
         setJapan(res.data.japan);
