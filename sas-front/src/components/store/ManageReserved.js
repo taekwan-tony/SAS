@@ -11,10 +11,11 @@ import { useRecoilValue } from "recoil";
 import { loginStoreNoState } from "../utils/RecoilData";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination, Navigation, Mousewheel } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/mousewheel";
 
 function ManageReserved(props) {
   const setActiveIndex = props.setActiveIndex;
@@ -304,11 +305,12 @@ function ManageReserved(props) {
     if (weekReservations.length > numPerPage) {
       return (
         <Swiper
-          modules={[Pagination, Navigation]}
+          modules={[Pagination, Navigation, Mousewheel]}
           spaceBetween={30}
           slidesPerView={1}
           navigation
           pagination={{ clickable: true }}
+          mousewheel={true}
         >
           {Array.from({
             length: Math.ceil(weekReservations.length / numPerPage),
