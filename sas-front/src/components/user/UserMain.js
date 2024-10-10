@@ -378,6 +378,7 @@ const UserMainView = (props) => {
   const [yang, setYang] = useState([]);
   const [japan, setJapan] = useState([]);
   const backServer = process.env.REACT_APP_BACK_SERVER;
+  const [loginId, setLoginId] = useRecoilState(loginUserIdState);
   const activeTab = props.activeTab;
   const setActiveTab = props.setActiveTab;
   const navigate = useNavigate("");
@@ -392,7 +393,7 @@ const UserMainView = (props) => {
         setStore(res.data.list);
       })
       .catch((err) => {});
-  }, []);
+  }, [loginId]);
 
   useEffect(() => {
     axios
@@ -406,7 +407,7 @@ const UserMainView = (props) => {
         setChina(res.data.china);
       })
       .catch((err) => {});
-  }, []);
+  }, [loginId]);
 
   return (
     <>
@@ -542,12 +543,20 @@ const UserMainView = (props) => {
           >
             <SwiperSlide>
               <div className="dining-deal-content">
-                <img
-                  src={
-                    store[0] ? `${backServer}/store/${store[0].siFilepath}` : ""
-                  }
-                  alt="Slide 5"
-                />
+                {store[0] ? (
+                  <Link to={`/usermain/menuview/${store[0].storeNo}/menuview`}>
+                    <img
+                      src={
+                        store[0]
+                          ? `${backServer}/store/${store[0].siFilepath}`
+                          : ""
+                      }
+                      alt="Slide 5"
+                    />
+                  </Link>
+                ) : (
+                  ""
+                )}
                 <div className="dining-deal-info">
                   <div className="store-item">
                     <span>{store && store[0] ? store[0].storeAddr : ""}</span>
@@ -564,12 +573,20 @@ const UserMainView = (props) => {
 
             <SwiperSlide>
               <div className="dining-deal-content">
-                <img
-                  src={
-                    store[1] ? `${backServer}/store/${store[1].siFilepath}` : ""
-                  }
-                  alt="Slide 6"
-                />
+                {store[1] ? (
+                  <Link to={`/usermain/menuview/${store[1].storeNo}/menuview`}>
+                    <img
+                      src={
+                        store[1]
+                          ? `${backServer}/store/${store[1].siFilepath}`
+                          : ""
+                      }
+                      alt="Slide 6"
+                    />
+                  </Link>
+                ) : (
+                  ""
+                )}
                 <div className="dining-deal-info">
                   <div className="store-item">
                     <span>{store && store[1] ? store[1].storeAddr : ""}</span>
@@ -585,12 +602,20 @@ const UserMainView = (props) => {
             </SwiperSlide>
             <SwiperSlide>
               <div className="dining-deal-content">
-                <img
-                  src={
-                    store[2] ? `${backServer}/store/${store[2].siFilepath}` : ""
-                  }
-                  alt="Slide 7"
-                />
+                {store[2] ? (
+                  <Link to={`/usermain/menuview/${store[2].storeNo}/menuview`}>
+                    <img
+                      src={
+                        store[2]
+                          ? `${backServer}/store/${store[2].siFilepath}`
+                          : ""
+                      }
+                      alt="Slide 7"
+                    />
+                  </Link>
+                ) : (
+                  ""
+                )}
                 <div className="dining-deal-info">
                   <div className="store-item">
                     <span>{store && store[2] ? store[2].storeAddr : ""}</span>
@@ -652,13 +677,22 @@ const UserMainView = (props) => {
                   {korea && korea.length > 0
                     ? korea.map((item, index) => (
                         <div className="store-item" key={index}>
-                          <img
-                            src={
-                              item && item
-                                ? `${backServer}/store/${item.siFilepath}`
-                                : ""
-                            }
-                          />
+                          {item ? (
+                            <Link
+                              to={`/usermain/menuview/${item.storeNo}/menuview`}
+                            >
+                              <img
+                                src={
+                                  item && item
+                                    ? `${backServer}/store/${item.siFilepath}`
+                                    : ""
+                                }
+                              />
+                            </Link>
+                          ) : (
+                            ""
+                          )}
+
                           <div className="dining-deal-info">
                             <span>{item && item ? item.storeAddr : ""}</span>
                             <h3>{item && item ? item.storeName : ""}</h3>
@@ -682,13 +716,21 @@ const UserMainView = (props) => {
                   {china && china.length > 0
                     ? china.map((item, index) => (
                         <div className="store-item" key={index}>
-                          <img
-                            src={
-                              item && item
-                                ? `${backServer}/store/${item.siFilepath}`
-                                : ""
-                            }
-                          />
+                          {item ? (
+                            <Link
+                              to={`/usermain/menuview/${item.storeNo}/menuview`}
+                            >
+                              <img
+                                src={
+                                  item && item
+                                    ? `${backServer}/store/${item.siFilepath}`
+                                    : ""
+                                }
+                              />
+                            </Link>
+                          ) : (
+                            ""
+                          )}
                           <div className="dining-deal-info">
                             <span>{item && item ? item.storeAddr : ""}</span>
                             <h3>{item && item ? item.storeName : ""}</h3>
@@ -712,13 +754,21 @@ const UserMainView = (props) => {
                   {japan && japan.length > 0
                     ? japan.map((item, index) => (
                         <div className="store-item" key={index}>
-                          <img
-                            src={
-                              item && item
-                                ? `${backServer}/store/${item.siFilepath}`
-                                : ""
-                            }
-                          />
+                          {item ? (
+                            <Link
+                              to={`/usermain/menuview/${item.storeNo}/menuview`}
+                            >
+                              <img
+                                src={
+                                  item && item
+                                    ? `${backServer}/store/${item.siFilepath}`
+                                    : ""
+                                }
+                              />
+                            </Link>
+                          ) : (
+                            ""
+                          )}
                           <div className="dining-deal-info">
                             <span>{item && item ? item.storeAddr : ""}</span>
                             <h3>{item && item ? item.storeName : ""}</h3>
@@ -742,13 +792,21 @@ const UserMainView = (props) => {
                   {yang && yang.length > 0
                     ? yang.map((item, index) => (
                         <div className="store-item" key={index}>
-                          <img
-                            src={
-                              item && item
-                                ? `${backServer}/store/${item.siFilepath}`
-                                : ""
-                            }
-                          />
+                          {item ? (
+                            <Link
+                              to={`/usermain/menuview/${item.storeNo}/menuview`}
+                            >
+                              <img
+                                src={
+                                  item && item
+                                    ? `${backServer}/store/${item.siFilepath}`
+                                    : ""
+                                }
+                              />
+                            </Link>
+                          ) : (
+                            ""
+                          )}
                           <div className="dining-deal-info">
                             <span>{item && item ? item.storeAddr : ""}</span>
                             <h3>{item && item ? item.storeName : ""}</h3>
