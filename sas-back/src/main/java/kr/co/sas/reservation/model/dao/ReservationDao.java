@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.co.sas.reservation.model.dto.CountReserveDTO;
 import kr.co.sas.reservation.model.dto.PaymentDTO;
 import kr.co.sas.reservation.model.dto.ReservationDTO;
 import kr.co.sas.util.PageInfo;
@@ -63,5 +64,7 @@ public interface ReservationDao {
 
 	PaymentDTO getPayInfo(int reserveNo);
 	List<ReservationDTO> selectYearAgrGroup();
+
+	CountReserveDTO isThereAvailable(ReservationDTO reservation);
 
 }

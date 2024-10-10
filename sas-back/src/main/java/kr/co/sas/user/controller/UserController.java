@@ -105,7 +105,7 @@ public class UserController {
 	public ResponseEntity<String> findId(@RequestBody UserDTO user){
 //		System.out.println(user);
 		String userId = userService.findId(user);
-		System.out.println(userId);
+//		System.out.println(userId);
 		return ResponseEntity.ok(userId);
 	}
 	
@@ -126,7 +126,7 @@ public class UserController {
 	@Operation(summary="인증메일 보내기", description = "받은 이메일을 이용해서 인증번호를 보내기")
 	@PostMapping(value="/sendCode")
 	public ResponseEntity<String> sendCode(@RequestBody UserDTO user) {
-		System.out.println(user);
+//		System.out.println(user);
 		String receiver = user.getUserEmail();
 		//인증메일 제목 생성
 		String emailTitle = "Spoon & Smiles 인증메일입니다.";
@@ -223,9 +223,9 @@ public class UserController {
 	@Operation(summary="일반회원 정보 수정", description = "회원 번호, 회원 닉네임, (회원 비밀번호), 회원 전화번호, 회원 이메일을 유저 객체로 받아 수정")
 	@PatchMapping
 	public ResponseEntity<Boolean> updateUser(@RequestBody UserDTO user){
-		System.out.println("업데이트 값"+user);
+//		System.out.println("업데이트 값"+user);
 		int result = userService.updateUser(user);
-		System.out.println(result);
+//		System.out.println(result);
 		return ResponseEntity.ok(result>0);
 	}
 	
@@ -239,7 +239,7 @@ public class UserController {
 	@Operation(summary="일반회원 회원정보 수정시 토큰 재갱신", description="회원 아이디, 번호, 닉네임, 유저타입을 받아서 토큰 재갱신해서 반환")
 	@PostMapping(value="/refreshToken")
 	public ResponseEntity<Map> refreshTokenAfterUpdate(@RequestBody UserDTO user){
-		System.out.println("토큰 값:"+user);
+//		System.out.println("토큰 값:"+user);
 		LoginUserDTO loginUser = userService.getToken(user);
 		Map map = new HashMap<String, Object>();
 		map.put("loginId", loginUser.getUserId());
@@ -262,14 +262,14 @@ public class UserController {
 	@PostMapping(value="/callBack")
 	public ResponseEntity<Map> naverLogin(@RequestBody NaverCodeDTO naver){
 		Map isUser = new HashMap<String, Object>();
-		System.out.println(1);
-		System.out.println(naver);
+//		System.out.println(1);
+//		System.out.println(naver);
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_FORM_URLENCODED); //일단 이걸로 넣었음 아직 이게 뭔지 모름
 		HttpEntity<String> entity=new HttpEntity("grant_type=authorization_code&client_id="+naver.getClientId()+"&client_secret="+naver.getClientSecret()+"&code="+naver.getCode()+"&state="+naver.getState(), header);
 		ResponseEntity<String> response = restTemplate.postForEntity("https://nid.naver.com/oauth2.0/token", entity, String.class);
-		System.out.println(response);
-		System.out.println(response.getBody());
+//		System.out.println(response);
+//		System.out.println(response.getBody());
 		ObjectMapper om = new ObjectMapper(); //json을 읽고 쓸 수 있게 도와준대..
 		String accessToken="";
 		try {
@@ -282,7 +282,7 @@ public class UserController {
 			profileHeader.setBearerAuth(accessToken);
 			HttpEntity<String> profileEntity = new HttpEntity(profileHeader);
 			ResponseEntity<String> profileResponse = restTemplate.postForEntity("https://openapi.naver.com/v1/nid/me", profileEntity, String.class);
-			System.out.println(profileResponse);
+//			System.out.println(profileResponse);
 			//받아온 값에서 가져올 유저 프로필 정보 가져오기
 			
 			JsonNode jsonNode = om.readTree(profileResponse.getBody());
@@ -292,7 +292,7 @@ public class UserController {
 			String savepath = root + "/userProfile/";
 			String filepath=fileUtil.uploadProfile(userPhotoUrl, savepath);
 			user.setUserPhoto(filepath);
-			System.out.println(user.getUserPhoto());
+//			System.out.println(user.getUserPhoto());
 			user.setUserGender(profileObject.get("gender").asText().equals("F")?"여":"남");
 			user.setUserEmail(profileObject.get("email").asText());
 			user.setUserPhone(profileObject.get("mobile").asText());
@@ -306,7 +306,7 @@ public class UserController {
 	@Operation(summary="네이버 소셜로그인 회원가입")
 	@PostMapping(value="/joinNaver")
 	public ResponseEntity<Map> joinNaver(@RequestBody UserDTO user){
-		System.out.println(user);
+//		System.out.println(user);
 		Map map = userService.insertNaverUser(user);
 		return ResponseEntity.ok(map);
 	}

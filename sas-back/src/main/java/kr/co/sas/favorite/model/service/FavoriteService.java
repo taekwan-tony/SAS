@@ -48,7 +48,7 @@ public class FavoriteService {
 	@Transactional
 	public int updateFolderNo(FavoriteDTO changeFolder) {
 		int favoriteNo = favoriteDao.getFavoriteNo(changeFolder);
-		System.out.println(favoriteNo);
+//		System.out.println(favoriteNo);
 		changeFolder.setFavoriteNo(favoriteNo);
 		int result = favoriteDao.updateFolderNo(changeFolder);
 		return result;

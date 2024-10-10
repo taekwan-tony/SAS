@@ -51,6 +51,7 @@ const ReservationMain = (props) => {
           seatNo: reservationUpdateInfo.seatNo,
           payPrice: 0,
           reservePeopleLimit: reservationUpdateInfo.reservePeople,
+          storeNo: reservationUpdateInfo.storeNo,
         }
       : {
           reserveTime: "",
