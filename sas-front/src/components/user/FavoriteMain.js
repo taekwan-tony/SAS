@@ -98,6 +98,9 @@ const FavoriteList = (props) => {
                 icon: "success",
                 confirmButtonColor: "var(--main1)",
                 confirmButtonText: "확인",
+                customClass: {
+                  confirmButton: "swal-btn",
+                },
               }).then(() => {
                 setCheckUpdate(!checkUpdate);
               });
@@ -119,6 +122,9 @@ const FavoriteList = (props) => {
                 icon: "success",
                 confirmButtonColor: "var(--main1)",
                 confirmButtonText: "확인",
+                customClass: {
+                  confirmButton: "swal-btn",
+                },
               }).then(() => {
                 setCheckUpdate(!checkUpdate);
               });

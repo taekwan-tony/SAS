@@ -46,6 +46,10 @@ const UpdatePw = () => {
             text: "로그인 화면으로 돌아가세요",
             icon: "success",
             confirmButtonColor: "var(--main1)",
+            confirmButtonText: "확인",
+            customClass: {
+              confirmButton: "swal-btn",
+            },
           }).then(() => {
             navigate("/usermain/login");
           });
