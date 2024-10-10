@@ -261,7 +261,7 @@ function StoreDetail(props) {
             length: Math.ceil(todayCustomer.length / numPerPage),
           }).map((_, slideIndex) => (
             <SwiperSlide key={slideIndex}>
-              <table>
+              <table className="sm-customer-table">
                 <thead>
                   <tr>
                     <th>이름</th>
