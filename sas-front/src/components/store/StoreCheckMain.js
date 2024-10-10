@@ -44,6 +44,7 @@ const StoreCheckMain = () => {
   const storeRefreshLogin = () => {
     const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
     if (storeRefreshToken != null) {
+      console.log("로그인 정보 : ", storeName);
       axios.defaults.headers.common["Authorization"] = storeRefreshToken;
       axios
         .post(`${backServer}/store/storeRefresh`)
@@ -55,6 +56,7 @@ const StoreCheckMain = () => {
           setSoPhone(res.data.soPhone);
           setSoName(res.data.soName);
           setStoreName(res.data.storeName); // storeName 설정
+          axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "storeRefreshToken",
             res.data.refreshToken
