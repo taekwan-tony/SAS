@@ -2,21 +2,16 @@ import "./storeView.css";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  isStoreLoginState,
-  loginStoreIdState,
-  loginStoreNoState,
-  storeTypeState,
-} from "../utils/RecoilData";
-import { Link, Route, Routes } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { loginStoreNameState, loginStoreNoState } from "../utils/RecoilData";
+import { Link } from "react-router-dom";
 import StoreViewFrm from "./StoreViewFrm";
 import StoreView from "./StoreView";
-import StoreUpdate from "./StoreUpdate";
+
 const StoreViewMain = (props) => {
   const setActiveIndex = props.setActiveIndex;
-  const backServer = process.env.REACT_APP_BACK_SERVER;
-  const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
+  const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 로그인된 매장 번호
+  const [storeName, setStoreName] = useRecoilState(loginStoreNameState); // 로그인된 매장 이름
 
   const [store, setStore] = useState({
     storeNo: "",
@@ -74,8 +69,8 @@ const StoreViewMain = (props) => {
             <img src="/image/238.jpg" alt="back" />
           </div>
           <div className="storeUpdate-main">
-            {/* store_name이 있으면 storeView 컴포넌트 출력, 없으면 storeFrm 컴포넌트 출력 */}
-            {isEditing ? (
+            {/* storeName이 비어 있으면 StoreViewFrm을, 그렇지 않으면 StoreView를 렌더링 */}
+            {storeName ? (
               <StoreView
                 store={store}
                 setStore={setStore}

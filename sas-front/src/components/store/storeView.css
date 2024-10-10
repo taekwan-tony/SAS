@@ -160,6 +160,15 @@
   margin-left: 15px;
 }
 
+.seat-view-th {
+  color: #fff;
+  font-weight: 300;
+}
+
+.seat-view-table {
+  margin: 0 auto;
+}
+
 .storeView-btn:hover {
   border: none;
   color: #518142;
