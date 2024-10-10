@@ -123,8 +123,8 @@
 }
 
 .storeView-img {
-  width: 250px;
-  height: 250px;
+  width: 300px;
+  height: 300px;
   object-fit: cover; /* 이미지 크기를 유지하면서 비율 맞추기 */
   display: flex;
   justify-content: center;
