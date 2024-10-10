@@ -1,20 +1,57 @@
 import axios from "axios";
-import { useState } from "react";
+import { useRef } from "react";
 import Swal from "sweetalert2";
 
 const StoreMenuList = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const menu = props.menu;
   const index = props.index;
-  const storeMenu = props.storeMenu;
-  const setStoreMenu = props.setStoreMenu;
   const storeMenuList = props.storeMenuList;
   const setStoreMenuList = props.setStoreMenuList;
-  const hideInfoCard = props.hideInfoCard;
-  const type = props.type;
-  const loginStoreNo = props.loginStoreNo;
   const setCheck = props.setCheck;
   const changeStoreThumbnail = props.changeStoreThumbnail;
+
+  const menuNameRef = useRef(null);
+  const menuInfoRef = useRef(null);
+  const menuPriceRef = useRef(null);
+
+  // 정규 표현식
+  const menuNameRegex = /^([가-힣]{0,20}|[a-zA-Z]{0,60})$/;
+  const menuInfoRegex = /^([가-힣]{0,40}|[a-zA-Z\s]{0,120})$/;
+  const menuPriceRegex = /^[0-9]*$/;
+
+  const modifyMenu = (field, value) => {
+    if (field === "menuName") {
+      if (!menuNameRegex.test(value)) {
+        menuNameRef.current.textContent =
+          "메뉴 이름은 한글 20자 이하, 영어 60자 이하로 입력해주세요.";
+      } else {
+        menuNameRef.current.textContent = ""; // 검증 통과 시 메시지 제거
+      }
+    }
+
+    if (field === "menuInfo") {
+      if (!menuInfoRegex.test(value)) {
+        menuInfoRef.current.textContent =
+          "메뉴 설명은 한글 40자 이하, 영어 120자 이하로 입력해주세요.";
+      } else {
+        menuInfoRef.current.textContent = ""; // 검증 통과 시 메시지 제거
+      }
+    }
+
+    if (field === "menuPrice") {
+      if (!menuPriceRegex.test(value)) {
+        menuPriceRef.current.textContent = "숫자만 입력해주세요.";
+      } else {
+        menuPriceRef.current.textContent = ""; // 검증 통과 시 메시지 제거
+      }
+    }
+
+    const updatedMenu = { ...menu, [field]: value };
+    const updatedStoreMenuList = [...storeMenuList];
+    updatedStoreMenuList[index] = updatedMenu;
+    setStoreMenuList(updatedStoreMenuList); // 업데이트된 메뉴 리스트 상태로 저장
+  };
 
   const deleteMenu = () => {
     Swal.fire({
@@ -38,24 +75,15 @@ const StoreMenuList = (props) => {
     });
   };
 
-  //메뉴 수정
-  const modifyMenu = (field, value) => {
-    const updatedMenu = { ...menu, [field]: value };
-    const updatedStoreMenuList = [...storeMenuList];
-    updatedStoreMenuList[index] = updatedMenu; // 메뉴 리스트에서 해당 메뉴를 업데이트
-    setStoreMenuList(updatedStoreMenuList); // 업데이트된 메뉴 리스트를 상태로 저장
-  };
-
   return (
     <div className="storeMenuView-info-card">
       <div className="storeMenuView-close-div">
-        {/* X 버튼 클릭 시 메뉴 삭제 */}
         <img
           className="storeMenuView-close"
           src="/image/close.icon.png"
           onClick={deleteMenu}
           alt="close"
-        ></img>
+        />
       </div>
       <table className="storeMenuView-table">
         <tbody className="storeMenuView-tbody">
@@ -63,14 +91,14 @@ const StoreMenuList = (props) => {
             <td className="storeMenuView-td storeMenuView-img-td" rowSpan={4}>
               <div className="storeMenuView-imgdiv-zone">
                 <div className="storeMenuView-imgDiv">
-                  {type == 1 ? (
+                  {props.type === 1 ? (
                     <img
                       className="storeMenuView-img"
                       src={
                         menu.menuPhoto.startsWith("data:image")
-                          ? menu.menuPhoto // base64 이미지
+                          ? menu.menuPhoto
                           : `${backServer}/store/storeMenu/${menu.menuPhoto}`
-                      } // 서버 이미지
+                      }
                       alt="메뉴 사진"
                     />
                   ) : (
@@ -83,6 +111,7 @@ const StoreMenuList = (props) => {
                 </div>
               </div>
               <div className="storeMenuView-btn-zone">
+                <label htmlFor="menuPhoto">파일 선택</label>
                 <input
                   className="storeMenuView-inputBox"
                   type="file"
@@ -90,9 +119,9 @@ const StoreMenuList = (props) => {
                   name="menuPhoto"
                   onChange={changeStoreThumbnail(1, index)}
                   accept="image/*"
-                ></input>
+                  style={{ display: "none" }}
+                />
               </div>
-              <div className="storeMenuView-div"></div>
             </td>
           </tr>
           <tr className="storeMenuView-tr">
@@ -105,7 +134,11 @@ const StoreMenuList = (props) => {
                 name="menuName"
                 value={menu.menuName}
                 onChange={(e) => modifyMenu("menuName", e.target.value)}
-              ></input>
+              />
+              <p
+                ref={menuNameRef}
+                style={{ color: "red", fontSize: "12px" }}
+              ></p>
             </td>
           </tr>
           <tr className="storeMenuView-tr">
@@ -118,7 +151,11 @@ const StoreMenuList = (props) => {
                 name="menuInfo"
                 value={menu.menuInfo}
                 onChange={(e) => modifyMenu("menuInfo", e.target.value)}
-              ></input>
+              />
+              <p
+                ref={menuInfoRef}
+                style={{ color: "red", fontSize: "12px" }}
+              ></p>
             </td>
           </tr>
           <tr className="storeMenuView-tr">
@@ -131,7 +168,11 @@ const StoreMenuList = (props) => {
                 name="menuPrice"
                 value={menu.menuPrice}
                 onChange={(e) => modifyMenu("menuPrice", e.target.value)}
-              ></input>
+              />
+              <p
+                ref={menuPriceRef}
+                style={{ color: "red", fontSize: "12px" }}
+              ></p>
             </td>
           </tr>
         </tbody>

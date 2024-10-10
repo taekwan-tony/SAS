@@ -68,6 +68,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
 
   const soEmailRef = useRef(null);
   const soPwRef = useRef(null);
+  const soNameRef = useRef(null);
+  const soPhoneRef = useRef(null);
 
   const login = () => {
     console.log(login);
@@ -158,23 +160,21 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     setStoreLogin({ ...storeLogin, [name]: e.target.value });
   };
 
+  //사업자등록번호 조회
   const storeRegistBusinessNumber = () => {
-    // 사업자등록번호 입력 값에서 숫자 외의 문자를 제거하는 부분
+    // 사업자등록번호 입력 값에서 숫자 외의 문자를 제거
     const businessNumberElement = document.getElementById("businessNumber");
-    businessNumberElement.value = businessNumberElement.value.replace(
-      /[^0-9]/g,
-      ""
-    );
+    const reg_num = businessNumberElement.value.replace(/[^0-9]/g, ""); // 숫자만 남김
 
-    const reg_num = businessNumberElement.value;
-
-    if (!reg_num) {
+    // 정규표현식을 통해 사업자번호 형식 검증
+    if (!reg_num || !businessNumberRegex.test(reg_num)) {
       Swal.fire({
-        title: "사업자등록번호를 입력해주세요.",
+        title: "유효한 사업자등록번호를 입력해주세요.",
+        text: "숫자만 입력할 수 있으며, 최대 12자리까지 가능합니다.",
         icon: "warning",
         confirmButtonColor: "#5e9960",
       });
-      return false;
+      return;
     }
 
     // 전송할 데이터
@@ -188,11 +188,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
         `${backServer}/store/businessNumber/${store.businessNumber}/checkBusinessNumber`
       )
       .then((res) => {
-        console.log(res);
         if (res.data) {
           console.log("사용 가능한 사업자 번호");
 
-          //중복 조회 이후
           // Fetch API를 사용하여 POST 요청 보내기
           fetch(
             "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=izDvzK%2FsSEz9bDSkKZ2ITpUtPOjeYOTTFEsMUh%2BOKm%2B1SNrCWoYHCLtDCJ1F184rdJo3an8rhug39mJE4F59Xw%3D%3D",
@@ -238,6 +236,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       });
   };
 
+  //이메일 중복 조회
   const storeRegistEmailCheck = () => {
     const emailCheck = storeLogin.soEmail.trim();
 
@@ -309,11 +308,83 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   }
 
   // 엔터 설정
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); // 기본 폼 제출 방지
+  const handleKeyDown = (e) => {
+    const { name, value } = e.target;
+
+    // 이메일 길이 제한 설정
+    if (value.length > 50) {
+      e.preventDefault();
+      soEmailRef.current.innerText = "이메일은 50자 이하로 입력해주세요.";
+      return;
+    }
+
+    // 비밀번호 길이 제한
+    if (name === "soPw" && value.length > 12) {
+      e.preventDefault();
+      soPwRef.current.innerText = "비밀번호는 12자 이하로 입력해주세요.";
+      return;
+    }
+
+    //비밀번호 검증
+    if (name === "soPw" && !passwordRegex.test(value)) {
+      soPwRef.current.innerText = "비밀번호는 최대 12자까지 입력 가능합니다.";
+    } else {
+      soPwRef.current.innerText = "";
+    }
+
+    //이메일 형식 검증
+    if (name === "soEmail" && !emailRegex.test(value)) {
+      soEmailRef.current.innerText = "유효한 이메일 형식을 입력해주세요.";
+    } else {
+      soEmailRef.current.innerText = "";
+    }
+
+    if (e.key === "Enter") {
+      e.preventDefault(); // 기본 폼 제출 방지
       login(); // 로그인 함수 호출
     }
+  };
+
+  //정규표현식
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const passwordRegex = /^.{1,12}$/;
+  const businessNumberRegex = /^\d{1,12}$/;
+  const nameRegex = /^[가-힣]{1,4}$/;
+  const phoneRegex = /^010-\d{4}-\d{4}$/;
+
+  const validateSoName = (name) => {
+    if (!nameRegex.test(name)) {
+      // Ref를 통해 메시지 표시
+      soNameRef.current.textContent = "한글 1~4글자만 입력 가능합니다.";
+    } else {
+      // 정상 입력일 경우 메시지 지우기
+      soNameRef.current.textContent = "";
+    }
+  };
+
+  const validateSoPhone = (phone) => {
+    if (!phoneRegex.test(phone)) {
+      // Ref를 통해 메시지 표시
+      soPhoneRef.current.textContent =
+        "전화번호는 010-0000-0000 형태로 입력해주세요.";
+    } else {
+      // 정상 입력일 경우 메시지 지우기
+      soPhoneRef.current.textContent = "";
+    }
+  };
+
+  // changeStore 함수와 함께 이름 입력값 변경 처리
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    changeStore(e); // 기존 입력 처리 함수
+    validateSoName(value); // 입력값 검증
+  };
+
+  // changeStore 함수와 함께 전화번호 입력값 변경 처리
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    changeStore(e); // 기존 입력 처리 함수
+    validateSoPhone(value); // 입력값 검증
   };
 
   return (
@@ -370,6 +441,15 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                     value={store.soEmail}
                                     onChange={changeStore}
                                     onKeyDown={handleKeyDown} // Enter 키 감지
+                                    onBlur={(e) => {
+                                      // 입력 후 포커스를 잃을 때도 정규표현식 검증
+                                      if (!emailRegex.test(e.target.value)) {
+                                        soEmailRef.current.innerText =
+                                          "유효한 이메일 형식을 입력해주세요.";
+                                      } else {
+                                        soEmailRef.current.innerText = "";
+                                      }
+                                    }}
                                   ></input>
                                   <p
                                     className="storeLogin-p"
@@ -378,6 +458,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                 </div>
                               </td>
                             </tr>
+
                             <tr className="storeRegist-tr">
                               <th className="storeRegist-th">
                                 <label
@@ -498,8 +579,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   id="soName"
                                   name="soName"
                                   value={store.soName}
-                                  onChange={changeStore}
+                                  onChange={handleNameChange}
                                 ></input>
+                                <p className="storeLogin-p" ref={soNameRef}></p>
                               </div>
                             </td>
                           </tr>
@@ -518,11 +600,15 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   className="storeLogin-storeRegist-inputBox"
                                   placeholder="010-0000-0000 형태로 입력해주세요."
                                   type="text"
-                                  id="sophone"
+                                  id="soPhone"
                                   name="soPhone"
                                   value={store.soPhone}
-                                  onChange={changeStore}
+                                  onChange={handlePhoneChange}
                                 ></input>
+                                <p
+                                  className="storeLogin-p"
+                                  ref={soPhoneRef}
+                                ></p>
                               </div>
                             </td>
                           </tr>

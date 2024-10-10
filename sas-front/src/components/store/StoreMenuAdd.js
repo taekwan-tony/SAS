@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const StoreMenuAdd = (props) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
@@ -14,6 +14,49 @@ const StoreMenuAdd = (props) => {
   const changeStoreThumbnail = props.changeStoreThumbnail;
   const type = props.type;
 
+  // 각 입력 필드에 대한 참조
+  const menuNameRef = useRef(null);
+  const menuInfoRef = useRef(null);
+  const menuPriceRef = useRef(null);
+
+  // 정규 표현식
+  const menuNameRegex = /^([가-힣]{0,20}|[a-zA-Z]{0,60})$/;
+  const menuInfoRegex = /^([가-힣]{0,40}|[a-zA-Z\s]{0,120})$/;
+  const menuPriceRegex = /^[0-9]*$/;
+
+  const validateInput = (field, value) => {
+    let isValid = true;
+    if (field === "menuName") {
+      if (!menuNameRegex.test(value)) {
+        menuNameRef.current.textContent =
+          "메뉴 이름은 한글 20자 이하, 영어 60자 이하로 입력해주세요.";
+        isValid = false;
+      } else {
+        menuNameRef.current.textContent = ""; // 검증 통과 시 메시지 제거
+      }
+    }
+
+    if (field === "menuInfo") {
+      if (!menuInfoRegex.test(value)) {
+        menuInfoRef.current.textContent =
+          "메뉴 설명은 한글 40자 이하, 영어 120자 이하로 입력해주세요.";
+        isValid = false;
+      } else {
+        menuInfoRef.current.textContent = ""; // 검증 통과 시 메시지 제거
+      }
+    }
+
+    if (field === "menuPrice") {
+      if (!menuPriceRegex.test(value)) {
+        menuPriceRef.current.textContent = "가격은 숫자만 입력해주세요.";
+        isValid = false;
+      } else {
+        menuPriceRef.current.textContent = ""; // 검증 통과 시 메시지 제거
+      }
+    }
+    return isValid;
+  };
+
   return (
     <>
       <div className="storeMenuView-info-card">
@@ -24,7 +67,7 @@ const StoreMenuAdd = (props) => {
             src="/image/close.icon.png"
             onClick={() => hideInfoCard(index)} // 클릭 이벤트 핸들러 추가
             alt="close"
-          ></img>
+          />
         </div>
         <table className="storeMenuView-table">
           <tbody className="storeMenuView-tbody">
@@ -55,7 +98,7 @@ const StoreMenuAdd = (props) => {
                     name="menuPhoto"
                     onChange={changeStoreThumbnail(2, index)}
                     accept="image/*"
-                  ></input>
+                  />
                 </div>
                 <div className="storeMenuView-div"></div>
               </td>
@@ -69,8 +112,16 @@ const StoreMenuAdd = (props) => {
                   id="menuName"
                   name="menuName"
                   value={menu.menuName}
-                  onChange={changeStoreMenu(index)}
-                ></input>
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    validateInput("menuName", value);
+                    changeStoreMenu(index)(e); // 기존 핸들러 호출
+                  }}
+                />
+                <p
+                  ref={menuNameRef}
+                  style={{ color: "red", fontSize: "12px" }}
+                ></p>
               </td>
             </tr>
             <tr className="storeMenuView-tr">
@@ -82,8 +133,16 @@ const StoreMenuAdd = (props) => {
                   id="menuInfo"
                   name="menuInfo"
                   value={menu.menuInfo}
-                  onChange={changeStoreMenu(index)}
-                ></input>
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    validateInput("menuInfo", value);
+                    changeStoreMenu(index)(e); // 기존 핸들러 호출
+                  }}
+                />
+                <p
+                  ref={menuInfoRef}
+                  style={{ color: "red", fontSize: "12px" }}
+                ></p>
               </td>
             </tr>
             <tr className="storeMenuView-tr">
@@ -95,8 +154,16 @@ const StoreMenuAdd = (props) => {
                   id="menuPrice"
                   name="menuPrice"
                   value={menu.menuPrice}
-                  onChange={changeStoreMenu(index)}
-                ></input>
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    validateInput("menuPrice", value);
+                    changeStoreMenu(index)(e); // 기존 핸들러 호출
+                  }}
+                />
+                <p
+                  ref={menuPriceRef}
+                  style={{ color: "red", fontSize: "12px" }}
+                ></p>
               </td>
             </tr>
           </tbody>
