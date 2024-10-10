@@ -16,7 +16,7 @@ const StoreView = (props) => {
   useEffect(() => {
     storeRefreshLogin();
     window.setInterval(storeRefreshLogin, 60 * 60 * 1000); // 한 시간
-  }, []);
+  }, [isLoginStore]);
 
   const storeRefreshLogin = () => {
     const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
