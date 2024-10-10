@@ -422,23 +422,19 @@ const UserMainView = (props) => {
           className="mySwiper"
         >
           <SwiperSlide>
-            <img src="/image/bg-mobile-dark.jpg" alt="Slide 1" />
+            <img src="/image/8.png" alt="Slide 1" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="/image/bg-mobile-dark.jpg" alt="Slide 2" />
+            <img src="/image/9.png" alt="Slide 2" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="/image/bg-mobile-dark.jpg" alt="Slide 3" />
+            <img src="/image/10.png" alt="Slide 3" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="/image/bg-mobile-light.jpg" alt="Slide 4" />
+            <img src="/image/11.png" alt="Slide 4" />
           </SwiperSlide>
           <SwiperSlide>
-            <img
-              src="/image/bg-mobile-dark.jpg"
-              className="kenburns-top"
-              alt="Slide 5"
-            />
+            <img src="/image/12.png" className="kenburns-top" alt="Slide 5" />
           </SwiperSlide>
         </Swiper>
 
