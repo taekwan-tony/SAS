@@ -44,7 +44,6 @@ const StoreCheckMain = () => {
   const storeRefreshLogin = () => {
     const storeRefreshToken = window.localStorage.getItem("storeRefreshToken");
     if (storeRefreshToken != null) {
-      console.log("로그인 정보 : ", storeName);
       axios.defaults.headers.common["Authorization"] = storeRefreshToken;
       axios
         .post(`${backServer}/store/storeRefresh`)
