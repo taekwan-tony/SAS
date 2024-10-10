@@ -12,7 +12,8 @@ import StoreMenuList from "./StoreMenuList";
 import Swal from "sweetalert2";
 import StoreMenuAdd from "./StoreMenuAdd";
 
-const StoreMenuMain = () => {
+const StoreMenuMain = (props) => {
+  const setActiveIndex = props.setActiveIndex;
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const [loginStoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState);
   const [menuThumbnail, setMenuThumbnail] = useState([]); // 메뉴 사진
@@ -39,10 +40,10 @@ const StoreMenuMain = () => {
   };
 
   useEffect(() => {
+    setActiveIndex(2);
     axios
       .get(`${backServer}/menu/allMenuList/${loginStoreNo}`)
       .then((res) => {
-        console.log(res.data.length);
         setStoreMenuList(res.data);
         setCheck(res.data.length);
       })
@@ -107,11 +108,11 @@ const StoreMenuMain = () => {
         form.append("menuPrice", menu.menuPrice);
         form.append("storeNo", menu.storeNo);
 
-        // 새로운 파일이 선택되지 않으면 기존 이미지 그대로 사용
+        // 새로운 파일이 선택되지 않은 경우 기존 이미지를 그대로 유지
         if (existingMenuThumbnail[index]) {
           form.append("menuThumbnail", existingMenuThumbnail[index]);
-        } else {
-          // 기존 이미지가 있으면 기존 이미지를 사용
+        } else if (menu.menuPhoto) {
+          // 기존 이미지가 존재할 경우 이를 그대로 서버로 전달
           form.append("existingMenuPhoto", menu.menuPhoto);
         }
 

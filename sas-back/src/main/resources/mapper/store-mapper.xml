@@ -266,6 +266,7 @@
 			store_phone=#{storePhone},
 			store_introduce=#{storeIntroduce},
 			store_addr=#{storeAddr},
+			store_detail_addr=#{storeDetailAddr},
 			store_re_start=#{storeReStart},
 			store_re_end=#{storeReEnd},
 			break_time_start=#{breakTimeStart},
@@ -403,7 +404,7 @@
 	
 	<select id="storeView" resultMap="selectStoreview">
 		select
-		    store_no, store_name, store_phone, store_introduce, store_addr, store_time, store_re_start, store_re_end, break_time_start, break_time_end, deposit, store_class
+		    store_no, store_name, store_phone, store_introduce, store_addr, store_detail_addr, store_time, store_re_start, store_re_end, break_time_start, break_time_end, deposit, store_class
 		from store
 		where store_no = #{storeNo}
 	</select>
@@ -413,6 +414,7 @@
 		<result column="store_phone" property="storePhone"/>
 		<result column="store_introduce" property="storeIntroduce"/>
 		<result column="store_addr" property="storeAddr"/>
+		<result column="store_detail_addr" property="storeDetailAddr"/>
 		<result column="store_time" property="storeTime"/>
 		<result column="store_re_start" property="storeReStart"/>
 		<result column="store_re_end" property="storeReEnd"/>
@@ -441,7 +443,8 @@
 			break_time_start=#{breakTimeStart},
 			break_time_end=#{breakTimeEnd},
 			deposit=#{deposit},
-			store_class=#{storeClass}
+			store_class=#{storeClass},
+			store_detail_addr=#{storeDetailAddr}
 		where store_no=#{storeNo}
 	</update>
 	
