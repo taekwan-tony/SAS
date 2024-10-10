@@ -442,63 +442,63 @@ const UserMainView = (props) => {
         <section className="user-menu-wrapper">
           <section className="user-menu-section">
             <div className="user-menu-item">
-              <img src="/image/facebook.png" alt="웨이팅 TOP" />
+              <img src="/image/badge.png" alt="웨이팅 TOP" />
               <p>웨이팅TOP</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/insta.png" alt="데이트 맛집" />
+              <img src="/image/datetable.png" alt="데이트 맛집" />
               <p>데이트 맛집</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/LinkedIn.png" alt="히든플레이스" />
+              <img src="/image/hidden.png" alt="히든플레이스" />
               <p>히든플레이스</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/Newsletter.png" alt="온라인웨이팅" />
+              <img src="/image/waitingticket.png" alt="온라인웨이팅" />
               <p>온라인웨이팅</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/LinkedIn.png" alt="위스키픽업" />
-              <p>위스키픽업</p>
+              <img src="/image/whisky.png" alt="위스키픽업" />
+              <p>위스키</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/insta.png" alt="스시오마카세" />
+              <img src="/image/sushi.png" alt="스시오마카세" />
               <p>스시오마카세</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/facebook.png" alt="우마카세" />
+              <img src="/image/meat.png" alt="우마카세" />
               <p>우마카세</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/LinkedIn.png" alt="밀키트" />
-              <p>밀키트</p>
+              <img src="/image/b&w.png" alt="밀키트" />
+              <p>화제의예능</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/facebook.png" alt="이달의 맛집" />
+              <img src="/image/favorite.png" alt="이달의 맛집" />
               <p>이달의 맛집</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/insta.png" alt="호텔다이닝" />
+              <img src="/image/hoteldining.png" alt="호텔다이닝" />
               <p>호텔다이닝</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/insta.png" alt="케이크" />
+              <img src="/image/cake.png" alt="케이크" />
               <p>케이크</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/facebook.png" alt="모임예약" />
+              <img src="/image/person123.png" alt="모임예약" />
               <p>모임예약</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/LinkedIn.png" alt="레드리본맛집" />
-              <p>레드리본맛집</p>
+              <img src="/image/vegan.png" alt="레드리본맛집" />
+              <p>비건식당</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/facebook.png" alt="팝업스토어" />
+              <img src="/image/popuppng.png" alt="팝업스토어" />
               <p>팝업스토어</p>
             </div>
             <div className="user-menu-item">
-              <img src="/image/insta.png" alt="스페셜혜택" />
+              <img src="/image/gift.png" alt="스페셜혜택" />
               <p>스페셜혜택</p>
             </div>
           </section>
