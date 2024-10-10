@@ -182,7 +182,7 @@
 .arrow-down {
   position: fixed;
   bottom: 4rem; /* 화면 하단에서 20px 위 */
-  left: 59rem; /* 화면의 가로 중앙에 위치 */
+  left: 50.5%; /* 화면의 가로 중앙에 위치 */
   transform: translateX(-50%); /* 정확한 가로 중앙 정렬 */
   z-index: 100; /* 다른 요소 위에 위치 */
 }
