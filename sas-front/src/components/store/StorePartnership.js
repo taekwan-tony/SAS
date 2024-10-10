@@ -71,7 +71,6 @@ const StorePartnership = (props) => {
     axios
       .get(`${backServer}/store`, store)
       .then((res) => {
-        console.log(res);
         if (res.data) {
           Swal.fire({
             title: "등록 완료",
@@ -83,20 +82,14 @@ const StorePartnership = (props) => {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const storeThumbnail = () => {
     axios
       .post(`${backServer}/store`, storeThumb)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((res) => {})
+      .catch((err) => {});
   };
 
   return (

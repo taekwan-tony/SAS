@@ -59,7 +59,8 @@ public class MenuController {
 	        // 업로드 이미지가 없을 때 기본 이미지로 설정
 	        storeMenu.setMenuPhoto(defaultImagePath);
 	    }
-	    
+	    System.out.println("메뉴 등록 : " + storeMenu);
+	    System.out.println("메뉴 사진 등록 : " + menuThumbnail);
 	    // 메뉴 등록
 	    int result = menuService.insertStoreMenu(storeMenu);
 		return ResponseEntity.ok(result > 0);

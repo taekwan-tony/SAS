@@ -50,12 +50,7 @@ const StoreUpdate = (props) => {
             setStoreSiFilepathList(res.data.storeSiFilepathList);
           }
         })
-        .catch((err) => {
-          console.log(
-            "에러 응답 데이터 : ",
-            err.response ? err.response.data : err.message
-          );
-        });
+        .catch((err) => {});
     }
   }, [loginstoreNo, check, isLoginStore]);
 
@@ -292,13 +287,11 @@ const StoreUpdate = (props) => {
           setIsEditing(!isEditing); // 매장 수정 후 storeViewMain으로 이동
         });
       })
-      .catch((err) => {
-        console.error("매장 수정 오류", err);
-      });
+      .catch((err) => {});
   };
 
   // 정규표현식
-  const storeNameRegex = /^[가-힣]{1,20}$|^[a-zA-Z0-9\s]{1,40}$/;
+  const storeNameRegex = /^[가-힣\s]{1,20}$|^[a-zA-Z0-9\s]{1,40}$/;
   const storePhoneRegex = /^\d{1,3}-\d{3,4}-\d{4}$/;
   const storeDetailAddrRegex = /^.{1,50}$/;
   const depositRegex = /^(100000|[1-9][0-9]{0,4}|0)$/;

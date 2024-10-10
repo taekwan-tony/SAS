@@ -220,7 +220,6 @@ const StoreViewFrm = (props) => {
 
     // 매장 정보
     axios.post(`${backServer}/store/insertStore`, store).then((res) => {
-      console.log(res.data);
       if (res.data) {
         Swal.fire({
           title: "매장 등록 완료.",
@@ -239,7 +238,6 @@ const StoreViewFrm = (props) => {
     axios
       .post(`${backServer}/store/insertSeatList/${store.storeNo}`, seatList) // seatList를 서버로 전송
       .then((res) => {
-        console.log(res.data);
         if (res.data) {
           // 좌석 정보 등록 성공 시 처리
         }

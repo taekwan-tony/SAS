@@ -43,9 +43,7 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
               closePwModal(true);
               navigate("/");
             })
-            .catch((err) => {
-              console.log(err);
-            });
+            .catch((err) => {});
         }
       });
     }
@@ -78,7 +76,6 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
             setIsChecked(false);
           });
         } else {
-          console.log("기타 에러 발생 : ", err);
         }
       });
   };

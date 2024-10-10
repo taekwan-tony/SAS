@@ -31,13 +31,11 @@ function StoreMain() {
       axios
         .post(`${backServer}/store/storeRefresh`)
         .then((res) => {
-          //console.log("로그인 유지 :", res);
           setLoginSoEmail(res.data.soEmail);
           setStoreType(res.data.storeType);
           setLoginStoreNo(res.data.storeNo);
           setStoreName(res.data.storeName);
 
-          //console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "storeRefreshToken",
@@ -45,7 +43,6 @@ function StoreMain() {
           );
         })
         .catch((err) => {
-          console.log(err);
           setLoginSoEmail("");
           setStoreType(2);
           delete axios.defaults.headers.common["Authorization"];

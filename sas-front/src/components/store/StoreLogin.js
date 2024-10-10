@@ -75,13 +75,10 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     soEmailRef.current.innerText = "";
     soPwRef.current.innerText = "";
     if (store.soEmail === "" || store.soPw === "") {
-      console.log("이메일 / 비밀번호가 비어있음");
     } else {
       axios
         .post(`${backServer}/store/storeLogin`, store)
         .then((res) => {
-          console.log("서버에서 받은 storeName 값:", res.data.storeName);
-          console.log("로그인 응답 데이터:", res.data);
           const {
             result,
             storeType,
@@ -133,9 +130,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
               break;
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
 
@@ -218,12 +213,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
               setBnMsg("");
             });
         } else {
-          console.log("이미 가입된 사업자 번호");
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   //이메일 중복 조회
@@ -281,9 +273,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   // 모달 외부 클릭 시 모달 닫기

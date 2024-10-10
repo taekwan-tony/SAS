@@ -26,9 +26,7 @@ const StoreNoticeDetail = () => {
         setNotice(res.data.notice);
         setNoticeBoth(res.data.noticeBoth);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, [noticeNo]);
 
   return (
