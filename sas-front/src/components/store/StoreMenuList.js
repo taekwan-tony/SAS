@@ -16,8 +16,8 @@ const StoreMenuList = (props) => {
   const menuPriceRef = useRef(null);
 
   // 정규 표현식
-  const menuNameRegex = /^([가-힣]{0,20}|[a-zA-Z]{0,60})$/;
-  const menuInfoRegex = /^([가-힣]{0,40}|[a-zA-Z\s]{0,120})$/;
+  const menuNameRegex = /^([가-힣\s]{0,20}|[a-zA-Z\s]{0,60})$/;
+  const menuInfoRegex = /^([가-힣\s]{0,40}|[a-zA-Z\s]{0,120})$/;
   const menuPriceRegex = /^[0-9]*$/;
 
   const modifyMenu = (field, value) => {
@@ -111,7 +111,9 @@ const StoreMenuList = (props) => {
                 </div>
               </div>
               <div className="storeMenuView-btn-zone">
-                <label htmlFor="menuPhoto">파일 선택</label>
+                <label htmlFor="menuPhoto" className="storeMenu-img-label">
+                  파일 선택
+                </label>
                 <input
                   className="storeMenuView-inputBox"
                   type="file"
@@ -135,10 +137,7 @@ const StoreMenuList = (props) => {
                 value={menu.menuName}
                 onChange={(e) => modifyMenu("menuName", e.target.value)}
               />
-              <p
-                ref={menuNameRef}
-                style={{ color: "red", fontSize: "12px" }}
-              ></p>
+              <p className="menu-p" ref={menuNameRef}></p>
             </td>
           </tr>
           <tr className="storeMenuView-tr">
@@ -152,10 +151,7 @@ const StoreMenuList = (props) => {
                 value={menu.menuInfo}
                 onChange={(e) => modifyMenu("menuInfo", e.target.value)}
               />
-              <p
-                ref={menuInfoRef}
-                style={{ color: "red", fontSize: "12px" }}
-              ></p>
+              <p className="menu-p" ref={menuInfoRef}></p>
             </td>
           </tr>
           <tr className="storeMenuView-tr">
@@ -169,10 +165,7 @@ const StoreMenuList = (props) => {
                 value={menu.menuPrice}
                 onChange={(e) => modifyMenu("menuPrice", e.target.value)}
               />
-              <p
-                ref={menuPriceRef}
-                style={{ color: "red", fontSize: "12px" }}
-              ></p>
+              <p className="menu-p" ref={menuPriceRef}></p>
             </td>
           </tr>
         </tbody>

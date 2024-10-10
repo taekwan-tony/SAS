@@ -266,13 +266,21 @@ const PaymentItem = (props) => {
         {payment.storePayDate ? payment.storePayDate.substring(0, 10) : " "}
       </td>
       <td className="storePayment-td" style={{ width: "20%" }}>
-        {payment.storePayStatus == 1 ? "결제 대기" : "결제 완료"}
+        {payment.storePayStatus === 1 ? (
+          <span style={{ color: "red" }}>결제 대기</span>
+        ) : (
+          "결제 완료"
+        )}
       </td>
+
       <td className="storePayment-td" style={{ width: "10%" }}>
         <button
           type="button"
+          className={`storePayment-btn ${
+            payment.storePayStatus !== 1 ? "disabled" : ""
+          }`}
           onClick={servicePay}
-          disabled={payment.storePayStatus != 1} // 결제 완료 시 버튼 비활성화
+          disabled={payment.storePayStatus !== 1} // 결제 완료 시 버튼 비활성화
         >
           결제
         </button>

@@ -25,4 +25,9 @@
 	<update id="updateStoreMenu">
 		update menu set menu_name=#{menuName}, menu_photo=#{menuPhoto}, menu_info=#{menuInfo}, menu_price=#{menuPrice} where menu_no=#{menuNo}
 	</update>
+	
+	
+	<select id="selectMenuById" resultType="menu">
+		select * from menu where menu_no = #{menuNo}
+	</select>
 </mapper>
