@@ -119,6 +119,8 @@ re .main-menu-home {
   height: 40px;
   border-radius: 30px;
   background-color: var(--main2);
+  color: #fff;
+  border: none;
 }
 /* 여기부터는 소식*/
 
