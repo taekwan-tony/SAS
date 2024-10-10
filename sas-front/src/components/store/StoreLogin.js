@@ -273,7 +273,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
           });
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // 모달 외부 클릭 시 모달 닫기
