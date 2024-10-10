@@ -127,7 +127,6 @@ function ManageReserved(props) {
   }, [storeNo]);
   // 입금 상태에 따라 뱃지를 보여주는 함수
   const getPayStatusBadge = (payStatus) => {
-    console.log("입금 상태:", payStatus); // 상태 확인을 위한 로그
     switch (payStatus) {
       case "입금대기":
         return <span className="badge bg-warning">입금대기</span>;
@@ -143,7 +142,6 @@ function ManageReserved(props) {
   };
   // 예약 상태와 입금 상태를 결합하여 상태를 계산하는 함수
   const calReservationStatus = (payStatus) => {
-    console.log("입금 상태 (payStatus):", payStatus);
     if (payStatus == "입금대기") {
       return "예약대기"; // 입금 완료이면 예약완료로 설정
     } else if (payStatus == "결제완료") {
@@ -346,8 +344,10 @@ function ManageReserved(props) {
                           ).toLocaleDateString()}
                         </td>
                         <td>{reservation.RESERVE_TIME}</td>
-                        <td>{reservation.RESERVESTATUS}</td>
-                        <td>{reservation.RESERVESTATUS}</td>
+                        <td>{getPayStatusBadge(reservation.RESERVESTATUS)}</td>
+                        <td>
+                          {calReservationStatus(reservation.RESERVESTATUS)}
+                        </td>
                         <td>{reservation.RESERVE_PEOPLE}</td>
                         <td>{reservation.SEAT_NO}</td>
                         <td>{reservation.USER_NAME}</td>
@@ -408,7 +408,6 @@ function ManageReserved(props) {
           </thead>
           <tbody>
             {weekReservations.map((reservation, index) => {
-              console.log(reservation.RESERVESTATUS);
               return (
                 <tr key={reservation.RESERVE_NO}>
                   <td> {index + 1}</td>
