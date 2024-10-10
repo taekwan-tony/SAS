@@ -32,5 +32,7 @@ public interface NoticeDao {
 
 	NoticeBothDTO selectBothNoticeUser(NoticeDTO notice);
 
+	int insertPayNotice(NoticeDTO notice);
+
 
 }

@@ -103,7 +103,7 @@ public class NoticeService {
 			notice.setSoEmail(store.getSoEmail());
 			notice.setNoticeContent("<h1>안녕하세요. Spoon & Smiles 입니다. </h1>"
 							+"<h3> <span style='color:red;'>사이트에 결제 내용 참고 바라며, 결제일 5일 이후 미결제시 계약 종료 예정입니다.</span> </h3>");
-			result += noticeDao.insertNotice(notice);
+			result += noticeDao.insertPayNotice(notice);
 			
 		}
 		return result;

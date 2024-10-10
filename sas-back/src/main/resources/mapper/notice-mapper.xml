@@ -46,7 +46,7 @@
 			        notice_enroll_date,
 			        notice_type
 			    from notice where so_email = #{loginNickname} 
-		 		and notice_type = 1
+		 		and notice_type = #{noticeType}
 		 		
 		 		)	    
 			     order by notice_no desc)b)
@@ -89,5 +89,9 @@
 	<update id="updateNotice">
 		update notice set notice_title=#{noticeTitle},notice_content=#{noticeContent} where notice_no = #{noticeNo}
 	</update>
+	
+	<insert id="insertPayNotice">
+		insert into notice values(notice_seq.nextval,#{noticeTitle},to_char(sysdate,'yyyy-mm-dd'),#{noticeContent},2,#{soEmail})
+	</insert>
 	
 </mapper>

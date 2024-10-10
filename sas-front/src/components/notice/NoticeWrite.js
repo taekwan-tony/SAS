@@ -11,7 +11,7 @@ const NoticeWrite = (props) => {
   useEffect(() => {
     setNoticeDetailTitle("작성");
   }, []);
-  const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeTitle, setNoticeTitle] = useState("[공지사항]");
   const [noticeContent, setNoticeContent] = useState("");
   const [noticeType, setNoticeType] = useState(0);
   const navigate = useNavigate();
