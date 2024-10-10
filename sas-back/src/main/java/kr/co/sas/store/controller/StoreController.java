@@ -110,8 +110,9 @@ public class StoreController {
 		return ResponseEntity.ok(map);
 	}
 	
-	@GetMapping(value="/storeList/view/best")
-	public ResponseEntity<Map<String, Object>>  selectBestStore(){
+	@GetMapping(value="/storeList/best")
+	public ResponseEntity<Map<String, Object>> selectBestStore(){
+		
 		Map<String, Object> map = storeService.selectBestStore();
 		return ResponseEntity.ok(map);
 	}

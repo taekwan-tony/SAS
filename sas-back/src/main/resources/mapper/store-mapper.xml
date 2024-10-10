@@ -225,34 +225,33 @@
 		
 	</select>
 
-	<select id="selectBestStore" resultType="store">
+	<select id="selectBest1" resultType="store">
 	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
 	join store_image_file using(store_no)
 	left join menu using(store_no)
-	where store_class=1 and rownum=1
-	
-	union all
+	where store_class=1 and rownum  between 1 and 4
+	</select>	
+	<select id="selectBest2" resultType="store">
 	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
-	left join store_image_file using(store_no)
+	join store_image_file using(store_no)
 	left join menu using(store_no)
-	where store_class=2 and rownum=1
-	
-	union all
+	where store_class=2 and rownum  between 1 and 4	
+	</select>	
+	<select id="selectBest3" resultType="store">
 	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
-	left join store_image_file using(store_no)
+	join store_image_file using(store_no)
 	left join menu using(store_no)
-	where store_class=3 and rownum=1
-	
-	union all
+	where store_class=3 and rownum  between 1 and 4
+	</select>	
+	<select id="selectBest4" resultType="store">
 	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
-	left join store_image_file using(store_no)
+	join store_image_file using(store_no)
 	left join menu using(store_no)
-	where store_class=4 and rownum=1
-
+	where store_class=4 and  rownum  between 1 and 4
 	</select>	
 	
 	
-	 
+	
 	 
 	 
 	<select id="checkPw" resultType="store">
