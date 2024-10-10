@@ -259,8 +259,7 @@ const MenuView = () => {
         <section className="section-menu">
           <div className="menu-image">
             <img
-              src="/image/국빱.jpg"
-              // {`${backServer}/store/storeMenu/${menuItem.menuPhoto}`}
+              src={`${backServer}/store/storeMenu/${store.siFilepath}`}
               alt="가게 로고"
             />
           </div>
