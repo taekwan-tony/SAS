@@ -94,7 +94,7 @@ public class ReservationController {
     @Operation(summary="예약 등록", description="예약날짜, 예약 시간, 결제 여부, 인원수, 매장 번호, 좌석 번호, 유저 아이디를 예약 객체로 받아 등록")
     @PostMapping
     public ResponseEntity<Map> insertReservation(@RequestBody ReservationDTO reservation){
-//    	System.out.println(reservation);
+    	System.out.println(reservation);
     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 		reservation.setReserveDateString(fmt.format(reservation.getReserveDate())+" "+reservation.getReserveTime());
     	boolean isExist = reservationService.isAlreadyReserved(reservation);

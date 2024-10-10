@@ -78,7 +78,7 @@ public class ReservationService {
 			CountReserveDTO countReserve = reservationDao.isThereAvailable(reservation);
 //			System.out.println("좌석 수:"+countReserve.getSeatAmount());
 //			System.out.println("예약 수:"+countReserve.getReserveCount());
-			if(countReserve.getSeatAmount()>countReserve.getReserveCount()) {
+			if(countReserve!=null&& countReserve.getSeatAmount()>countReserve.getReserveCount()) {
 				int result = reservationDao.insertReservation(reservation);
 				map.put("result", result>0);
 				map.put("reserveNo", reservation.getReserveNo());				
@@ -144,7 +144,7 @@ public class ReservationService {
 			int result=0;
 //			System.out.println("좌석 수:"+countReserve.getSeatAmount());
 //			System.out.println("예약 수:"+countReserve.getReserveCount());
-			if(countReserve.getSeatAmount()>countReserve.getReserveCount()) {
+			if(countReserve!=null&& countReserve.getSeatAmount()>countReserve.getReserveCount()) {
 				result = reservationDao.updateReservation(reservation);
 			}
 			return result;

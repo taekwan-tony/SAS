@@ -208,9 +208,9 @@
 	</select>
 	<select id="isThereAvailable" resultType="countReserve">
 		select 
-    	(select seat_amount from seat where store_no=r.store_no and seat_no=r.seat_no) seat_amount, 
-    	(select count(*) from reservation where store_no=r.store_no and seat_no=r.seat_no and reserve_date=to_date(#{reserveDateString}, 'yyyy-MM-dd hh24:mi')) reserve_count
-    from reservation r where store_no=#{storeNo} and seat_no=#{seatNo} group by (r.seat_no, r.store_no)
+    		(select seat_amount from seat where store_no=#{storeNo} and seat_no=#{seatNo}) seat_amount, 
+    		(select count(*) from reservation where store_no=#{storeNo} and seat_no=#{seatNo} and reserve_date=to_date('2024-10-10 17:30', 'yyyy-MM-dd hh24:mi')) reserve_count
+    	from dual
 	</select>
 	
 	
