@@ -104,9 +104,9 @@ re .main-menu-home {
   background-color: #eee;
   border: 1px solid #ccc;
   left: calc((100% - 1200px) / 2);
-  padding: 15px 5px;
+  padding: 15px 50px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 10px;
   z-index: 99;
 }
@@ -119,6 +119,8 @@ re .main-menu-home {
   height: 40px;
   border-radius: 30px;
   background-color: var(--main2);
+  color: #fff;
+  border: none;
 }
 /* 여기부터는 소식*/
 

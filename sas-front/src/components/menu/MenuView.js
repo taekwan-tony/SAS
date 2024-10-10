@@ -315,7 +315,7 @@ const MenuView = () => {
         <span className="material-icons page-item" onClick={changeFavorite}>
           {store.favorite ? "bookmark" : "bookmark_border"}
         </span>
-        <span className="material-icons page-item">share</span>
+        {/* <span className="material-icons page-item">share</span> */}
         <button className="reservation-btn" onClick={goTOReserve}>
           예약하기
         </button>

@@ -13,6 +13,22 @@
   font-weight: 200;
 }
 
+.storeView-seat {
+  box-sizing: border-box;
+  width: 75%;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #fff;
+  font-size: 25px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #fff;
+  font-weight: 200;
+  text-align: center;
+}
+
 .storeView-table {
   width: 100%;
   color: #fff;
@@ -64,6 +80,7 @@
   white-space: nowrap; /* 이미지들이 한 줄로 나열되도록 설정 */
   padding: 20px 0; /* 이미지가 상하로 적당히 띄워져 보이도록 패딩 추가 */
   margin: 0 auto; /* 가운데 정렬 */
+  position: relative;
 }
 
 .storeView-img-label {
@@ -158,6 +175,15 @@
 
 .seatTable {
   margin-left: 15px;
+}
+
+.seat-view-th {
+  color: #fff;
+  font-weight: 300;
+}
+
+.seat-view-table {
+  margin: 0 auto;
 }
 
 .storeView-btn:hover {
@@ -285,4 +311,26 @@
 
 .storeView-slider-btn:last-of-type {
   right: 500px; /* 오른쪽 버튼 */
+}
+
+.storeView-updateBtn {
+  position: absolute;
+  width: 80px;
+  color: #fff;
+  background-color: transparent;
+  font-size: 20px;
+  top: 15px; /* info-card 상단에서 10px 만큼 내림 */
+  right: 15px; /* info-card 오른쪽에서 10px 만큼 왼쪽으로 이동 */
+  background-color: #518142;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.storeView-updateBtn:hover {
+  background-color: #fff;
+  color: #518142;
+  cursor: pointer;
 }

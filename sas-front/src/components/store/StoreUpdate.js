@@ -30,39 +30,31 @@ const StoreUpdate = (props) => {
     seatAmount: "",
   });
 
-  useEffect(() => {
-    setActiveIndex(1);
-    if (store.seatList && store.seatList.length > 0) {
-      setStoreSeatCapacity(store.seatList[0].seatCapacity);
-      setStoreSeatAmount(store.seatList[0].seatAmount);
-    }
-  }, [store]);
-
-  // storeSeatCapacity와 storeSeatAmount가 변경되었을 때 seat 상태를 업데이트
-  useEffect(() => {
-    if (storeSeatCapacity && storeSeatAmount) {
-      setSeat({
-        seatCapacity: storeSeatCapacity,
-        seatAmount: storeSeatAmount,
-      });
-    }
-  }, [storeSeatCapacity, storeSeatAmount]);
-
   //매장 정보 출력
   useEffect(() => {
+    setActiveIndex(1);
     if (isLoginStore) {
       axios
-        .get(`${backServer}/store/storeUpdate/${loginstoreNo}`)
+        .get(`${backServer}/store/storeView/${loginstoreNo}`)
         .then((res) => {
-          setStore(res.data);
+          const storeData = res.data;
+          setStore(storeData);
           setCheck(res.data.length);
+
+          // seatList가 있으면 설정
+          if (storeData.seatList) {
+            setSeatList(storeData.seatList);
+          }
 
           if (res.data.storeSiFilepathList) {
             setStoreSiFilepathList(res.data.storeSiFilepathList);
           }
         })
         .catch((err) => {
-          //console.log("매장 정보 출력 오류 : ", err);
+          console.log(
+            "에러 응답 데이터 : ",
+            err.response ? err.response.data : err.message
+          );
         });
     }
   }, [loginstoreNo, check, isLoginStore]);
@@ -73,44 +65,56 @@ const StoreUpdate = (props) => {
   const changeStore = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setStore({ ...store, [name]: e.target.value });
-    setSeat({ ...seat, [name]: e.target.value });
 
-    //검증
+    setStore({ ...store, [name]: value });
+
+    // 검증
     if (name === "storeName" && !storeNameRegex.test(value)) {
-      storeNameRef.current.innerText =
-        "한글 20자, 영문 40자 이하로 입력해주세요.";
-    } else {
+      if (storeNameRef.current) {
+        storeNameRef.current.innerText =
+          "한글 20자, 영문 40자 이하로 입력해주세요.";
+      }
+    } else if (storeNameRef.current) {
       storeNameRef.current.innerText = "";
     }
 
     if (name === "storePhone" && !storePhoneRegex.test(value)) {
-      storePhoneRef.current.innerText = "-을 포함해서 입력해주세요.";
-    } else {
+      if (storePhoneRef.current) {
+        storePhoneRef.current.innerText = "-을 포함해서 입력해주세요.";
+      }
+    } else if (storePhoneRef.current) {
       storePhoneRef.current.innerText = "";
     }
 
     if (name === "storeDetailAddr" && !storeDetailAddrRegex.test(value)) {
-      storeDetailAddrRef.current.innerText = "50자 이하로 입력해주세요.";
-    } else {
+      if (storeDetailAddrRef.current) {
+        storeDetailAddrRef.current.innerText = "50자 이하로 입력해주세요.";
+      }
+    } else if (storeDetailAddrRef.current) {
       storeDetailAddrRef.current.innerText = "";
     }
 
     if (name === "deposit" && !depositRegex.test(value)) {
-      depositRef.current.innerText = "숫자만 입력해주세요.";
-    } else {
+      if (depositRef.current) {
+        depositRef.current.innerText = "숫자만 입력해주세요.";
+      }
+    } else if (depositRef.current) {
       depositRef.current.innerText = "";
     }
 
     if (name === "seatCapacity" && !seatRegex.test(value)) {
-      seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
-    } else {
+      if (seatRef.current) {
+        seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
+      }
+    } else if (seatRef.current) {
       seatRef.current.innerText = "";
     }
 
     if (name === "seatAmount" && !seatRegex.test(value)) {
-      seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
-    } else {
+      if (seatRef.current) {
+        seatRef.current.innerText = "99 이하의 숫자만 입력해주세요.";
+      }
+    } else if (seatRef.current) {
       seatRef.current.innerText = "";
     }
   };
@@ -621,11 +625,11 @@ const StoreUpdate = (props) => {
                         <tr key={index}>
                           <td className="seat-td">
                             <input
-                              className="storeView-inputBox"
+                              className="storeView-seat"
                               type="text"
                               name="seatType"
                               placeholder="ex) 2인용"
-                              value={seat.seatType}
+                              value={seat.seatCapacity}
                               onChange={(e) =>
                                 changeSeatType(index, e.target.value)
                               }
@@ -633,11 +637,11 @@ const StoreUpdate = (props) => {
                           </td>
                           <td className="seat-td">
                             <input
-                              className="storeView-inputBox"
+                              className="storeView-seat"
                               type="text"
                               name="seatCount"
                               placeholder="ex) 5"
-                              value={seat.seatCount}
+                              value={seat.seatAmount}
                               onChange={(e) =>
                                 changeSeatCount(index, e.target.value)
                               }
