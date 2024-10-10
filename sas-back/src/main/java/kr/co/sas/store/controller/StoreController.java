@@ -135,8 +135,7 @@ public class StoreController {
 	public ResponseEntity<StoreDTO> getStoreinfo(@PathVariable int storeNo, @PathVariable int userNo) {
 //		System.out.println(userNo);
 		StoreDTO store = storeService.getStoreinfo(storeNo, userNo);
-		System.out.println("파일패스나오는지"+store);
-		System.out.println("매장 : " + store);
+		
 		if(store !=null) {
 			System.out.println(1);
 			return ResponseEntity.ok(store);

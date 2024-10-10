@@ -391,9 +391,7 @@ const UserMainView = (props) => {
         //console.log(res);
         setStore(res.data.list);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -407,9 +405,7 @@ const UserMainView = (props) => {
         setYang(res.data.yang);
         setChina(res.data.china);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   return (
