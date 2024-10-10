@@ -24,17 +24,12 @@ const StoreNoticeList = () => {
             `${backServer}/notice/userList/${reqPage}/${2}/${res.data.soEmail}`
           )
           .then((res) => {
-            console.log(res);
             setNoticeList(res.data.list);
             setPi(res.data.pi);
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, [loginStoreNo, reqPage]);
   return (
     <>

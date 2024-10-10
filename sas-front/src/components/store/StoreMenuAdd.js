@@ -9,10 +9,10 @@ const StoreMenuAdd = (props) => {
   const storeMenuImage = props.storeMenuImage;
   const setStoreMenuImage = props.setStoreMenuImage;
   const setMenuThumbnail = props.setMenuThumbnail;
+  const menuThumbnail = props.menuThumbnail;
   const hideInfoCard = props.hideInfoCard;
   const changeStoreMenu = props.changeStoreMenu;
   const changeStoreThumbnail = props.changeStoreThumbnail;
-  const type = props.type;
 
   const menuNameRef = useRef(null);
   const menuInfoRef = useRef(null);
@@ -85,7 +85,7 @@ const StoreMenuAdd = (props) => {
                   </div>
                 </div>
                 <div className="storeMenuView-btn-zone">
-                  <label htmlFor="menuPhoto" className="storeMenu-img-label">
+                  <label htmlFor="storeFile" className="storeUpdate-img-label">
                     파일 선택
                   </label>
                   <input
@@ -96,7 +96,7 @@ const StoreMenuAdd = (props) => {
                     onChange={changeStoreThumbnail(2, index)}
                     accept="image/*"
                     style={{ display: "none" }}
-                  />
+                  ></input>
                 </div>
                 <div className="storeMenuView-div"></div>
               </td>

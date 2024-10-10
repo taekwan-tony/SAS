@@ -59,10 +59,8 @@ const StoreRegist = () => {
     )
       .then((response) => response.json()) // JSON 응답을 파싱
       .then((result) => {
-        console.log(result);
         if (result.match_cnt === 1) {
           // 성공 처리
-          console.log("success");
           Swal.fire({
             title: "사업자등록번호 조회 성공",
             icon: "success",
@@ -70,7 +68,6 @@ const StoreRegist = () => {
           }).then(setBnMsg("조회에 성공하였습니다."));
         } else {
           // 실패 처리
-          console.log("fail");
           Swal.fire({
             title: "사업자등록번호 조회 실패",
             icon: "warning",
@@ -82,7 +79,6 @@ const StoreRegist = () => {
       })
       .catch((error) => {
         // 에러 처리
-        console.error("error", error);
         setBnMsg("");
       });
   };
@@ -102,16 +98,13 @@ const StoreRegist = () => {
     axios
       .get(`${backServer}/store/soEmail/${store.soEmail}/checkEmail`)
       .then((res) => {
-        console.log(res);
         if (res.data) {
           setEmailMsg("사용 가능한 이메일입니다.");
         } else {
           setEmailMsg("이미 가입한 이메일입니다.");
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const storePartnership = () => {
@@ -129,23 +122,8 @@ const StoreRegist = () => {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
-
-  /*
-  useEffect(() => {
-    axios
-      .get(`${backServer}/store/storePartnership/${store.soEmail}`)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  */
 
   return (
     <div className="storeRegist-main">

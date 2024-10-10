@@ -145,7 +145,7 @@ function Ownerstatistics(props) {
             "40대",
             "50대",
             "60대",
-            "70대",
+            "그 외",
           ];
           const filledAgeCounts = fullAgeGroups.map((ageGroup) => {
             const found = fetchedData.find(

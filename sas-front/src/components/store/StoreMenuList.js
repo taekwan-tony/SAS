@@ -65,12 +65,9 @@ const StoreMenuList = (props) => {
         axios
           .delete(`${backServer}/menu/deleteStoreMenu/${menu.menuNo}`)
           .then((res) => {
-            console.log(res);
             setCheck(storeMenuList.length + 1);
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       }
     });
   };

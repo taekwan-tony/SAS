@@ -544,9 +544,7 @@ const UserMainView = (props) => {
               <div className="dining-deal-content">
                 <img
                   src={
-                    store[0]
-                      ? `${backServer}/store/storeList/view/${store[0].siFilepath}`
-                      : ""
+                    store[0] ? `${backServer}/store/${store[0].siFilepath}` : ""
                   }
                   alt="Slide 5"
                 />
@@ -568,9 +566,7 @@ const UserMainView = (props) => {
               <div className="dining-deal-content">
                 <img
                   src={
-                    store[1]
-                      ? `${backServer}/store/storeList/view/${store[1].siFilepath}`
-                      : ""
+                    store[1] ? `${backServer}/store/${store[1].siFilepath}` : ""
                   }
                   alt="Slide 6"
                 />
@@ -591,9 +587,7 @@ const UserMainView = (props) => {
               <div className="dining-deal-content">
                 <img
                   src={
-                    store[2]
-                      ? `${backServer}/store/storeList/view/${store[2].siFilepath}`
-                      : ""
+                    store[2] ? `${backServer}/store/${store[2].siFilepath}` : ""
                   }
                   alt="Slide 7"
                 />
@@ -661,7 +655,7 @@ const UserMainView = (props) => {
                           <img
                             src={
                               item && item
-                                ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                                ? `${backServer}/store/${item.siFilepath}`
                                 : ""
                             }
                           />
@@ -691,7 +685,7 @@ const UserMainView = (props) => {
                           <img
                             src={
                               item && item
-                                ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                                ? `${backServer}/store/${item.siFilepath}`
                                 : ""
                             }
                           />
@@ -721,7 +715,7 @@ const UserMainView = (props) => {
                           <img
                             src={
                               item && item
-                                ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                                ? `${backServer}/store/${item.siFilepath}`
                                 : ""
                             }
                           />
@@ -751,7 +745,7 @@ const UserMainView = (props) => {
                           <img
                             src={
                               item && item
-                                ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                                ? `${backServer}/store/${item.siFilepath}`
                                 : ""
                             }
                           />

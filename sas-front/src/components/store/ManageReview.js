@@ -27,12 +27,9 @@ function ManageReview(props) {
     axios
       .get(`${backServer}/review/allList/${loginStoreId}`)
       .then((res) => {
-        console.log(res.data);
         setReview(res.data);
       })
-      .catch((err) => {
-        console.error("리뷰를 읽어올 수 없습니다.", err);
-      });
+      .catch((err) => {});
   }, [loginStoreId]);
 
   const handleReplySubmit = (index) => {
@@ -56,9 +53,7 @@ function ManageReview(props) {
           setReviewAnswer(""); // 답글 입력란 초기화
         }
       })
-      .catch((err) => {
-        console.error("답글 제출 중 오류가 발생했습니다.", err);
-      });
+      .catch((err) => {});
   };
 
   const handleReplyCancel = () => {
@@ -98,9 +93,7 @@ function ManageReview(props) {
           )
         );
       })
-      .catch((err) => {
-        console.error("리뷰 신고 중 오류가 발생했습니다.", err);
-      });
+      .catch((err) => {});
   };
 
   return (
