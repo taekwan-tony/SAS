@@ -12,7 +12,6 @@ const StoreMenuAdd = (props) => {
   const hideInfoCard = props.hideInfoCard;
   const changeStoreMenu = props.changeStoreMenu;
   const changeStoreThumbnail = props.changeStoreThumbnail;
-  const type = props.type;
 
   const menuNameRef = useRef(null);
   const menuInfoRef = useRef(null);
@@ -69,18 +68,22 @@ const StoreMenuAdd = (props) => {
               <td className="storeMenuView-td storeMenuView-img-td" rowSpan={4}>
                 <div className="storeMenuView-imgdiv-zone">
                   <div className="storeMenuView-imgDiv">
-                    {storeMenuImage[index] ? (
-                      <img
-                        className="storeMenuView-img"
-                        src={storeMenuImage[index]}
-                        alt="메뉴 사진"
-                      />
+                    {props.type === 2 ? (
+                      storeMenuImage[index] ? (
+                        <img
+                          className="storeMenuView-img"
+                          src={storeMenuImage[index]}
+                          alt="메뉴 사진"
+                        />
+                      ) : (
+                        <img
+                          className="storeMenuView-img"
+                          src="/image/s&s로고.png"
+                          alt="Default"
+                        />
+                      )
                     ) : (
-                      <img
-                        className="storeMenuView-img"
-                        src="/image/s&s로고.png"
-                        alt="Default"
-                      />
+                      ""
                     )}
                   </div>
                 </div>
@@ -93,7 +96,7 @@ const StoreMenuAdd = (props) => {
                     type="file"
                     id="menuPhoto"
                     name="menuPhoto"
-                    onChange={changeStoreThumbnail(2, index)}
+                    onChange={(e) => changeStoreThumbnail(2, index)(e)}
                     accept="image/*"
                     style={{ display: "none" }}
                   />

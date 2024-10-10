@@ -25,8 +25,6 @@ const StoreView = (props) => {
       axios
         .post(`${backServer}/store/storeRefresh`)
         .then((res) => {
-          console.log("로그인 유지 :", res);
-          console.log("storeNo :", res.data.storeNo); // storeNo 값 출력
           axios.defaults.headers.common["Authorization"] = res.data.accessToken;
           window.localStorage.setItem(
             "storeRefreshToken",
@@ -34,7 +32,6 @@ const StoreView = (props) => {
           );
         })
         .catch((err) => {
-          console.log(err);
           delete axios.defaults.headers.common["Authorization"];
           window.localStorage.removeItem("storeRefreshToken");
         });
@@ -65,12 +62,7 @@ const StoreView = (props) => {
             setStoreSiFilepathList(res.data.storeSiFilepathList);
           }
         })
-        .catch((err) => {
-          console.log(
-            "에러 응답 데이터 : ",
-            err.response ? err.response.data : err.message
-          );
-        });
+        .catch((err) => {});
     }
   }, [loginstoreNo, check, isLoginStore]);
 

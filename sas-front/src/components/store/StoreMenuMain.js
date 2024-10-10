@@ -47,54 +47,44 @@ const StoreMenuMain = (props) => {
         setStoreMenuList(res.data);
         setCheck(res.data.length);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, [check, loginStoreNo]);
 
   //미리보기
+  // 미리보기 및 파일 저장
   const changeStoreThumbnail = (type, index) => (e) => {
     const files = e.target.files;
+    console.log(
+      `선택된 파일: ${files.length > 0 ? files[0].name : "파일 없음"}`
+    ); // 선택된 파일 확인
+
     if (files.length > 0) {
+      const file = files[0]; // 선택한 파일을 저장
       const reader = new FileReader();
       reader.onloadend = () => {
-        if (type === 1) {
-          // 기존 메뉴의 미리보기 업데이트
-          const updatedStoreMenuList = [...storeMenuList];
-          updatedStoreMenuList[index] = {
-            ...updatedStoreMenuList[index],
-            menuPhoto: reader.result, // 새로운 이미지로 교체
-          };
-          setStoreMenuList(updatedStoreMenuList); // 상태 업데이트
+        console.log(`파일이 성공적으로 읽혔습니다: ${reader.result}`); // 파일이 읽힌 후 결과 확인
 
-          setExistingMenuThumbnail((prevThumbnails) => {
-            const updatedThumbnails = [...prevThumbnails];
-            updatedThumbnails[index] = files[0];
-            return updatedThumbnails;
-          });
-        } else if (type === 2) {
+        if (type === 2) {
           // 새로운 메뉴의 미리보기 업데이트
           const updatedStoreMenu = [...storeMenu];
           updatedStoreMenu[index] = {
             ...updatedStoreMenu[index],
-            menuPhoto: reader.result, // 새로운 이미지로 교체
+            newMenuThumbnail: file, // File 객체로 저장
           };
+          console.log("업데이트된 메뉴:", updatedStoreMenu); // 업데이트된 메뉴 확인
           setStoreMenu(updatedStoreMenu);
 
-          setNewMenuThumbnail((prevThumbnails) => {
-            const updatedThumbnails = [...prevThumbnails];
-            updatedThumbnails[index] = files[0];
-            return updatedThumbnails;
-          });
-
+          // 썸네일 이미지 상태 업데이트 (미리보기용 Base64)
           setStoreMenuImage((prevImages) => {
             const updatedImages = [...prevImages];
-            updatedImages[index] = reader.result;
+            updatedImages[index] = reader.result; // 미리보기 이미지 업데이트
+
+            console.log("미리보기 이미지가 업데이트된 후:", updatedImages);
             return updatedImages;
           });
         }
       };
-      reader.readAsDataURL(files[0]); // 파일을 읽기 시작
+      reader.readAsDataURL(file); // 파일을 읽어 미리보기에 표시
     }
   };
 
@@ -158,86 +148,57 @@ const StoreMenuMain = (props) => {
 
   // 새로운 메뉴인지 수정할 메뉴인지 확인
   const handleMenuSave = () => {
-    // 새로운 메뉴와 기존 메뉴를 각각 처리
-    const newMenus = storeMenu.filter((menu) => !menu.menuNo); // menuNo가 없는 새로운 메뉴
-    const existingMenus = storeMenuList.filter((menu) => menu.menuNo); // menuNo가 있는 기존 메뉴
+    // 새로운 메뉴만 처리
+    const newMenus = storeMenu.filter((menu) => !menu.menuNo); // menuNo가 없는 새로운 메뉴만 필터링
 
     if (newMenus.length > 0) {
       addStoreMenu(newMenus); // 새로운 메뉴 추가
     }
 
+    // 기존 메뉴 수정 처리
+    const existingMenus = storeMenu.filter((menu) => menu.menuNo); // 기존 메뉴는 menuNo가 있는 경우
     if (existingMenus.length > 0) {
       updateStoreMenu(existingMenus); // 기존 메뉴 수정
+    }
+
+    if (newMenus.length === 0 && existingMenus.length === 0) {
     }
   };
 
   // 메뉴 추가
   const addStoreMenu = (newMenus) => {
-    storeMenu.forEach((menu, index) => {
-      if (!menu.menuNo) {
-        const form = new FormData();
-        form.append(`menuName`, menu.menuName);
-        form.append(`menuInfo`, menu.menuInfo);
-        form.append(`menuPrice`, menu.menuPrice);
-        form.append(`storeNo`, menu.storeNo);
+    newMenus.forEach((menu, index) => {
+      const form = new FormData();
+      form.append(`menuName`, menu.menuName);
+      form.append(`menuInfo`, menu.menuInfo);
+      form.append(`menuPrice`, menu.menuPrice);
+      form.append(`storeNo`, menu.storeNo);
 
-        if (newMenuThumbnail[index]) {
-          form.append(`menuThumbnail`, newMenuThumbnail[index]);
-        }
-
-        axios
-          .post(`${backServer}/menu/insertStoreMenu/${loginStoreNo}`, form, {
-            headers: { "Content-Type": "multipart/form-data" },
-          })
-          .then((res) => {
-            Swal.fire({
-              title: "완료되었습니다.",
-              icon: "success",
-              confirmButtonColor: "#518142",
-            });
-            setCheck(storeMenuList.length + 1);
-          })
-          .catch((err) => {
-            console.log("메뉴 추가 실패");
-          });
+      if (menu.newMenuThumbnail) {
+        form.append(`menuThumbnail`, menu.newMenuThumbnail);
       }
+
+      // 실제 전송 로직
+      axios
+        .post(`${backServer}/menu/insertStoreMenu/${loginStoreNo}`, form, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => {
+          Swal.fire({
+            title: "완료되었습니다.",
+            icon: "success",
+            confirmButtonColor: "#518142",
+          });
+          setCheck(storeMenuList.length + 1); // 상태 업데이트
+        })
+        .catch((err) => {});
     });
+
+    // 상태 초기화
     setStoreMenu([]);
     setNewMenuThumbnail([]);
     setStoreMenuImage([]);
   };
-
-  // //메뉴 수정
-  // const updateStoreMenu = (existingMenus) => {
-  //   storeMenuList.forEach((menu, index) => {
-  //     if (menu.menuNo) {
-  //       const form = new FormData();
-  //       form.append("menuName", menu.menuName);
-  //       form.append("menuInfo", menu.menuInfo);
-  //       form.append("menuPrice", menu.menuPrice);
-  //       form.append("storeNo", menu.storeNo);
-
-  //       if (existingMenuThumbnail[index]) {
-  //         form.append("menuThumbnail", existingMenuThumbnail[index]);
-  //       }
-
-  //       axios
-  //         .patch(`${backServer}/menu/updateStoreMenu/${menu.menuNo}`, form, {
-  //           headers: { "Content-Type": "multipart/form-data" },
-  //         })
-  //         .then((res) => {
-  //           Swal.fire({
-  //             title: "메뉴가 수정되었습니다.",
-  //             icon: "success",
-  //             confirmButtonColor: "#518142",
-  //           });
-  //         })
-  //         .catch((err) => {
-  //           console.error("메뉴 수정 실패:", err);
-  //         });
-  //     }
-  //   });
-  // };
 
   return (
     <>
@@ -298,7 +259,6 @@ const StoreMenuMain = (props) => {
               changeStoreMenu={changeStoreMenu}
               changeStoreThumbnail={changeStoreThumbnail}
               type={2}
-              setCheck={setCheck}
             />
           ))}
         </div>

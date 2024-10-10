@@ -32,14 +32,9 @@ const StorePayment = (props) => {
       .get(`${backServer}/store/storePayList/${storeNo}`)
       .then((res) => {
         setStorePaymentList(res.data);
-        console.log("결제내역 불러오기 성공 : ", res);
       })
-      .catch((err) => {
-        //console.log("결제내역 불러오기 실패 : ", err);
-      });
+      .catch((err) => {});
   }, [storeNo, rendering]);
-
-  console.log("이용료 결제 (매장 번호) : ", storeNo);
 
   //지난 달 예약
   useEffect(() => {
@@ -56,9 +51,7 @@ const StorePayment = (props) => {
           `${backServer}/reservation/lastMonthTotalReservedPeople/storeNo/${storeNo}`
         );
         setLastMonthReservedPeople(lastMonthReservedPeopleResponse.data);
-      } catch (err) {
-        //console.error("지난달 예약 데이터 가져오기 실패:", err);
-      }
+      } catch (err) {}
     };
     lastMonthData();
   }, [storeNo, backServer]);
@@ -178,15 +171,6 @@ const PaymentItem = (props) => {
   const [storeNo, setStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
-  console.log(
-    "이메일, 주소, 전화번호, 이름, 매장 번호",
-    soEmail,
-    storeAddr,
-    soPhone,
-    soName,
-    storeNo
-  );
-
   useEffect(() => {
     const IMP = window.IMP;
     if (IMP) {
@@ -230,13 +214,9 @@ const PaymentItem = (props) => {
               )
               .then((res) => {
                 setRendering(!rendering);
-                console.log(res);
               })
-              .catch((err) => {
-                console.log(err);
-              })
+              .catch((err) => {})
           );
-          console.log(rsp);
 
           // 결제 성공 로직
         } else {

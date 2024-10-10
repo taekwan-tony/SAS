@@ -7,7 +7,6 @@ import axios from "axios";
 const StoreChangePw = ({ isPwModalOpen, closePwModal }) => {
   const backServer = process.env.REACT_APP_BACK_SERVER;
 
-  console.log("change PW");
   const params = useParams();
   const storeNo = params.storeNo;
 

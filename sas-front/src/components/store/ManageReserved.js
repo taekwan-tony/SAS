@@ -43,7 +43,6 @@ function ManageReserved(props) {
       axios
         .get(`${backServer}/reservation/reservation/${storeNo}`)
         .then((response) => {
-          console.log("예약 데이터: ", response.data);
           setReservations(response.data);
 
           // 예약 데이터를 달력 형식으로 변환 (필터링 제거)
@@ -84,9 +83,7 @@ function ManageReserved(props) {
           });
           setCalendarEvents(events); // 모든 예약 데이터를 상태로 설정
         })
-        .catch((error) => {
-          console.error("예약 데이터를 가져오는 중 오류 발생:", error);
-        });
+        .catch((error) => {});
     }
   }, [storeNo]);
   // 예약 데이터를 서버에서 가져옴
@@ -111,7 +108,6 @@ function ManageReserved(props) {
           const noshow = response.data.filter(
             (reservation) => reservation.RESERVESTATUS === "노쇼"
           ).length;
-          console.log(response.data);
           // 상태별 카운트 설정
           setPendingCount(pending);
           setCompletedCount(completed);
@@ -120,14 +116,11 @@ function ManageReserved(props) {
           setNoShowCount(noshow);
           setWeekReservations(response.data);
         })
-        .catch((error) => {
-          console.error("예약 데이터를 가져오는 중 오류 발생:", error);
-        });
+        .catch((error) => {});
     }
   }, [storeNo]);
   // 입금 상태에 따라 뱃지를 보여주는 함수
   const getPayStatusBadge = (payStatus) => {
-    console.log("입금 상태:", payStatus); // 상태 확인을 위한 로그
     switch (payStatus) {
       case "입금대기":
         return <span className="badge bg-warning">입금대기</span>;
@@ -143,7 +136,6 @@ function ManageReserved(props) {
   };
   // 예약 상태와 입금 상태를 결합하여 상태를 계산하는 함수
   const calReservationStatus = (payStatus) => {
-    console.log("입금 상태 (payStatus):", payStatus);
     if (payStatus == "입금대기") {
       return "예약대기"; // 입금 완료이면 예약완료로 설정
     } else if (payStatus == "결제완료") {
@@ -164,7 +156,6 @@ function ManageReserved(props) {
         .patch(`${backServer}/reservation/visit/${reserveNo}`)
         .then((response) => {
           alert("방문 완료 처리되었습니다.");
-          console.log("reserveNo : " + reserveNo);
           // 테이블 상태 업데이트
           setWeekReservations((prevReservations) =>
             prevReservations.map((reservation) =>
@@ -186,16 +177,9 @@ function ManageReserved(props) {
             );
           });
         })
-        .catch((error) => {
-          console.error(
-            "방문 완료 처리 중 오류 발생:",
-            error.response || error
-          );
-        });
+        .catch((error) => {});
     }
   };
-  console.log("calendarEvents");
-  console.log(calendarEvents);
   //노쇼 처리 함수
   const NoShow = (reserveNo) => {
     if (window.confirm("해당 예약을 노쇼 처리하시겠습니까?")) {
@@ -225,7 +209,6 @@ function ManageReserved(props) {
             );
           });
           setWeekReservations((prevReservations) => {
-            console.log("업데이트 이전 상태:", prevReservations);
             return prevReservations.map((reservation) => {
               if (reservation.RESERVE_NO === reserveNo) {
                 return { ...reservation, RESERVESTATUS: "노쇼" };
@@ -234,16 +217,11 @@ function ManageReserved(props) {
             });
           });
         })
-        .catch((error) => {
-          console.error("노쇼 처리 중 오류 발생:", error.response || error);
-        });
+        .catch((error) => {});
     }
   };
 
-  useEffect(() => {
-    console.log("Total Value:", totalValue);
-    console.log("Input Value:", inputValue);
-  }, [totalValue, inputValue]);
+  useEffect(() => {}, [totalValue, inputValue]);
 
   const handleInputChange = (e) => {
     const value = Math.min(Math.max(parseInt(e.target.value, 10), 0), maxValue); // 0에서 maxValue 사이 값만 허용
@@ -295,9 +273,7 @@ function ManageReserved(props) {
           newCalendarEvents.splice(index, 1);
           setCalendarEvents(newCalendarEvents);
         })
-        .catch((error) => {
-          console.error("예약 삭제 중 오류 발생:", error);
-        });
+        .catch((error) => {});
     }
   };
 
@@ -408,7 +384,6 @@ function ManageReserved(props) {
           </thead>
           <tbody>
             {weekReservations.map((reservation, index) => {
-              console.log(reservation.RESERVESTATUS);
               return (
                 <tr key={reservation.RESERVE_NO}>
                   <td> {index + 1}</td>
