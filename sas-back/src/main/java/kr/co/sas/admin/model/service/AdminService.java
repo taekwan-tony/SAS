@@ -81,7 +81,6 @@ public class AdminService {
 					sb.append(randomCode);
 				}
 			}
-			System.out.println(sb.toString());
 		String encPw = encoder.encode(sb.toString());
 		store.setSoPw(encPw);
 		String emailContent = "<h1>안녕하세요. Spoon & Smiles 입니다 </h1>"
@@ -90,7 +89,7 @@ public class AdminService {
 				+sb.toString()
 				+"</span>]입니다. </h3>"
 				+"<h3>아이디는 이메일을 사용부탁드리며, 비밀번호는 바로 수정 부탁드립니다.</h3>";
-//		email.sendMail(emailTitle, receiver, emailContent);
+		email.sendMail(emailTitle, receiver, emailContent);
 		}
 		int result = storeDao.approvalStore(store);
 		return result;
@@ -141,7 +140,6 @@ public class AdminService {
 		}
 		if(result == list.size()) {
 			StoreDTO store = storeDao.selectOneSoEmail(storeNo);
-			System.out.println(store);
 			String receiver = store.getSoEmail();
 			//인증메일 제목 생성
 			String emailTitle = "Spoon & Smiles 매장관리 요청의 건";
@@ -182,7 +180,6 @@ public class AdminService {
 
 	public Map salesDetailList(String startDateValue, String endDateValue, String keyword, int orderBy) {
 		List detailList = storeDao.salesDetailList(startDateValue,endDateValue,keyword,orderBy);
-		System.out.println(detailList);
 		Map<String, Object> totalMap = storeDao.totalSales(startDateValue,endDateValue,keyword);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", detailList);
