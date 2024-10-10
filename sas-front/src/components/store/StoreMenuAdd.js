@@ -14,23 +14,20 @@ const StoreMenuAdd = (props) => {
   const changeStoreThumbnail = props.changeStoreThumbnail;
   const type = props.type;
 
-  // 각 입력 필드에 대한 참조
   const menuNameRef = useRef(null);
   const menuInfoRef = useRef(null);
   const menuPriceRef = useRef(null);
 
   // 정규 표현식
-  const menuNameRegex = /^([가-힣]{0,20}|[a-zA-Z]{0,60})$/;
-  const menuInfoRegex = /^([가-힣]{0,40}|[a-zA-Z\s]{0,120})$/;
+  const menuNameRegex = /^([가-힣\s]{0,20}|[a-zA-Z\s]{0,60})$/;
+  const menuInfoRegex = /^([가-힣\s]{0,40}|[a-zA-Z\s]{0,120})$/;
   const menuPriceRegex = /^[0-9]*$/;
 
   const validateInput = (field, value) => {
-    let isValid = true;
     if (field === "menuName") {
       if (!menuNameRegex.test(value)) {
         menuNameRef.current.textContent =
           "메뉴 이름은 한글 20자 이하, 영어 60자 이하로 입력해주세요.";
-        isValid = false;
       } else {
         menuNameRef.current.textContent = ""; // 검증 통과 시 메시지 제거
       }
@@ -40,7 +37,6 @@ const StoreMenuAdd = (props) => {
       if (!menuInfoRegex.test(value)) {
         menuInfoRef.current.textContent =
           "메뉴 설명은 한글 40자 이하, 영어 120자 이하로 입력해주세요.";
-        isValid = false;
       } else {
         menuInfoRef.current.textContent = ""; // 검증 통과 시 메시지 제거
       }
@@ -48,13 +44,11 @@ const StoreMenuAdd = (props) => {
 
     if (field === "menuPrice") {
       if (!menuPriceRegex.test(value)) {
-        menuPriceRef.current.textContent = "가격은 숫자만 입력해주세요.";
-        isValid = false;
+        menuPriceRef.current.textContent = "숫자만 입력해주세요.";
       } else {
         menuPriceRef.current.textContent = ""; // 검증 통과 시 메시지 제거
       }
     }
-    return isValid;
   };
 
   return (
@@ -91,6 +85,9 @@ const StoreMenuAdd = (props) => {
                   </div>
                 </div>
                 <div className="storeMenuView-btn-zone">
+                  <label htmlFor="menuPhoto" className="storeMenu-img-label">
+                    파일 선택
+                  </label>
                   <input
                     className="storeMenuView-inputBox"
                     type="file"
@@ -98,6 +95,7 @@ const StoreMenuAdd = (props) => {
                     name="menuPhoto"
                     onChange={changeStoreThumbnail(2, index)}
                     accept="image/*"
+                    style={{ display: "none" }}
                   />
                 </div>
                 <div className="storeMenuView-div"></div>
@@ -118,10 +116,7 @@ const StoreMenuAdd = (props) => {
                     changeStoreMenu(index)(e); // 기존 핸들러 호출
                   }}
                 />
-                <p
-                  ref={menuNameRef}
-                  style={{ color: "red", fontSize: "12px" }}
-                ></p>
+                <p className="menu-p" ref={menuNameRef}></p>
               </td>
             </tr>
             <tr className="storeMenuView-tr">
@@ -139,10 +134,7 @@ const StoreMenuAdd = (props) => {
                     changeStoreMenu(index)(e); // 기존 핸들러 호출
                   }}
                 />
-                <p
-                  ref={menuInfoRef}
-                  style={{ color: "red", fontSize: "12px" }}
-                ></p>
+                <p className="menu-p" ref={menuInfoRef}></p>
               </td>
             </tr>
             <tr className="storeMenuView-tr">
@@ -160,10 +152,7 @@ const StoreMenuAdd = (props) => {
                     changeStoreMenu(index)(e); // 기존 핸들러 호출
                   }}
                 />
-                <p
-                  ref={menuPriceRef}
-                  style={{ color: "red", fontSize: "12px" }}
-                ></p>
+                <p className="menu-p" ref={menuPriceRef}></p>
               </td>
             </tr>
           </tbody>

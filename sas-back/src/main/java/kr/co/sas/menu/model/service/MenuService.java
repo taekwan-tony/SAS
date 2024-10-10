@@ -44,4 +44,9 @@ public class MenuService {
 		int result = menuDao.updateStoreMenu(storeMenu);
 		return result;
 	}//updateStoreMenu
+
+
+	public MenuDTO getStoreMenuById(int menuNo) {
+		return menuDao.selectMenuById(menuNo);
+	}
 }
