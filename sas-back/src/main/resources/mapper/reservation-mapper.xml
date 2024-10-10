@@ -250,7 +250,7 @@
 		store_no = #{storeNo}
 		AND reserve_date
 		BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') +
-		6
+		7
 		GROUP BY
 		TO_CHAR(reserve_date, 'DAY')
 		ORDER BY
