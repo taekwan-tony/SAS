@@ -22,8 +22,6 @@ public interface StoreDao {
 
 	int insertStoreOwner(StoreDTO store);
 
-	int insertStore(StoreDTO store);
-
 	int totalCount(int storeType);
 
 	List selectApprovalStore(PageInfo pi,int storeType);

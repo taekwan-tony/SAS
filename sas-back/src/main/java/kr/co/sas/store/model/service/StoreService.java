@@ -53,12 +53,6 @@ public class StoreService {
 	}//insertStoreOwner
 
 
-	@Transactional
-	public int insertStore(StoreDTO store) {
-		int result = storeDao.insertStore(store); //매장 사업자번호를 가져와서 점주 등록 정보를 수정
-		return result;
-	}//insertStore
-
 
 	public Map storeLogin(StoreDTO store) {
 		int result = 2;

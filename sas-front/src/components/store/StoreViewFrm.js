@@ -23,7 +23,7 @@ const StoreViewFrm = (props) => {
   // const [storeType, setStoreType] = useRecoilState(storeTypeState);
   // const [loginstoreNo, setLoginStoreNo] = useRecoilState(loginStoreNoState); // 점주 매장 번호
   const [storeNumber, setStoreNumber] = useState(null); // 상태로 관리
-
+  const { loginstoreNo } = props;
   const [store, setStore] = useState({});
 
   // storeNumber가 업데이트될 때마다 실행
@@ -219,45 +219,51 @@ const StoreViewFrm = (props) => {
     }
 
     // 매장 정보
-    axios.post(`${backServer}/store/insertStore`, store).then((res) => {
-      if (res.data) {
-        Swal.fire({
-          title: "매장 등록 완료.",
-          text: "매장 정보가 등록되었습니다.",
-          icon: "success",
-          confirmButtonColor: "#5e9960",
-        })
-          .then(() => {
-            navigate("/storeMain");
+    axios
+      .post(`${backServer}/store/insertStoreFrm/${loginstoreNo}`, store)
+      .then((res) => {
+        if (res.data) {
+          Swal.fire({
+            title: "매장 등록 완료.",
+            text: "매장 정보가 등록되었습니다.",
+            icon: "success",
+            confirmButtonColor: "#5e9960",
           })
-          .catch((err) => {});
-      }
-    });
-
+            .then(() => {
+              navigate("/storeMain");
+            })
+            .catch((err) => {});
+        }
+      });
+    console.log(loginstoreNo);
     // 매장 좌석 정보 등록
     axios
-      .post(`${backServer}/store/insertSeatList/${store.storeNo}`, seatList) // seatList를 서버로 전송
+      .post(`${backServer}/store/insertSeatList/${loginstoreNo}`, seatList) // seatList를 서버로 전송
       .then((res) => {
         if (res.data) {
           // 좌석 정보 등록 성공 시 처리
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log("좌석 등록 에러 : ", err);
+      });
 
     // 매장 사진
     axios
-      .post(`${backServer}/store/insertStoreImg/${store.storeNo}`, form, {
+      .post(`${backServer}/store/insertStoreImg/${loginstoreNo}`, form, {
         headers: {
           contentType: "multipart/form-data",
           processData: false,
         },
       })
       .then((res) => {})
-      .catch((err) => {});
+      .catch((err) => {
+        console.log("매장 사진 등록 에러 : ", err);
+      });
 
     // 매장 분위기
     axios
-      .post(`${backServer}/store/insertStoreMood/${store.storeNo}`, form, {
+      .post(`${backServer}/store/insertStoreMood/${loginstoreNo}`, form, {
         headers: {
           contentType: "multipart/form-data",
           processData: false,
@@ -268,7 +274,7 @@ const StoreViewFrm = (props) => {
 
     // 매장 편의시설
     axios
-      .post(`${backServer}/store/insertStoreAmenities/${store.storeNo}`, form, {
+      .post(`${backServer}/store/insertStoreAmenities/${loginstoreNo}`, form, {
         headers: {
           contentType: "multipart/form-data",
           processData: false,
