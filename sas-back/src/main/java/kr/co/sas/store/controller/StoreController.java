@@ -186,15 +186,21 @@ public class StoreController {
 	
 	
 	@Operation(summary = "매장 좌석 수")
-	@PostMapping(value = "/insertSeat")
-	public ResponseEntity<Boolean> insertSeat(@RequestBody SeatDTO seat) {
-		
-		// 데이터 로그
-		System.out.println("SeatDTO : " + seat.toString());
-		
-		int result = storeService.insertSeat(seat);
-		return ResponseEntity.ok(result > 0);
-	}//insertSeat
+	@PostMapping(value = "/insertSeatList/{storeNo}")
+	public ResponseEntity<Boolean> insertSeatList(@PathVariable int storeNo, @RequestBody List<SeatDTO> seatList) {
+	    // 매장 번호 출력
+	    System.out.println("Store No: " + storeNo);
+	    // 좌석 정보 출력
+	    for (SeatDTO seat : seatList) {
+	        System.out.println("SeatDTO: " + seat.toString());
+	    }
+	    
+	    // 좌석 정보 저장
+	    int result = storeService.insertSeatList(storeNo, seatList);
+	    
+	    // 저장 성공 여부 반환
+	    return ResponseEntity.ok(result > 0);
+	}
 	
 	
 	@Operation(summary = "매장 사진")

@@ -30,10 +30,8 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
   const soPwRef = useRef(null);
 
   const changeStorePw = () => {
-    console.log(store);
     if (store.soPw === newSoPwRe) {
       axios.post(`${backServer}/store/changePw`, store).then((res) => {
-        console.log(res);
         if (res.data) {
           Swal.fire({
             title: "비밀번호가 변경되었습니다.",
@@ -57,7 +55,6 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
     axios
       .post(`${backServer}/store/checkPw`, store)
       .then((res) => {
-        console.log("응답 상태:", res.status); // 상태 코드 출력
         if (res.status === 200) {
           // 이메일과 비밀번호가 일치할 때
           Swal.fire({
@@ -72,9 +69,6 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
       })
       .catch((err) => {
         if (err.response && err.response.status === 404) {
-          console.log(err);
-          console.log(err.response.status);
-          console.log("불일치");
           Swal.fire({
             title: "회원정보가 일치하지 않습니다.",
             icon: "error",
@@ -120,7 +114,14 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
 
   const changeSoPw = (e) => {
     const name = e.target.name;
+    const value = e.target.value;
     setStore({ ...store, [name]: e.target.value });
+    //비밀번호 검증
+    if (name === "soPw" && !passwordRegex.test(value)) {
+      soPwRef.current.innerText = "비밀번호는 최대 12자까지 입력 가능합니다.";
+    } else {
+      soPwRef.current.innerText = "";
+    }
   };
 
   const changeNewSoPw = (e) => {
@@ -152,16 +153,8 @@ const StoreCheckPw = ({ isPwModalOpen, closePwModal, props }) => {
 
     // 비밀번호 길이 제한
     if (name === "soPw" && value.length > 12) {
-      e.preventDefault();
       soPwRef.current.innerText = "비밀번호는 12자 이하로 입력해주세요.";
       return;
-    }
-
-    //비밀번호 검증
-    if (name === "soPw" && !passwordRegex.test(value)) {
-      soPwRef.current.innerText = "비밀번호는 최대 12자까지 입력 가능합니다.";
-    } else {
-      soPwRef.current.innerText = "";
     }
   };
 

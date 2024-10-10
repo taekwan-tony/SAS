@@ -72,7 +72,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const soPhoneRef = useRef(null);
 
   const login = () => {
-    console.log(login);
     soEmailRef.current.innerText = "";
     soPwRef.current.innerText = "";
     if (store.soEmail === "" || store.soPw === "") {
@@ -92,8 +91,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
             refreshToken,
             storeName,
           } = res.data;
-          console.log("매장 로그인 정보 : ", res.data);
-          console.log("서버로부터 받은 storeName 값:", res.data.storeName); // 여기서 soName 확인
 
           switch (res.data.result) {
             case 1:
@@ -101,8 +98,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
               setStoreType(res.data.storeType);
               setLoginStoreNo(res.data.storeNo);
               setStoreName(res.data.storeName); // 점주 이름 저장
-
-              console.log("저장된 storeName 값:", res.data.storeName);
 
               axios.defaults.headers.common["Authorization"] =
                 res.data.accessToken;
@@ -112,7 +107,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
               );
               if (storeType === 1) {
                 // 판매자 로그인
-                console.log("판매자 로그인 성공");
                 Swal.fire({
                   title: "로그인 성공",
                   icon: "success",
@@ -132,11 +126,9 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
               } // else
               break;
             case 2:
-              console.log("존재하지 않는 아이디");
               soEmailRef.current.innerText = "존재하지 않는 아이디입니다.";
               break;
             case 3:
-              console.log("틀린 비밀번호");
               soPwRef.current.innerText = "비밀번호를 잘못 입력하셨습니다.";
               break;
           }
@@ -189,8 +181,6 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
       )
       .then((res) => {
         if (res.data) {
-          console.log("사용 가능한 사업자 번호");
-
           // Fetch API를 사용하여 POST 요청 보내기
           fetch(
             "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=izDvzK%2FsSEz9bDSkKZ2ITpUtPOjeYOTTFEsMUh%2BOKm%2B1SNrCWoYHCLtDCJ1F184rdJo3an8rhug39mJE4F59Xw%3D%3D",
@@ -311,25 +301,10 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
   const handleKeyDown = (e) => {
     const { name, value } = e.target;
 
-    // 이메일 길이 제한 설정
-    if (value.length > 50) {
-      e.preventDefault();
-      soEmailRef.current.innerText = "이메일은 50자 이하로 입력해주세요.";
-      return;
-    }
-
     // 비밀번호 길이 제한
     if (name === "soPw" && value.length > 12) {
-      e.preventDefault();
       soPwRef.current.innerText = "비밀번호는 12자 이하로 입력해주세요.";
       return;
-    }
-
-    //비밀번호 검증
-    if (name === "soPw" && !passwordRegex.test(value)) {
-      soPwRef.current.innerText = "비밀번호는 최대 12자까지 입력 가능합니다.";
-    } else {
-      soPwRef.current.innerText = "";
     }
 
     //이메일 형식 검증
@@ -340,14 +315,12 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
     }
 
     if (e.key === "Enter") {
-      e.preventDefault(); // 기본 폼 제출 방지
       login(); // 로그인 함수 호출
     }
   };
 
   //정규표현식
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  const passwordRegex = /^.{1,12}$/;
   const businessNumberRegex = /^\d{1,12}$/;
   const nameRegex = /^[가-힣]{1,4}$/;
   const phoneRegex = /^010-\d{4}-\d{4}$/;
@@ -451,11 +424,11 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                       }
                                     }}
                                   ></input>
-                                  <p
-                                    className="storeLogin-p"
-                                    ref={soEmailRef}
-                                  ></p>
                                 </div>
+                                <p
+                                  className="storeLogin-p"
+                                  ref={soEmailRef}
+                                ></p>
                               </td>
                             </tr>
 
@@ -480,8 +453,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                     onChange={changeStore}
                                     onKeyDown={handleKeyDown} // Enter 키 감지
                                   ></input>
-                                  <p className="storeLogin-p" ref={soPwRef}></p>
                                 </div>
+                                <p className="storeLogin-p" ref={soPwRef}></p>
                               </td>
                             </tr>
                           </tbody>
@@ -554,8 +527,8 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                     : "none", // 이미지가 없을 때는 none
                                   backgroundRepeat: "no-repeat",
                                   backgroundPosition: "left center",
-                                  marginLeft: "10px",
-                                  paddingLeft: bnMsg ? "27px" : "0px", // 메시지가 있을 때만 padding
+                                  marginLeft: "1px",
+                                  paddingLeft: bnMsg ? "26px" : "0px", // 메시지가 있을 때만 padding
                                 }}
                               >
                                 {bnMsg}
@@ -581,8 +554,11 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   value={store.soName}
                                   onChange={handleNameChange}
                                 ></input>
-                                <p className="storeLogin-p" ref={soNameRef}></p>
                               </div>
+                              <p
+                                className="storePartnership-p"
+                                ref={soNameRef}
+                              ></p>
                             </td>
                           </tr>
                           <tr className="storeLogin-storeRegist-tr">
@@ -605,11 +581,11 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                   value={store.soPhone}
                                   onChange={handlePhoneChange}
                                 ></input>
-                                <p
-                                  className="storeLogin-p"
-                                  ref={soPhoneRef}
-                                ></p>
                               </div>
+                              <p
+                                className="storePartnership-p"
+                                ref={soPhoneRef}
+                              ></p>
                             </td>
                           </tr>
                           <tr className="storeLogin-storeRegist-tr">
@@ -649,7 +625,7 @@ const StoreLogin = ({ isModalOpen, closeModal }) => {
                                       : "none", // 메시지가 없을 때는 아이콘 없음
                                   backgroundRepeat: "no-repeat",
                                   backgroundPosition: "left center",
-                                  marginLeft: "10px",
+                                  marginLeft: "1px",
                                   paddingLeft: emailMsg ? "27px" : "0px", // 메시지가 있을 때만 padding
                                   color:
                                     emailMsg === "사용 가능한 이메일입니다."

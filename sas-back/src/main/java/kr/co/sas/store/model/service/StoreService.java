@@ -176,11 +176,15 @@ public class StoreService {
 	}//insertStoreFrm
 
 
-	@Transactional
-	public int insertSeat(SeatDTO seat) {
-		int result = storeDao.insertSeat(seat);
+	public int insertSeatList(int storeNo, List<SeatDTO> seatList) {
+		int result = 0;
+		for (SeatDTO seat : seatList) {
+	        seat.setStoreNo(storeNo);
+	        result += storeDao.insertSeat(seat);
+	    }
 		return result;
 	}//insertSeat
+
 
 
 	@Transactional
