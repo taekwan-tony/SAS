@@ -15,7 +15,7 @@ const SearchList = (props) => {
     params.searchItem != null ? params.searchItem : ""
   );
   useEffect(() => {
-    console.log(params.searchItem);
+    //(params.searchItem);
     setKeyword(params.searchItem ? params.searchItem : "");
   }, [params]);
   useEffect(() => {
@@ -23,20 +23,20 @@ const SearchList = (props) => {
       axios
         .get(`${backServer}/store/storeList`)
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           setStoreList(res.data);
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      console.log("keyword", keyword);
+      //console.log("keyword", keyword);
       axios
         .get(`${backServer}/store/storeList/keyword/${keyword}`)
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           setStoreList(res.data);
-          console.log(res.data.length);
+          //console.log(res.data.length);
         })
         .catch((err) => {
           console.log(err);

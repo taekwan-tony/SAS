@@ -43,11 +43,11 @@ const MenuView = () => {
   const [isFavoriteChange, setIsFavoriteChange] = useState(false);
   const [sifilePathList, setSifilepathList] = useState([]);
   useEffect(() => {
-    console.log("userNo:", loginUserNo);
+    //console.log("userNo:", loginUserNo);
     axios
       .get(`${backServer}/store/storeNo/${store.storeNo}/userNo/${loginUserNo}`)
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         setStore(res.data);
       })
       .catch((err) => {
@@ -55,11 +55,11 @@ const MenuView = () => {
       });
   }, [loginUserNo, isFavoriteChange]);
   const changeFavorite = () => {
-    console.log(loginUserNo);
+    //console.log(loginUserNo);
     if (loginUserNo !== 0) {
-      console.log(1);
+      //console.log(1);
       if (store.favorite) {
-        console.log(2);
+        // console.log(2);
         axios
           .delete(
             `${backServer}/favorite/storeNo/${store.storeNo}/userNo/${loginUserNo}`
@@ -75,9 +75,9 @@ const MenuView = () => {
           .catch((err) => {
             console.log(err);
           });
-        console.log(4);
+        //console.log(4);
       } else {
-        console.log(3);
+        //console.log(3);
         axios
           .post(`${backServer}/favorite`, {
             storeNo: store.storeNo,
@@ -144,7 +144,7 @@ const MenuView = () => {
     setSnackbarState({ ...snackbarState, open: false });
   };
   const handleOpen = (message, action) => {
-    console.log(snackbarState);
+    //console.log(snackbarState);
     setSnackbarState({
       ...snackbarState,
       message: message,
@@ -180,7 +180,7 @@ const MenuView = () => {
     axios
       .get(`${backServer}/favorite/userNo/${loginUserNo}/getFavoriteFolder`)
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         setFavoriteFolderList(res.data);
       })
       .catch((err) => {
@@ -203,7 +203,7 @@ const MenuView = () => {
     axios
       .patch(`${backServer}/favorite/changeFolder`, changeFolder)
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         if (res.data) {
           setIsFavoriteModalOpen(false);
           handleOpen("즐겨찾기 이동이 완료되었습니다.");
@@ -234,7 +234,7 @@ const MenuView = () => {
       // const form = new FormData();
       // form.append("favoriteFolderName", addFolder.favoriteFolderName);
       // form.append("userNo", addFolder.userNo);
-      console.log(addFolder);
+      //console.log(addFolder);
       axios
         .post(`${backServer}/favorite/insertFolder`, addFolder)
         .then((res) => {
@@ -372,7 +372,7 @@ const MenuView = () => {
                     ...changeFolder,
                     favoriteFolderNo: folder.favoriteFolderNo,
                   });
-                  console.log(changeFolder);
+                  //console.log(changeFolder);
                 };
                 return (
                   <div className="folder-item-box" key={"folder" + index}>
@@ -434,7 +434,7 @@ const amenitiesImages = {
 
 const MenuMain = (props) => {
   const store = props.store;
-  console.log(store);
+  //console.log(store);
 
   return (
     <main className="main-menu-home">
@@ -494,7 +494,7 @@ const Menu = (props) => {
         <h2>메뉴판</h2>
         <div className="menu-board-items">
           {menu.map((menuItem, index) => {
-            console.log(index, menuItem);
+            //console.log(index, menuItem);
             return (
               <div className="menu-item">
                 <img
@@ -552,7 +552,7 @@ const MenuReview = (props) => {
           : `${backServer}/review/userNickname/${userNickname}/getReviewList`
       )
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         res.data.forEach((review, index) => {
           review.isExpanded = false;
         });
@@ -609,12 +609,12 @@ const ModifyReview = (props) => {
       cancelButtonText: "취소",
       confirmButtonText: "삭제",
     }).then((result) => {
-      console.log(result);
+      //console.log(result);
       if (result.isConfirmed) {
         axios
           .delete(`${backServer}/review/${review.reviewNo}`)
           .then((res) => {
-            console.log(res);
+            //console.log(res);
             if (res.data) {
               Swal.fire({
                 title: "삭제가 완료되었습니다.",
@@ -640,12 +640,12 @@ const ModifyReview = (props) => {
       form.append("reviewContent", editContent);
       form.append("reviewNo", review.reviewNo);
       form.append("reviewScore", review.reviewScore);
-      console.log(review.reviewScore);
-      console.log(editContent);
+      //console.log(review.reviewScore);
+      //console.log(editContent);
       axios
         .patch(`${backServer}/review/usermain/mypage/updateReview`, form)
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           if (res.data > 0) {
             Swal.fire({
               title: "리뷰 수정 완료",
