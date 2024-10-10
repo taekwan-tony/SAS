@@ -113,7 +113,7 @@ const ManagementSaleContent = (props) => {
           <div className="admin-management-sales-content-title">
             <span>매출 그래프</span>
             <div>
-              <Link to="#">
+              <Link to="/admin/management/salesDetail">
                 <span>매출데이터 상세보기</span>
                 <span class="material-icons">chevron_right</span>
               </Link>

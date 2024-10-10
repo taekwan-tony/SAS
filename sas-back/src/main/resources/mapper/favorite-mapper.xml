@@ -8,11 +8,11 @@
 	<delete id="deleteFavoriteWithFavoriteNo">
 		delete from favorite where favorite_no=#{fovoriteNo}
 	</delete>
-	<insert id="insertStandardFavorieFolder">
+	<insert id="insertStandardFavoriteFolder">
 		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
-			select max(user_no) from user_tbl
+			select max(user_no) user_no from user_tbl
 		</selectKey>
-		insert into favorite_folder values(favorite_folder_seq.nextval, #{userNo}, '기본 폴더')
+		insert into favorite_folder values(favorite_folder_seq.nextval, #{userNo}, #{favoriteFolderName})
 	</insert>
 	
 	<insert id="insertFavorite">
@@ -23,7 +23,7 @@
 	</insert>
 	
 	<select id="selectFavoriteFolder" resultType="favoriteFolder">
-		select favorite_folder_no, favorite_folder_name from favorite_folder where user_no = #{userNo}
+		select favorite_folder_no, favorite_folder_name from favorite_folder where user_no = #{userNo} order by 1
 	</select>
 	<select id="getFavoriteNo" resultType="int">
 		select max(favorite_no) from favorite where favorite_folder_no=(select min(favorite_folder_no) from favorite_folder where user_no=#{userNo} and favorite_folder_name='기본폴더')

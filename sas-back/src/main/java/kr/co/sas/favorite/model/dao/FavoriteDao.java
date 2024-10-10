@@ -12,7 +12,7 @@ public interface FavoriteDao {
 
 	int deleteFavorite(int storeNo, int userNo);
 
-	int insertStandardFavorieFolder();
+	int insertStandardFavoriteFolder(FavoriteFolderDTO favoriteFolder);
 
 	int insertFavorite(FavoriteDTO favorite);
 

@@ -180,6 +180,17 @@ public class AdminService {
 	}
 
 
+	public Map salesDetailList(String startDateValue, String endDateValue, String keyword, int orderBy) {
+		List detailList = storeDao.salesDetailList(startDateValue,endDateValue,keyword,orderBy);
+		System.out.println(detailList);
+		Map<String, Object> totalMap = storeDao.totalSales(startDateValue,endDateValue,keyword);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", detailList);
+		map.put("total", totalMap);
+		return map;
+	}
+
+
 	
 
 }

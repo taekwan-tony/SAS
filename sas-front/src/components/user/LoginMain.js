@@ -74,7 +74,7 @@ const Login = () => {
                 "userRefreshToken",
                 res.data.refreshToken
               );
-              navigate("/userMain");
+              navigate("/usermain");
               break;
             case 2:
               idRef.current.innerText = "존재하지 않는 아이디입니다.";
@@ -88,6 +88,24 @@ const Login = () => {
           console.log(err);
         });
     }
+  };
+
+  // 소셜 로그인 도전~
+  const goToNaverLogin = () => {
+    const client_id = process.env.REACT_APP_NAVER_ID;
+    const backServer = process.env.REACT_APP_BACK_SERVER;
+    const state = "spoon_smiles_naver_login_test";
+    const redirectUrl = process.env.REACT_APP_REDIRECT_URI;
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&state=${state}&redirect_uri=${redirectUrl}`;
+    // )
+    // .then((res) => {
+    //   console.log(res);
+    //   console.log("일단 갔음");
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   console.log("뭔가 이상함");
+    // });
   };
   return (
     <>
@@ -130,6 +148,13 @@ const Login = () => {
       <div className="link">
         <Link to="find">아이디/비밀번호 찾기</Link>
         <Link to="/usermain/join">회원가입</Link>
+      </div>
+      <div className="social-btn">
+        <p className="tag-msg">소셜 계정으로 로그인</p>
+        <button className="round" onClick={goToNaverLogin}>
+          <img src="/image/btnG_아이콘사각.png" />
+          <span>네이버로 로그인</span>
+        </button>
       </div>
     </>
   );

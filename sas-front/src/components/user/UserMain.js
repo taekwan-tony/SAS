@@ -16,7 +16,7 @@ import {
 } from "../utils/RecoilData";
 import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import Join from "./Join";
 import LoginMain from "./LoginMain";
 import Mypage from "./Mypage";
@@ -27,6 +27,8 @@ import ReservationMain from "../reservation/ReservationMain";
 import UserNoticeList from "./UserNoticeList";
 import UserNoticeDetail from "./UserNoticeDetail";
 import ReportMain from "../report/ReportMain";
+
+import LoginNaverCallback from "./LoginNaverCallback";
 
 function UserMain() {
   // 일반회원 로그인 지속 구현-수진(문제 생기면 말씀해주세요..)
@@ -39,6 +41,7 @@ function UserMain() {
   const [loginUserNickname, setLoginUserNickname] = useRecoilState(
     loginUserNicknameState
   );
+
   useEffect(() => {
     refreshLogin();
     window.setInterval(refreshLogin, 60 * 60 * 1000); //한시간이 지나면 로그인 정보 자동으로 refresh 될수 있게
@@ -80,7 +83,23 @@ function UserMain() {
   };
 
   //일반회원 로그인 지속 구현-수진 끝
-
+  //프로필 사진 용
+  const [userPhoto, setuserPhoto] = useState(null);
+  const [checkPhotoUpdate, setCheckPhotoUpdate] = useState(false); //프로필 업데이트 될때마다 다시 가져오기
+  useEffect(() => {
+    //프로필 사진 가져오기
+    if (isUserLogin) {
+      axios
+        .get(`${backServer}/user/userId/${loginUserId}/userPhoto`)
+        .then((res) => {
+          console.log(res);
+          setuserPhoto(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loginUserId, checkPhotoUpdate]);
   // 로그아웃-수진
   const logout = () => {
     setLoginUserId("");
@@ -176,12 +195,18 @@ function UserMain() {
         </div>
         <div className="user-main-login-button">
           {isUserLogin ? (
-            <button className="user-main-login-btn" onClick={logout}>
+            <button
+              className="btn-a"
+              style={{ outline: "none" }}
+              onClick={logout}
+            >
               로그아웃
             </button>
           ) : (
             <Link to="/usermain/login">
-              <button className="user-main-login-btn">로그인</button>
+              <button className="btn-a" style={{ outline: "none" }}>
+                로그인
+              </button>
             </Link>
           )}
         </div>
@@ -219,7 +244,14 @@ function UserMain() {
             {isUserLogin ? (
               <>
                 <header className="header-user">
-                  <img src="/image/IMG_3238.jpg" alt="User" />
+                  <img
+                    src={
+                      userPhoto
+                        ? `${backServer}/userProfile/${userPhoto}`
+                        : "/image/IMG_3238.jpg"
+                    }
+                    alt="User"
+                  />
                   <p>{loginUserId}</p>
                 </header>
                 <div className="sidebar-user-page">
@@ -234,7 +266,13 @@ function UserMain() {
                       </Link>
                       <ul className="user-navi-submenu">
                         <li>
-                          <Link to="mypage/update/checkPw">
+                          <Link
+                            to={
+                              userType === 1
+                                ? "mypage/update/checkPw"
+                                : "mypage/update/updateForm"
+                            }
+                          >
                             <i className="fa-solid fa-user-pen"></i>내 정보 수정
                           </Link>
                         </li>
@@ -278,9 +316,9 @@ function UserMain() {
                 </div>
                 {/* 로그아웃 버튼 */}
                 <div className="user-navi-logout-button">
-                  <a href="#">
+                  <Link to="" onClick={logout}>
                     <i className="fa fa-sign-out"></i>Logout
-                  </a>
+                  </Link>
                 </div>
               </>
             ) : (
@@ -291,7 +329,7 @@ function UserMain() {
                   navigate("login");
                 }}
               >
-                <button className="btn-main">로그인</button>
+                <button className="btn-a">로그인</button>
               </div>
             )}
           </div>
@@ -299,9 +337,19 @@ function UserMain() {
         </div>
       </div>
       <Routes>
+        {/* 소셜로그인용 페이지 */}
+        <Route path="login-naver" element={<LoginNaverCallback />}></Route>
         <Route path="join" element={<Join />} />
         <Route path="login/*" element={<LoginMain />} />
-        <Route path="mypage/*" element={<Mypage />}></Route>
+        <Route
+          path="mypage/*"
+          element={
+            <Mypage
+              checkPhotoUpdate={checkPhotoUpdate}
+              setCheckPhotoUpdate={setCheckPhotoUpdate}
+            />
+          }
+        ></Route>
         <Route path="menuview/:storeNo/*" element={<MenuView />} />
         <Route path="searchlist/:searchItem" element={<SearchList />} />
         <Route path="searchlist" element={<SearchList search={"all"} />} />
@@ -322,12 +370,38 @@ function UserMain() {
 }
 
 const UserMainView = (props) => {
+  const [store, setStore] = useState([]);
+  const backServer = process.env.REACT_APP_BACK_SERVER;
   const activeTab = props.activeTab;
   const setActiveTab = props.setActiveTab;
-  // 탭 클릭 시 해당 탭을 활성화하는 함수
+  const navigate = useNavigate("");
   const handleTabClick = (bestSectionTab) => {
     setActiveTab(bestSectionTab);
   };
+  useEffect(() => {
+    axios
+      .get(`${backServer}/store/storeList/view`)
+      .then((res) => {
+        console.log(res);
+        setStore(res.data.list);
+      })
+      .catch((err) => {
+        console.log("왜에러임");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${backServer}/store/storeList/view/best`)
+      .then((res) => {
+        console.log(res);
+        setStore(res.data.list);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <>
       {/* 메인배너 스와이프 */}
@@ -440,7 +514,11 @@ const UserMainView = (props) => {
               <h2>웨이팅 핫플레이스 BEST</h2>
               <p>핫 한 웨이팅 라인업, 이젠 스푼앤스마일스에서!</p>
             </div>
-            <a href="#" className="view-all">
+            <a
+              href="#"
+              className="view-all"
+              onClick={() => navigate("/userMain/searchList")}
+            >
               모두 보기 →
             </a>
           </div>
@@ -462,43 +540,71 @@ const UserMainView = (props) => {
           >
             <SwiperSlide>
               <div className="dining-deal-content">
-                <img src="/image/youtube.png" alt="Slide 5" />
+                <img
+                  src={
+                    store[0]
+                      ? `${backServer}/store/storeList/view/${store[0].siFilepath}`
+                      : ""
+                  }
+                  alt="Slide 5"
+                />
                 <div className="dining-deal-info">
-                  <p>서울 | 오마카세</p>
-                  <h3>다마레스시</h3>
-                  <p>
-                    <span className="original-price">400,000원</span>
-                    <span className="discount">30% 할인</span>
-                  </p>
-                  <p className="price">280,000원부터</p>
+                  <div className="store-item">
+                    <span>{store && store[0] ? store[0].storeAddr : ""}</span>
+                    <h3>{store && store[0] ? store[0].storeName : ""}</h3>
+                    <p>
+                      <span className="original-price">
+                        {store && store[0] ? `${store[0].menuPrice} 원` : ""}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <div className="dining-deal-content">
+                <img
+                  src={
+                    store[1]
+                      ? `${backServer}/store/storeList/view/${store[1].siFilepath}`
+                      : ""
+                  }
+                  alt="Slide 6"
+                />
+                <div className="dining-deal-info">
+                  <div className="store-item">
+                    <span>{store && store[1] ? store[1].storeAddr : ""}</span>
+                    <h3>{store && store[1] ? store[1].storeName : ""}</h3>
+                    <p>
+                      <span className="original-price">
+                        {store && store[1] ? `${store[1].menuPrice} 원` : ""}
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </SwiperSlide>
             <SwiperSlide>
               <div className="dining-deal-content">
-                <img src="/image/youtube.png" alt="Slide 6" />
+                <img
+                  src={
+                    store[2]
+                      ? `${backServer}/store/storeList/view/${store[2].siFilepath}`
+                      : ""
+                  }
+                  alt="Slide 7"
+                />
                 <div className="dining-deal-info">
-                  <p>서울 | 스테이크하우스</p>
-                  <h3>루비노 스테이크</h3>
-                  <p>
-                    <span className="original-price">300,000원</span>
-                    <span className="discount">20% 할인</span>
-                  </p>
-                  <p className="price">240,000원부터</p>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="dining-deal-content">
-                <img src="/image/insta.png" alt="Slide 7" />
-                <div className="dining-deal-info">
-                  <p>서울 | 양식</p>
-                  <h3>아웃백</h3>
-                  <p>
-                    <span className="original-price">150,000원</span>
-                    <span className="discount">20% 할인</span>
-                  </p>
-                  <p className="price">120,000원부터</p>
+                  <div className="store-item">
+                    <span>{store && store[2] ? store[2].storeAddr : ""}</span>
+                    <h3>{store && store[2] ? store[2].storeName : ""}</h3>
+                    <p>
+                      <span className="original-price">
+                        {store && store[2] ? `${store[2].menuPrice} 원` : ""}
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </SwiperSlide>
@@ -506,7 +612,7 @@ const UserMainView = (props) => {
         </div>
         {/* 가격대별 BEST 섹션 */}
         <section className="price-best-section">
-          <h2>가격대별 BEST</h2>
+          <h2>종류별 BEST</h2>
           <div className="best-section-tabs">
             <button
               className={`best-section-tab ${
@@ -514,7 +620,7 @@ const UserMainView = (props) => {
               }`}
               onClick={() => handleTabClick("below-30")}
             >
-              3만원 이하
+              한식
             </button>
             <button
               className={`best-section-tab ${
@@ -522,7 +628,7 @@ const UserMainView = (props) => {
               }`}
               onClick={() => handleTabClick("30-50")}
             >
-              3-5만원
+              중식
             </button>
             <button
               className={`best-section-tab ${
@@ -530,7 +636,7 @@ const UserMainView = (props) => {
               }`}
               onClick={() => handleTabClick("50-100")}
             >
-              5-10만원
+              일식
             </button>
             <button
               className={`best-section-tab ${
@@ -538,7 +644,7 @@ const UserMainView = (props) => {
               }`}
               onClick={() => handleTabClick("above-100")}
             >
-              10만원 이상
+              양식
             </button>
           </div>
 
@@ -546,184 +652,112 @@ const UserMainView = (props) => {
             {/* 3만원 이하 섹션 */}
             {activeTab === "below-30" && (
               <ul className="best-list">
-                <li>
-                  <img src="/image/youtube.png" alt="식당1" />
-                  <div className="restaurant-info">
-                    <h3>속성도 노형본관</h3>
-                    <p>돼지고기구이 · 제주 제주시</p>
-                    <p className="rating">4.6 (2037)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/youtube.png" alt="식당2" />
-                  <div className="restaurant-info">
-                    <h3>속성도 노형본관</h3>
-                    <p>돼지고기구이 · 제주 제주시</p>
-                    <p className="rating">4.6 (2037)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/youtube.png" alt="식당3" />
-                  <div className="restaurant-info">
-                    <h3>속성도 노형본관</h3>
-                    <p>돼지고기구이 · 제주 제주시</p>
-                    <p className="rating">4.6 (2037)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/youtube.png" alt="식당4" />
-                  <div className="restaurant-info">
-                    <h3>속성도 노형본관</h3>
-                    <p>돼지고기구이 · 제주 제주시</p>
-                    <p className="rating">4.6 (2037)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/youtube.png" alt="식당5" />
-                  <div className="restaurant-info">
-                    <h3>속성도 노형본관</h3>
-                    <p>돼지고기구이 · 제주 제주시</p>
-                    <p className="rating">4.6 (2037)</p>
-                  </div>
-                </li>
+                <div className="dining-deal-content">
+                  {store.map((item, index) => (
+                    <div className="store-item" key={index}>
+                      <img
+                        src={
+                          item
+                            ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                            : ""
+                        }
+                      />
+                      <div className="dining-deal-info">
+                        <span>{item ? item.storeAddr : ""}</span>
+                        <h3>{item ? item.storeName : ""}</h3>
+                        <p>
+                          <span className="original-price">
+                            {item ? `${item.menuPrice} 원` : ""}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </ul>
             )}
 
             {/* 3-5만원 섹션 */}
             {activeTab === "30-50" && (
               <ul className="best-list">
-                <li>
-                  <img src="/image/Newsletter.png" alt="식당6" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/Newsletter.png" alt="식당7" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/Newsletter.png" alt="식당8" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/Newsletter.png" alt="식당9" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/Newsletter.png" alt="식당10" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
+                <div className="dining-deal-content">
+                  {store.map((item, index) => (
+                    <div className="store-item" key={index}>
+                      <img
+                        src={
+                          item
+                            ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                            : ""
+                        }
+                      />
+                      <div className="dining-deal-info">
+                        <span>{item ? item.storeAddr : ""}</span>
+                        <h3>{item ? item.storeName : ""}</h3>
+                        <p>
+                          <span className="original-price">
+                            {item ? `${item.menuPrice} 원` : ""}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </ul>
             )}
 
             {/* 5-10만원 섹션 */}
             {activeTab === "50-100" && (
               <ul className="best-list">
-                <li>
-                  <img src="/image/insta.png" alt="식당11" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/insta.png" alt="식당12" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/insta.png" alt="식당13" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/insta.png" alt="식당14" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/insta.png" alt="식당15" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
+                <div className="dining-deal-content">
+                  {store.map((item, index) => (
+                    <div className="store-item" key={index}>
+                      <img
+                        src={
+                          item
+                            ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                            : ""
+                        }
+                      />
+                      <div className="dining-deal-info">
+                        <span>{item ? item.storeAddr : ""}</span>
+                        <h3>{item ? item.storeName : ""}</h3>
+                        <p>
+                          <span className="original-price">
+                            {item ? `${item.menuPrice} 원` : ""}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </ul>
             )}
 
             {/* 10만원 이상 섹션 */}
             {activeTab === "above-100" && (
               <ul className="best-list">
-                <li>
-                  <img src="/image/facebook.png" alt="식당16" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/facebook.png" alt="식당17" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/facebook.png" alt="식당18" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/facebook.png" alt="식당19" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="/image/facebook.png" alt="식당20" />
-                  <div className="restaurant-info">
-                    <h3>아이노가든키친</h3>
-                    <p>백반/가정식 · 광화문</p>
-                    <p className="rating">4.5 (1015)</p>
-                  </div>
-                </li>
+                <div className="dining-deal-content">
+                  {store.map((item, index) => (
+                    <div className="store-item" key={index}>
+                      <img
+                        src={
+                          item
+                            ? `${backServer}/store/storeList/view/${item.siFilepath}`
+                            : ""
+                        }
+                      />
+                      <div className="dining-deal-info">
+                        <span>{item ? item.storeAddr : ""}</span>
+                        <h3>{item ? item.storeName : ""}</h3>
+                        <p>
+                          <span className="original-price">
+                            {item ? `${item.menuPrice} 원` : ""}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </ul>
             )}
           </div>
@@ -861,6 +895,12 @@ const UserMainView = (props) => {
           </div>
         </footer>
       </div>
+      {/* <Routes>
+        <Route
+          path="menuview/:storeNo/*"
+          element={<MenuView store={store} />}
+        />
+      </Routes> */}
     </>
   );
 };

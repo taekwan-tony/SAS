@@ -346,6 +346,26 @@ public class StoreService {
 	}//deleteStoreFile
 
 
+	public Map<String, Object> selectOneStore() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List list = storeDao.selectOneStore();
+		map.put("list", list);
+		return map;
+	}
+
+
+	public Map<String, Object> selectBestStore() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List list = storeDao.selectBestStore();
+		map.put("list", list);
+		return map;
+	}
+	
+	
+
+
+
+
 
 
 

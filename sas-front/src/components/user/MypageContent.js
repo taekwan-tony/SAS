@@ -51,9 +51,9 @@ const ReserveContent = (props) => {
 };
 
 const Profile = (props) => {
+  const { user, setUser, checkPhotoUpdate, setCheckPhotoUpdate } = props;
   const backServer = process.env.REACT_APP_BACK_SERVER;
-  const user = props.user;
-  const setUser = props.setUser;
+
   // const [userImage, setUserImage] = useState(null); ==>최종적으로 필요없으면 지울거임
   const changeUserPhoto = (e) => {
     const files = e.currentTarget.files;
@@ -73,6 +73,7 @@ const Profile = (props) => {
           console.log(res.data);
           if (res.data.result) {
             setUser({ ...user, userPhoto: res.data.userPhoto });
+            setCheckPhotoUpdate(!checkPhotoUpdate);
           }
         })
         .catch((err) => {

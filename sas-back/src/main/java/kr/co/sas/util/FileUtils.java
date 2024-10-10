@@ -5,7 +5,11 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,5 +103,68 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public String uploadProfile(String fileUrl, String savepath) {
+		//사용할 보조스트림 미리 선언
+		BufferedInputStream bis = null;
+		BufferedOutputStream bos = null;
+		URL url = null;
+//		url에서 사진 이름, 확장자 분리(진짜 이름인지는 모르겠지만 
+		String filename=fileUrl.substring(fileUrl.lastIndexOf("/", fileUrl.lastIndexOf("/"))+1, fileUrl.lastIndexOf("."));
+		String extension = fileUrl.substring(fileUrl.lastIndexOf("."));
+		String filepath=null;
+		//동일한 파일명 있는지 검사해서 파일 이름 확정
+		int count=0;
+		while(true) {
+			if(count == 0) {
+				//첫번째는 원본파일명 그대로 적용
+				filepath = filename + extension;
+			}else {
+				//두번째부터는 파일명에 숫자를 붙여서 처리
+				filepath =filename+"_"+count+extension;
+			}
+			count++;
+			//위에서 만든 파일명이 사용중인지 체크
+			File checkFile = new File(savepath+filepath);
+			if(!checkFile.exists()) {
+				break;
+			}
+		}
+		try {
+			url=new URL(fileUrl);
+			InputStream in = url.openStream();
+			bis = new BufferedInputStream(in);
+			FileOutputStream out = new FileOutputStream(savepath+filepath);
+			bos = new BufferedOutputStream(out);
+			while(true) { //url을 통해서 파일 읽어오기
+				int read = bis.read();
+				if(read != -1) {
+					bos.write(read);
+				}else {
+					break;
+				}
+			}
+			bis.close();
+			bos.close();
+		} catch (Exception e) {//예외 처리할게 많으므로 그냥 뭉뚱그려서 반환
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			filepath=null;
+		}finally {
+				try {
+					if(bis!=null) {
+					bis.close();
+					}
+					if(bos!=null) {
+						bos.close();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		return filepath;
 	}
 }

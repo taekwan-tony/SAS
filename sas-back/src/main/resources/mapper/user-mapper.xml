@@ -31,7 +31,7 @@
 									1,to_char(sysdate,'yyyy-mm-dd') )
 	</insert>
 	<select id="findId" resultType="String">
-		select user_id from user_tbl where user_name = #{userName}
+		select user_id from user_tbl where user_name = #{userName} and login_type=1 
 		<if test="!userPhone.equals('')">
 			and user_phone=#{userPhone}
 		</if>
@@ -40,7 +40,7 @@
 		</if>	
 	</select>
 	<select id="findUserNo" resultType="user">
-		select user_no from user_tbl where user_id=#{userId} and user_email=#{userEmail}
+		select user_no from user_tbl where user_id=#{userId} and user_email=#{userEmail} and login_type=1
 	</select>
 	<update id="updatePw">
 		update user_tbl set user_pw = #{userPw} where user_no = #{userNo}
@@ -69,7 +69,7 @@
 		<collection property="reviewList" select="selectReviewList" column="user_nickname" javaType="java.util.List" ofType="review"/>
 	</resultMap>
 	<select id="selectFavoriteFolderList" resultMap="getFavoriteFolder">
-		select * from favorite_folder where user_no=#{userNo}
+		select * from favorite_folder where user_no=#{userNo} order by 1
 	</select>
 	<resultMap type="favoriteFolder" id="getFavoriteFolder">
 		<result column="favorite_folder_no" property="favoriteFolderNo"/>
@@ -93,25 +93,28 @@
 		(select rownum as rnum, r.* from 
 		(select reserve_date,to_char(reserve_date, 'yyyy-MM-dd') reserve_date_string, to_char(reserve_date, 'hh24:mi') reserve_time, reserve_status, reserve_people, store_name,
         (select si_filepath from store_image_file where si_file_no=(select min(si_file_no) from store_image_file  where store_image_file.store_no=reservation.store_no))store_image 
-        from reservation join store on(reservation.store_no=store.store_no) where user_id=#{userId} order by 1 desc)r )rnum_tbl where rnum between 1 and 3
+        from reservation join store on(reservation.store_no=store.store_no) where user_id=#{userId} and reserve_status=0 order by 1)r )rnum_tbl where rnum between 1 and 3
 	</select>
 	<select id="selectReviewList" resultType="review">
-		select review_no, 
-				store_name, 
-				review_score, 
-				(select si_filepath from store_image_file where si_file_no=(select min(si_file_no) 
-																			from store_image_file  
-																			where store_image_file.store_no=review.store_no))
-					store_image 
-		from review join store on(review.store_no=store.store_no) 
-		where user_nickname=#{userNickname}
+		select * from
+				(select rownum as rnum, review.* from
+					(select review_no, 
+							store_name, 
+							review_score, 
+							(select si_filepath from store_image_file where si_file_no=(select min(si_file_no) 
+								from store_image_file  
+								where store_image_file.store_no=review.store_no))
+							store_image 
+					from review join store on(review.store_no=store.store_no) 
+				where user_nickname=#{userNickname} order by review_score desc) review) 
+		where rnum between 1 and 5
 	</select>
 	<!-- 마이페이지 정보 한번에 가져오는 쿼리 끝.. -->
 	<update id="updateUserPhoto">
 		update user_tbl set user_photo=#{userPhoto} where user_no = #{userNo}
 	</update>
 	<select id="getUserInfo" resultType="user">
-		select user_gender, user_birth, user_email, user_phone, user_name from user_tbl where user_no=#{userNo}
+		select user_gender, user_birth, user_email, user_phone, user_name, login_type from user_tbl where user_no=#{userNo}
 	</select>
 	<select id="getUserPwInfo" resultType="user">
 		select user_pw from user_tbl where user_no=#{userNo}
@@ -121,7 +124,10 @@
 		<if test="userPw!=null">
 			user_pw=#{userPw},
 		</if>
-		 user_phone=#{userPhone}, user_email=#{userEmail} where user_no=#{userNo}
+			user_name=#{userName},
+		 	user_phone=#{userPhone}, 
+		 	user_email=#{userEmail} 
+		 where user_no=#{userNo}
 	</update>
 	<select id="checkNickname" resultType="int">
 		select count(*) from user_tbl where user_nickname=#{userNickname}
@@ -141,4 +147,12 @@
 	<select id="selectNewCustomerCount" resultType="int">
 		select count(*) from user_tbl where substr(user_enroll_date,1,4) = to_char(sysdate,'yyyy')
 	</select>
+	
+	<select id="isThereUser" resultType="loginUser">
+		select user_no, user_id, user_nickname, login_type from user_tbl where user_phone=#{userPhone}
+	</select>
+	
+	<insert id="insertNaverUser" >
+		insert into user_tbl values(user_seq.nextval, #{userId}||user_seq.currval,#{userPw}, #{userPhone}, #{userEmail}, #{userGender}, #{userBirth}, #{userNickname}||user_seq.currval, '네이버 가입자', #{userPhoto}, 2, to_char(sysdate, 'yyyy-mm-dd') )
+	</insert>
 </mapper>

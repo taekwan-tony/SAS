@@ -8,6 +8,9 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,17 +23,24 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.sas.menu.model.dto.MenuDTO;
 import kr.co.sas.store.model.dto.StoreDTO;
 import kr.co.sas.user.model.dto.LoginUserDTO;
+import kr.co.sas.user.model.dto.NaverCodeDTO;
 import kr.co.sas.user.model.dto.UserDTO;
 import kr.co.sas.user.model.service.UserService;
 import kr.co.sas.util.EmailSender;
 import kr.co.sas.util.FileUtils;
+import springfox.documentation.spring.web.json.Json;
 
 
 @CrossOrigin("*")
@@ -47,6 +57,9 @@ public class UserController {
 	
 	@Autowired
 	private EmailSender email;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 	
 	@Operation(summary = "일반회원 회원가입", description = "아이디, 비밀번호, 전화번호, 이메일, 성별, 생년월일, 이름, 랜덤생성된 닉네임을 유저 객체로 가져와 회원가입")
 	@PostMapping
@@ -236,5 +249,65 @@ public class UserController {
 		map.put("accessToken", loginUser.getAccessToken());
 		map.put("refreshToken", loginUser.getRefreshToken());
 		return ResponseEntity.ok(map);	
+	}
+	
+	@Operation(summary="일반회원 프로필사진 가져오기", description = "회원 아이디를 받아서 프로필사진 경로 가져오기")
+	@GetMapping(value="/userId/{userId}/userPhoto")
+	public ResponseEntity<String> getUserPhoto(@PathVariable String userId){
+		String userPhoto = userService.getUserPhoto(userId);
+		return ResponseEntity.ok(userPhoto);
+	}
+	
+	@Operation(summary="네이버 소셜로그인 인증 코드 받아오기")
+	@PostMapping(value="/callBack")
+	public ResponseEntity<Map> naverLogin(@RequestBody NaverCodeDTO naver){
+		Map isUser = new HashMap<String, Object>();
+		System.out.println(1);
+		System.out.println(naver);
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(MediaType.APPLICATION_FORM_URLENCODED); //일단 이걸로 넣었음 아직 이게 뭔지 모름
+		HttpEntity<String> entity=new HttpEntity("grant_type=authorization_code&client_id="+naver.getClientId()+"&client_secret="+naver.getClientSecret()+"&code="+naver.getCode()+"&state="+naver.getState(), header);
+		ResponseEntity<String> response = restTemplate.postForEntity("https://nid.naver.com/oauth2.0/token", entity, String.class);
+		System.out.println(response);
+		System.out.println(response.getBody());
+		ObjectMapper om = new ObjectMapper(); //json을 읽고 쓸 수 있게 도와준대..
+		String accessToken="";
+		try {
+			JsonNode node = om.readTree(response.getBody());
+			accessToken = node.get("access_token").asText();
+			
+//			accessToken 받았으므로 여기서 프로필 정보 가져오는 코드 써야함
+			HttpHeaders profileHeader = new HttpHeaders();
+			profileHeader.setContentType(MediaType.APPLICATION_JSON);
+			profileHeader.setBearerAuth(accessToken);
+			HttpEntity<String> profileEntity = new HttpEntity(profileHeader);
+			ResponseEntity<String> profileResponse = restTemplate.postForEntity("https://openapi.naver.com/v1/nid/me", profileEntity, String.class);
+			System.out.println(profileResponse);
+			//받아온 값에서 가져올 유저 프로필 정보 가져오기
+			
+			JsonNode jsonNode = om.readTree(profileResponse.getBody());
+			JsonNode profileObject = jsonNode.get("response");
+			UserDTO user = new UserDTO();
+			String userPhotoUrl =profileObject.get("profile_image").asText("/image/프로필 기본.png").replace("\\", "");
+			String savepath = root + "/userProfile/";
+			String filepath=fileUtil.uploadProfile(userPhotoUrl, savepath);
+			user.setUserPhoto(filepath);
+			System.out.println(user.getUserPhoto());
+			user.setUserGender(profileObject.get("gender").asText().equals("F")?"여":"남");
+			user.setUserEmail(profileObject.get("email").asText());
+			user.setUserPhone(profileObject.get("mobile").asText());
+			user.setUserBirth(profileObject.get("birthyear").asText()+"-"+profileObject.get("birthday").asText());
+			isUser = userService.isThereUser(user);
+		} catch (JsonProcessingException e) {
+			isUser.put("result", -1);
+		}
+		return ResponseEntity.ok(isUser);
+	}
+	@Operation(summary="네이버 소셜로그인 회원가입")
+	@PostMapping(value="/joinNaver")
+	public ResponseEntity<Map> joinNaver(@RequestBody UserDTO user){
+		System.out.println(user);
+		Map map = userService.insertNaverUser(user);
+		return ResponseEntity.ok(map);
 	}
 }

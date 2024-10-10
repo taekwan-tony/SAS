@@ -3,6 +3,7 @@ package kr.co.sas.user.model.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.sas.favorite.model.dao.FavoriteDao;
+import kr.co.sas.favorite.model.dto.FavoriteFolderDTO;
 import kr.co.sas.menu.model.dao.MenuDao;
 import kr.co.sas.menu.model.dto.MenuDTO;
 import kr.co.sas.review.model.dao.ReviewDao;
@@ -45,7 +47,9 @@ public class UserService {
 //		System.out.println(user.getUserPw());
 		int result = userDao.insertUser(user);
 		if(result>0) {
-			result = favoriteDao.insertStandardFavorieFolder();
+			FavoriteFolderDTO favoriteFolder = new FavoriteFolderDTO();
+			favoriteFolder.setFavoriteFolderName("기본 폴더");
+			result = favoriteDao.insertStandardFavoriteFolder(favoriteFolder);
 		}
 		return result;
 	}
@@ -166,7 +170,7 @@ public class UserService {
 		int result = userDao.updateUser(user);
 		if(result>0) {
 			System.out.println("회원 업데이트"+result);
-			result = userDao.updateReview(user);
+			result += userDao.updateReview(user);
 			System.out.println("리뷰업데이트"+result);
 		}
 		return result;
@@ -187,4 +191,91 @@ public class UserService {
 		loginUser.setUserNo(user.getUserNo());
 		return loginUser;
 	}
+
+	public String getUserPhoto(String userId) {
+		UserDTO user = userDao.searchUser(userId);
+		return user.getUserPhoto();
+	}
+	
+	public Map isThereUser(UserDTO user) {
+		Map map = new HashMap<String, Object>();
+		int result = 0;
+		LoginUserDTO loginUser= userDao.isThereUser(user.getUserPhone());
+		if(loginUser!=null) {
+			result=1;
+			loginUser.setAccessToken(jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));
+			loginUser.setRefreshToken(jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));
+			map.put("loginUser", loginUser);
+		}else {
+			map.put("joinUser", user);
+		}
+		map.put("result", result);
+		return map;
+	}	
+	
+	@Transactional
+	public Map insertNaverUser(UserDTO user) {
+		Map map = new HashMap<String, Object>();
+		Random r = new Random();
+		//임의로 넣을 아이디, 비밀번호 만들기
+		//아이디
+		StringBuffer userId = new StringBuffer();
+		for(int i=0; i<8; i++) {
+			//0~9 : r.nextInt(10);
+			//A~Z : r.nextInt(26)+65;
+			//a~z : r.nextInt(26)+97;
+			
+			int idFlag = r.nextInt(3); //0,1,2=>숫자쓸지, 대문자 쓸지, 소문자쓸지 결정
+			
+			if(idFlag==0) {
+				int randomCode = r.nextInt(10);
+				userId.append(randomCode);
+			}else if(idFlag==1) {
+				char randomCode = (char)(r.nextInt(26)+65);
+				userId.append(randomCode);
+			}else if(idFlag==2) {
+				char randomCode = (char)(r.nextInt(26)+97);
+				userId.append(randomCode);
+			}
+		}
+		user.setUserId(userId.toString());
+		//비밀번호
+		StringBuffer userPw = new StringBuffer();
+		for(int j=0; j<20; j++) {
+			//0~9 : r.nextInt(10);
+			//A~Z : r.nextInt(26)+65;
+			//a~z : r.nextInt(26)+97;
+			
+			int pwFlag = r.nextInt(3); //0,1,2=>숫자쓸지, 대문자 쓸지, 소문자쓸지 결정
+			
+			if(pwFlag==0) {
+				int randomCode = r.nextInt(10);
+				userPw.append(randomCode);
+			}else if(pwFlag==1) {
+				char randomCode = (char)(r.nextInt(26)+65);
+				userPw.append(randomCode);
+			}else if(pwFlag==2) {
+				char randomCode = (char)(r.nextInt(26)+97);
+				userPw.append(randomCode);
+			}
+		}
+		user.setUserPw(encoder.encode(userPw));
+		int result = userDao.insertNaverUser(user);
+		if(result>0) {
+			FavoriteFolderDTO favoriteFolder = new FavoriteFolderDTO();
+			favoriteFolder.setFavoriteFolderName("기본 폴더");
+			result = favoriteDao.insertStandardFavoriteFolder(favoriteFolder);
+		}
+		if(result>0) {
+			System.out.println(112);
+			LoginUserDTO loginUser = userDao.isThereUser(user.getUserPhone());
+			loginUser.setAccessToken(jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));
+			loginUser.setRefreshToken(jwtUtils.createAccessToken(loginUser.getUserId(), loginUser.getLoginType(), loginUser.getUserNo(), loginUser.getUserNickname()));
+			map.put("loginUser", loginUser);
+		}
+		map.put("result", result>0);
+		return map;
+	}
+
+
 }

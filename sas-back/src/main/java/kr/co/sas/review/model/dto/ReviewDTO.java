@@ -31,5 +31,5 @@ public class ReviewDTO {
 	private List<String> filepathList;
 	@Schema(description = "매장 사진", type="string")
 	private String storeImage;
-
+	private String userPhoto;
 }

@@ -26,8 +26,10 @@
 	</delete>
 
 	<select id="getReviewList" resultMap="getReview">
-		select review_no, user_nickname,review_content, store_name,
-		review_score from review join store using(store_no) where
+		select review_no, user_nickname,review_content, store_name, user_photo,
+		review_score from review join store using(store_no) 
+		join user_tbl using(user_nickname)
+		where
 		<choose>
 			<when test="type.equals('store')">
 				store_no = #{parameter}
@@ -37,8 +39,11 @@
 			</when>
 		</choose>
 		<!-- 첨부 파일 만들면 selectkey 이용해서 첨부파일 가져오기 -->
+		order by 1 desc
 	</select>
+	
 	<!-- 수정하기전에 리스트 리뷰 상세보기 -->
+	
 	<select id="selectReview" resultType="review">
 		select * from review where
 		review_no=#{reviewNo}

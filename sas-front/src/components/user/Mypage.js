@@ -26,18 +26,17 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { switchClasses } from "@mui/material";
 import { MenuReview } from "../menu/MenuView";
-import ImageResize from "@looop/quill-image-resize-module-react";
 import QuillEditor from "../utils/QuillEditor";
 import PageNavi from "../utils/PagiNavi";
-import { CleaningServices } from "@mui/icons-material";
 import FavoriteMain from "./FavoriteMain";
 import MypageUpdate from "./MypageUpdate";
 import ReportModal from "../report/ReportModal";
 import { ReservationMain } from "../reservation/ReservationMain";
 
-const Mypage = () => {
+const Mypage = (props) => {
+  // 프로필 업데이트 체크위한 준비
+  const { checkPhotoUpdate, setCheckPhotoUpdate } = props;
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   //유저 정보 한번에 가져오기
   const [user, setUser] = useState({});
@@ -129,6 +128,8 @@ const Mypage = () => {
               setUser={setUser}
               favoriteFolder={favoriteFolder}
               setFavoriteFolder={setFavoriteFolder}
+              checkPhotoUpdate={checkPhotoUpdate}
+              setCheckPhotoUpdate={setCheckPhotoUpdate}
             />
           }
         ></Route>
@@ -277,10 +278,17 @@ const MypageMain = (props) => {
     addFolderModalOpen,
     checkAddFolder,
     setFavoriteFolder,
+    checkPhotoUpdate,
+    setCheckPhotoUpdate,
   } = props;
   return (
     <>
-      <Profile user={user} setUser={setUser} />
+      <Profile
+        user={user}
+        setUser={setUser}
+        checkPhotoUpdate={checkPhotoUpdate}
+        setCheckPhotoUpdate={setCheckPhotoUpdate}
+      />
       <section className="reserve-list mypage-list-wrap">
         <Link to="resview">더보기</Link>
         <h3 className="title">
@@ -291,7 +299,7 @@ const MypageMain = (props) => {
         </h3>
         {user.reservationList ? (
           user.reservationList.length === 0 ? (
-            <EmptyBox text={"진행중인 예약이 존재하지 않습니다"} />
+            <EmptyBox text={"방문 전인 예약이 존재하지 않습니다"} />
           ) : (
             <div className="reserve-content-wrap list-content">
               {user.reservationList.map((reserve, index) => {
@@ -309,7 +317,7 @@ const MypageMain = (props) => {
         )}
       </section>
       <section className="mypage-list-wrap favorite-list">
-        <Link to="#">더보기</Link>
+        <Link to="favorite">더보기</Link>
         <h3 className="title">
           즐겨찾기 목록{" "}
           <span className="count">
@@ -323,20 +331,25 @@ const MypageMain = (props) => {
         />
       </section>
       <section className="mypage-list-wrap review-list">
-        <Link to="#">더보기</Link>
+        <Link to="myreview">더보기</Link>
         <h3 className="title">
           나의 리뷰{" "}
           <span className="count">
-            {user.reviewList ? user.reviewList.length : 0}
+            {user.reviewCount ? user.reviewCount : 0}
           </span>
         </h3>
-        <div className="list-content review-content-wrap">
-          {user.reviewList
-            ? user.reviewList.map((review, index) => {
-                return <ReviewContent review={review} />;
-              })
-            : ""}
-        </div>
+        {user.reviewList == null ||
+        (user.reviewList && user.reviewList.length === 0) ? (
+          <EmptyBox text={"작성한 리뷰가 없습니다"} />
+        ) : (
+          <div className="list-content review-content-wrap">
+            {user.reviewList
+              ? user.reviewList.map((review, index) => {
+                  return <ReviewContent review={review} />;
+                })
+              : ""}
+          </div>
+        )}
       </section>
     </>
   );
@@ -603,23 +616,13 @@ const ReservationView = () => {
                     >
                       방문완료
                     </span> */}
-                    <button
-                      className="btn-main round"
-                      onClick={() => {
-                        navigate(
-                          `/usermain/mypage/reviewWrite/${reservation.storeNo}/${reservation.reserveNo}`
-                        );
-                      }}
-                    >
-                      리뷰쓰기
-                    </button>
-                    <button
-                      className="btn-main round
-            "
-                      onClick={openReport}
-                    >
-                      신고
-                    </button>
+                    <span className="reserve-span round">
+                      {dDay > 0
+                        ? `D-${dDay}`
+                        : dDay === 0
+                        ? "d-day"
+                        : `D+${-dDay}`}
+                    </span>
                   </div>
                   <div className="res-content">
                     <img
@@ -635,22 +638,44 @@ const ReservationView = () => {
                     </div>
                   </div>
                   <div className="res-btn2">
-                    <span className="reserve-span round">
-                      {dDay > 0
-                        ? `D-${dDay}`
-                        : dDay === 0
-                        ? "d-day"
-                        : `D+${-dDay}`}
-                    </span>
-                    <button className="btn-main round" onClick={goTOReserve}>
-                      예약변경
-                    </button>
-                    <button
-                      className="btn-main round"
-                      onClick={reservationCancel}
-                    >
-                      예약취소
-                    </button>
+                    {reservation.reserveStatus === 0 ? (
+                      <>
+                        <button
+                          className="btn-main round"
+                          onClick={goTOReserve}
+                        >
+                          예약변경
+                        </button>
+                        <button
+                          className="btn-main round"
+                          onClick={reservationCancel}
+                        >
+                          예약취소
+                        </button>
+                      </>
+                    ) : reservation.reserveStatus === 1 ? (
+                      <>
+                        <button
+                          className="btn-main round"
+                          onClick={() => {
+                            navigate(
+                              `/usermain/mypage/reviewWrite/${reservation.storeNo}/${reservation.reserveNo}`
+                            );
+                          }}
+                        >
+                          리뷰쓰기
+                        </button>
+                        <button
+                          className="btn-main round
+            "
+                          onClick={openReport}
+                        >
+                          신고
+                        </button>
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               );
@@ -797,7 +822,7 @@ const ReviewWrite = () => {
             text: "다음에 또 이용해주세요",
             icon: "success",
           }).then(() => {
-            navigate("usermain/mypage/myreview");
+            navigate("/usermain/mypage/myreview");
           });
         }
       })

@@ -205,6 +205,53 @@
          -->
 	</select>
 	
+	<select id="selectOneStore" resultType="store">
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=1 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=2 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=3 and rownum=1
+		
+	</select>
+
+	<select id="selectBestStore" resultType="store">
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=1 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=2 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=3 and rownum=1
+	
+	union all
+	select store_name,store_addr,si_filepath,store_no,store_class,menu_price from store
+	left join store_image_file using(store_no)
+	left join menu using(store_no)
+	where store_class=4 and rownum=1
+
+	</select>	
+	
+	
 	 
 	 
 	 
@@ -494,4 +541,69 @@
 		</choose>
 	</select>
 	
+	<select id="salesDetailList" resultType="store">
+		select *from (
+            select rownum rnum, sp.* from(
+                select 
+                store_no,store_name,store_addr,so_name,business_number,
+                service_price,to_char(store_enroll_date,'yyyy-mm-dd') as store_enroll_date,
+                nvl((select sum(store_total_price)
+                    from store_pay sp2 
+                    where sp2.store_no = sp1.store_no 
+                            and to_char(store_pay_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
+                            and store_pay_date is not null),0) as store_total_price,
+                nvl((select sum(store_total_using_count)
+                    from store_pay sp3
+                    where sp3.store_no = sp1.store_no
+                            and to_char(store_pay_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
+                            and store_pay_date is not null),0) as store_total_using_count
+                from store sp1 
+                where store_enroll_date is not null
+                <if test="!keyword.equals('null')"> 
+                and (store_name like '%'||#{keyword}||'%' or so_name like '%'||#{keyword}||'%' or store_addr like '%'||#{keyword}||'%')
+                </if>
+                <choose>
+                <when test="orderBy == 1">
+                 order by 1 desc
+                </when>
+                <when test="orderBy == 2">
+                 order by 2 desc
+                </when>
+                <when test="orderBy == 3">
+                 order by 3 desc
+                </when>
+                <when test="orderBy == 4">
+                 order by 4 desc
+                </when>
+                <when test="orderBy == 8">
+                 order by 8 desc
+                </when>
+                <when test="orderBy == 9">
+                 order by 9 desc
+                </when>
+                 </choose>
+                 )sp)
+	</select>
+	<select id="totalSales" resultType="map">
+		select nvl(sum(store_total_price),0) as "totalPrice",nvl(sum(store_total_using_count),0)as "totalUser" from (
+                select 
+                store_no,store_name,store_addr,so_name,business_number,
+                service_price,store_enroll_date,
+                nvl((select sum(store_total_price)
+                    from store_pay sp2 
+                    where sp2.store_no = sp1.store_no 
+                            and to_char(store_pay_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
+                            and store_pay_date is not null),0) as store_total_price,
+                nvl((select sum(store_total_using_count)
+                    from store_pay sp3  
+                    where sp3.store_no = sp1.store_no
+                            and to_char(store_pay_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
+                            and store_pay_date is not null),0) as store_total_using_count
+                from store sp1 
+                where store_enroll_date is not null 
+                <if test="!keyword.equals('null')"> 
+                and (store_name like '%'||#{keyword}||'%' or so_name like '%'||#{keyword}||'%' or store_addr like '%'||#{keyword}||'%')
+                </if>
+                )
+	</select>
 </mapper>

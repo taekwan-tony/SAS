@@ -47,44 +47,136 @@ const Join = () => {
       setAgreeAllChecked(false);
     }
   };
+  //정규식 체크 여부
+  const [checkJoin, setCheckJoin] = useState({
+    checkId: false,
+    checkPw: false,
+    checkPwRe: false,
+    checkName: true,
+    checkPhone: true,
+    checkEmail: true,
+    checkBirth: true,
+  });
+  // 정규식 메시지
+  const [checkJoinMsg, setCheckJoinMsg] = useState({
+    checkId: "",
+    checkPw: "",
+    checkPwRe: "",
+  });
   // 아이디 체크 //아직 정규식 안씀
   const idRef = useRef(null);
   const [checkIdResult, setCheckIdResult] = useState(false);
   const checkId = () => {
-    idRef.current.classList.remove("valid");
-    idRef.current.classList.remove("invalid");
-    axios
-      .get(`${backServer}/user/userId/${user.userId}/checkId`)
-      .then((res) => {
-        //console.log(res);
-        if (res.data) {
-          idRef.current.innerText = "사용가능한 아이디 입니다.";
-          idRef.current.classList.add("valid");
-          setCheckIdResult(true);
-        } else {
-          idRef.current.innerText = "이미 사용중인 아이디 입니다.";
-          idRef.current.classList.add("invalid");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    setCheckJoin({ ...checkJoin, checkId: false });
+    setCheckJoinMsg({ ...checkJoinMsg, checkId: "" });
+    // idRef.current.classList.remove("valid");
+    // idRef.current.classList.remove("invalid");
+    const idReg = /^(?=.*[a-z])(?=.*\d)[a-z\d]{4,20}$/;
+    if (user.userId !== "" && idReg.test(user.userId)) {
+      axios
+        .get(`${backServer}/user/userId/${user.userId}/checkId`)
+        .then((res) => {
+          //console.log(res);
+          if (res.data) {
+            console.log("사용 가능");
+            setCheckJoin({ ...checkJoin, checkId: true });
+            setCheckJoinMsg({
+              ...checkJoinMsg,
+              checkId: "사용가능한 아이디 입니다.",
+            });
+            // idRef.current.innerText = "사용가능한 아이디 입니다.";
+            // idRef.current.classList.add("valid");
+            setCheckIdResult(true);
+          } else {
+            setCheckJoinMsg({
+              ...checkJoinMsg,
+              checkId: "이미 사용중인 아이디 입니다.",
+            });
+            // idRef.current.innerText = "이미 사용중인 아이디 입니다.";
+            // idRef.current.classList.add("invalid");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (user.userId !== "") {
+      setCheckJoinMsg({
+        ...checkJoinMsg,
+        checkId: "영문 소문자, 숫자를 포함하여 4-20자 이내로 입력하세요",
       });
-  };
-  // 비밀번호 체크 //아직 정규식 안씀
-  const pwReMsgRef = useRef(null);
-  const [checkPwResult, setCheckPwResult] = useState(false);
-  const checkPw = () => {
-    pwReMsgRef.current.classList.remove("valid");
-    pwReMsgRef.current.classList.remove("invalid");
-    if (pwRe === user.userPw) {
-      pwReMsgRef.current.innerText = "비밀번호와 일치합니다.";
-      pwReMsgRef.current.classList.add("valid");
-      setCheckPwResult(true);
-    } else {
-      pwReMsgRef.current.innerText = "비밀번호와 일치하지 않습니다.";
-      pwReMsgRef.current.classList.add("invalid");
     }
   };
+  // 비밀번호 체크 //아직 정규식 안씀
+  const checkPwReg = () => {
+    setCheckJoin({ ...checkJoin, checkPw: false });
+    setCheckJoinMsg({ ...checkJoinMsg, checkPw: "" });
+    const pwReg = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,}$/;
+    if (user.userPw !== "" && pwReg.test(user.userPw)) {
+      setCheckJoin({ ...checkJoin, checkPw: true });
+      setCheckJoinMsg({
+        ...checkJoinMsg,
+        checkPw: "사용가능한 비밀번호 입니다.",
+      });
+    } else if (user.userPw !== "") {
+      setCheckJoinMsg({
+        ...checkJoinMsg,
+        checkPw:
+          "영소문자, 숫자, @$!%*?& 를 1개 이상 포함한 8자 이상의 문자여야합니다.",
+      });
+    }
+  };
+  // const pwReMsgRef = useRef(null);
+  // const [checkPwResult, setCheckPwResult] = useState(false);
+  const checkPw = () => {
+    // pwReMsgRef.current.classList.remove("valid");
+    // pwReMsgRef.current.classList.remove("invalid");
+    setCheckJoin({ ...checkJoin, checkPwRe: false });
+    setCheckJoinMsg({ ...checkJoinMsg, checkPwRe: "" });
+    if (user.userPw !== "" && pwRe === user.userPw) {
+      setCheckJoin({ ...checkJoin, checkPwRe: true });
+      setCheckJoinMsg({ ...checkJoinMsg, checkPwRe: "비밀번호와 일치합니다." });
+      // setCheckPwResult(true);
+    } else if (user.userPw !== "") {
+      setCheckJoinMsg({
+        ...checkJoinMsg,
+        checkPwRe: "비밀번호와 일치하지않습니다.",
+      });
+    }
+  };
+
+  // 이름 정규식
+  const checkName = () => {
+    const nameReg = /^(?!.*[ㄱ-ㅎㅏ-ㅣ])[a-zA-Z가-힣\s]{1,50}$/;
+    setCheckJoin({ ...checkJoin, checkName: false });
+    if (nameReg.test(user.userName)) {
+      setCheckJoin({ ...checkJoin, checkName: true });
+    }
+  };
+  //휴대폰 번호 정규식
+  const checkPhone = () => {
+    const phoneReg = /^01[016789]-\d{3,4}-\d{4}$/;
+    setCheckJoin({ ...checkJoin, checkPhone: false });
+    if (phoneReg.test(user.userPhone)) {
+      setCheckJoin({ ...checkJoin, checkPhone: true });
+    }
+  };
+  //이메일 정규식
+  const checkEmail = () => {
+    const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setCheckJoin({ ...checkJoin, checkEmail: false });
+    if (emailReg.test(user.userEmail)) {
+      setCheckJoin({ ...checkJoin, checkEmail: true });
+    }
+  };
+  //생년월일 정규식
+  const checkBirth = () => {
+    const birthReg = /^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+    setCheckJoin({ ...checkJoin, checkBirth: false });
+    if (birthReg.test(user.userBirth)) {
+      setCheckJoin({ ...checkJoin, checkBirth: true });
+    }
+  };
+
   //인증번호 만료 시간
   let intervalId = null;
   const [min, setMin] = useState(3);
@@ -145,7 +237,11 @@ const Join = () => {
   const [code, setCode] = useState("");
   const [checkCode, setCheckCode] = useState(false);
   const sendCode = () => {
-    if (user.userEmail != null && user.userEmail !== "") {
+    if (
+      user.userEmail != null &&
+      user.userEmail !== "" &&
+      checkJoin.checkEmail
+    ) {
       axios
         .post(`${backServer}/user/sendCode`, { userEmail: user.userEmail })
         .then((res) => {
@@ -163,13 +259,14 @@ const Join = () => {
     }
   };
   const checkCodeRight = () => {
+    setEmailMsg("");
     setCheckCode(false);
     codeCheckRef.current.classList.remove("valid");
     codeCheckRef.current.classList.remove("invalid");
     if (
       user.userEmail != null &&
       user.userEmail !== "" &&
-      code != "" &&
+      code !== "" &&
       codeNumber != ""
     ) {
       if (code === codeNumber) {
@@ -200,6 +297,16 @@ const Join = () => {
         break;
       }
     }
+
+    if (joinReady) {
+      for (var key in checkJoin) {
+        if (!checkJoin[key]) {
+          joinReady = false;
+          break;
+        }
+      }
+    }
+
     if (joinReady) {
       for (var key in agreeChecked) {
         if (!agreeChecked[key]) {
@@ -209,7 +316,7 @@ const Join = () => {
       }
     }
 
-    if (joinReady && checkIdResult && checkPwResult && checkCode) {
+    if (joinReady && checkCode) {
       axios.post(`${backServer}/user`, user).then((res) => {
         if (res.data) {
           Swal.fire({
@@ -275,7 +382,14 @@ const Join = () => {
               onChange={changeInputVal}
               onBlur={checkId}
             />
-            <p className="msg id-msg" ref={idRef}></p>
+            <p
+              className={`msg id-msg ${
+                checkJoin.checkId ? " colorGreen" : " colorRed"
+              }`}
+              ref={idRef}
+            >
+              {checkJoinMsg.checkId}
+            </p>
           </div>
           <div className="input-item">
             <div className="input-title">
@@ -288,8 +402,15 @@ const Join = () => {
               placeholder="비밀번호"
               value={user.userPw}
               onChange={changeInputVal}
+              onBlur={checkPwReg}
             />
-            <p className="msg pw-msg"></p>
+            <p
+              className={`msg id-msg ${
+                checkJoin.checkPw ? " colorGreen" : " colorRed"
+              }`}
+            >
+              {checkJoinMsg.checkPw}
+            </p>
           </div>
           <div className="input-item">
             <div className="input-title">
@@ -304,7 +425,13 @@ const Join = () => {
               onChange={changePwRe}
               onBlur={checkPw}
             />
-            <p className="msg pwRe-msg" ref={pwReMsgRef}></p>
+            <p
+              className={`msg id-msg ${
+                checkJoin.checkPwRe ? " colorGreen" : " colorRed"
+              }`}
+            >
+              {checkJoinMsg.checkPwRe}
+            </p>
           </div>
           <div className="input-item">
             <div className="input-title">
@@ -317,6 +444,8 @@ const Join = () => {
               placeholder="실명을 입력하세요"
               value={user.userName}
               onChange={changeInputVal}
+              className={checkJoin.checkName ? "" : "borderBottomRed"}
+              onBlur={checkName}
             />
           </div>
           <div className="input-item">
@@ -330,6 +459,8 @@ const Join = () => {
               placeholder="010-0000-0000 형식으로 입력"
               value={user.userPhone}
               onChange={changeInputVal}
+              className={checkJoin.checkPhone ? "" : "borderBottomRed"}
+              onBlur={checkPhone}
             />
           </div>
           <div className="input-item">
@@ -343,6 +474,8 @@ const Join = () => {
               placeholder="이메일 주소"
               value={user.userEmail}
               onChange={changeInputVal}
+              className={checkJoin.checkEmail ? "" : "borderBottomRed"}
+              onBlur={checkEmail}
             />
             <button className="btn-sub round" onClick={sendCode}>
               인증번호 전송
@@ -381,6 +514,8 @@ const Join = () => {
               placeholder="yyyy-mm-dd 형식으로 입력"
               value={user.userBirth}
               onChange={changeInputVal}
+              className={checkJoin.checkBirth ? "" : "borderBottomRed"}
+              onBlur={checkBirth}
             />
           </div>
           <div className="input-item">

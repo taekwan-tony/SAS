@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import ManagementStore from "./ManagementStore";
 import ManagementSaleContent from "./ManagementSaleContent";
+import ManagementSalesDetail from "./ManagementSalesDetail";
 
 const ManagementMain = () => {
   const [adminDetailTitle, setAdminDetailTitle] = useState("");
@@ -25,6 +26,14 @@ const ManagementMain = () => {
             path="saleDashboard"
             element={
               <ManagementSaleContent
+                setAdminDetailTitle={setAdminDetailTitle}
+              />
+            }
+          />
+          <Route
+            path="salesDetail"
+            element={
+              <ManagementSalesDetail
                 setAdminDetailTitle={setAdminDetailTitle}
               />
             }

@@ -48,6 +48,23 @@ const FavoriteList = (props) => {
   const [loginUserNo, setLoginUserNo] = useRecoilState(loginUserNoState);
   const { favoriteFolder, setCheckUpdate, checkUpdate, setFavoriteFolder } =
     props;
+  // 더보기 버튼?
+  const [favoriteFolderIndex, setFavoriteFolderIndex] = useState([]);
+  const [favoriteIndex, setFavoriteIndex] = useState(5);
+  useEffect(() => {
+    //폴더가 바뀌었을때 인덱스 초기화
+    setFavoriteIndex(5);
+  }, [favoriteFolder]);
+  useEffect(() => {
+    //인덱스나 폴더 바뀔때 보여질 폴더리스트 초기화
+    setFavoriteFolderIndex(
+      favoriteFolder.favoriteList
+        ? favoriteFolder.favoriteList.filter((favorite, index) => {
+            return index < favoriteIndex;
+          })
+        : []
+    );
+  }, [favoriteIndex, favoriteFolder]);
   const backServer = process.env.REACT_APP_BACK_SERVER;
   const deleteFolder = () => {
     Swal.fire({
@@ -140,7 +157,7 @@ const FavoriteList = (props) => {
       <div className="favorite-list-content-wrap">
         {favoriteFolder.favoriteList &&
         favoriteFolder.favoriteList.length > 0 ? (
-          favoriteFolder.favoriteList.map((favorite, index) => {
+          favoriteFolderIndex.map((favorite, index) => {
             const deleteFavorite = () => {
               axios
                 .delete(
@@ -168,6 +185,21 @@ const FavoriteList = (props) => {
           <div className="empty-msg">
             <span>즐겨찾기가 존재하지 않습니다.</span>
           </div>
+        )}
+        {favoriteFolder.favoriteList &&
+        favoriteFolder.favoriteList.length > favoriteIndex ? (
+          <div className="btn-box more">
+            <button
+              className="btn-a round"
+              onClick={() => {
+                setFavoriteIndex(favoriteIndex + 5);
+              }}
+            >
+              더보기
+            </button>
+          </div>
+        ) : (
+          ""
         )}
       </div>
     </>
