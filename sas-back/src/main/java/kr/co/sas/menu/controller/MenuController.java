@@ -47,13 +47,21 @@ public class MenuController {
 	@PostMapping(value = "/insertStoreMenu/{storeNo}")
 	public ResponseEntity<Boolean> insertStoreMenu (@ModelAttribute MenuDTO storeMenu, @ModelAttribute MultipartFile menuThumbnail) {
 			
-		if(menuThumbnail != null) {
-			String savepath = root + "/store/storeMenu/";
-			String filepath = fileUtil.upload(savepath, menuThumbnail);
-			storeMenu.setMenuPhoto(filepath);
-		}//if
-			
-		int result = menuService.insertStoreMenu(storeMenu);
+		// 기본 이미지 경로 설정
+	    String defaultImagePath = "/image/s&s로고.png";
+	    
+	    if (menuThumbnail != null && !menuThumbnail.isEmpty()) {
+	        // 사용자 업로드 이미지가 있을 때
+	        String savepath = root + "/store/storeMenu/";
+	        String filepath = fileUtil.upload(savepath, menuThumbnail);
+	        storeMenu.setMenuPhoto(filepath);
+	    } else {
+	        // 업로드 이미지가 없을 때 기본 이미지로 설정
+	        storeMenu.setMenuPhoto(defaultImagePath);
+	    }
+	    
+	    // 메뉴 등록
+	    int result = menuService.insertStoreMenu(storeMenu);
 		return ResponseEntity.ok(result > 0);
 	}//insertStoreMenu
 	
@@ -68,21 +76,30 @@ public class MenuController {
 	
 	@Operation(summary = "매장 메뉴 수정")
 	@PatchMapping(value = "/updateStoreMenu/{menuNo}")
-	public ResponseEntity<Boolean> updateStoreMenu (@ModelAttribute MenuDTO storeMenu, @ModelAttribute MultipartFile menuThumbnail) {
-		System.out.println("기존 메뉴 : " +storeMenu);
-		System.out.println("기존 메뉴 사진 : "+menuThumbnail);
-		
-		if(menuThumbnail != null) {
-			String savepath = root + "/store/storeMenu/" ;
-			String filepath = fileUtil.upload(savepath, menuThumbnail);
-			storeMenu.setMenuPhoto(filepath);
-		}//if
-		System.out.println("메뉴 수정 : " +storeMenu);
-		System.out.println("메뉴 사진 수정 : "+menuThumbnail);
-		
-		int result = menuService.updateStoreMenu(storeMenu);
-		return ResponseEntity.ok(result > 0);
-	}//updateStoreMenu
+	public ResponseEntity<Boolean> updateStoreMenu(@ModelAttribute MenuDTO storeMenu, @ModelAttribute MultipartFile menuThumbnail) {
+	    System.out.println("기존 메뉴 : " + storeMenu);
+	    System.out.println("기존 메뉴 사진 : " + menuThumbnail);
+
+	    // 새로운 메뉴 사진이 있으면 업데이트, 없으면 기존 사진 유지
+	    if (menuThumbnail != null && !menuThumbnail.isEmpty()) {
+	        String savepath = root + "/store/storeMenu/";
+	        String filepath = fileUtil.upload(savepath, menuThumbnail);
+	        storeMenu.setMenuPhoto(filepath); // 새로운 사진 경로 설정
+	    } else {
+	        // 메뉴 사진이 없으면 기존 경로 유지
+	        MenuDTO existingMenu = menuService.getStoreMenuById(storeMenu.getMenuNo());
+	        if (existingMenu != null) {
+	            storeMenu.setMenuPhoto(existingMenu.getMenuPhoto()); // 기존 사진 경로 유지
+	        }
+	    }
+
+	    System.out.println("메뉴 수정 : " + storeMenu);
+	    System.out.println("메뉴 사진 수정 : " + menuThumbnail);
+
+	    int result = menuService.updateStoreMenu(storeMenu);
+	    return ResponseEntity.ok(result > 0);
+	}
+
 
 }
 

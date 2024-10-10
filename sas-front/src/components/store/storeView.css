@@ -13,6 +13,22 @@
   font-weight: 200;
 }
 
+.storeView-seat {
+  box-sizing: border-box;
+  width: 75%;
+  border: none;
+  border-radius: 0%;
+  background: none;
+  color: #fff;
+  font-size: 25px;
+  outline: 0;
+  transition: none;
+  transform: none;
+  border-bottom: 1px solid #fff;
+  font-weight: 200;
+  text-align: center;
+}
+
 .storeView-table {
   width: 100%;
   color: #fff;

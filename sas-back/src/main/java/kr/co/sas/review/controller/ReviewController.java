@@ -37,7 +37,7 @@ public class ReviewController {
 	// 모든 리뷰 가져오기
     @GetMapping(value="/allList/{storeId}")
     public List<ReviewDTO> getAllReview(@PathVariable String storeId) {
-    	System.out.println(storeId);
+    	
         return reviewService.getAllReview(storeId);
     }
     @PatchMapping
@@ -60,12 +60,12 @@ public class ReviewController {
     @PatchMapping("/usermain/mypage/updateReview")
     public ResponseEntity<Integer> modifyReview(@ModelAttribute ReviewDTO review){
     	int result = reviewService.modifyReview(review);
-    	System.out.println("리뷰수정된후 : " +review);
+    	
     	return ResponseEntity.ok(result);
     }
     @DeleteMapping("/{reviewNo}")
     public ResponseEntity<Boolean> deleteReview(@PathVariable int reviewNo){
-    	System.out.println(reviewNo);
+    	
     	boolean result = reviewService.deleteReview(reviewNo);
     	return ResponseEntity.ok(result);
     	
@@ -95,7 +95,7 @@ public class ReviewController {
 	public ResponseEntity<List> getReviewList(@PathVariable String userNickname){
 		String type = "user";
 		List list = reviewService.getReviewList(userNickname, type);
-		System.out.println("스토어이름찾기"+list);
+		
 		return ResponseEntity.ok(list);
 	}
 	

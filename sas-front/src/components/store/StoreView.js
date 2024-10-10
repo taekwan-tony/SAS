@@ -52,8 +52,15 @@ const StoreView = (props) => {
       axios
         .get(`${backServer}/store/storeView/${loginstoreNo}`)
         .then((res) => {
-          setStore(res.data);
+          const storeData = res.data;
+          setStore(storeData);
           setCheck(res.data.length);
+
+          // seatList가 있으면 설정
+          if (storeData.seatList) {
+            setSeatList(storeData.seatList);
+          }
+
           if (res.data.storeSiFilepathList) {
             setStoreSiFilepathList(res.data.storeSiFilepathList);
           }
@@ -240,18 +247,20 @@ const StoreView = (props) => {
                         <tr key={index}>
                           <td className="seat-view-td">
                             <input
-                              className="storeView-inputBox"
+                              className="storeView-seat"
                               type="text"
                               name="seatType"
                               value={seat.seatCapacity}
+                              readOnly
                             />
                           </td>
                           <td className="seat-td">
                             <input
-                              className="storeView-inputBox"
+                              className="storeView-seat"
                               type="text"
                               name="seatCount"
                               value={seat.seatAmount}
+                              readOnly
                             />
                           </td>
                         </tr>
