@@ -316,3 +316,6 @@ a {
   margin: 0;
   font-size: 0.9em;
 }
+.find-main-zone > .findByEmail-result .find-content > .find-btn {
+  margin-top: 20px;
+}
