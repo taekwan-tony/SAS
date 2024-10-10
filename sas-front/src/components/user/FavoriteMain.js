@@ -98,6 +98,9 @@ const FavoriteList = (props) => {
                 icon: "success",
                 confirmButtonColor: "var(--main1)",
                 confirmButtonText: "확인",
+                customClass: {
+                  confirmButton: "swal-btn",
+                },
               }).then(() => {
                 setCheckUpdate(!checkUpdate);
               });
@@ -119,6 +122,9 @@ const FavoriteList = (props) => {
                 icon: "success",
                 confirmButtonColor: "var(--main1)",
                 confirmButtonText: "확인",
+                customClass: {
+                  confirmButton: "swal-btn",
+                },
               }).then(() => {
                 setCheckUpdate(!checkUpdate);
               });
@@ -141,7 +147,7 @@ const FavoriteList = (props) => {
         </span>
         <div className="folder-btn-box">
           {favoriteFolder.favoriteFolderName &&
-          favoriteFolder.favoriteFolderName === "기본폴더" ? (
+          favoriteFolder.favoriteFolderName === "기본 폴더" ? (
             ""
           ) : (
             <button className="delete-btn btn-a" onClick={deleteFolder}>

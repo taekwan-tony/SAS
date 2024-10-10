@@ -549,16 +549,19 @@
                 select 
                 store_no,store_name,store_addr,so_name,business_number,
                 service_price,to_char(store_enroll_date,'yyyy-mm-dd') as store_enroll_date,
-                nvl((select sum(store_total_price)
-                    from store_pay sp2 
-                    where sp2.store_no = sp1.store_no 
-                            and to_char(store_pay_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
-                            and store_pay_date is not null),0) as store_total_price,
-                nvl((select sum(store_total_using_count)
-                    from store_pay sp3
-                    where sp3.store_no = sp1.store_no
-                            and to_char(store_pay_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
-                            and store_pay_date is not null),0) as store_total_using_count
+                nvl((select store_total_price from(
+                 select reservation.store_no,nvl((nvl(sum(reserve_people),0))*sp3.service_price,0) as store_total_price
+                 from store sp3
+                 left join reservation on( sp3.store_no = reservation.store_no)
+                 where  to_char(reserve_enroll_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
+                 group by reservation.store_no,sp3.service_price) reserve
+                 where reserve.store_no = sp1.store_no),0) as store_total_price,
+                nvl((select store_total_using_count from(
+                 select reservation.store_no, nvl(sum(reserve_people),0) as store_total_using_count
+                 from store sp3
+                 left join reservation on( sp3.store_no = reservation.store_no)
+                 where  to_char(reserve_enroll_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
+                 group by reservation.store_no) reserve where reserve.store_no = sp1.store_no),0) as store_total_using_count
                 from store sp1 
                 where store_enroll_date is not null
                 <if test="!keyword.equals('null')"> 
@@ -587,22 +590,25 @@
                  )sp)
 	</select>
 	<select id="totalSales" resultType="map">
-		select nvl(sum(store_total_price),0) as "totalPrice",nvl(sum(store_total_using_count),0)as "totalUser" from (
+		select  nvl(sum(store_total_price),0) as "totalPrice",nvl(sum(store_total_using_count),0)as "totalUser" from (
                 select 
                 store_no,store_name,store_addr,so_name,business_number,
-                service_price,store_enroll_date,
-                nvl((select sum(store_total_price)
-                    from store_pay sp2 
-                    where sp2.store_no = sp1.store_no 
-                            and to_char(store_pay_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
-                            and store_pay_date is not null),0) as store_total_price,
-                nvl((select sum(store_total_using_count)
-                    from store_pay sp3  
-                    where sp3.store_no = sp1.store_no
-                            and to_char(store_pay_date,'yyyy-mm-dd') between #{startDateValue} and #{endDateValue}
-                            and store_pay_date is not null),0) as store_total_using_count
+                service_price,to_char(store_enroll_date,'yyyy-mm-dd') as store_enroll_date,
+                nvl((select store_total_price from(
+                 select reservation.store_no,nvl((nvl(sum(reserve_people),0))*sp3.service_price,0) as store_total_price
+                 from store sp3
+                 left join reservation on( sp3.store_no = reservation.store_no)
+                 where  to_char(reserve_enroll_date,'yyyy-mm-dd') between '2024-10-01' and '2024-10-31'
+                 group by reservation.store_no,sp3.service_price) reserve
+                 where reserve.store_no = sp1.store_no),0) as store_total_price,
+                nvl((select store_total_using_count from(
+                 select reservation.store_no, nvl(sum(reserve_people),0) as store_total_using_count
+                 from store sp3
+                 left join reservation on( sp3.store_no = reservation.store_no)
+                 where  to_char(reserve_enroll_date,'yyyy-mm-dd') between '2024-10-01' and '2024-10-31'
+                 group by reservation.store_no) reserve where reserve.store_no = sp1.store_no),0) as store_total_using_count
                 from store sp1 
-                where store_enroll_date is not null 
+                where store_enroll_date is not null
                 <if test="!keyword.equals('null')"> 
                 and (store_name like '%'||#{keyword}||'%' or so_name like '%'||#{keyword}||'%' or store_addr like '%'||#{keyword}||'%')
                 </if>

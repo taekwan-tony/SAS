@@ -449,9 +449,9 @@ a:hover {
 
 .swiper-slide img {
   display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
+  width: 2000px;
+  height: 1400px;
+  margin-top: -14%;
 }
 .kenburns-top {
   animation: kenburns-top 5s ease-out both;
@@ -481,7 +481,7 @@ a:hover {
 
 .user-menu-section {
   display: grid;
-  grid-template-columns: repeat(5, 100px); /* 한 줄에 5개의 아이템 */
+  grid-template-columns: repeat(5, 17%); /* 한 줄에 5개의 아이템 */
   justify-content: center; /* 전체 그리드를 중앙에 배치 */
   gap: 20px; /* 아이템 간의 간격 */
   margin-top: 20px;

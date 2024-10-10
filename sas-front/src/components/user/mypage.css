@@ -475,6 +475,7 @@ div.favorite-main-wrap
   .favorite-one-content-wrap {
   padding: 10px 30px;
   display: flex;
+  justify-content: flex-start;
   align-items: center;
   height: 186px;
   position: relative;
@@ -498,6 +499,7 @@ div.favorite-main-wrap
   .favorite-one-content-wrap
   > div.img
   > img {
+  width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center;
@@ -507,9 +509,11 @@ div.favorite-main-wrap
   > div.favorite-list-content-wrap
   .favorite-one-content-wrap
   > .favorite-info {
+  width: 600px;
   display: flex;
   flex-direction: column;
   margin-left: 20px;
+  overflow: hidden;
 }
 
 div.favorite-main-wrap
@@ -518,7 +522,7 @@ div.favorite-main-wrap
   .favorite-one-content-wrap
   > .favorite-info
   > .info.introduce {
-  width: 80%;
+  width: 100%;
   max-height: 50px;
   text-overflow: ellipsis;
 }

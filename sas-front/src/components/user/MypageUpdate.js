@@ -229,6 +229,9 @@ const Update = (props) => {
               icon: "success",
               confirmButtonText: "확인",
               confirmButtonColor: "var(--main1)",
+              customClass: {
+                confirmButton: "swal-btn",
+              },
             }).then(() => {
               setCheckUpdate(!checkUpdate);
               setCheckMsg({ ...checkMsg, checkNickname: "" });
@@ -271,6 +274,9 @@ const Update = (props) => {
         icon: "warning",
         confirmButtonColor: "var(--main1)",
         confirmButtonText: "확인",
+        customClass: {
+          confirmButton: "swal-btn",
+        },
       });
     }
   };
