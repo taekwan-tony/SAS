@@ -19,4 +19,6 @@ public interface MenuDao {
 
 	int updateStoreMenu(MenuDTO storeMenu);
 
+	MenuDTO selectMenuById(int menuNo);
+
 }

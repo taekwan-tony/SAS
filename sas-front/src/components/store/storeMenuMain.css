@@ -258,3 +258,22 @@
   height: 23px;
   margin-right: 5px;
 }
+
+.menu-p {
+  margin-left: 150px;
+  font-size: 15px;
+  color: #bfbfbf;
+}
+
+.storeMenu-img-label {
+  color: #fff;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  background-color: #518142;
+  padding: 10px;
+  width: 160px;
+  cursor: pointer;
+  display: inline-block; /* 라벨을 블록 요소로 변경 */
+  text-align: center; /* 텍스트를 가운데 정렬 */
+}
