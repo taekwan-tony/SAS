@@ -659,7 +659,7 @@ const ReservationView = () => {
                   </div>
                   <div className="res-content">
                     <img
-                      src={`${backServer}/reservation/view/${reservation.storeImage}`}
+                      src={`${backServer}/store/${reservation.storeImage}`}
                       alt="가게 로고"
                       style={{ maxWidth: "100%", height: "auto" }}
                     />
