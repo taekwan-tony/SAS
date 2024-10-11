@@ -335,7 +335,8 @@ div.mypage-class-for-img div.reserve-img {
 div.mypage-class-for-img div.img > img,
 div.mypage-class-for-img div.reserve-img > img {
   width: 100%;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* 즐겨찾기 폴더 이미지 리스트 */
