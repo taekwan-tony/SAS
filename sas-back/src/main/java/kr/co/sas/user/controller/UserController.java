@@ -288,10 +288,12 @@ public class UserController {
 			JsonNode jsonNode = om.readTree(profileResponse.getBody());
 			JsonNode profileObject = jsonNode.get("response");
 			UserDTO user = new UserDTO();
+			if(profileObject.get("profile_image")!=null) {
 			String userPhotoUrl =profileObject.get("profile_image").asText("/image/프로필 기본.png").replace("\\", "");
 			String savepath = root + "/userProfile/";
 			String filepath=fileUtil.uploadProfile(userPhotoUrl, savepath);
 			user.setUserPhoto(filepath);
+			}
 //			System.out.println(user.getUserPhoto());
 			user.setUserGender(profileObject.get("gender").asText().equals("F")?"여":"남");
 			user.setUserEmail(profileObject.get("email").asText());
