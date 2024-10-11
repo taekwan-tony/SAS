@@ -672,8 +672,8 @@ const ModifyReview = (props) => {
         <div className="review-content-img">
           <img
             src={
-              user.userPhoto
-                ? `${backServer}/userProfile/${user.userPhoto}`
+              review.userPhoto
+                ? `${backServer}/userProfile/${review.userPhoto}`
                 : "/image/프로필 기본.png"
             }
             alt=""
