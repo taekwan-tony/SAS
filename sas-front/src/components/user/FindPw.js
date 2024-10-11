@@ -126,7 +126,7 @@ const FindPw = () => {
 
   const changePw = () => {
     if (user.userNo !== 0 && checkCode) {
-      navigate(`/userMain/login/updatePw/${user.userNo}`);
+      navigate(`/usermain/login/updatePw/${user.userNo}`);
     }
   };
   return (
