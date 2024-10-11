@@ -670,7 +670,14 @@ const ModifyReview = (props) => {
     <section className="review-box-container">
       <div className="review-content">
         <div className="review-content-img">
-          <img src={`${backServer}/userProfile/${review.userPhoto}`}></img>
+          <img
+            src={
+              user.userPhoto
+                ? `${backServer}/userProfile/${user.userPhoto}`
+                : "/image/프로필 기본.png"
+            }
+            alt=""
+          />
         </div>
         <div className="review-information-wrap">
           <div className="review-header">
