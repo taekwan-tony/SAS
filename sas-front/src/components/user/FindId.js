@@ -37,7 +37,7 @@ const FindId = () => {
         .post(`${backServer}/user/findId`, user)
         .then((res) => {
           if (res.data != null && res.data !== "") {
-            navigate(`/login/findResult/${res.data}`);
+            navigate(`/usermain/login/findResult/${res.data}`);
           } else {
             Swal.fire({
               title: "조회 실패",
