@@ -598,7 +598,7 @@ const ModifyReview = (props) => {
   const [modifyType, setModifyType] = useState(0);
   const [isModify, setIsModify] = useState(true);
   const regExp = /[</p>]/;
-
+  const isUserLogin = useRecoilValue(isUserLoginState);
   //리뷰삭제
   const deleteReview = () => {
     Swal.fire({
@@ -697,14 +697,18 @@ const ModifyReview = (props) => {
             />
           </Stack>
         </div>
-        <div className="review-manager-status">
-          <button className="review-manager-update" onClick={updateReview}>
-            수정
-          </button>
-          <button className="review-manager-delete" onClick={deleteReview}>
-            삭제
-          </button>
-        </div>
+        {isUserLogin && update ? (
+          <div className="review-manager-status">
+            <button className="review-manager-update" onClick={updateReview}>
+              수정
+            </button>
+            <button className="review-manager-delete" onClick={deleteReview}>
+              삭제
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="review-content-one-wrap">
         <p>
